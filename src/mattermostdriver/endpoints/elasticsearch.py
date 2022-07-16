@@ -2,10 +2,10 @@ from .base import Base
 
 
 class Elasticsearch(Base):
-    endpoint = "/elasticsearch"
+    def test_elasticsearch(self):
+        """Test Elasticsearch configuration"""
+        return self.client.post("""/elasticsearch/test""")
 
-    def test_elasticsearch_configuration(self):
-        return self.client.post(self.endpoint + "/test")
-
-    def purge_all_elasticsearch_indexes(self):
-        return self.client.post(self.endpoint + "/purge_indexes")
+    def purge_elasticsearch_indexes(self):
+        """Purge all Elasticsearch indexes"""
+        return self.client.post("""/elasticsearch/purge_indexes""")

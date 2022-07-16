@@ -2,10 +2,17 @@ from .base import Base
 
 
 class Brand(Base):
-    endpoint = "/brand"
-
     def get_brand_image(self):
-        return self.client.get(self.endpoint + "/image")
+        """Get brand image"""
+        return self.client.get("""/brand/image""")
 
-    def upload_brand_image(self, files):
-        return self.client.post(self.endpoint + "/image", files=files)
+    def upload_brand_image(self, data=None):
+        """Upload brand image
+
+        image: The image to be uploaded
+        """
+        return self.client.post("""/brand/image""", data=data)
+
+    def delete_brand_image(self):
+        """Delete current brand image"""
+        return self.client.delete("""/brand/image""")

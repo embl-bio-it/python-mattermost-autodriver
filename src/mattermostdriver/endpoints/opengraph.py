@@ -2,7 +2,9 @@ from .base import Base
 
 
 class Opengraph(Base):
-    endpoint = "/opengraph"
+    def open_graph(self, options):
+        """Get open graph metadata for url
 
-    def get_opengraph_metadata_for_url(self, options):
-        return self.client.post(self.endpoint, options=options)
+        url: The URL to get Open Graph Metadata.
+        """
+        return self.client.post("""/opengraph""", options=options)

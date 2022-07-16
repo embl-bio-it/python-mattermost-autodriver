@@ -1,11 +1,19 @@
 from .base import Base
 
 
-class LDAP(Base):
-    endpoint = "/ldap"
+class Ldap(Base):
+    def get_ldap_groups(self, params=None):
+        """Returns a list of LDAP groups
 
-    def sync_ldap(self):
-        return self.client.post(self.endpoint + "/sync")
+        q: Search term
+        page: The page to select.
+        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+        """
+        return self.client.get("""/ldap/groups""", params=params)
 
-    def test_ldap_config(self):
-        return self.client.post(self.endpoint + "/test")
+    def link_ldap_group(self, remote_id):
+        """Link a LDAP group
+
+        remote_id: Group GUID
+        """
+        return self.client.post(f"/ldap/groups/{remote_id}/link")

@@ -2,16 +2,28 @@ from .base import Base
 
 
 class Compliance(Base):
-    endpoint = "/compliance"
+    def create_compliance_report(self):
+        """Create report"""
+        return self.client.post("""/compliance/reports""")
 
-    def create_report(self, params):
-        return self.client.post(self.endpoint + "/reports", params=params)
+    def get_compliance_reports(self, params=None):
+        """Get reports
 
-    def get_reports(self, params=None):
-        return self.client.get(self.endpoint + "/reports", params=params)
+        page: The page to select.
+        per_page: The number of reports per page.
+        """
+        return self.client.get("""/compliance/reports""", params=params)
 
-    def get_report(self, report_id):
-        return self.client.get(self.endpoint + "/reports/" + report_id)
+    def get_compliance_report(self, report_id):
+        """Get a report
 
-    def download_report(self, report_id):
-        return self.client.get(self.endpoint + "/reports/" + report_id + "/download")
+        report_id: Compliance report GUID
+        """
+        return self.client.get(f"/compliance/reports/{report_id}")
+
+    def download_compliance_report(self, report_id):
+        """Download a report
+
+        report_id: Compliance report GUID
+        """
+        return self.client.get(f"/compliance/reports/{report_id}/download")

@@ -1,32 +1,63 @@
-import json
-
 from .base import Base
 
 
 class Emoji(Base):
-    endpoint = "/emoji"
+    def create_emoji(self, data=None):
+        """Create a custom emoji
 
-    def create_custom_emoji(self, emoji_name, files):
-        emoji = {"name": emoji_name, "creator_id": self.client.userid}
-        return self.client.post(self.endpoint, data={"emoji": json.dumps(emoji)}, files=files)
+        image: A file to be uploaded
+        emoji: A JSON object containing a `name` field with the name of the emoji and a `creator_id` field with the id of the authenticated user.
+        """
+        return self.client.post("""/emoji""", data=data)
 
     def get_emoji_list(self, params=None):
-        return self.client.get(self.endpoint, params=params)
+        """Get a list of custom emoji
 
-    def get_custom_emoji(self, emoji_id):
-        return self.client.get(self.endpoint + "/" + emoji_id)
+        page: The page to select.
+        per_page: The number of emojis per page.
+        sort: Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
+        """
+        return self.client.get("""/emoji""", params=params)
 
-    def delete_custom_emoji(self, emoji_id):
-        return self.client.delete(self.endpoint + "/" + emoji_id)
+    def get_emoji(self, emoji_id):
+        """Get a custom emoji
 
-    def get_custom_emoji_by_name(self, name):
-        return self.client.get(self.endpoint + "/name/" + name)
+        emoji_id: Emoji GUID
+        """
+        return self.client.get(f"/emoji/{emoji_id}")
 
-    def get_custom_emoji_image(self, emoji_id):
-        return self.client.get(self.endpoint + "/" + emoji_id + "/image")
+    def delete_emoji(self, emoji_id):
+        """Delete a custom emoji
 
-    def search_custom_emoji(self, options=None):
-        return self.client.post(self.endpoint + "/search", options=options)
+        emoji_id: Emoji GUID
+        """
+        return self.client.delete(f"/emoji/{emoji_id}")
 
-    def autocomplete_custom_emoji(self, params=None):
-        return self.client.get(self.endpoint + "/autocomplete", params=params)
+    def get_emoji_by_name(self, emoji_name):
+        """Get a custom emoji by name
+
+        emoji_name: Emoji name
+        """
+        return self.client.get(f"/emoji/name/{emoji_name}")
+
+    def get_emoji_image(self, emoji_id):
+        """Get custom emoji image
+
+        emoji_id: Emoji GUID
+        """
+        return self.client.get(f"/emoji/{emoji_id}/image")
+
+    def search_emoji(self, options):
+        """Search custom emoji
+
+        term: The term to match against the emoji name.
+        prefix_only: Set to only search for names starting with the search term.
+        """
+        return self.client.post("""/emoji/search""", options=options)
+
+    def autocomplete_emoji(self, params=None):
+        """Autocomplete custom emoji
+
+        name: The emoji name to search.
+        """
+        return self.client.get("""/emoji/autocomplete""", params=params)

@@ -1,20 +1,27 @@
 from .base import Base
-from .posts import Posts
-from .users import Users
 
 
 class Reactions(Base):
-    endpoint = "/reactions"
+    def save_reaction(self, options):
+        """Create a reaction"""
+        return self.client.post("""/reactions""", options=options)
 
-    def create_reaction(self, options=None):
-        return self.client.post(self.endpoint, options=options)
+    def get_reactions(self, post_id):
+        """Get a list of reactions to a post
 
-    def get_reactions_of_post(self, post_id):
-        return self.client.get(
-            Posts.endpoint + "/" + post_id + "/" + self.endpoint,
-        )
+        post_id: ID of a post
+        """
+        return self.client.get(f"/posts/{post_id}/reactions")
 
-    def delete_reaction(self, user_id, post_id, emoji_name, params=None):
-        return self.client.delete(
-            Users.endpoint + "/" + user_id + "/posts/" + post_id + "/reactions/" + emoji_name, params=params
-        )
+    def delete_reaction(self, user_id, post_id, emoji_name):
+        """Remove a reaction from a post
+
+        user_id: ID of the user
+        post_id: ID of the post
+        emoji_name: emoji name
+        """
+        return self.client.delete(f"/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
+
+    def get_bulk_reactions(self, options):
+        """Bulk get the reaction for posts"""
+        return self.client.post("""/posts/ids/reactions""", options=options)
