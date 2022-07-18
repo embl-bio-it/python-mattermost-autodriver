@@ -1,15 +1,15 @@
 
-.. image:: https://img.shields.io/pypi/v/mattermostdriver.svg
-    :target: https://pypi.python.org/pypi/mattermostdriver
+.. image:: https://img.shields.io/pypi/v/mattermostautodriver.svg
+    :target: https://pypi.python.org/pypi/mattermostautodriver
 
-.. image:: https://img.shields.io/pypi/l/mattermostdriver.svg
-    :target: https://pypi.python.org/pypi/mattermostdriver
+.. image:: https://img.shields.io/pypi/l/mattermostautodriver.svg
+    :target: https://pypi.python.org/pypi/mattermostautodriver
 
-.. image:: https://img.shields.io/pypi/pyversions/mattermostdriver.svg
-    :target: https://pypi.python.org/pypi/mattermostdriver
+.. image:: https://img.shields.io/pypi/pyversions/mattermostautodriver.svg
+    :target: https://pypi.python.org/pypi/mattermostautodriver
 
-Python Mattermost Driver (APIv4)
-================================
+Python Mattermost Auto Driver (APIv4)
+=====================================
 
 Info
 ----
@@ -25,13 +25,13 @@ Installation
 
 .. inclusion-marker-start-install
 
-``pip install mattermostdriver``
+``pip install mattermostautodriver``
 
 .. inclusion-marker-end-install
 
 Documentation
 -------------
-Documentation can be found at https://vaelor.github.io/python-mattermost-driver/ .
+Documentation can be found at https://embl-bio-it.github.io/python-mattermost-autodriver/ .
 
 Usage
 -----
@@ -40,7 +40,7 @@ Usage
 
 .. code:: python
 
-    from mattermostdriver import Driver
+    from mattermostautodriver import Driver
 
     foo = Driver({
         """
@@ -50,7 +50,7 @@ Usage
         If you have a token, you don't need to pass login/pass.
         It is also possible to use 'auth' to pass a auth header in directly,
         for an example, see:
-        https://vaelor.github.io/python-mattermost-driver/#authentication
+        https://embl-bio-it.github.io/python-mattermost-autodriver/#authentication
         """
         'url': 'mattermost.server.com',
         'login_id': 'user.name',

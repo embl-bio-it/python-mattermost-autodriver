@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-STORE_DIR="mattermostdriver"
+STORE_DIR="mattermostautodriver"
 
 rm -f src/$STORE_DIR/endpoints/*.py
 touch src/$STORE_DIR/endpoints/__init__.py

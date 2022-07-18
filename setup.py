@@ -13,18 +13,18 @@ readme_file = os.path.join(root_dir, 'README.rst')
 with open(readme_file, encoding='utf-8') as f:
     long_description = f.read()
 
-version_module = os.path.join(root_dir, 'src', 'mattermostdriver', 'version.py')
+version_module = os.path.join(root_dir, 'src', 'mattermostautodriver', 'version.py')
 with open(version_module, encoding='utf-8') as f:
     exec(f.read())
 
 setup(
-    name='mattermostdriver',
+    name='mattermostautodriver',
     version=full_version,
-    description='A Python Mattermost Driver',
+    description='A Python Mattermost Auto Driver',
     long_description=long_description,
-    url='https://github.com/Vaelor/python-mattermost-driver',
-    author='Christian Plümer',
-    author_email='github@kuuku.net',
+    url='https://github.com/embl-bio-it/python-mattermost-autodriver',
+    author='Renato Alves, Christian Plümer',
+    author_email='bio-it@embl.de, github@kuuku.net',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

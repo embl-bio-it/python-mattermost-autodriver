@@ -4,7 +4,7 @@ Endpoints
 Bots
 ----
 
-.. automodule:: mattermostdriver.endpoints.bots
+.. automodule:: mattermostautodriver.endpoints.bots
     :members:
     :undoc-members:
     :show-inheritance:
@@ -13,7 +13,7 @@ Bots
 Brand
 -----
 
-.. automodule:: mattermostdriver.endpoints.brand
+.. automodule:: mattermostautodriver.endpoints.brand
     :members:
     :undoc-members:
     :show-inheritance:
@@ -21,7 +21,7 @@ Brand
 Channels
 --------
 
-.. automodule:: mattermostdriver.endpoints.channels
+.. automodule:: mattermostautodriver.endpoints.channels
     :members:
     :undoc-members:
     :show-inheritance:
@@ -29,7 +29,7 @@ Channels
 Cluster
 -------
 
-.. automodule:: mattermostdriver.endpoints.cluster
+.. automodule:: mattermostautodriver.endpoints.cluster
     :members:
     :undoc-members:
     :show-inheritance:
@@ -37,7 +37,7 @@ Cluster
 Commands
 --------
 
-.. automodule:: mattermostdriver.endpoints.commands
+.. automodule:: mattermostautodriver.endpoints.commands
     :members:
     :undoc-members:
     :show-inheritance:
@@ -45,7 +45,7 @@ Commands
 Compliance
 -----------
 
-.. automodule:: mattermostdriver.endpoints.compliance
+.. automodule:: mattermostautodriver.endpoints.compliance
     :members:
     :undoc-members:
     :show-inheritance:
@@ -53,7 +53,7 @@ Compliance
 Data\_retention
 ---------------
 
-.. automodule:: mattermostdriver.endpoints.data_retention
+.. automodule:: mattermostautodriver.endpoints.data_retention
     :members:
     :undoc-members:
     :show-inheritance:
@@ -61,7 +61,7 @@ Data\_retention
 Elasticsearch
 -------------
 
-.. automodule:: mattermostdriver.endpoints.elasticsearch
+.. automodule:: mattermostautodriver.endpoints.elasticsearch
     :members:
     :undoc-members:
     :show-inheritance:
@@ -69,7 +69,7 @@ Elasticsearch
 Emoji
 -----
 
-.. automodule:: mattermostdriver.endpoints.emoji
+.. automodule:: mattermostautodriver.endpoints.emoji
     :members:
     :undoc-members:
     :show-inheritance:
@@ -77,7 +77,7 @@ Emoji
 Files
 -----
 
-.. automodule:: mattermostdriver.endpoints.files
+.. automodule:: mattermostautodriver.endpoints.files
     :members:
     :undoc-members:
     :show-inheritance:
@@ -85,7 +85,7 @@ Files
 Integration\_actions
 --------------------
 
-.. automodule:: mattermostdriver.endpoints.integration_actions
+.. automodule:: mattermostautodriver.endpoints.integration_actions
     :members:
     :undoc-members:
     :show-inheritance:
@@ -93,7 +93,7 @@ Integration\_actions
 LDAP
 ----
 
-.. automodule:: mattermostdriver.endpoints.ldap
+.. automodule:: mattermostautodriver.endpoints.ldap
     :members:
     :undoc-members:
     :show-inheritance:
@@ -101,7 +101,7 @@ LDAP
 OAuth
 -----
 
-.. automodule:: mattermostdriver.endpoints.oauth
+.. automodule:: mattermostautodriver.endpoints.oauth
     :members:
     :undoc-members:
     :show-inheritance:
@@ -109,7 +109,7 @@ OAuth
 Posts
 -----
 
-.. automodule:: mattermostdriver.endpoints.posts
+.. automodule:: mattermostautodriver.endpoints.posts
     :members:
     :undoc-members:
     :show-inheritance:
@@ -117,7 +117,7 @@ Posts
 Preferences
 -----------
 
-.. automodule:: mattermostdriver.endpoints.preferences
+.. automodule:: mattermostautodriver.endpoints.preferences
     :members:
     :undoc-members:
     :show-inheritance:
@@ -125,7 +125,7 @@ Preferences
 Reactions
 ---------
 
-.. automodule:: mattermostdriver.endpoints.reactions
+.. automodule:: mattermostautodriver.endpoints.reactions
     :members:
     :undoc-members:
     :show-inheritance:
@@ -133,7 +133,7 @@ Reactions
 Roles
 -----
 
-.. automodule:: mattermostdriver.endpoints.roles
+.. automodule:: mattermostautodriver.endpoints.roles
     :members:
     :undoc-members:
     :show-inheritance:
@@ -141,7 +141,7 @@ Roles
 SAML
 ----
 
-.. automodule:: mattermostdriver.endpoints.saml
+.. automodule:: mattermostautodriver.endpoints.saml
     :members:
     :undoc-members:
     :show-inheritance:
@@ -149,7 +149,7 @@ SAML
 Scheme
 ------
 
-.. automodule:: mattermostdriver.endpoints.scheme
+.. automodule:: mattermostautodriver.endpoints.scheme
     :members:
     :undoc-members:
     :show-inheritance:
@@ -157,7 +157,7 @@ Scheme
 Status
 ------
 
-.. automodule:: mattermostdriver.endpoints.status
+.. automodule:: mattermostautodriver.endpoints.status
     :members:
     :undoc-members:
     :show-inheritance:
@@ -165,7 +165,7 @@ Status
 System
 ------
 
-.. automodule:: mattermostdriver.endpoints.system
+.. automodule:: mattermostautodriver.endpoints.system
     :members:
     :undoc-members:
     :show-inheritance:
@@ -173,7 +173,7 @@ System
 Teams
 -----
 
-.. automodule:: mattermostdriver.endpoints.teams
+.. automodule:: mattermostautodriver.endpoints.teams
     :members:
     :undoc-members:
     :show-inheritance:
@@ -181,7 +181,7 @@ Teams
 Users
 -----
 
-.. automodule:: mattermostdriver.endpoints.users
+.. automodule:: mattermostautodriver.endpoints.users
     :members:
     :undoc-members:
     :show-inheritance:
@@ -189,7 +189,7 @@ Users
 Webhooks
 --------
 
-.. automodule:: mattermostdriver.endpoints.webhooks
+.. automodule:: mattermostautodriver.endpoints.webhooks
     :members:
     :undoc-members:
     :show-inheritance:

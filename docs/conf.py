@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# mattermostdriver documentation build configuration file, created by
+# mattermostautodriver documentation build configuration file, created by
 # sphinx-quickstart on Thu Jun 29 14:15:35 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -52,7 +52,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'mattermostdriver'
+project = 'mattermostautodriver'
 copyright = '2017, Christian Plümer'
 author = 'Christian Plümer'
 
@@ -64,7 +64,7 @@ author = 'Christian Plümer'
 # Will be set in the next step
 short_version = ''
 full_version = ''
-version_module = os.path.join(root_dir, 'src', 'mattermostdriver', 'version.py')
+version_module = os.path.join(root_dir, 'src', 'mattermostautodriver', 'version.py')
 with open(version_module, encoding='utf-8') as f:
     exec(f.read())
 
@@ -115,7 +115,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'mattermostdriverdoc'
+htmlhelp_basename = 'mattermostautodriverdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -142,7 +142,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'mattermostdriver.tex', 'mattermostdriver Documentation',
+    (master_doc, 'mattermostautodriver.tex', 'mattermostautodriver Documentation',
      'Christian Plümer', 'manual'),
 ]
 
@@ -152,7 +152,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'mattermostdriver', 'mattermostdriver Documentation',
+    (master_doc, 'mattermostautodriver', 'mattermostautodriver Documentation',
      [author], 1)
 ]
 
@@ -163,8 +163,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'mattermostdriver', 'mattermostdriver Documentation',
-     author, 'mattermostdriver', 'One line description of project.',
+    (master_doc, 'mattermostautodriver', 'mattermostautodriver Documentation',
+     author, 'mattermostautodriver', 'One line description of project.',
      'Miscellaneous'),
 ]
 

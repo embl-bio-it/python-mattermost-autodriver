@@ -426,7 +426,7 @@ def main():
 
     for module in methods.keys():
         code = make_ast(methods, module)
-        filename = f"src/mattermostdriver/endpoints/{module.lower()}.py"
+        filename = f"src/mattermostautodriver/endpoints/{module.lower()}.py"
 
         with open(filename, "w") as fh:
             fh.write(ast.unparse(code))

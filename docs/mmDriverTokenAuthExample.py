@@ -2,11 +2,11 @@
 # A simple example to retrieve all users for a team while using a _token_ 
 # from the .netrc file instead of a password (as requests assumes by default)
 
-import logging 
+import logging
 import requests
 import netrc
 
-from mattermostdriver import Driver
+from mattermostautodriver import Driver
 
 logging.basicConfig( format='%(levelname)s - %(name)s - %(asctime)s - %(message)s' )
 logger = logging.getLogger( 'MattermostManager' )
@@ -33,7 +33,7 @@ class MattermostManager( object ) :
         # the corresponding line in the file should look like:
         # <mattermost.host.in.netrc> foo foo <long-string-of-token>
         # The "login" and "account" (both set to "foo" in the example are ignored)
-        
+
         mmHost = 'mattermost.host.in.netrc'
         (login, account, password) = netrc.netrc().authenticators( mmHost )
         logger.debug( "Going to set up driver for connection to %s " % (mmHost,) )

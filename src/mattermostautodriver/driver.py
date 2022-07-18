@@ -29,7 +29,7 @@ from .endpoints.bots import Bots
 from .endpoints.opengraph import Opengraph
 from .endpoints.integration_actions import IntegrationActions
 
-log = logging.getLogger("mattermostdriver.api")
+log = logging.getLogger("mattermostautodriver.api")
 log.setLevel(logging.INFO)
 
 

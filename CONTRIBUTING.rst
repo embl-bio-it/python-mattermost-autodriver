@@ -25,10 +25,10 @@ The relevant files are under `docs/_build/html/`.
 These are the ones that are on the `gh-pages` branch.
 
 The easiest way to update the documentation would be to:
- - `git clone https://github.com/Vaelor/python-mattermost-driver.git python-mattermost-driver-docs`
- - `cd python-mattermost-driver-docs`
+ - `git clone https://github.com/embl-bio-it/python-mattermost-autodriver.git python-mattermost-autodriver-docs`
+ - `cd python-mattermost-autodriver-docs`
  - `git checkout gh-pages`
- - `cp -r python-mattermostdriver/docs/_build/html/. python-mattermost-driver-docs/`
+ - `cp -r python-mattermostautodriver/docs/_build/html/. python-mattermost-autodriver-docs/`
  - Check the changed files with `git status`
  - Add them and commit/push
 

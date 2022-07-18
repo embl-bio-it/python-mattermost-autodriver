@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=mattermostdriver
+set SPHINXPROJ=mattermostautodriver
 
 if "%1" == "" goto help
 

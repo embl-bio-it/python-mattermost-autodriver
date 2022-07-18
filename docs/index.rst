@@ -1,10 +1,10 @@
-.. mattermostdriver documentation master file, created by
+.. mattermostautodriver documentation master file, created by
    sphinx-quickstart on Thu Jun 29 10:38:30 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Mattermostdriver documentation
-==============================
+mattermostautodriver documentation
+==================================
 
 .. toctree::
    :maxdepth: 1
@@ -15,7 +15,7 @@ Mattermostdriver documentation
    contributing
 
 
-See https://github.com/Vaelor/python-mattermost-driver for the github repository.
+See https://github.com/embl-bio-it/python-mattermost-autodriver for the github repository.
 
 You interact with this module mainly by using the Driver class.
 If you want to access information about the logged in user, like the user id,
@@ -38,7 +38,7 @@ Usage
 Classes
 '''''''
 
-.. automodule:: mattermostdriver
+.. automodule:: mattermostautodriver
 .. autoclass:: Driver
     :members:
     :undoc-members:
@@ -49,7 +49,7 @@ Classes
 Exceptions that api requests can throw
 ''''''''''''''''''''''''''''''''''''''
 
-.. automodule:: mattermostdriver.exceptions
+.. automodule:: mattermostautodriver.exceptions
 
 .. autoclass:: InvalidOrMissingParameters
 

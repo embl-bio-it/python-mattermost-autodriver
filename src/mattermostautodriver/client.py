@@ -16,7 +16,7 @@ from .exceptions import (
     FeatureDisabled,
 )
 
-log = logging.getLogger("mattermostdriver.websocket")
+log = logging.getLogger("mattermostautodriver.websocket")
 log.setLevel(logging.INFO)
 
 

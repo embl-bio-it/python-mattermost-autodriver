@@ -6,7 +6,7 @@ import time
 
 import aiohttp
 
-log = logging.getLogger("mattermostdriver.websocket")
+log = logging.getLogger("mattermostautodriver.websocket")
 log.setLevel(logging.INFO)
 
 
