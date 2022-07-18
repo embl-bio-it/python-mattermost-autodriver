@@ -18,6 +18,8 @@ The repository will try to keep up with the master of https://github.com/matterm
 
 If something changes, it is most likely to change because the official mattermost api changed.
 
+This project is forked from https://github.com/Vaelor/python-mattermost-driver but uses an automatic approach to generate all Python endpoint files from the mattermost OpenAPI specification.
+
 Python 3.6 or later is required.
 
 Installation
