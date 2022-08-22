@@ -61,7 +61,7 @@ class BaseDriver:
         - basepath ('/api/v4') - unlikely this would do any good
     """
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, options, client_cls, *args, **kwargs):
         cls._initialize_endpoints(cls)
         return super().__new__(cls, *args, **kwargs)
 
