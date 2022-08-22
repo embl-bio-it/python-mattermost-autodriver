@@ -3,7 +3,7 @@ import json
 from collections import namedtuple
 from subprocess import run
 
-from inflection import underscore
+from inflection import underscore, camelize
 
 # Notes about parsing openapi file
 #
@@ -407,7 +407,7 @@ def make_ast(methods, module):
     funcs = [ast_function(method) for method in methods[module]]
     base.body.append(
         ast.ClassDef(
-            module.lower().capitalize(),
+            camelize(module),
             bases=[ast.Name("Base")],
             body=funcs,
             decorator_list=[],
