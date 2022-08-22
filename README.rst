@@ -202,3 +202,37 @@ Usage
 
 
 .. inclusion-marker-end-usage
+
+Updating OpenAPI specification
+------------------------------
+
+First we need to obtain Mattermost's API in an OpenAPI JSON.
+
+.. code:: shell
+
+    git clone https://github.com/mattermost/mattermost-api-reference
+    cd mattermost-api-reference
+    make build
+    ./node_modules/.bin/swagger2openapi v4/html/static/mattermost-openapi-v4.yaml > openapi.json
+    cd ..
+
+With the above commands you will have cloned and created an ``openapi.json`` file that will be used by the conversion script.
+
+First install all required dependencies in a virtual environment.
+
+.. code:: shell
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+
+Finally, with the virtual environment still loaded execute
+
+.. code:: shell
+
+    ./generate_endpoints.sh
+
+to generate the updated endpoint definition.
+
+The current API conversion code was designed for Python 3.9.
+As it uses Python's AST parser and generator, alongside with `Black <https://github.com/psf/black>`_ different versions of Python may result in some differences in the generated code. Double check with a ``git diff`` once complete.
