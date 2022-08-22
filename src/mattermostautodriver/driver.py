@@ -61,7 +61,7 @@ class BaseDriver:
         - basepath ('/api/v4') - unlikely this would do any good
     """
 
-    def __new__(cls, options, client_cls, *args, **kwargs):
+    def __new__(cls, options=None, client_cls=Client, *args, **kwargs):
         cls._initialize_endpoints(cls)
         return super().__new__(cls, *args, **kwargs)
 
@@ -92,7 +92,7 @@ class BaseDriver:
             # the function won't act as a closure
             setattr(cls, end, property(lambda s, c=_class: c(s.client)))
 
-    def __init__(self, options, client_cls):
+    def __init__(self, options=None, client_cls=Client):
         """
         :param options: A dict with the values from `default_options`
         :type options: dict
