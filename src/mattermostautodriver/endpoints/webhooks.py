@@ -41,7 +41,7 @@ class Webhooks(Base):
         """Update an incoming webhook
 
         hook_id: Incoming Webhook GUID
-        hook_id: Incoming webhook GUID
+        id: Incoming webhook GUID
         channel_id: The ID of a public channel or private group that receives the webhook payloads.
         display_name: The display name for this incoming webhook
         description: The description for this incoming webhook

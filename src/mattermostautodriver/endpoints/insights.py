@@ -65,3 +65,17 @@ class Insights(Base):
 
         """
         return self.client.get("""/users/me/top/channels""", params=params)
+
+    def get_new_team_members(self, team_id, params=None):
+        """Get a list of new team members.
+
+        team_id: Team GUID
+        time_range: Time range can be "today", "7_day", or "28_day".
+          - `today`: team members who joined during the current day.
+          - `7_day`: team members who joined in the last 7 days.
+          - `28_day`: team members who joined in the last 28 days.
+
+        page: The page to select.
+        per_page: The number of items per page.
+        """
+        return self.client.get(f"/teams/{team_id}/top/team_members", params=params)

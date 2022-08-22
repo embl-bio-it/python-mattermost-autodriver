@@ -21,12 +21,13 @@ class Posts(Base):
         """
         return self.client.post("""/posts/ephemeral""", options=options)
 
-    def get_post(self, post_id):
+    def get_post(self, post_id, params=None):
         """Get a post
 
         post_id: ID of the post to get
+        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
         """
-        return self.client.get(f"/posts/{post_id}")
+        return self.client.get(f"/posts/{post_id}", params=params)
 
     def delete_post(self, post_id):
         """Delete a post
@@ -92,12 +93,13 @@ class Posts(Base):
         """
         return self.client.get(f"/users/{user_id}/posts/flagged", params=params)
 
-    def get_file_infos_for_post(self, post_id):
+    def get_file_infos_for_post(self, post_id, params=None):
         """Get file info for post
 
         post_id: ID of the post
+        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
         """
-        return self.client.get(f"/posts/{post_id}/files/info")
+        return self.client.get(f"/posts/{post_id}/files/info", params=params)
 
     def get_posts_for_channel(self, channel_id, params=None):
         """Get posts for a channel
@@ -162,3 +164,12 @@ class Posts(Base):
     def get_posts_by_ids(self, options):
         """Get posts by a list of ids"""
         return self.client.post("""/posts/ids""", options=options)
+
+    def set_post_reminder(self, user_id, post_id, options):
+        """Set a post reminder
+
+        user_id: User GUID
+        post_id: Post GUID
+        target_time: Target time for the reminder
+        """
+        return self.client.post(f"/users/{user_id}/posts/{post_id}/reminder", options=options)
