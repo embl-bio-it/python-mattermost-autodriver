@@ -231,6 +231,9 @@ class Client(BaseClient):
     def delete(self, endpoint, options=None, params=None, data=None):
         return self.make_request("delete", endpoint, options=options, params=params, data=data).json()
 
+    def call_webhook(self, hook_id, options=None):
+        return self.make_request("post", "/" + hook_id, options=options, basepath="/hooks")
+
 
 class AsyncClient(BaseClient):
     def __init__(self, options):
@@ -278,4 +281,8 @@ class AsyncClient(BaseClient):
 
     async def delete(self, endpoint, options=None, params=None, data=None):
         response = await self.make_request("delete", endpoint, options=options, params=params, data=data)
+        return response.json()
+
+    async def call_webhook(self, hook_id, options=None):
+        response = await self.make_request("post", "/" + hook_id, options=options, basepath="/hooks")
         return response.json()
