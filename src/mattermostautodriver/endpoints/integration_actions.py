@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Integration_actions(Base):
+class IntegrationActions(Base):
     def open_interactive_dialog(self, options):
         """Open a dialog
 

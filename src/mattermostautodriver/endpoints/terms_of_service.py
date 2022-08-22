@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Terms_of_service(Base):
+class TermsOfService(Base):
     def register_terms_of_service_action(self, user_id, options):
         """Records user action when they accept or decline custom terms of service
 

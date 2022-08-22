@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Saml(Base):
+class SAML(Base):
     def migrate_auth_to_saml(self, options=None):
         """Migrate user accounts authentication type to SAML.
 

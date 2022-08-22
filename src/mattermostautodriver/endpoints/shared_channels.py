@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Shared_channels(Base):
+class SharedChannels(Base):
     def get_all_shared_channels(self, team_id, params=None):
         """Get all shared channels for team.
 

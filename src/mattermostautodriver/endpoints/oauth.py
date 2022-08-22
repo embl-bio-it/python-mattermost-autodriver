@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Oauth(Base):
+class OAuth(Base):
     def create_o_auth_app(self, options):
         """Register OAuth app
 

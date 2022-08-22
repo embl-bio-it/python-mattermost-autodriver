@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Opengraph(Base):
+class OpenGraph(Base):
     def open_graph(self, options):
         """Get open graph metadata for url
 

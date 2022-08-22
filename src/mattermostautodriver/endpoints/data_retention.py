@@ -1,7 +1,7 @@
 from .base import Base
 
 
-class Data_retention(Base):
+class DataRetention(Base):
     def get_team_policies_for_user(self, user_id, params=None):
         """Get the policies which are applied to a user's teams
 
