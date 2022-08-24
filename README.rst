@@ -198,7 +198,7 @@ Usage
 
     # If you want to call a webhook/execute it use the `call_webhook` method.
     # This method does not exist on the mattermost api AFAIK, I added it for ease of use.
-    foo.webhooks.call_webhook('myHookId', options) # Options are optional
+    foo.client.call_webhook('myHookId', options) # Options are optional
 
 
 .. inclusion-marker-end-usage
