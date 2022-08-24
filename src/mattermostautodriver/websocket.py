@@ -31,6 +31,7 @@ class Websocket:
         """
         context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
         if not self.options["verify"]:
+            context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE
 
         scheme = "wss://"
