@@ -1,7 +1,6 @@
 Endpoints
 =========
 
-
 Authentication
 --------------
 
@@ -9,7 +8,6 @@ Authentication
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Base
 ----
@@ -19,7 +17,6 @@ Base
     :undoc-members:
     :show-inheritance:
 
-
 Bleve
 -----
 
@@ -27,7 +24,6 @@ Bleve
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Bots
 ----
@@ -37,7 +33,6 @@ Bots
     :undoc-members:
     :show-inheritance:
 
-
 Brand
 -----
 
@@ -45,7 +40,6 @@ Brand
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Channels
 --------
@@ -55,7 +49,6 @@ Channels
     :undoc-members:
     :show-inheritance:
 
-
 Cloud
 -----
 
@@ -63,7 +56,6 @@ Cloud
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Cluster
 -------
@@ -73,7 +65,6 @@ Cluster
     :undoc-members:
     :show-inheritance:
 
-
 Commands
 --------
 
@@ -81,7 +72,6 @@ Commands
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Compliance
 ----------
@@ -91,7 +81,6 @@ Compliance
     :undoc-members:
     :show-inheritance:
 
-
 Data Retention
 --------------
 
@@ -99,7 +88,6 @@ Data Retention
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Elasticsearch
 -------------
@@ -109,7 +97,6 @@ Elasticsearch
     :undoc-members:
     :show-inheritance:
 
-
 Emoji
 -----
 
@@ -117,7 +104,6 @@ Emoji
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Exports
 -------
@@ -127,7 +113,6 @@ Exports
     :undoc-members:
     :show-inheritance:
 
-
 Files
 -----
 
@@ -135,7 +120,6 @@ Files
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Groups
 ------
@@ -145,7 +129,6 @@ Groups
     :undoc-members:
     :show-inheritance:
 
-
 Imports
 -------
 
@@ -153,7 +136,6 @@ Imports
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Insights
 --------
@@ -163,7 +145,6 @@ Insights
     :undoc-members:
     :show-inheritance:
 
-
 Integration Actions
 -------------------
 
@@ -171,7 +152,6 @@ Integration Actions
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Jobs
 ----
@@ -181,7 +161,6 @@ Jobs
     :undoc-members:
     :show-inheritance:
 
-
 Ldap
 ----
 
@@ -189,7 +168,6 @@ Ldap
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Migrate
 -------
@@ -199,7 +177,6 @@ Migrate
     :undoc-members:
     :show-inheritance:
 
-
 Oauth
 -----
 
@@ -207,7 +184,6 @@ Oauth
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Opengraph
 ---------
@@ -217,7 +193,6 @@ Opengraph
     :undoc-members:
     :show-inheritance:
 
-
 Permissions
 -----------
 
@@ -225,7 +200,6 @@ Permissions
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Plugins
 -------
@@ -235,7 +209,6 @@ Plugins
     :undoc-members:
     :show-inheritance:
 
-
 Posts
 -----
 
@@ -243,7 +216,6 @@ Posts
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Preferences
 -----------
@@ -253,7 +225,6 @@ Preferences
     :undoc-members:
     :show-inheritance:
 
-
 Reactions
 ---------
 
@@ -261,7 +232,6 @@ Reactions
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Roles
 -----
@@ -271,7 +241,6 @@ Roles
     :undoc-members:
     :show-inheritance:
 
-
 Root
 ----
 
@@ -279,7 +248,6 @@ Root
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Saml
 ----
@@ -289,7 +257,6 @@ Saml
     :undoc-members:
     :show-inheritance:
 
-
 Schemes
 -------
 
@@ -297,7 +264,6 @@ Schemes
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Search
 ------
@@ -307,7 +273,6 @@ Search
     :undoc-members:
     :show-inheritance:
 
-
 Shared Channels
 ---------------
 
@@ -315,7 +280,6 @@ Shared Channels
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Status
 ------
@@ -325,7 +289,6 @@ Status
     :undoc-members:
     :show-inheritance:
 
-
 System
 ------
 
@@ -333,7 +296,6 @@ System
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Teams
 -----
@@ -343,7 +305,6 @@ Teams
     :undoc-members:
     :show-inheritance:
 
-
 Terms Of Service
 ----------------
 
@@ -351,7 +312,6 @@ Terms Of Service
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Threads
 -------
@@ -361,7 +321,6 @@ Threads
     :undoc-members:
     :show-inheritance:
 
-
 Uploads
 -------
 
@@ -369,7 +328,6 @@ Uploads
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 Usage
 -----
@@ -379,7 +337,6 @@ Usage
     :undoc-members:
     :show-inheritance:
 
-
 Users
 -----
 
@@ -388,7 +345,6 @@ Users
     :undoc-members:
     :show-inheritance:
 
-
 Webhooks
 --------
 
@@ -396,4 +352,3 @@ Webhooks
     :members:
     :undoc-members:
     :show-inheritance:
-
