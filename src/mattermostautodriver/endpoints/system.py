@@ -62,7 +62,7 @@ class System(Base):
     def get_client_config(self, params=None):
         """Get client configuration
 
-        format: Must be `old`, other formats not implemented yet
+        format: Must be ``old``, other formats not implemented yet
         """
         return self.client.get("""/config/client""", params=params)
 
@@ -88,7 +88,7 @@ class System(Base):
     def get_client_license(self, params=None):
         """Get client license
 
-        format: Must be `old`, other formats not implemented yet
+        format: Must be ``old``, other formats not implemented yet
         """
         return self.client.get("""/license/client""", params=params)
 

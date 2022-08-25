@@ -5,13 +5,13 @@ class Channels(Base):
     def get_all_channels(self, params=None):
         """Get a list of all channels
 
-        not_associated_to_group: A group id to exclude channels that are associated with that group via GroupChannel records. This can also be left blank with `not_associated_to_group=`.
+        not_associated_to_group: A group id to exclude channels that are associated with that group via GroupChannel records. This can also be left blank with ``not_associated_to_group=``.
         page: The page to select.
         per_page: The number of channels per page.
         exclude_default_channels: Whether to exclude default channels (ex Town Square, Off-Topic) from the results.
-        include_deleted: Include channels that have been archived. This correlates to the `DeleteAt` flag being set in the database.
-        include_total_count: Appends a total count of returned channels inside the response object - ex: `{ "channels": [], "total_count" : 0 }`.
-        exclude_policy_constrained: If set to true, channels which are part of a data retention policy will be excluded. The `sysconsole_read_compliance` permission is required to use this parameter.
+        include_deleted: Include channels that have been archived. This correlates to the ``DeleteAt`` flag being set in the database.
+        include_total_count: Appends a total count of returned channels inside the response object - ex: ``{ "channels": [], "total_count" : 0 }``.
+        exclude_policy_constrained: If set to true, channels which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
         __Minimum server version__: 5.35
         """
         return self.client.get("""/channels""", params=params)
@@ -54,11 +54,11 @@ class Channels(Base):
 
         __Minimum server version__: 5.26
 
-        public: Filters results to only return Public / Open channels, can be used in conjunction with `private` to return both `public` and `private` channels
+        public: Filters results to only return Public / Open channels, can be used in conjunction with ``private`` to return both ``public`` and ``private`` channels
 
         __Minimum server version__: 5.26
 
-        private: Filters results to only return Private channels, can be used in conjunction with `public` to return both `private` and `public` channels
+        private: Filters results to only return Private channels, can be used in conjunction with ``public`` to return both ``private`` and ``public`` channels
 
         __Minimum server version__: 5.26
 
@@ -66,9 +66,9 @@ class Channels(Base):
 
         __Minimum server version__: 5.26
 
-        page: The page number to return, if paginated. If this parameter is not present with the `per_page` parameter then the results will be returned un-paged.
-        per_page: The number of entries to return per page, if paginated. If this parameter is not present with the `page` parameter then the results will be returned un-paged.
-        exclude_policy_constrained: If set to true, only channels which do not have a granular retention policy assigned to them will be returned. The `sysconsole_read_compliance_data_retention` permission is required to use this parameter.
+        page: The page number to return, if paginated. If this parameter is not present with the ``per_page`` parameter then the results will be returned un-paged.
+        per_page: The number of entries to return per page, if paginated. If this parameter is not present with the ``page`` parameter then the results will be returned un-paged.
+        exclude_policy_constrained: If set to true, only channels which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
         __Minimum server version__: 5.35
 
         include_search_by_id: If set to true, returns channels where given search 'term' matches channel ID.

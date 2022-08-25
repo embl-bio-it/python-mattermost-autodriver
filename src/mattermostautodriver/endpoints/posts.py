@@ -41,9 +41,9 @@ class Posts(Base):
 
         post_id: ID of the post to update
         id: ID of the post to update
-        is_pinned: Set to `true` to pin the post to the channel it is in
+        is_pinned: Set to ``true`` to pin the post to the channel it is in
         message: The message text of the post
-        has_reactions: Set to `true` if the post has reactions to it
+        has_reactions: Set to ``true`` if the post has reactions to it
         props: A general JSON property bag to attach to the post
         """
         return self.client.put(f"/posts/{post_id}", options=options)
@@ -60,10 +60,10 @@ class Posts(Base):
         """Patch a post
 
         post_id: Post GUID
-        is_pinned: Set to `true` to pin the post to the channel it is in
+        is_pinned: Set to ``true`` to pin the post to the channel it is in
         message: The message text of the post
         file_ids: The list of files attached to this post
-        has_reactions: Set to `true` if the post has reactions to it
+        has_reactions: Set to ``true`` if the post has reactions to it
         props: A general JSON property bag to attach to the post
         """
         return self.client.put(f"/posts/{post_id}/patch", options=options)
@@ -131,7 +131,7 @@ class Posts(Base):
         """Search for team posts
 
         team_id: Team GUID
-        terms: The search terms as inputed by the user. To search for posts from a user include `from:someusername`, using a user's username. To search in a specific channel include `in:somechannel`, using the channel name (not the display name).
+        terms: The search terms as inputed by the user. To search for posts from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name).
         is_or_search: Set to true if an Or search should be performed vs an And search.
         time_zone_offset: Offset from UTC of user timezone for date searches.
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)

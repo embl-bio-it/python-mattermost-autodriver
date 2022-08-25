@@ -59,9 +59,9 @@ class Webhooks(Base):
         description: The description for this outgoing webhook
         display_name: The display name for this outgoing webhook
         trigger_words: List of words for the webhook to trigger on
-        trigger_when: When to trigger the webhook, `0` when a trigger word is present at all and `1` if the message starts with a trigger word
+        trigger_when: When to trigger the webhook, ``0`` when a trigger word is present at all and ``1`` if the message starts with a trigger word
         callback_urls: The URLs to POST the payloads to when the webhook is triggered
-        content_type: The format to POST the data in, either `application/json` or `application/x-www-form-urlencoded`
+        content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded``
         """
         return self.client.post("""/hooks/outgoing""", options=options)
 

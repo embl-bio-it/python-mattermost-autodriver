@@ -10,7 +10,7 @@ class OAuth(Base):
         icon_url: A URL to an icon to display with the application
         callback_urls: A list of callback URLs for the appliation
         homepage: A link to the website of the application
-        is_trusted: Set this to `true` to skip asking users for permission
+        is_trusted: Set this to ``true`` to skip asking users for permission
         """
         return self.client.post("""/oauth/apps""", options=options)
 
@@ -39,7 +39,7 @@ class OAuth(Base):
         icon_url: A URL to an icon to display with the application
         callback_urls: A list of callback URLs for the appliation
         homepage: A link to the website of the application
-        is_trusted: Set this to `true` to skip asking users for permission. It will be set to false if value is not provided.
+        is_trusted: Set this to ``true`` to skip asking users for permission. It will be set to false if value is not provided.
         """
         return self.client.put(f"/oauth/apps/{app_id}", options=options)
 

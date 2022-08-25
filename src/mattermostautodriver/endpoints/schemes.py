@@ -5,7 +5,7 @@ class Schemes(Base):
     def get_schemes(self, params=None):
         """Get the schemes.
 
-        scope: Limit the results returned to the provided scope, either `team` or `channel`.
+        scope: Limit the results returned to the provided scope, either ``team`` or ``channel``.
         page: The page to select.
         per_page: The number of schemes per page.
         """

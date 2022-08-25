@@ -58,7 +58,7 @@ class Files(Base):
         """Search files in a team
 
         team_id: Team GUID
-        terms: The search terms as inputed by the user. To search for files from a user include `from:someusername`, using a user's username. To search in a specific channel include `in:somechannel`, using the channel name (not the display name). To search for specific extensions included `ext:extension`.
+        terms: The search terms as inputed by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions included ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
         time_zone_offset: Offset from UTC of user timezone for date searches.
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)

@@ -122,9 +122,9 @@ class DataRetention(Base):
         term: The string to search in the channel name, display name, and purpose.
         team_ids: Filters results to channels belonging to the given team ids
 
-        public: Filters results to only return Public / Open channels, can be used in conjunction with `private` to return both `public` and `private` channels
+        public: Filters results to only return Public / Open channels, can be used in conjunction with ``private`` to return both ``public`` and ``private`` channels
 
-        private: Filters results to only return Private channels, can be used in conjunction with `public` to return both `private` and `public` channels
+        private: Filters results to only return Private channels, can be used in conjunction with ``public`` to return both ``private`` and ``public`` channels
 
         deleted: Filters results to only return deleted / archived channels
 

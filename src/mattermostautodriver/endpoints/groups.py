@@ -14,14 +14,14 @@ class Groups(Base):
 
         page: The page to select.
         per_page: The number of groups per page.
-        q: String to pattern match the `name` and `display_name` field. Will return all groups whose `name` and `display_name` field match any of the text.
-        include_member_count: Boolean which adds the `member_count` attribute to each group JSON object
+        q: String to pattern match the ``name`` and ``display_name`` field. Will return all groups whose ``name`` and ``display_name`` field match any of the text.
+        include_member_count: Boolean which adds the ``member_count`` attribute to each group JSON object
         not_associated_to_team: Team GUID which is used to return all the groups not associated to this team
         not_associated_to_channel: Group GUID which is used to return all the groups not associated to this channel
         since: Only return groups that have been modified since the given Unix timestamp (in milliseconds). All modified groups, including deleted and created groups, will be returned.
         __Minimum server version__: 5.24
 
-        filter_allow_reference: Boolean which filters the group entries with the `allow_reference` attribute set.
+        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
         """
         return self.client.get("""/groups""", params=params)
 
@@ -175,7 +175,7 @@ class Groups(Base):
         channel_id: Channel GUID
         page: The page to select.
         per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters the group entries with the `allow_reference` attribute set.
+        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
         """
         return self.client.get(f"/channels/{channel_id}/groups", params=params)
 
@@ -185,7 +185,7 @@ class Groups(Base):
         team_id: Team GUID
         page: The page to select.
         per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters in the group entries with the `allow_reference` attribute set.
+        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
         """
         return self.client.get(f"/teams/{team_id}/groups", params=params)
 
@@ -195,7 +195,7 @@ class Groups(Base):
         team_id: Team GUID
         page: The page to select.
         per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters in the group entries with the `allow_reference` attribute set.
+        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
         paginate: Boolean to determine whether the pagination should be applied or not
         """
         return self.client.get(f"/teams/{team_id}/groups_by_channels", params=params)

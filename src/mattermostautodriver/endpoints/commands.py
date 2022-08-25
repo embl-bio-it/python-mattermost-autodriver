@@ -6,7 +6,7 @@ class Commands(Base):
         """Create a command
 
         team_id: Team ID to where the command should be created
-        method: `'P'` for post request, `'G'` for get request
+        method: ``'P'`` for post request, ``'G'`` for get request
         trigger: Activation word to trigger the command
         url: The URL that the command will make the request
         """

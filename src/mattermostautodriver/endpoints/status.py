@@ -14,7 +14,7 @@ class Status(Base):
 
         user_id: User ID
         user_id: User ID
-        status: User status, can be `online`, `away`, `offline` and `dnd`
+        status: User status, can be ``online``, ``away``, ``offline`` and ``dnd``
         dnd_end_time: Time in epoch seconds at which a dnd status would be unset.
         """
         return self.client.put(f"/users/{user_id}/status", options=options)
@@ -29,7 +29,7 @@ class Status(Base):
         user_id: User ID
         emoji: Any emoji
         text: Any custom status text
-        duration: Duration of custom status, can be `thirty_minutes`, `one_hour`, `four_hours`, `today`, `this_week` or `date_and_time`
+        duration: Duration of custom status, can be ``thirty_minutes``, ``one_hour``, ``four_hours``, ``today``, ``this_week`` or ``date_and_time``
         expires_at: The time at which custom status should be expired. It should be in ISO format.
         """
         return self.client.put(f"/users/{user_id}/status/custom", options=options)
@@ -47,7 +47,7 @@ class Status(Base):
         user_id: User ID
         emoji: Any emoji
         text: Any custom status text
-        duration: Duration of custom status, can be `thirty_minutes`, `one_hour`, `four_hours`, `today`, `this_week` or `date_and_time`
+        duration: Duration of custom status, can be ``thirty_minutes``, ``one_hour``, ``four_hours``, ``today``, ``this_week`` or ``date_and_time``
         expires_at: The time at which custom status should be expired. It should be in ISO format.
         """
         return self.client.delete(f"/users/{user_id}/status/custom/recent", params=params)
@@ -58,7 +58,7 @@ class Status(Base):
         user_id: User ID
         emoji: Any emoji
         text: Any custom status text
-        duration: Duration of custom status, can be `thirty_minutes`, `one_hour`, `four_hours`, `today`, `this_week` or `date_and_time`
+        duration: Duration of custom status, can be ``thirty_minutes``, ``one_hour``, ``four_hours``, ``today``, ``this_week`` or ``date_and_time``
         expires_at: The time at which custom status should be expired. It should be in ISO format.
         """
         return self.client.post(f"/users/{user_id}/status/custom/recent/delete", options=options)

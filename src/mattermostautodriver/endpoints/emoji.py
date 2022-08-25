@@ -6,7 +6,7 @@ class Emoji(Base):
         """Create a custom emoji
 
         image: A file to be uploaded
-        emoji: A JSON object containing a `name` field with the name of the emoji and a `creator_id` field with the id of the authenticated user.
+        emoji: A JSON object containing a ``name`` field with the name of the emoji and a ``creator_id`` field with the id of the authenticated user.
         """
         return self.client.post("""/emoji""", files=files, data=data)
 

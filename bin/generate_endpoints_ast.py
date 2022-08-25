@@ -118,7 +118,7 @@ def get_descriptions(params):
     doc_pad = "        "
 
     def fix_docstr(doc):
-        return doc.replace("\n", f"\n{doc_pad}")
+        return doc.replace("\n", f"\n{doc_pad}").replace("`", "``")
 
     return (
         "\n\n"
