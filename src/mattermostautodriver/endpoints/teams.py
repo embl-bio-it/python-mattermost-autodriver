@@ -18,7 +18,7 @@ class Teams(Base):
         per_page: The number of teams per page.
         include_total_count: Appends a total count of returned teams inside the response object - ex: `{ "teams": [], "total_count" : 0 }`.
         exclude_policy_constrained: If set to true, teams which are part of a data retention policy will be excluded. The `sysconsole_read_compliance` permission is required to use this parameter.
-          __Minimum server version__: 5.35
+        __Minimum server version__: 5.35
         """
         return self.client.get("""/teams""", params=params)
 
@@ -91,15 +91,15 @@ class Teams(Base):
         page: The page number to return, if paginated. If this parameter is not present with the `per_page` parameter then the results will be returned un-paged.
         per_page: The number of entries to return per page, if paginated. If this parameter is not present with the `page` parameter then the results will be returned un-paged.
         allow_open_invite: Filters results to teams where `allow_open_invite` is set to true or false, excludes group constrained channels if this filter option is passed.
-          If this filter option is not passed then the query will remain unchanged.
-          __Minimum server version__: 5.28
+        If this filter option is not passed then the query will remain unchanged.
+        __Minimum server version__: 5.28
 
         group_constrained: Filters results to teams where `group_constrained` is set to true or false, returns the union of results when used with `allow_open_invite`
-          If the filter option is not passed then the query will remain unchanged.
-          __Minimum server version__: 5.28
+        If the filter option is not passed then the query will remain unchanged.
+        __Minimum server version__: 5.28
 
         exclude_policy_constrained: If set to true, only teams which do not have a granular retention policy assigned to them will be returned. The `sysconsole_read_compliance_data_retention` permission is required to use this parameter.
-          __Minimum server version__: 5.35
+        __Minimum server version__: 5.35
 
         """
         return self.client.post("""/teams/search""", options=options)

@@ -60,32 +60,32 @@ class Users(Base):
         role: Returns users that have this role.
         sort: Sort is only available in conjunction with certain options below. The paging parameter is also always available.
 
-          ##### `in_team`
-          Can be "", "last_activity_at" or "create_at".
-          When left blank, sorting is done by username.
-          __Minimum server version__: 4.0
-          ##### `in_channel`
-          Can be "", "status".
-          When left blank, sorting is done by username. `status` will sort by User's current status (Online, Away, DND, Offline), then by Username.
-          __Minimum server version__: 4.7
+        ##### `in_team`
+        Can be "", "last_activity_at" or "create_at".
+        When left blank, sorting is done by username.
+        __Minimum server version__: 4.0
+        ##### `in_channel`
+        Can be "", "status".
+        When left blank, sorting is done by username. `status` will sort by User's current status (Online, Away, DND, Offline), then by Username.
+        __Minimum server version__: 4.7
 
         roles: Comma separated string used to filter users based on any of the specified system roles
 
-          Example: `?roles=system_admin,system_user` will return users that are either system admins or system users
+        Example: `?roles=system_admin,system_user` will return users that are either system admins or system users
 
-          __Minimum server version__: 5.26
+        __Minimum server version__: 5.26
 
         channel_roles: Comma separated string used to filter users based on any of the specified channel roles, can only be used in conjunction with `in_channel`
 
-          Example: `?in_channel=4eb6axxw7fg3je5iyasnfudc5y&channel_roles=channel_user` will return users that are only channel users and not admins or guests
+        Example: `?in_channel=4eb6axxw7fg3je5iyasnfudc5y&channel_roles=channel_user` will return users that are only channel users and not admins or guests
 
-          __Minimum server version__: 5.26
+        __Minimum server version__: 5.26
 
         team_roles: Comma separated string used to filter users based on any of the specified team roles, can only be used in conjunction with `in_team`
 
-          Example: `?in_team=4eb6axxw7fg3je5iyasnfudc5y&team_roles=team_user` will return users that are only team users and not admins or guests
+        Example: `?in_team=4eb6axxw7fg3je5iyasnfudc5y&team_roles=team_user` will return users that are only team users and not admins or guests
 
-          __Minimum server version__: 5.26
+        __Minimum server version__: 5.26
 
         """
         return self.client.get("""/users""", params=params)
@@ -120,7 +120,7 @@ class Users(Base):
         without_team: Set this to `true` if you would like to search for users that are not on a team. This option takes precendence over `team_id`, `in_channel_id`, and `not_in_channel_id`.
         limit: The maximum number of users to return in the results
 
-          __Available as of server version 5.6. Defaults to `100` if not provided or on an earlier server version.__
+        __Available as of server version 5.6. Defaults to `100` if not provided or on an earlier server version.__
 
         """
         return self.client.post("""/users/search""", options=options)
@@ -133,7 +133,7 @@ class Users(Base):
         name: Username, nickname first name or last name
         limit: The maximum number of users to return in each subresult
 
-          __Available as of server version 5.6. Defaults to `100` if not provided or on an earlier server version.__
+        __Available as of server version 5.6. Defaults to `100` if not provided or on an earlier server version.__
 
         """
         return self.client.get("""/users/autocomplete""", params=params)
@@ -155,15 +155,15 @@ class Users(Base):
         include_bots: If bot accounts should be included in the count.
         roles: Comma separated string used to filter users based on any of the specified system roles
 
-          Example: `?roles=system_admin,system_user` will include users that are either system admins or system users
+        Example: `?roles=system_admin,system_user` will include users that are either system admins or system users
 
         channel_roles: Comma separated string used to filter users based on any of the specified channel roles, can only be used in conjunction with `in_channel`
 
-          Example: `?in_channel=4eb6axxw7fg3je5iyasnfudc5y&channel_roles=channel_user` will include users that are only channel users and not admins or guests
+        Example: `?in_channel=4eb6axxw7fg3je5iyasnfudc5y&channel_roles=channel_user` will include users that are only channel users and not admins or guests
 
         team_roles: Comma separated string used to filter users based on any of the specified team roles, can only be used in conjunction with `in_team`
 
-          Example: `?in_team=4eb6axxw7fg3je5iyasnfudc5y&team_roles=team_user` will include users that are only team users and not admins or guests
+        Example: `?in_team=4eb6axxw7fg3je5iyasnfudc5y&team_roles=team_user` will include users that are only team users and not admins or guests
 
         """
         return self.client.get("""/users/stats/filtered""", params=params)
