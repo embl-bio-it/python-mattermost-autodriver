@@ -10,7 +10,6 @@ template = """
     :members:
     :undoc-members:
     :show-inheritance:
-
 """
 
 with open("endpoints.rst", "w") as fh:
