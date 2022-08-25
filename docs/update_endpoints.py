@@ -13,7 +13,7 @@ template = """
 """
 
 with open("endpoints.rst", "w") as fh:
-    fh.write("Endpoints\n=========\n\n")
+    fh.write("Endpoints\n=========\n")
 
     for endpoint in sorted(os.listdir("../src/mattermostautodriver/endpoints/")):
         if endpoint.startswith("_"):
