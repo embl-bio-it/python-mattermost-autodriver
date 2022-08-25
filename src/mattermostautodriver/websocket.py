@@ -109,7 +109,7 @@ class Websocket:
                 self._last_msg = time.time()
 
     def disconnect(self):
-        """Sets `self._alive` to False so the loop in `self._start_loop` will finish."""
+        """Sets ``self._alive`` to False so the loop in ``self._start_loop`` will finish."""
         log.info("Disconnecting websocket")
         self._alive = False
 

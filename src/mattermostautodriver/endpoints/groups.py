@@ -19,7 +19,7 @@ class Groups(Base):
         not_associated_to_team: Team GUID which is used to return all the groups not associated to this team
         not_associated_to_channel: Group GUID which is used to return all the groups not associated to this channel
         since: Only return groups that have been modified since the given Unix timestamp (in milliseconds). All modified groups, including deleted and created groups, will be returned.
-        __Minimum server version__: 5.24
+        *Minimum server version*: 5.24
 
         filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
         """

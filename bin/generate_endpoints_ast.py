@@ -118,7 +118,11 @@ def get_descriptions(params):
     doc_pad = "        "
 
     def fix_docstr(doc):
-        return doc.replace("\n", f"\n{doc_pad}").replace("`", "``")
+        return (
+            doc.replace("\n", f"\n{doc_pad}")  # Indentation
+               .replace("`", "``")  # Convert monospace
+               .replace("__", "*")  # Convert emphasis
+           )
 
     return (
         "\n\n"
