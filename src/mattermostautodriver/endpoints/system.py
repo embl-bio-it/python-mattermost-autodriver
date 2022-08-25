@@ -74,12 +74,12 @@ class System(Base):
         """Patch configuration"""
         return self.client.put("""/config/patch""", options=options)
 
-    def upload_license_file(self, data=None):
+    def upload_license_file(self, files, data=None):
         """Upload license file
 
         license: The license to be uploaded
         """
-        return self.client.post("""/license""", data=data)
+        return self.client.post("""/license""", files=files, data=data)
 
     def remove_license_file(self):
         """Remove license file"""

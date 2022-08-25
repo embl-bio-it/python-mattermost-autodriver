@@ -6,12 +6,12 @@ class Brand(Base):
         """Get brand image"""
         return self.client.get("""/brand/image""")
 
-    def upload_brand_image(self, data=None):
+    def upload_brand_image(self, files, data=None):
         """Upload brand image
 
         image: The image to be uploaded
         """
-        return self.client.post("""/brand/image""", data=data)
+        return self.client.post("""/brand/image""", files=files, data=data)
 
     def delete_brand_image(self):
         """Delete current brand image"""

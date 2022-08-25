@@ -18,9 +18,9 @@ class Uploads(Base):
         """
         return self.client.get(f"/uploads/{upload_id}")
 
-    def upload_data(self, upload_id, options=None, files=None):
+    def upload_data(self, upload_id, files, options=None):
         """Perform a file upload
 
         upload_id: The ID of the upload session the data belongs to.
         """
-        return self.client.post(f"/uploads/{upload_id}", options=options, files=files)
+        return self.client.post(f"/uploads/{upload_id}", files=files, options=options)

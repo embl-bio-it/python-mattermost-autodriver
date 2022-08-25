@@ -240,13 +240,13 @@ class Users(Base):
         """
         return self.client.get(f"/users/{user_id}/image", params=params)
 
-    def set_profile_image(self, user_id, data=None):
+    def set_profile_image(self, user_id, files, data=None):
         """Set user's profile image
 
         user_id: User GUID
         image: The image to be uploaded
         """
-        return self.client.post(f"/users/{user_id}/image", data=data)
+        return self.client.post(f"/users/{user_id}/image", files=files, data=data)
 
     def set_default_profile_image(self, user_id):
         """Delete user's profile image

@@ -198,13 +198,13 @@ class Teams(Base):
         """
         return self.client.get(f"/teams/{team_id}/image")
 
-    def set_team_icon(self, team_id, data=None):
+    def set_team_icon(self, team_id, files, data=None):
         """Sets the team icon
 
         team_id: Team GUID
         image: The image to be uploaded
         """
-        return self.client.post(f"/teams/{team_id}/image", data=data)
+        return self.client.post(f"/teams/{team_id}/image", files=files, data=data)
 
     def remove_team_icon(self, team_id):
         """Remove the team icon
@@ -270,7 +270,7 @@ class Teams(Base):
         """Invalidate active email invitations"""
         return self.client.delete("""/teams/invites/email""")
 
-    def import_team(self, team_id, data=None):
+    def import_team(self, team_id, files, data=None):
         """Import a Team from other application
 
         team_id: Team GUID
@@ -278,7 +278,7 @@ class Teams(Base):
         filesize: The size of the zip file to be imported.
         importFrom: String that defines from which application the team was exported to be imported into Mattermost.
         """
-        return self.client.post(f"/teams/{team_id}/import", data=data)
+        return self.client.post(f"/teams/{team_id}/import", files=files, data=data)
 
     def get_team_invite_info(self, invite_id):
         """Get invite info for a team

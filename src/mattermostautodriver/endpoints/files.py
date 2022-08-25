@@ -2,14 +2,14 @@ from .base import Base
 
 
 class Files(Base):
-    def upload_file(self, data=None):
+    def upload_file(self, files, data=None):
         """Upload a file
 
         files: A file to be uploaded
         channel_id: The ID of the channel that this file will be uploaded to
         client_ids: A unique identifier for the file that will be returned in the response
         """
-        return self.client.post("""/files""", data=data)
+        return self.client.post("""/files""", files=files, data=data)
 
     def get_file(self, file_id):
         """Get a file

@@ -75,13 +75,13 @@ class Bots(Base):
         """
         return self.client.get(f"/bots/{bot_user_id}/icon")
 
-    def set_bot_icon_image(self, bot_user_id, data=None):
+    def set_bot_icon_image(self, bot_user_id, files, data=None):
         """Set bot's LHS icon image
 
         bot_user_id: Bot user ID
         image: SVG icon image to be uploaded
         """
-        return self.client.post(f"/bots/{bot_user_id}/icon", data=data)
+        return self.client.post(f"/bots/{bot_user_id}/icon", files=files, data=data)
 
     def delete_bot_icon_image(self, bot_user_id):
         """Delete bot's LHS icon image

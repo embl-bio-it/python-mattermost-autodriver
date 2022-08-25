@@ -2,13 +2,13 @@ from .base import Base
 
 
 class Emoji(Base):
-    def create_emoji(self, data=None):
+    def create_emoji(self, files, data=None):
         """Create a custom emoji
 
         image: A file to be uploaded
         emoji: A JSON object containing a `name` field with the name of the emoji and a `creator_id` field with the id of the authenticated user.
         """
-        return self.client.post("""/emoji""", data=data)
+        return self.client.post("""/emoji""", files=files, data=data)
 
     def get_emoji_list(self, params=None):
         """Get a list of custom emoji

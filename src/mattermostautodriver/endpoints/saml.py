@@ -22,34 +22,34 @@ class SAML(Base):
         """
         return self.client.post("""/saml/metadatafromidp""", options=options)
 
-    def upload_saml_idp_certificate(self, data=None):
+    def upload_saml_idp_certificate(self, files, data=None):
         """Upload IDP certificate
 
         certificate: The IDP certificate file
         """
-        return self.client.post("""/saml/certificate/idp""", data=data)
+        return self.client.post("""/saml/certificate/idp""", files=files, data=data)
 
     def delete_saml_idp_certificate(self):
         """Remove IDP certificate"""
         return self.client.delete("""/saml/certificate/idp""")
 
-    def upload_saml_public_certificate(self, data=None):
+    def upload_saml_public_certificate(self, files, data=None):
         """Upload public certificate
 
         certificate: The public certificate file
         """
-        return self.client.post("""/saml/certificate/public""", data=data)
+        return self.client.post("""/saml/certificate/public""", files=files, data=data)
 
     def delete_saml_public_certificate(self):
         """Remove public certificate"""
         return self.client.delete("""/saml/certificate/public""")
 
-    def upload_saml_private_certificate(self, data=None):
+    def upload_saml_private_certificate(self, files, data=None):
         """Upload private key
 
         certificate: The private key file
         """
-        return self.client.post("""/saml/certificate/private""", data=data)
+        return self.client.post("""/saml/certificate/private""", files=files, data=data)
 
     def delete_saml_private_certificate(self):
         """Remove private key"""

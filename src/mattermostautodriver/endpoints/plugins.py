@@ -2,13 +2,13 @@ from .base import Base
 
 
 class Plugins(Base):
-    def upload_plugin(self, data=None):
+    def upload_plugin(self, files, data=None):
         """Upload plugin
 
         plugin: The plugin image to be uploaded
         force: Set to 'true' to overwrite a previously installed plugin with the same ID, if any
         """
-        return self.client.post("""/plugins""", data=data)
+        return self.client.post("""/plugins""", files=files, data=data)
 
     def get_plugins(self):
         """Get plugins"""
