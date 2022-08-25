@@ -213,7 +213,7 @@ First we need to obtain Mattermost's API in an OpenAPI JSON.
     git clone https://github.com/mattermost/mattermost-api-reference
     cd mattermost-api-reference
     make build
-    ./node_modules/.bin/swagger2openapi v4/html/static/mattermost-openapi-v4.yaml > openapi.json
+    ./node_modules/.bin/swagger-cli bundle --outfile openapi.json v4/html/static/mattermost-openapi-v4.yaml
     cd ..
 
 With the above commands you will have cloned and created an ``openapi.json`` file that will be used by the conversion script.
