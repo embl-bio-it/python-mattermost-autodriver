@@ -6,8 +6,8 @@ class Channels(Base):
         """Get a list of all channels
 
         not_associated_to_group: A group id to exclude channels that are associated with that group via GroupChannel records. This can also be left blank with `not_associated_to_group=`.
-        page:
-        per_page:
+        page: The page to select.
+        per_page: The number of channels per page.
         exclude_default_channels: Whether to exclude default channels (ex Town Square, Off-Topic) from the results.
         include_deleted: Include channels that have been archived. This correlates to the `DeleteAt` flag being set in the database.
         include_total_count: Appends a total count of returned channels inside the response object - ex: `{ "channels": [], "total_count" : 0 }`.

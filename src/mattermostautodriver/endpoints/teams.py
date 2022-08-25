@@ -16,7 +16,7 @@ class Teams(Base):
 
         page: The page to select.
         per_page: The number of teams per page.
-        include_total_count:
+        include_total_count: Appends a total count of returned teams inside the response object - ex: `{ "teams": [], "total_count" : 0 }`.
         exclude_policy_constrained: If set to true, teams which are part of a data retention policy will be excluded. The `sysconsole_read_compliance` permission is required to use this parameter.
           __Minimum server version__: 5.35
         """

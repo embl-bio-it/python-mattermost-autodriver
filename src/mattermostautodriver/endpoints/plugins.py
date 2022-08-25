@@ -21,21 +21,21 @@ class Plugins(Base):
     def remove_plugin(self, plugin_id):
         """Remove plugin
 
-        plugin_id:
+        plugin_id: Id of the plugin to be removed
         """
         return self.client.delete(f"/plugins/{plugin_id}")
 
     def enable_plugin(self, plugin_id):
         """Enable plugin
 
-        plugin_id:
+        plugin_id: Id of the plugin to be enabled
         """
         return self.client.post(f"/plugins/{plugin_id}/enable")
 
     def disable_plugin(self, plugin_id):
         """Disable plugin
 
-        plugin_id:
+        plugin_id: Id of the plugin to be disabled
         """
         return self.client.post(f"/plugins/{plugin_id}/disable")
 
@@ -51,6 +51,7 @@ class Plugins(Base):
         """Installs a marketplace plugin
 
         id: The ID of the plugin to install.
+        version: The version of the plugin to install.
         """
         return self.client.post("""/plugins/marketplace""", options=options)
 

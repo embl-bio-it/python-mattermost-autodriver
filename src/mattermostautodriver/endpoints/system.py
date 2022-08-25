@@ -103,7 +103,7 @@ class System(Base):
         """
         return self.client.post("""/trial-license""", options=options)
 
-    def get_last_trial_license(self):
+    def get_prev_trial_license(self):
         """Get last trial license used"""
         return self.client.get("""/trial-license/prev""")
 

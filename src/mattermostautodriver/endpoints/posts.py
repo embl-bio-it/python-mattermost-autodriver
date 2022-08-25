@@ -110,6 +110,7 @@ class Posts(Base):
         since: Provide a non-zero value in Unix time milliseconds to select posts modified after that time
         before: A post id to select the posts that came before this one
         after: A post id to select the posts that came after this one
+        include_deleted: Whether to include deleted posts or not. Must have system admin permissions.
         """
         return self.client.get(f"/channels/{channel_id}/posts", params=params)
 

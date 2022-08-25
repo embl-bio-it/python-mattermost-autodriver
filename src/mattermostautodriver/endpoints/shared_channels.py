@@ -6,8 +6,8 @@ class SharedChannels(Base):
         """Get all shared channels for team.
 
         team_id: Team Id
-        page:
-        per_page:
+        page: The page to select.
+        per_page: The number of sharedchannels per page.
         """
         return self.client.get(f"/sharedchannels/{team_id}", params=params)
 

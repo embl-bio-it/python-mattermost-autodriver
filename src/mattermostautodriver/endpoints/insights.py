@@ -16,10 +16,9 @@ class Insights(Base):
         """
         return self.client.get(f"/teams/{team_id}/top/reactions", params=params)
 
-    def get_top_reactions_for_user(self, user_id, params=None):
+    def get_top_reactions_for_user(self, params=None):
         """Get a list of the top reactions for a user.
 
-        user_id: User GUID
         time_range: Time range can be "today", "7_day", or "28_day".
           - `today`: reactions posted on the current day.
           - `7_day`: reactions posted in the last 7 days.
@@ -48,10 +47,9 @@ class Insights(Base):
         """
         return self.client.get(f"/teams/{team_id}/top/channels", params=params)
 
-    def get_top_channels_for_user(self, user_id, params=None):
+    def get_top_channels_for_user(self, params=None):
         """Get a list of the top channels for a user.
 
-        user_id: User GUID
         time_range: Time range can be "today", "7_day", or "28_day".
           - `today`: channels with posts on the current day.
           - `7_day`: channels with posts in the last 7 days.
