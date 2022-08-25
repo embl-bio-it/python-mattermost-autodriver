@@ -101,9 +101,9 @@ def get_properties(schema):
                 prop,
                 values.get("description", ""),
                 prop in required,
-                props.get("type", None),
-                props.get("default", None),
-                props.get("format", None),
+                values.get("type", None),
+                values.get("default", None),
+                values.get("format", None),
             )
             for prop, values in props.items()
         ],
@@ -171,10 +171,13 @@ def get_requestbody_parameters(body, request_type):
         req_body_type, body["content"][req_body_type]["schema"]
     )
 
+    binary = any(filter(lambda x: x.format == "binary", parameters))
+
     return {
         "description": body.get("description", ""),
         "parameters": parameters,
         "required": body.get("required", False),
+        "binary": binary,
         "required_fields": required_fields,
     }
 
@@ -278,10 +281,12 @@ def prepare_call_keywords(url_params, payload_params, operation_arg, req_body_ty
         kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
 
     elif req_body_type == "application/x-www-form-urlencoded":
-        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
         kwargs.append(ast.keyword(arg="files", value=ast.Name("files")))
+        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
 
     elif req_body_type == "multipart/form-data":
+        if payload_params["binary"]:
+            kwargs.append(ast.keyword(arg="files", value=ast.Name("files")))
         kwargs.append(ast.keyword(arg="data", value=ast.Name("data")))
 
     elif req_body_type is None:
@@ -307,6 +312,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     kwargs = []
 
     payload_required = payload_params.get("required", False)
+    binary_upload = payload_params.get("binary", False)
 
     for param in url_params["parameters"]:
         if param.required:
@@ -327,18 +333,20 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
             kwargs.append(ast.Constant(None))
 
     elif req_body_type == "application/x-www-form-urlencoded":
-        args.append(ast.arg(arg=operation_arg))
         args.append(ast.arg(arg="files"))
+        args.append(ast.arg(arg=operation_arg))
 
         if payload_required:
             # Always need to add a position matching None to AST kwargs
-            kwargs.append(None)
+            # but make 'files' a required attribute
             kwargs.append(None)
         else:
-            kwargs.append(ast.Constant(None))
+            # but make 'files' a required attribute
             kwargs.append(ast.Constant(None))
 
     elif req_body_type == "multipart/form-data":
+        if binary_upload:
+            args.append(ast.arg(arg="files"))
         args.append(ast.arg(arg="data"))
 
         if payload_required:
