@@ -15,8 +15,7 @@ Info
 ----
 
 The repository will try to keep up with the master of https://github.com/mattermost/mattermost-api-reference
-
-If something changes, it is most likely to change because the official mattermost api changed.
+Changes in API of ``mattermostautodriver`` will likely be due to a change in the reference mattermost API documentation.
 
 This project is forked from https://github.com/Vaelor/python-mattermost-driver but uses an automatic approach to generate all Python endpoint files from the mattermost OpenAPI specification.
 
