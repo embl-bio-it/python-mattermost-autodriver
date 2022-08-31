@@ -8,6 +8,8 @@ class Teams(Base):
         name: Unique handler for a team, will be present in the team URL
         display_name: Non-unique UI name for the team
         type: ``'O'`` for open, ``'I'`` for invite only
+
+        `Read in Mattermost API docs (teams - CreateTeam) <https://api.mattermost.com/#tag/teams/operation/CreateTeam>`_
         """
         return self.client.post("""/teams""", options=options)
 
@@ -19,6 +21,8 @@ class Teams(Base):
         include_total_count: Appends a total count of returned teams inside the response object - ex: ``{ "teams": [], "total_count" : 0 }``.
         exclude_policy_constrained: If set to true, teams which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
         *Minimum server version*: 5.35
+
+        `Read in Mattermost API docs (teams - GetAllTeams) <https://api.mattermost.com/#tag/teams/operation/GetAllTeams>`_
         """
         return self.client.get("""/teams""", params=params)
 
@@ -26,6 +30,8 @@ class Teams(Base):
         """Get a team
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeam) <https://api.mattermost.com/#tag/teams/operation/GetTeam>`_
         """
         return self.client.get(f"/teams/{team_id}")
 
@@ -40,6 +46,8 @@ class Teams(Base):
         allowed_domains:
         invite_id:
         allow_open_invite:
+
+        `Read in Mattermost API docs (teams - UpdateTeam) <https://api.mattermost.com/#tag/teams/operation/UpdateTeam>`_
         """
         return self.client.put(f"/teams/{team_id}", options=options)
 
@@ -47,6 +55,8 @@ class Teams(Base):
         """Delete a team
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://api.mattermost.com/#tag/teams/operation/SoftDeleteTeam>`_
         """
         return self.client.delete(f"/teams/{team_id}")
 
@@ -59,6 +69,8 @@ class Teams(Base):
         company_name:
         invite_id:
         allow_open_invite:
+
+        `Read in Mattermost API docs (teams - PatchTeam) <https://api.mattermost.com/#tag/teams/operation/PatchTeam>`_
         """
         return self.client.put(f"/teams/{team_id}/patch", options=options)
 
@@ -67,6 +79,8 @@ class Teams(Base):
 
         team_id: Team GUID
         privacy: Team privacy setting: 'O' for a public (open) team, 'I' for a private (invitation only) team
+
+        `Read in Mattermost API docs (teams - UpdateTeamPrivacy) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamPrivacy>`_
         """
         return self.client.put(f"/teams/{team_id}/privacy", options=options)
 
@@ -74,6 +88,8 @@ class Teams(Base):
         """Restore a team
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - RestoreTeam) <https://api.mattermost.com/#tag/teams/operation/RestoreTeam>`_
         """
         return self.client.post(f"/teams/{team_id}/restore")
 
@@ -81,6 +97,8 @@ class Teams(Base):
         """Get a team by name
 
         name: Team Name
+
+        `Read in Mattermost API docs (teams - GetTeamByName) <https://api.mattermost.com/#tag/teams/operation/GetTeamByName>`_
         """
         return self.client.get(f"/teams/name/{name}")
 
@@ -101,6 +119,8 @@ class Teams(Base):
         exclude_policy_constrained: If set to true, only teams which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
         *Minimum server version*: 5.35
 
+
+        `Read in Mattermost API docs (teams - SearchTeams) <https://api.mattermost.com/#tag/teams/operation/SearchTeams>`_
         """
         return self.client.post("""/teams/search""", options=options)
 
@@ -108,6 +128,8 @@ class Teams(Base):
         """Check if team exists
 
         name: Team Name
+
+        `Read in Mattermost API docs (teams - TeamExists) <https://api.mattermost.com/#tag/teams/operation/TeamExists>`_
         """
         return self.client.get(f"/teams/name/{name}/exists")
 
@@ -115,6 +137,8 @@ class Teams(Base):
         """Get a user's teams
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (teams - GetTeamsForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsForUser>`_
         """
         return self.client.get(f"/users/{user_id}/teams")
 
@@ -124,6 +148,8 @@ class Teams(Base):
         team_id: Team GUID
         page: The page to select.
         per_page: The number of users per page.
+
+        `Read in Mattermost API docs (teams - GetTeamMembers) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembers>`_
         """
         return self.client.get(f"/teams/{team_id}/members", params=params)
 
@@ -133,17 +159,23 @@ class Teams(Base):
         team_id: Team GUID
         team_id:
         user_id:
+
+        `Read in Mattermost API docs (teams - AddTeamMember) <https://api.mattermost.com/#tag/teams/operation/AddTeamMember>`_
         """
         return self.client.post(f"/teams/{team_id}/members", options=options)
 
     def add_team_member_from_invite(self):
-        """Add user to team from invite"""
+        """Add user to team from invite
+        `Read in Mattermost API docs (teams - AddTeamMemberFromInvite) <https://api.mattermost.com/#tag/teams/operation/AddTeamMemberFromInvite>`_
+        """
         return self.client.post("""/teams/members/invite""")
 
     def add_team_members(self, team_id, options):
         """Add multiple users to team
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - AddTeamMembers) <https://api.mattermost.com/#tag/teams/operation/AddTeamMembers>`_
         """
         return self.client.post(f"/teams/{team_id}/members/batch", options=options)
 
@@ -151,6 +183,8 @@ class Teams(Base):
         """Get team members for a user
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (teams - GetTeamMembersForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersForUser>`_
         """
         return self.client.get(f"/users/{user_id}/teams/members")
 
@@ -159,6 +193,8 @@ class Teams(Base):
 
         team_id: Team GUID
         user_id: User GUID
+
+        `Read in Mattermost API docs (teams - GetTeamMember) <https://api.mattermost.com/#tag/teams/operation/GetTeamMember>`_
         """
         return self.client.get(f"/teams/{team_id}/members/{user_id}")
 
@@ -167,6 +203,8 @@ class Teams(Base):
 
         team_id: Team GUID
         user_id: User GUID
+
+        `Read in Mattermost API docs (teams - RemoveTeamMember) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamMember>`_
         """
         return self.client.delete(f"/teams/{team_id}/members/{user_id}")
 
@@ -174,6 +212,8 @@ class Teams(Base):
         """Get team members by ids
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeamMembersByIds) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersByIds>`_
         """
         return self.client.post(f"/teams/{team_id}/members/ids", options=options)
 
@@ -181,6 +221,8 @@ class Teams(Base):
         """Get a team stats
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeamStats) <https://api.mattermost.com/#tag/teams/operation/GetTeamStats>`_
         """
         return self.client.get(f"/teams/{team_id}/stats")
 
@@ -188,6 +230,8 @@ class Teams(Base):
         """Regenerate the Invite ID from a Team
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - RegenerateTeamInviteId) <https://api.mattermost.com/#tag/teams/operation/RegenerateTeamInviteId>`_
         """
         return self.client.post(f"/teams/{team_id}/regenerate_invite_id")
 
@@ -195,6 +239,8 @@ class Teams(Base):
         """Get the team icon
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/GetTeamIcon>`_
         """
         return self.client.get(f"/teams/{team_id}/image")
 
@@ -203,6 +249,8 @@ class Teams(Base):
 
         team_id: Team GUID
         image: The image to be uploaded
+
+        `Read in Mattermost API docs (teams - SetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/SetTeamIcon>`_
         """
         return self.client.post(f"/teams/{team_id}/image", files=files, data=data)
 
@@ -210,6 +258,8 @@ class Teams(Base):
         """Remove the team icon
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - RemoveTeamIcon) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamIcon>`_
         """
         return self.client.delete(f"/teams/{team_id}/image")
 
@@ -219,6 +269,8 @@ class Teams(Base):
         team_id: Team GUID
         user_id: User GUID
         roles:
+
+        `Read in Mattermost API docs (teams - UpdateTeamMemberRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberRoles>`_
         """
         return self.client.put(f"/teams/{team_id}/members/{user_id}/roles", options=options)
 
@@ -229,6 +281,8 @@ class Teams(Base):
         user_id: User GUID
         scheme_admin:
         scheme_user:
+
+        `Read in Mattermost API docs (teams - UpdateTeamMemberSchemeRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberSchemeRoles>`_
         """
         return self.client.put(f"/teams/{team_id}/members/{user_id}/schemeRoles", options=options)
 
@@ -238,6 +292,8 @@ class Teams(Base):
         user_id: User GUID
         exclude_team: Optional team id to be excluded from the results
         include_collapsed_threads: Boolean to determine whether the collapsed threads should be included or not
+
+        `Read in Mattermost API docs (teams - GetTeamsUnreadForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsUnreadForUser>`_
         """
         return self.client.get(f"/users/{user_id}/teams/unread", params=params)
 
@@ -246,6 +302,8 @@ class Teams(Base):
 
         user_id: User GUID
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeamUnread) <https://api.mattermost.com/#tag/teams/operation/GetTeamUnread>`_
         """
         return self.client.get(f"/users/{user_id}/teams/{team_id}/unread")
 
@@ -253,6 +311,8 @@ class Teams(Base):
         """Invite users to the team by email
 
         team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - InviteUsersToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteUsersToTeam>`_
         """
         return self.client.post(f"/teams/{team_id}/invite/email", options=options)
 
@@ -263,11 +323,15 @@ class Teams(Base):
         emails: List of emails
         channels: List of channel ids
         message: Message to include in the invite
+
+        `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteGuestsToTeam>`_
         """
         return self.client.post(f"/teams/{team_id}/invite-guests/email", options=options)
 
     def invalidate_email_invites(self):
-        """Invalidate active email invitations"""
+        """Invalidate active email invitations
+        `Read in Mattermost API docs (teams - InvalidateEmailInvites) <https://api.mattermost.com/#tag/teams/operation/InvalidateEmailInvites>`_
+        """
         return self.client.delete("""/teams/invites/email""")
 
     def import_team(self, team_id, files, data=None):
@@ -277,6 +341,8 @@ class Teams(Base):
         file: A file to be uploaded in zip format.
         filesize: The size of the zip file to be imported.
         importFrom: String that defines from which application the team was exported to be imported into Mattermost.
+
+        `Read in Mattermost API docs (teams - ImportTeam) <https://api.mattermost.com/#tag/teams/operation/ImportTeam>`_
         """
         return self.client.post(f"/teams/{team_id}/import", files=files, data=data)
 
@@ -284,6 +350,8 @@ class Teams(Base):
         """Get invite info for a team
 
         invite_id: Invite id for a team
+
+        `Read in Mattermost API docs (teams - GetTeamInviteInfo) <https://api.mattermost.com/#tag/teams/operation/GetTeamInviteInfo>`_
         """
         return self.client.get(f"/teams/invite/{invite_id}")
 
@@ -292,6 +360,8 @@ class Teams(Base):
 
         team_id: Team GUID
         scheme_id: The ID of the scheme.
+
+        `Read in Mattermost API docs (teams - UpdateTeamScheme) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamScheme>`_
         """
         return self.client.put(f"/teams/{team_id}/scheme", options=options)
 
@@ -302,6 +372,8 @@ class Teams(Base):
         group_ids: A comma-separated list of group ids.
         page: The page to select.
         per_page: The number of users per page.
+
+        `Read in Mattermost API docs (teams - TeamMembersMinusGroupMembers) <https://api.mattermost.com/#tag/teams/operation/TeamMembersMinusGroupMembers>`_
         """
         return self.client.get(f"/teams/{team_id}/members_minus_group_members", params=params)
 
@@ -315,5 +387,7 @@ class Teams(Base):
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
         page: The page to select. (Only works with Elasticsearch)
         per_page: The number of posts per page. (Only works with Elasticsearch)
+
+        `Read in Mattermost API docs (teams - SearchFiles) <https://api.mattermost.com/#tag/teams/operation/SearchFiles>`_
         """
         return self.client.post(f"/teams/{team_id}/files/search", data=data)

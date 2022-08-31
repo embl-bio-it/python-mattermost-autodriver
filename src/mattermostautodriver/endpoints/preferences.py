@@ -6,6 +6,8 @@ class Preferences(Base):
         """Get the user's preferences
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (preferences - GetPreferences) <https://api.mattermost.com/#tag/preferences/operation/GetPreferences>`_
         """
         return self.client.get(f"/users/{user_id}/preferences")
 
@@ -13,6 +15,8 @@ class Preferences(Base):
         """Save the user's preferences
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (preferences - UpdatePreferences) <https://api.mattermost.com/#tag/preferences/operation/UpdatePreferences>`_
         """
         return self.client.put(f"/users/{user_id}/preferences", options=options)
 
@@ -20,6 +24,8 @@ class Preferences(Base):
         """Delete user's preferences
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (preferences - DeletePreferences) <https://api.mattermost.com/#tag/preferences/operation/DeletePreferences>`_
         """
         return self.client.post(f"/users/{user_id}/preferences/delete", options=options)
 
@@ -28,6 +34,8 @@ class Preferences(Base):
 
         user_id: User GUID
         category: The category of a group of preferences
+
+        `Read in Mattermost API docs (preferences - GetPreferencesByCategory) <https://api.mattermost.com/#tag/preferences/operation/GetPreferencesByCategory>`_
         """
         return self.client.get(f"/users/{user_id}/preferences/{category}")
 
@@ -37,5 +45,7 @@ class Preferences(Base):
         user_id: User GUID
         category: The category of a group of preferences
         preference_name: The name of the preference
+
+        `Read in Mattermost API docs (preferences - GetPreferencesByCategoryByName) <https://api.mattermost.com/#tag/preferences/operation/GetPreferencesByCategoryByName>`_
         """
         return self.client.get(f"/users/{user_id}/preferences/{category}/name/{preference_name}")

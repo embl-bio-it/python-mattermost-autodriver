@@ -8,6 +8,8 @@ class Authentication(Base):
         from: The current authentication type for the matched users.
         match_field: Foreign user field name to match.
         force:
+
+        `Read in Mattermost API docs (authentication - MigrateAuthToLdap) <https://api.mattermost.com/#tag/authentication/operation/MigrateAuthToLdap>`_
         """
         return self.client.post("""/users/migrate_auth/ldap""", options=options)
 
@@ -17,5 +19,7 @@ class Authentication(Base):
         from: The current authentication type for the matched users.
         matches: Users map.
         auto:
+
+        `Read in Mattermost API docs (authentication - MigrateAuthToSaml) <https://api.mattermost.com/#tag/authentication/operation/MigrateAuthToSaml>`_
         """
         return self.client.post("""/users/migrate_auth/saml""", options=options)

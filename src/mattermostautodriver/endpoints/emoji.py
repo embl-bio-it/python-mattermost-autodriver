@@ -7,6 +7,8 @@ class Emoji(Base):
 
         image: A file to be uploaded
         emoji: A JSON object containing a ``name`` field with the name of the emoji and a ``creator_id`` field with the id of the authenticated user.
+
+        `Read in Mattermost API docs (emoji - CreateEmoji) <https://api.mattermost.com/#tag/emoji/operation/CreateEmoji>`_
         """
         return self.client.post("""/emoji""", files=files, data=data)
 
@@ -16,6 +18,8 @@ class Emoji(Base):
         page: The page to select.
         per_page: The number of emojis per page.
         sort: Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
+
+        `Read in Mattermost API docs (emoji - GetEmojiList) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiList>`_
         """
         return self.client.get("""/emoji""", params=params)
 
@@ -23,6 +27,8 @@ class Emoji(Base):
         """Get a custom emoji
 
         emoji_id: Emoji GUID
+
+        `Read in Mattermost API docs (emoji - GetEmoji) <https://api.mattermost.com/#tag/emoji/operation/GetEmoji>`_
         """
         return self.client.get(f"/emoji/{emoji_id}")
 
@@ -30,6 +36,8 @@ class Emoji(Base):
         """Delete a custom emoji
 
         emoji_id: Emoji GUID
+
+        `Read in Mattermost API docs (emoji - DeleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/DeleteEmoji>`_
         """
         return self.client.delete(f"/emoji/{emoji_id}")
 
@@ -37,6 +45,8 @@ class Emoji(Base):
         """Get a custom emoji by name
 
         emoji_name: Emoji name
+
+        `Read in Mattermost API docs (emoji - GetEmojiByName) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiByName>`_
         """
         return self.client.get(f"/emoji/name/{emoji_name}")
 
@@ -44,6 +54,8 @@ class Emoji(Base):
         """Get custom emoji image
 
         emoji_id: Emoji GUID
+
+        `Read in Mattermost API docs (emoji - GetEmojiImage) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiImage>`_
         """
         return self.client.get(f"/emoji/{emoji_id}/image")
 
@@ -52,6 +64,8 @@ class Emoji(Base):
 
         term: The term to match against the emoji name.
         prefix_only: Set to only search for names starting with the search term.
+
+        `Read in Mattermost API docs (emoji - SearchEmoji) <https://api.mattermost.com/#tag/emoji/operation/SearchEmoji>`_
         """
         return self.client.post("""/emoji/search""", options=options)
 
@@ -59,5 +73,7 @@ class Emoji(Base):
         """Autocomplete custom emoji
 
         name: The emoji name to search.
+
+        `Read in Mattermost API docs (emoji - AutocompleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/AutocompleteEmoji>`_
         """
         return self.client.get("""/emoji/autocomplete""", params=params)

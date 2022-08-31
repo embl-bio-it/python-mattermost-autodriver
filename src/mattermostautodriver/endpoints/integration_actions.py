@@ -8,6 +8,8 @@ class IntegrationActions(Base):
         trigger_id: Trigger ID provided by other action
         url: The URL to send the submitted dialog payload to
         dialog: Post object to create
+
+        `Read in Mattermost API docs (integration_actions - OpenInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/OpenInteractiveDialog>`_
         """
         return self.client.post("""/actions/dialogs/open""", options=options)
 
@@ -21,5 +23,7 @@ class IntegrationActions(Base):
         callback_id: Callback ID sent when the dialog was opened
         state: State sent when the dialog was opened
         cancelled: Set to true if the dialog was cancelled
+
+        `Read in Mattermost API docs (integration_actions - SubmitInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/SubmitInteractiveDialog>`_
         """
         return self.client.post("""/actions/dialogs/submit""", options=options)

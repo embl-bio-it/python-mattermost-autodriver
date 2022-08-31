@@ -3,7 +3,9 @@ from .base import Base
 
 class Compliance(Base):
     def create_compliance_report(self):
-        """Create report"""
+        """Create report
+        `Read in Mattermost API docs (compliance - CreateComplianceReport) <https://api.mattermost.com/#tag/compliance/operation/CreateComplianceReport>`_
+        """
         return self.client.post("""/compliance/reports""")
 
     def get_compliance_reports(self, params=None):
@@ -11,6 +13,8 @@ class Compliance(Base):
 
         page: The page to select.
         per_page: The number of reports per page.
+
+        `Read in Mattermost API docs (compliance - GetComplianceReports) <https://api.mattermost.com/#tag/compliance/operation/GetComplianceReports>`_
         """
         return self.client.get("""/compliance/reports""", params=params)
 
@@ -18,6 +22,8 @@ class Compliance(Base):
         """Get a report
 
         report_id: Compliance report GUID
+
+        `Read in Mattermost API docs (compliance - GetComplianceReport) <https://api.mattermost.com/#tag/compliance/operation/GetComplianceReport>`_
         """
         return self.client.get(f"/compliance/reports/{report_id}")
 
@@ -25,5 +31,7 @@ class Compliance(Base):
         """Download a report
 
         report_id: Compliance report GUID
+
+        `Read in Mattermost API docs (compliance - DownloadComplianceReport) <https://api.mattermost.com/#tag/compliance/operation/DownloadComplianceReport>`_
         """
         return self.client.get(f"/compliance/reports/{report_id}/download")

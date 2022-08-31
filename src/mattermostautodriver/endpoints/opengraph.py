@@ -6,5 +6,7 @@ class OpenGraph(Base):
         """Get open graph metadata for url
 
         url: The URL to get Open Graph Metadata.
+
+        `Read in Mattermost API docs (OpenGraph - OpenGraph) <https://api.mattermost.com/#tag/OpenGraph/operation/OpenGraph>`_
         """
         return self.client.post("""/opengraph""", options=options)

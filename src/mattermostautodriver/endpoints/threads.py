@@ -13,6 +13,8 @@ class Threads(Base):
         page: Page specifies which part of the results to return, by PageSize.
         pageSize: PageSize specifies the size of the returned chunk of results.
         totalsOnly: Setting this to true will only return the total counts.
+
+        `Read in Mattermost API docs (threads - GetUserThreads) <https://api.mattermost.com/#tag/threads/operation/GetUserThreads>`_
         """
         return self.client.get(f"/users/{user_id}/teams/{team_id}/threads", params=params)
 
@@ -21,6 +23,8 @@ class Threads(Base):
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
+
+        `Read in Mattermost API docs (threads - GetThreadMentionCountsByChannel) <https://api.mattermost.com/#tag/threads/operation/GetThreadMentionCountsByChannel>`_
         """
         return self.client.get(f"/users/{user_id}/teams/{team_id}/threads/mention_counts")
 
@@ -29,6 +33,8 @@ class Threads(Base):
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
+
+        `Read in Mattermost API docs (threads - UpdateThreadsReadForUser) <https://api.mattermost.com/#tag/threads/operation/UpdateThreadsReadForUser>`_
         """
         return self.client.put(f"/users/{user_id}/teams/{team_id}/threads/read")
 
@@ -39,6 +45,8 @@ class Threads(Base):
         team_id: The ID of the team in which the thread is.
         thread_id: The ID of the thread to update
         timestamp: The timestamp to which the thread's "last read" state will be reset.
+
+        `Read in Mattermost API docs (threads - UpdateThreadReadForUser) <https://api.mattermost.com/#tag/threads/operation/UpdateThreadReadForUser>`_
         """
         return self.client.put(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}/read/{timestamp}")
 
@@ -48,6 +56,8 @@ class Threads(Base):
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
         thread_id: The ID of the thread to follow
+
+        `Read in Mattermost API docs (threads - StartFollowingThread) <https://api.mattermost.com/#tag/threads/operation/StartFollowingThread>`_
         """
         return self.client.put(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
@@ -57,6 +67,8 @@ class Threads(Base):
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
         thread_id: The ID of the thread to update
+
+        `Read in Mattermost API docs (threads - StopFollowingThread) <https://api.mattermost.com/#tag/threads/operation/StopFollowingThread>`_
         """
         return self.client.delete(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
@@ -66,5 +78,7 @@ class Threads(Base):
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
         thread_id: The ID of the thread to follow
+
+        `Read in Mattermost API docs (threads - GetUserThread) <https://api.mattermost.com/#tag/threads/operation/GetUserThread>`_
         """
         return self.client.get(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}")

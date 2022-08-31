@@ -12,5 +12,7 @@ class Search(Base):
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
         page: The page to select. (Only works with Elasticsearch)
         per_page: The number of posts per page. (Only works with Elasticsearch)
+
+        `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
         """
         return self.client.post(f"/teams/{team_id}/files/search", data=data)

@@ -6,6 +6,8 @@ class Bots(Base):
         """Convert a user into a bot
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (bots - ConvertUserToBot) <https://api.mattermost.com/#tag/bots/operation/ConvertUserToBot>`_
         """
         return self.client.post(f"/users/{user_id}/convert_to_bot")
 
@@ -15,6 +17,8 @@ class Bots(Base):
         username:
         display_name:
         description:
+
+        `Read in Mattermost API docs (bots - CreateBot) <https://api.mattermost.com/#tag/bots/operation/CreateBot>`_
         """
         return self.client.post("""/bots""", options=options)
 
@@ -25,6 +29,8 @@ class Bots(Base):
         per_page: The number of users per page. There is a maximum limit of 200 users per page.
         include_deleted: If deleted bots should be returned.
         only_orphaned: When true, only orphaned bots will be returned. A bot is consitered orphaned if it's owner has been deactivated.
+
+        `Read in Mattermost API docs (bots - GetBots) <https://api.mattermost.com/#tag/bots/operation/GetBots>`_
         """
         return self.client.get("""/bots""", params=params)
 
@@ -35,6 +41,8 @@ class Bots(Base):
         username:
         display_name:
         description:
+
+        `Read in Mattermost API docs (bots - PatchBot) <https://api.mattermost.com/#tag/bots/operation/PatchBot>`_
         """
         return self.client.put(f"/bots/{bot_user_id}", options=options)
 
@@ -43,6 +51,8 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
         include_deleted: If deleted bots should be returned.
+
+        `Read in Mattermost API docs (bots - GetBot) <https://api.mattermost.com/#tag/bots/operation/GetBot>`_
         """
         return self.client.get(f"/bots/{bot_user_id}", params=params)
 
@@ -50,6 +60,8 @@ class Bots(Base):
         """Disable a bot
 
         bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - DisableBot) <https://api.mattermost.com/#tag/bots/operation/DisableBot>`_
         """
         return self.client.post(f"/bots/{bot_user_id}/disable")
 
@@ -57,6 +69,8 @@ class Bots(Base):
         """Enable a bot
 
         bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - EnableBot) <https://api.mattermost.com/#tag/bots/operation/EnableBot>`_
         """
         return self.client.post(f"/bots/{bot_user_id}/enable")
 
@@ -65,6 +79,8 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
         user_id: The user ID to assign the bot to.
+
+        `Read in Mattermost API docs (bots - AssignBot) <https://api.mattermost.com/#tag/bots/operation/AssignBot>`_
         """
         return self.client.post(f"/bots/{bot_user_id}/assign/{user_id}")
 
@@ -72,6 +88,8 @@ class Bots(Base):
         """Get bot's LHS icon
 
         bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - GetBotIconImage) <https://api.mattermost.com/#tag/bots/operation/GetBotIconImage>`_
         """
         return self.client.get(f"/bots/{bot_user_id}/icon")
 
@@ -80,6 +98,8 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
         image: SVG icon image to be uploaded
+
+        `Read in Mattermost API docs (bots - SetBotIconImage) <https://api.mattermost.com/#tag/bots/operation/SetBotIconImage>`_
         """
         return self.client.post(f"/bots/{bot_user_id}/icon", files=files, data=data)
 
@@ -87,6 +107,8 @@ class Bots(Base):
         """Delete bot's LHS icon image
 
         bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - DeleteBotIconImage) <https://api.mattermost.com/#tag/bots/operation/DeleteBotIconImage>`_
         """
         return self.client.delete(f"/bots/{bot_user_id}/icon")
 
@@ -104,5 +126,7 @@ class Bots(Base):
         position:
         props:
         notify_props:
+
+        `Read in Mattermost API docs (bots - ConvertBotToUser) <https://api.mattermost.com/#tag/bots/operation/ConvertBotToUser>`_
         """
         return self.client.post(f"/bots/{bot_user_id}/convert_to_user", options=options)

@@ -11,6 +11,8 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+
+        `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateIncomingWebhook>`_
         """
         return self.client.post("""/hooks/incoming""", options=options)
 
@@ -20,6 +22,8 @@ class Webhooks(Base):
         page: The page to select.
         per_page: The number of hooks per page.
         team_id: The ID of the team to get hooks for.
+
+        `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
         """
         return self.client.get("""/hooks/incoming""", params=params)
 
@@ -27,6 +31,8 @@ class Webhooks(Base):
         """Get an incoming webhook
 
         hook_id: Incoming Webhook GUID
+
+        `Read in Mattermost API docs (webhooks - GetIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhook>`_
         """
         return self.client.get(f"/hooks/incoming/{hook_id}")
 
@@ -34,6 +40,8 @@ class Webhooks(Base):
         """Delete an incoming webhook
 
         hook_id: Incoming webhook GUID
+
+        `Read in Mattermost API docs (webhooks - DeleteIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteIncomingWebhook>`_
         """
         return self.client.delete(f"/hooks/incoming/{hook_id}")
 
@@ -47,6 +55,8 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+
+        `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateIncomingWebhook>`_
         """
         return self.client.put(f"/hooks/incoming/{hook_id}", options=options)
 
@@ -62,6 +72,8 @@ class Webhooks(Base):
         trigger_when: When to trigger the webhook, ``0`` when a trigger word is present at all and ``1`` if the message starts with a trigger word
         callback_urls: The URLs to POST the payloads to when the webhook is triggered
         content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded``
+
+        `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateOutgoingWebhook>`_
         """
         return self.client.post("""/hooks/outgoing""", options=options)
 
@@ -72,6 +84,8 @@ class Webhooks(Base):
         per_page: The number of hooks per page.
         team_id: The ID of the team to get hooks for.
         channel_id: The ID of the channel to get hooks for.
+
+        `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhooks>`_
         """
         return self.client.get("""/hooks/outgoing""", params=params)
 
@@ -79,6 +93,8 @@ class Webhooks(Base):
         """Get an outgoing webhook
 
         hook_id: Outgoing webhook GUID
+
+        `Read in Mattermost API docs (webhooks - GetOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhook>`_
         """
         return self.client.get(f"/hooks/outgoing/{hook_id}")
 
@@ -86,6 +102,8 @@ class Webhooks(Base):
         """Delete an outgoing webhook
 
         hook_id: Outgoing webhook GUID
+
+        `Read in Mattermost API docs (webhooks - DeleteOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteOutgoingWebhook>`_
         """
         return self.client.delete(f"/hooks/outgoing/{hook_id}")
 
@@ -97,6 +115,8 @@ class Webhooks(Base):
         channel_id: The ID of a public channel or private group that receives the webhook payloads.
         display_name: The display name for this incoming webhook
         description: The description for this incoming webhook
+
+        `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateOutgoingWebhook>`_
         """
         return self.client.put(f"/hooks/outgoing/{hook_id}", options=options)
 
@@ -104,5 +124,7 @@ class Webhooks(Base):
         """Regenerate the token for the outgoing webhook.
 
         hook_id: Outgoing webhook GUID
+
+        `Read in Mattermost API docs (webhooks - RegenOutgoingHookToken) <https://api.mattermost.com/#tag/webhooks/operation/RegenOutgoingHookToken>`_
         """
         return self.client.post(f"/hooks/outgoing/{hook_id}/regen_token")

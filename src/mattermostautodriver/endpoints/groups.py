@@ -6,6 +6,8 @@ class Groups(Base):
         """Delete a link for LDAP group
 
         remote_id: Group GUID
+
+        `Read in Mattermost API docs (groups - UnlinkLdapGroup) <https://api.mattermost.com/#tag/groups/operation/UnlinkLdapGroup>`_
         """
         return self.client.delete(f"/ldap/groups/{remote_id}/link")
 
@@ -22,6 +24,8 @@ class Groups(Base):
         *Minimum server version*: 5.24
 
         filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
+
+        `Read in Mattermost API docs (groups - GetGroups) <https://api.mattermost.com/#tag/groups/operation/GetGroups>`_
         """
         return self.client.get("""/groups""", params=params)
 
@@ -30,6 +34,8 @@ class Groups(Base):
 
         group: Group object to create.
         user_ids: The user ids of the group members to add.
+
+        `Read in Mattermost API docs (groups - CreateGroup) <https://api.mattermost.com/#tag/groups/operation/CreateGroup>`_
         """
         return self.client.post("""/groups""", options=options)
 
@@ -37,6 +43,8 @@ class Groups(Base):
         """Get a group
 
         group_id: Group GUID
+
+        `Read in Mattermost API docs (groups - GetGroup) <https://api.mattermost.com/#tag/groups/operation/GetGroup>`_
         """
         return self.client.get(f"/groups/{group_id}")
 
@@ -44,6 +52,8 @@ class Groups(Base):
         """Deletes a custom group
 
         group_id: The ID of the group.
+
+        `Read in Mattermost API docs (groups - DeleteGroup) <https://api.mattermost.com/#tag/groups/operation/DeleteGroup>`_
         """
         return self.client.delete(f"/groups/{group_id}")
 
@@ -54,6 +64,8 @@ class Groups(Base):
         name:
         display_name:
         description:
+
+        `Read in Mattermost API docs (groups - PatchGroup) <https://api.mattermost.com/#tag/groups/operation/PatchGroup>`_
         """
         return self.client.put(f"/groups/{group_id}/patch", options=options)
 
@@ -62,6 +74,8 @@ class Groups(Base):
 
         group_id: Group GUID
         team_id: Team GUID
+
+        `Read in Mattermost API docs (groups - LinkGroupSyncableForTeam) <https://api.mattermost.com/#tag/groups/operation/LinkGroupSyncableForTeam>`_
         """
         return self.client.post(f"/groups/{group_id}/teams/{team_id}/link")
 
@@ -70,6 +84,8 @@ class Groups(Base):
 
         group_id: Group GUID
         team_id: Team GUID
+
+        `Read in Mattermost API docs (groups - UnlinkGroupSyncableForTeam) <https://api.mattermost.com/#tag/groups/operation/UnlinkGroupSyncableForTeam>`_
         """
         return self.client.delete(f"/groups/{group_id}/teams/{team_id}/link")
 
@@ -78,6 +94,8 @@ class Groups(Base):
 
         group_id: Group GUID
         channel_id: Channel GUID
+
+        `Read in Mattermost API docs (groups - LinkGroupSyncableForChannel) <https://api.mattermost.com/#tag/groups/operation/LinkGroupSyncableForChannel>`_
         """
         return self.client.post(f"/groups/{group_id}/channels/{channel_id}/link")
 
@@ -86,6 +104,8 @@ class Groups(Base):
 
         group_id: Group GUID
         channel_id: Channel GUID
+
+        `Read in Mattermost API docs (groups - UnlinkGroupSyncableForChannel) <https://api.mattermost.com/#tag/groups/operation/UnlinkGroupSyncableForChannel>`_
         """
         return self.client.delete(f"/groups/{group_id}/channels/{channel_id}/link")
 
@@ -94,6 +114,8 @@ class Groups(Base):
 
         group_id: Group GUID
         team_id: Team GUID
+
+        `Read in Mattermost API docs (groups - GetGroupSyncableForTeamId) <https://api.mattermost.com/#tag/groups/operation/GetGroupSyncableForTeamId>`_
         """
         return self.client.get(f"/groups/{group_id}/teams/{team_id}")
 
@@ -102,6 +124,8 @@ class Groups(Base):
 
         group_id: Group GUID
         channel_id: Channel GUID
+
+        `Read in Mattermost API docs (groups - GetGroupSyncableForChannelId) <https://api.mattermost.com/#tag/groups/operation/GetGroupSyncableForChannelId>`_
         """
         return self.client.get(f"/groups/{group_id}/channels/{channel_id}")
 
@@ -109,6 +133,8 @@ class Groups(Base):
         """Get group teams
 
         group_id: Group GUID
+
+        `Read in Mattermost API docs (groups - GetGroupSyncablesTeams) <https://api.mattermost.com/#tag/groups/operation/GetGroupSyncablesTeams>`_
         """
         return self.client.get(f"/groups/{group_id}/teams")
 
@@ -116,6 +142,8 @@ class Groups(Base):
         """Get group channels
 
         group_id: Group GUID
+
+        `Read in Mattermost API docs (groups - GetGroupSyncablesChannels) <https://api.mattermost.com/#tag/groups/operation/GetGroupSyncablesChannels>`_
         """
         return self.client.get(f"/groups/{group_id}/channels")
 
@@ -125,6 +153,8 @@ class Groups(Base):
         group_id: Group GUID
         team_id: Team GUID
         auto_add:
+
+        `Read in Mattermost API docs (groups - PatchGroupSyncableForTeam) <https://api.mattermost.com/#tag/groups/operation/PatchGroupSyncableForTeam>`_
         """
         return self.client.put(f"/groups/{group_id}/teams/{team_id}/patch", options=options)
 
@@ -134,6 +164,8 @@ class Groups(Base):
         group_id: Group GUID
         channel_id: Channel GUID
         auto_add:
+
+        `Read in Mattermost API docs (groups - PatchGroupSyncableForChannel) <https://api.mattermost.com/#tag/groups/operation/PatchGroupSyncableForChannel>`_
         """
         return self.client.put(f"/groups/{group_id}/channels/{channel_id}/patch", options=options)
 
@@ -143,6 +175,8 @@ class Groups(Base):
         group_id: Group GUID
         page: The page to select.
         per_page: The number of groups per page.
+
+        `Read in Mattermost API docs (groups - GetGroupUsers) <https://api.mattermost.com/#tag/groups/operation/GetGroupUsers>`_
         """
         return self.client.get(f"/groups/{group_id}/members", params=params)
 
@@ -151,6 +185,8 @@ class Groups(Base):
 
         group_id: The ID of the group to delete.
         user_ids:
+
+        `Read in Mattermost API docs (groups - DeleteGroupMembers) <https://api.mattermost.com/#tag/groups/operation/DeleteGroupMembers>`_
         """
         return self.client.delete(f"/groups/{group_id}/members", params=params)
 
@@ -159,6 +195,8 @@ class Groups(Base):
 
         group_id: The ID of the group.
         user_ids:
+
+        `Read in Mattermost API docs (groups - AddGroupMembers) <https://api.mattermost.com/#tag/groups/operation/AddGroupMembers>`_
         """
         return self.client.post(f"/groups/{group_id}/members", options=options)
 
@@ -166,6 +204,8 @@ class Groups(Base):
         """Get group stats
 
         group_id: Group GUID
+
+        `Read in Mattermost API docs (groups - GetGroupStats) <https://api.mattermost.com/#tag/groups/operation/GetGroupStats>`_
         """
         return self.client.get(f"/groups/{group_id}/stats")
 
@@ -176,6 +216,8 @@ class Groups(Base):
         page: The page to select.
         per_page: The number of groups per page.
         filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
+
+        `Read in Mattermost API docs (groups - GetGroupsByChannel) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByChannel>`_
         """
         return self.client.get(f"/channels/{channel_id}/groups", params=params)
 
@@ -186,6 +228,8 @@ class Groups(Base):
         page: The page to select.
         per_page: The number of groups per page.
         filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
+
+        `Read in Mattermost API docs (groups - GetGroupsByTeam) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByTeam>`_
         """
         return self.client.get(f"/teams/{team_id}/groups", params=params)
 
@@ -197,6 +241,8 @@ class Groups(Base):
         per_page: The number of groups per page.
         filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
         paginate: Boolean to determine whether the pagination should be applied or not
+
+        `Read in Mattermost API docs (groups - GetGroupsAssociatedToChannelsByTeam) <https://api.mattermost.com/#tag/groups/operation/GetGroupsAssociatedToChannelsByTeam>`_
         """
         return self.client.get(f"/teams/{team_id}/groups_by_channels", params=params)
 
@@ -204,5 +250,7 @@ class Groups(Base):
         """Get groups for a userId
 
         user_id: User GUID
+
+        `Read in Mattermost API docs (groups - GetGroupsByUserId) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByUserId>`_
         """
         return self.client.get(f"/users/{user_id}/groups")

@@ -13,6 +13,8 @@ class Insights(Base):
 
         page: The page to select.
         per_page: The number of items per page, up to a maximum of 200.
+
+        `Read in Mattermost API docs (insights - GetTopReactionsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopReactionsForTeam>`_
         """
         return self.client.get(f"/teams/{team_id}/top/reactions", params=params)
 
@@ -30,6 +32,8 @@ class Insights(Base):
         ##### Permissions
         Must have ``view_team`` permission for the team.
 
+
+        `Read in Mattermost API docs (insights - GetTopReactionsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopReactionsForUser>`_
         """
         return self.client.get("""/users/me/top/reactions""", params=params)
 
@@ -44,6 +48,8 @@ class Insights(Base):
 
         page: The page to select.
         per_page: The number of items per page, up to a maximum of 200.
+
+        `Read in Mattermost API docs (insights - GetTopChannelsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopChannelsForTeam>`_
         """
         return self.client.get(f"/teams/{team_id}/top/channels", params=params)
 
@@ -61,6 +67,8 @@ class Insights(Base):
         ##### Permissions
         Must have ``view_team`` permission for the team.
 
+
+        `Read in Mattermost API docs (insights - GetTopChannelsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopChannelsForUser>`_
         """
         return self.client.get("""/users/me/top/channels""", params=params)
 
@@ -75,5 +83,7 @@ class Insights(Base):
 
         page: The page to select.
         per_page: The number of items per page.
+
+        `Read in Mattermost API docs (insights - GetNewTeamMembers) <https://api.mattermost.com/#tag/insights/operation/GetNewTeamMembers>`_
         """
         return self.client.get(f"/teams/{team_id}/top/team_members", params=params)
