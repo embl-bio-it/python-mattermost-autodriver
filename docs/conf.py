@@ -24,6 +24,9 @@ import sphinx_rtd_theme
 sys.path.insert(0, os.path.abspath('../src/'))
 root_dir = os.path.abspath(os.path.dirname('../'))
 
+# Ensure we can import mattermostautodriver
+import mattermostautodriver
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
