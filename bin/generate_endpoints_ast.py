@@ -200,6 +200,12 @@ def get_payload_params_or_properties(data, request_type):
         return get_requestbody_parameters(req_body, request_type)
 
 
+def get_link_to_api_docs(tag, operation):
+    return (
+        f"\n        `Read in Mattermost API docs ({tag} - {operation}) "
+        f"<https://api.mattermost.com/#tag/{tag}/operation/{operation}>`_\n\n"
+    )
+
 def json_to_ast(api):
     blocks = {}
 
@@ -253,13 +259,15 @@ def json_to_ast(api):
                 if loc not in blocks:
                     blocks[loc] = []
 
+                this_docstring = docstring + get_link_to_api_docs(loc, operation_id)
+
                 blocks[loc].append(
                     {
                         "module": loc,
                         "endpoint": endpoint,
                         "request_type": request_type,
                         "function": function_name,
-                        "docstring": docstring,
+                        "docstring": this_docstring,
                         "call_kwargs": call_kwargs,
                         "def_params": def_params,
                     }
