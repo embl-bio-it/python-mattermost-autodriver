@@ -13,6 +13,7 @@ class Threads(Base):
         page: Page specifies which part of the results to return, by PageSize.
         pageSize: PageSize specifies the size of the returned chunk of results.
         totalsOnly: Setting this to true will only return the total counts.
+        threadsOnly: Setting this to true will only return threads.
 
         `Read in Mattermost API docs (threads - GetUserThreads) <https://api.mattermost.com/#tag/threads/operation/GetUserThreads>`_
         """
@@ -49,6 +50,18 @@ class Threads(Base):
         `Read in Mattermost API docs (threads - UpdateThreadReadForUser) <https://api.mattermost.com/#tag/threads/operation/UpdateThreadReadForUser>`_
         """
         return self.client.put(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}/read/{timestamp}")
+
+    def set_thread_unread_by_post_id(self, user_id, team_id, thread_id, post_id):
+        """Mark a thread that user is following as unread based on a post id
+
+        user_id: The ID of the user. This can also be "me" which will point to the current user.
+        team_id: The ID of the team in which the thread is.
+        thread_id: The ID of the thread to update
+        post_id: The ID of a post belonging to the thread to mark as unread.
+
+        `Read in Mattermost API docs (threads - SetThreadUnreadByPostId) <https://api.mattermost.com/#tag/threads/operation/SetThreadUnreadByPostId>`_
+        """
+        return self.client.put(f"/users/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}")
 
     def start_following_thread(self, user_id, team_id, thread_id):
         """Start following a thread

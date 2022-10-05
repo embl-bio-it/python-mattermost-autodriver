@@ -87,3 +87,53 @@ class Insights(Base):
         `Read in Mattermost API docs (insights - GetNewTeamMembers) <https://api.mattermost.com/#tag/insights/operation/GetNewTeamMembers>`_
         """
         return self.client.get(f"/teams/{team_id}/top/team_members", params=params)
+
+    def get_top_threads_for_team(self, team_id, params=None):
+        """Get a list of the top threads for a team.
+
+        team_id: Team GUID
+        time_range: Time range can be "today", "7_day", or "28_day".
+        - ``today``: threads with activity on the current day.
+        - ``7_day``: threads with activity in the last 7 days.
+        - ``28_day``: threads with activity in the last 28 days.
+
+        page: The page to select.
+        per_page: The number of items per page, up to a maximum of 200.
+
+        `Read in Mattermost API docs (insights - GetTopThreadsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopThreadsForTeam>`_
+        """
+        return self.client.get(f"/teams/{team_id}/top/threads", params=params)
+
+    def get_top_threads_for_user(self, params=None):
+        """Get a list of the top threads for a user.
+
+        time_range: Time range can be "today", "7_day", or "28_day".
+        - ``today``: threads with activity on the current day.
+        - ``7_day``: threads with activity in the last 7 days.
+        - ``28_day``: threads with activity in the last 28 days.
+
+        page: The page to select.
+        per_page: The number of items per page, up to a maximum of 200.
+        team_id: Team ID will scope the response to a given team.
+        ##### Permissions
+        Must have ``view_team`` permission for the team.
+
+
+        `Read in Mattermost API docs (insights - GetTopThreadsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopThreadsForUser>`_
+        """
+        return self.client.get("""/users/me/top/threads""", params=params)
+
+    def get_top_d_ms_for_user(self, params=None):
+        """Get a list of the top dms for a user.
+
+        time_range: Time range can be "today", "7_day", or "28_day".
+        - ``today``: threads with activity on the current day.
+        - ``7_day``: threads with activity in the last 7 days.
+        - ``28_day``: threads with activity in the last 28 days.
+
+        page: The page to select.
+        per_page: The number of items per page, up to a maximum of 200.
+
+        `Read in Mattermost API docs (insights - GetTopDMsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopDMsForUser>`_
+        """
+        return self.client.get("""/users/me/top/dms""", params=params)
