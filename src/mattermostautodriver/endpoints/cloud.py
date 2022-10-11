@@ -80,21 +80,3 @@ class Cloud(Base):
         `Read in Mattermost API docs (cloud - PostEndpointForCwsWebhooks) <https://api.mattermost.com/#tag/cloud/operation/PostEndpointForCwsWebhooks>`_
         """
         return self.client.post("""/cloud/webhook""")
-
-    def get_subscription_stats(self):
-        """GET endpoint for cloud subscription stats
-        `Read in Mattermost API docs (cloud - GetSubscriptionStats) <https://api.mattermost.com/#tag/cloud/operation/GetSubscriptionStats>`_
-        """
-        return self.client.get("""/cloud/subscription/stats""")
-
-    def send_admin_upgrade_request_email(self):
-        """POST endpoint for triggering sending emails to admin with request to upgrade workspace
-        `Read in Mattermost API docs (cloud - SendAdminUpgradeRequestEmail) <https://api.mattermost.com/#tag/cloud/operation/SendAdminUpgradeRequestEmail>`_
-        """
-        return self.client.post("""/cloud/subscription/limitreached/invite""")
-
-    def send_admin_upgrade_request_email_on_join(self):
-        """POST endpoint for triggering sending emails to admin with request to upgrade workspace
-        `Read in Mattermost API docs (cloud - SendAdminUpgradeRequestEmailOnJoin) <https://api.mattermost.com/#tag/cloud/operation/SendAdminUpgradeRequestEmailOnJoin>`_
-        """
-        return self.client.post("""/cloud/subscription/limitreached/join""")
