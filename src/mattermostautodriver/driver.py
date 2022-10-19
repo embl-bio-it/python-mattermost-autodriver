@@ -198,7 +198,7 @@ class Driver(BaseDriver):
 
         :return: The JSON response from the server
         """
-        result = self.users.logout_user()
+        result = self.users.logout()
         self.client.token = ""
         self.client.userid = ""
         self.client.username = ""
