@@ -95,7 +95,7 @@ class Commands(Base):
         """Execute a command
 
         channel_id: Channel Id where the command will execute
-        command: The slash command to execute
+        command: The slash command to execute, including parameters. Eg, ``'/echo bounces around the room'``
 
         `Read in Mattermost API docs (commands - ExecuteCommand) <https://api.mattermost.com/#tag/commands/operation/ExecuteCommand>`_
         """

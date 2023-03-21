@@ -76,6 +76,10 @@ class Users(Base):
         Can be "", "status".
         When left blank, sorting is done by username. ``status`` will sort by User's current status (Online, Away, DND, Offline), then by Username.
         *Minimum server version*: 4.7
+        ##### ``in_group``
+        Can be "", "display_name".
+        When left blank, sorting is done by username. ``display_name`` will sort alphabetically by user's display name.
+        *Minimum server version*: 7.7
 
         roles: Comma separated string used to filter users based on any of the specified system roles
 
