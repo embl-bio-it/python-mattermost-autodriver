@@ -16,7 +16,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopReactionsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopReactionsForTeam>`_
         """
-        return self.client.get(f"/teams/{team_id}/top/reactions", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/top/reactions", params=params)
 
     def get_top_reactions_for_user(self, params=None):
         """Get a list of the top reactions for a user.
@@ -35,7 +35,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopReactionsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopReactionsForUser>`_
         """
-        return self.client.get("""/users/me/top/reactions""", params=params)
+        return self.client.get("""/api/v4/users/me/top/reactions""", params=params)
 
     def get_top_channels_for_team(self, team_id, params=None):
         """Get a list of the top channels for a team.
@@ -51,7 +51,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopChannelsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopChannelsForTeam>`_
         """
-        return self.client.get(f"/teams/{team_id}/top/channels", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/top/channels", params=params)
 
     def get_top_channels_for_user(self, params=None):
         """Get a list of the top channels for a user.
@@ -70,7 +70,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopChannelsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopChannelsForUser>`_
         """
-        return self.client.get("""/users/me/top/channels""", params=params)
+        return self.client.get("""/api/v4/users/me/top/channels""", params=params)
 
     def get_new_team_members(self, team_id, params=None):
         """Get a list of new team members.
@@ -86,7 +86,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetNewTeamMembers) <https://api.mattermost.com/#tag/insights/operation/GetNewTeamMembers>`_
         """
-        return self.client.get(f"/teams/{team_id}/top/team_members", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/top/team_members", params=params)
 
     def get_top_threads_for_team(self, team_id, params=None):
         """Get a list of the top threads for a team.
@@ -102,7 +102,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopThreadsForTeam) <https://api.mattermost.com/#tag/insights/operation/GetTopThreadsForTeam>`_
         """
-        return self.client.get(f"/teams/{team_id}/top/threads", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/top/threads", params=params)
 
     def get_top_threads_for_user(self, params=None):
         """Get a list of the top threads for a user.
@@ -121,7 +121,7 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopThreadsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopThreadsForUser>`_
         """
-        return self.client.get("""/users/me/top/threads""", params=params)
+        return self.client.get("""/api/v4/users/me/top/threads""", params=params)
 
     def get_top_d_ms_for_user(self, params=None):
         """Get a list of the top dms for a user.
@@ -136,4 +136,4 @@ class Insights(Base):
 
         `Read in Mattermost API docs (insights - GetTopDMsForUser) <https://api.mattermost.com/#tag/insights/operation/GetTopDMsForUser>`_
         """
-        return self.client.get("""/users/me/top/dms""", params=params)
+        return self.client.get("""/api/v4/users/me/top/dms""", params=params)

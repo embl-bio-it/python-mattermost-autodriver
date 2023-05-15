@@ -10,10 +10,11 @@ class Posts(Base):
         root_id: The post ID to comment on
         file_ids: A list of file IDs to associate with the post. Note that posts are limited to 5 files maximum. Please use additional posts for more files.
         props: A general JSON property bag to attach to the post
+        metadata: A JSON object to add post metadata, e.g the post's priority
 
         `Read in Mattermost API docs (posts - CreatePost) <https://api.mattermost.com/#tag/posts/operation/CreatePost>`_
         """
-        return self.client.post("""/posts""", options=options)
+        return self.client.post("""/api/v4/posts""", options=options)
 
     def create_post_ephemeral(self, options):
         """Create a ephemeral post
@@ -23,7 +24,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - CreatePostEphemeral) <https://api.mattermost.com/#tag/posts/operation/CreatePostEphemeral>`_
         """
-        return self.client.post("""/posts/ephemeral""", options=options)
+        return self.client.post("""/api/v4/posts/ephemeral""", options=options)
 
     def get_post(self, post_id, params=None):
         """Get a post
@@ -33,7 +34,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetPost) <https://api.mattermost.com/#tag/posts/operation/GetPost>`_
         """
-        return self.client.get(f"/posts/{post_id}", params=params)
+        return self.client.get(f"/api/v4/posts/{post_id}", params=params)
 
     def delete_post(self, post_id):
         """Delete a post
@@ -42,7 +43,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - DeletePost) <https://api.mattermost.com/#tag/posts/operation/DeletePost>`_
         """
-        return self.client.delete(f"/posts/{post_id}")
+        return self.client.delete(f"/api/v4/posts/{post_id}")
 
     def update_post(self, post_id, options):
         """Update a post
@@ -56,7 +57,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - UpdatePost) <https://api.mattermost.com/#tag/posts/operation/UpdatePost>`_
         """
-        return self.client.put(f"/posts/{post_id}", options=options)
+        return self.client.put(f"/api/v4/posts/{post_id}", options=options)
 
     def set_post_unread(self, user_id, post_id):
         """Mark as unread from a post.
@@ -66,7 +67,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - SetPostUnread) <https://api.mattermost.com/#tag/posts/operation/SetPostUnread>`_
         """
-        return self.client.post(f"/users/{user_id}/posts/{post_id}/set_unread")
+        return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/set_unread")
 
     def patch_post(self, post_id, options):
         """Patch a post
@@ -80,7 +81,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - PatchPost) <https://api.mattermost.com/#tag/posts/operation/PatchPost>`_
         """
-        return self.client.put(f"/posts/{post_id}/patch", options=options)
+        return self.client.put(f"/api/v4/posts/{post_id}/patch", options=options)
 
     def get_post_thread(self, post_id, params=None):
         """Get a thread
@@ -96,7 +97,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://api.mattermost.com/#tag/posts/operation/GetPostThread>`_
         """
-        return self.client.get(f"/posts/{post_id}/thread", params=params)
+        return self.client.get(f"/api/v4/posts/{post_id}/thread", params=params)
 
     def get_flagged_posts_for_user(self, user_id, params=None):
         """Get a list of flagged posts
@@ -109,7 +110,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetFlaggedPostsForUser) <https://api.mattermost.com/#tag/posts/operation/GetFlaggedPostsForUser>`_
         """
-        return self.client.get(f"/users/{user_id}/posts/flagged", params=params)
+        return self.client.get(f"/api/v4/users/{user_id}/posts/flagged", params=params)
 
     def get_file_infos_for_post(self, post_id, params=None):
         """Get file info for post
@@ -119,7 +120,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetFileInfosForPost) <https://api.mattermost.com/#tag/posts/operation/GetFileInfosForPost>`_
         """
-        return self.client.get(f"/posts/{post_id}/files/info", params=params)
+        return self.client.get(f"/api/v4/posts/{post_id}/files/info", params=params)
 
     def get_posts_for_channel(self, channel_id, params=None):
         """Get posts for a channel
@@ -134,7 +135,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://api.mattermost.com/#tag/posts/operation/GetPostsForChannel>`_
         """
-        return self.client.get(f"/channels/{channel_id}/posts", params=params)
+        return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=params)
 
     def get_posts_around_last_unread(self, user_id, channel_id, params=None):
         """Get posts around oldest unread
@@ -149,7 +150,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - GetPostsAroundLastUnread) <https://api.mattermost.com/#tag/posts/operation/GetPostsAroundLastUnread>`_
         """
-        return self.client.get(f"/users/{user_id}/channels/{channel_id}/posts/unread", params=params)
+        return self.client.get(f"/api/v4/users/{user_id}/channels/{channel_id}/posts/unread", params=params)
 
     def search_posts(self, team_id, options):
         """Search for team posts
@@ -164,7 +165,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - SearchPosts) <https://api.mattermost.com/#tag/posts/operation/SearchPosts>`_
         """
-        return self.client.post(f"/teams/{team_id}/posts/search", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/posts/search", options=options)
 
     def pin_post(self, post_id):
         """Pin a post to the channel
@@ -173,7 +174,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - PinPost) <https://api.mattermost.com/#tag/posts/operation/PinPost>`_
         """
-        return self.client.post(f"/posts/{post_id}/pin")
+        return self.client.post(f"/api/v4/posts/{post_id}/pin")
 
     def unpin_post(self, post_id):
         """Unpin a post to the channel
@@ -182,7 +183,7 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - UnpinPost) <https://api.mattermost.com/#tag/posts/operation/UnpinPost>`_
         """
-        return self.client.post(f"/posts/{post_id}/unpin")
+        return self.client.post(f"/api/v4/posts/{post_id}/unpin")
 
     def do_post_action(self, post_id, action_id):
         """Perform a post action
@@ -192,13 +193,13 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - DoPostAction) <https://api.mattermost.com/#tag/posts/operation/DoPostAction>`_
         """
-        return self.client.post(f"/posts/{post_id}/actions/{action_id}")
+        return self.client.post(f"/api/v4/posts/{post_id}/actions/{action_id}")
 
     def get_posts_by_ids(self, options):
         """Get posts by a list of ids
         `Read in Mattermost API docs (posts - getPostsByIds) <https://api.mattermost.com/#tag/posts/operation/getPostsByIds>`_
         """
-        return self.client.post("""/posts/ids""", options=options)
+        return self.client.post("""/api/v4/posts/ids""", options=options)
 
     def set_post_reminder(self, user_id, post_id, options):
         """Set a post reminder
@@ -209,4 +210,24 @@ class Posts(Base):
 
         `Read in Mattermost API docs (posts - SetPostReminder) <https://api.mattermost.com/#tag/posts/operation/SetPostReminder>`_
         """
-        return self.client.post(f"/users/{user_id}/posts/{post_id}/reminder", options=options)
+        return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/reminder", options=options)
+
+    def save_acknowledgement_for_post(self, user_id, post_id):
+        """Acknowledge a post
+
+        user_id: User GUID
+        post_id: Post GUID
+
+        `Read in Mattermost API docs (posts - SaveAcknowledgementForPost) <https://api.mattermost.com/#tag/posts/operation/SaveAcknowledgementForPost>`_
+        """
+        return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/ack")
+
+    def save_acknowledgement_for_post(self, user_id, post_id):
+        """Delete a post acknowledgement
+
+        user_id: User GUID
+        post_id: Post GUID
+
+        `Read in Mattermost API docs (posts - SaveAcknowledgementForPost) <https://api.mattermost.com/#tag/posts/operation/SaveAcknowledgementForPost>`_
+        """
+        return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/ack")

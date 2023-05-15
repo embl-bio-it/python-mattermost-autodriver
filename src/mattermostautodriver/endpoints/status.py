@@ -9,7 +9,7 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - GetUserStatus) <https://api.mattermost.com/#tag/status/operation/GetUserStatus>`_
         """
-        return self.client.get(f"/users/{user_id}/status")
+        return self.client.get(f"/api/v4/users/{user_id}/status")
 
     def update_user_status(self, user_id, options):
         """Update user status
@@ -21,13 +21,13 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - UpdateUserStatus) <https://api.mattermost.com/#tag/status/operation/UpdateUserStatus>`_
         """
-        return self.client.put(f"/users/{user_id}/status", options=options)
+        return self.client.put(f"/api/v4/users/{user_id}/status", options=options)
 
     def get_users_statuses_by_ids(self, options):
         """Get user statuses by id
         `Read in Mattermost API docs (status - GetUsersStatusesByIds) <https://api.mattermost.com/#tag/status/operation/GetUsersStatusesByIds>`_
         """
-        return self.client.post("""/users/status/ids""", options=options)
+        return self.client.post("""/api/v4/users/status/ids""", options=options)
 
     def update_user_custom_status(self, user_id, options):
         """Update user custom status
@@ -40,7 +40,7 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - UpdateUserCustomStatus) <https://api.mattermost.com/#tag/status/operation/UpdateUserCustomStatus>`_
         """
-        return self.client.put(f"/users/{user_id}/status/custom", options=options)
+        return self.client.put(f"/api/v4/users/{user_id}/status/custom", options=options)
 
     def unset_user_custom_status(self, user_id):
         """Unsets user custom status
@@ -49,7 +49,7 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - UnsetUserCustomStatus) <https://api.mattermost.com/#tag/status/operation/UnsetUserCustomStatus>`_
         """
-        return self.client.delete(f"/users/{user_id}/status/custom")
+        return self.client.delete(f"/api/v4/users/{user_id}/status/custom")
 
     def remove_recent_custom_status(self, user_id, params):
         """Delete user's recent custom status
@@ -62,7 +62,7 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - RemoveRecentCustomStatus) <https://api.mattermost.com/#tag/status/operation/RemoveRecentCustomStatus>`_
         """
-        return self.client.delete(f"/users/{user_id}/status/custom/recent", params=params)
+        return self.client.delete(f"/api/v4/users/{user_id}/status/custom/recent", params=params)
 
     def post_user_recent_custom_status_delete(self, user_id, options):
         """Delete user's recent custom status
@@ -75,4 +75,4 @@ class Status(Base):
 
         `Read in Mattermost API docs (status - PostUserRecentCustomStatusDelete) <https://api.mattermost.com/#tag/status/operation/PostUserRecentCustomStatusDelete>`_
         """
-        return self.client.post(f"/users/{user_id}/status/custom/recent/delete", options=options)
+        return self.client.post(f"/api/v4/users/{user_id}/status/custom/recent/delete", options=options)

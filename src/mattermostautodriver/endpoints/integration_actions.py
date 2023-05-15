@@ -11,7 +11,7 @@ class IntegrationActions(Base):
 
         `Read in Mattermost API docs (integration_actions - OpenInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/OpenInteractiveDialog>`_
         """
-        return self.client.post("""/actions/dialogs/open""", options=options)
+        return self.client.post("""/api/v4/actions/dialogs/open""", options=options)
 
     def submit_interactive_dialog(self, options):
         """Submit a dialog
@@ -26,4 +26,4 @@ class IntegrationActions(Base):
 
         `Read in Mattermost API docs (integration_actions - SubmitInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/SubmitInteractiveDialog>`_
         """
-        return self.client.post("""/actions/dialogs/submit""", options=options)
+        return self.client.post("""/api/v4/actions/dialogs/submit""", options=options)

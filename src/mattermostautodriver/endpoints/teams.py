@@ -11,7 +11,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - CreateTeam) <https://api.mattermost.com/#tag/teams/operation/CreateTeam>`_
         """
-        return self.client.post("""/teams""", options=options)
+        return self.client.post("""/api/v4/teams""", options=options)
 
     def get_all_teams(self, params=None):
         """Get teams
@@ -24,7 +24,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetAllTeams) <https://api.mattermost.com/#tag/teams/operation/GetAllTeams>`_
         """
-        return self.client.get("""/teams""", params=params)
+        return self.client.get("""/api/v4/teams""", params=params)
 
     def get_team(self, team_id):
         """Get a team
@@ -33,7 +33,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeam) <https://api.mattermost.com/#tag/teams/operation/GetTeam>`_
         """
-        return self.client.get(f"/teams/{team_id}")
+        return self.client.get(f"/api/v4/teams/{team_id}")
 
     def update_team(self, team_id, options):
         """Update a team
@@ -49,7 +49,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - UpdateTeam) <https://api.mattermost.com/#tag/teams/operation/UpdateTeam>`_
         """
-        return self.client.put(f"/teams/{team_id}", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}", options=options)
 
     def soft_delete_team(self, team_id):
         """Delete a team
@@ -58,7 +58,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://api.mattermost.com/#tag/teams/operation/SoftDeleteTeam>`_
         """
-        return self.client.delete(f"/teams/{team_id}")
+        return self.client.delete(f"/api/v4/teams/{team_id}")
 
     def patch_team(self, team_id, options):
         """Patch a team
@@ -72,7 +72,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - PatchTeam) <https://api.mattermost.com/#tag/teams/operation/PatchTeam>`_
         """
-        return self.client.put(f"/teams/{team_id}/patch", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}/patch", options=options)
 
     def update_team_privacy(self, team_id, options):
         """Update teams's privacy
@@ -82,7 +82,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - UpdateTeamPrivacy) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamPrivacy>`_
         """
-        return self.client.put(f"/teams/{team_id}/privacy", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}/privacy", options=options)
 
     def restore_team(self, team_id):
         """Restore a team
@@ -91,7 +91,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - RestoreTeam) <https://api.mattermost.com/#tag/teams/operation/RestoreTeam>`_
         """
-        return self.client.post(f"/teams/{team_id}/restore")
+        return self.client.post(f"/api/v4/teams/{team_id}/restore")
 
     def get_team_by_name(self, name):
         """Get a team by name
@@ -100,7 +100,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamByName) <https://api.mattermost.com/#tag/teams/operation/GetTeamByName>`_
         """
-        return self.client.get(f"/teams/name/{name}")
+        return self.client.get(f"/api/v4/teams/name/{name}")
 
     def search_teams(self, options):
         """Search teams
@@ -122,7 +122,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - SearchTeams) <https://api.mattermost.com/#tag/teams/operation/SearchTeams>`_
         """
-        return self.client.post("""/teams/search""", options=options)
+        return self.client.post("""/api/v4/teams/search""", options=options)
 
     def team_exists(self, name):
         """Check if team exists
@@ -131,7 +131,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - TeamExists) <https://api.mattermost.com/#tag/teams/operation/TeamExists>`_
         """
-        return self.client.get(f"/teams/name/{name}/exists")
+        return self.client.get(f"/api/v4/teams/name/{name}/exists")
 
     def get_teams_for_user(self, user_id):
         """Get a user's teams
@@ -140,7 +140,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamsForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsForUser>`_
         """
-        return self.client.get(f"/users/{user_id}/teams")
+        return self.client.get(f"/api/v4/users/{user_id}/teams")
 
     def get_team_members(self, team_id, params=None):
         """Get team members
@@ -151,7 +151,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamMembers) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembers>`_
         """
-        return self.client.get(f"/teams/{team_id}/members", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/members", params=params)
 
     def add_team_member(self, team_id, options):
         """Add user to team
@@ -162,13 +162,13 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - AddTeamMember) <https://api.mattermost.com/#tag/teams/operation/AddTeamMember>`_
         """
-        return self.client.post(f"/teams/{team_id}/members", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/members", options=options)
 
     def add_team_member_from_invite(self):
         """Add user to team from invite
         `Read in Mattermost API docs (teams - AddTeamMemberFromInvite) <https://api.mattermost.com/#tag/teams/operation/AddTeamMemberFromInvite>`_
         """
-        return self.client.post("""/teams/members/invite""")
+        return self.client.post("""/api/v4/teams/members/invite""")
 
     def add_team_members(self, team_id, options):
         """Add multiple users to team
@@ -177,7 +177,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - AddTeamMembers) <https://api.mattermost.com/#tag/teams/operation/AddTeamMembers>`_
         """
-        return self.client.post(f"/teams/{team_id}/members/batch", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/members/batch", options=options)
 
     def get_team_members_for_user(self, user_id):
         """Get team members for a user
@@ -186,7 +186,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamMembersForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersForUser>`_
         """
-        return self.client.get(f"/users/{user_id}/teams/members")
+        return self.client.get(f"/api/v4/users/{user_id}/teams/members")
 
     def get_team_member(self, team_id, user_id):
         """Get a team member
@@ -196,7 +196,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamMember) <https://api.mattermost.com/#tag/teams/operation/GetTeamMember>`_
         """
-        return self.client.get(f"/teams/{team_id}/members/{user_id}")
+        return self.client.get(f"/api/v4/teams/{team_id}/members/{user_id}")
 
     def remove_team_member(self, team_id, user_id):
         """Remove user from team
@@ -206,7 +206,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - RemoveTeamMember) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamMember>`_
         """
-        return self.client.delete(f"/teams/{team_id}/members/{user_id}")
+        return self.client.delete(f"/api/v4/teams/{team_id}/members/{user_id}")
 
     def get_team_members_by_ids(self, team_id, options):
         """Get team members by ids
@@ -215,7 +215,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamMembersByIds) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersByIds>`_
         """
-        return self.client.post(f"/teams/{team_id}/members/ids", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/members/ids", options=options)
 
     def get_team_stats(self, team_id):
         """Get a team stats
@@ -224,7 +224,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamStats) <https://api.mattermost.com/#tag/teams/operation/GetTeamStats>`_
         """
-        return self.client.get(f"/teams/{team_id}/stats")
+        return self.client.get(f"/api/v4/teams/{team_id}/stats")
 
     def regenerate_team_invite_id(self, team_id):
         """Regenerate the Invite ID from a Team
@@ -233,7 +233,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - RegenerateTeamInviteId) <https://api.mattermost.com/#tag/teams/operation/RegenerateTeamInviteId>`_
         """
-        return self.client.post(f"/teams/{team_id}/regenerate_invite_id")
+        return self.client.post(f"/api/v4/teams/{team_id}/regenerate_invite_id")
 
     def get_team_icon(self, team_id):
         """Get the team icon
@@ -242,7 +242,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/GetTeamIcon>`_
         """
-        return self.client.get(f"/teams/{team_id}/image")
+        return self.client.get(f"/api/v4/teams/{team_id}/image")
 
     def set_team_icon(self, team_id, files, data=None):
         """Sets the team icon
@@ -252,7 +252,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - SetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/SetTeamIcon>`_
         """
-        return self.client.post(f"/teams/{team_id}/image", files=files, data=data)
+        return self.client.post(f"/api/v4/teams/{team_id}/image", files=files, data=data)
 
     def remove_team_icon(self, team_id):
         """Remove the team icon
@@ -261,7 +261,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - RemoveTeamIcon) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamIcon>`_
         """
-        return self.client.delete(f"/teams/{team_id}/image")
+        return self.client.delete(f"/api/v4/teams/{team_id}/image")
 
     def update_team_member_roles(self, team_id, user_id, options):
         """Update a team member roles
@@ -272,7 +272,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - UpdateTeamMemberRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberRoles>`_
         """
-        return self.client.put(f"/teams/{team_id}/members/{user_id}/roles", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/roles", options=options)
 
     def update_team_member_scheme_roles(self, team_id, user_id, options):
         """Update the scheme-derived roles of a team member.
@@ -284,7 +284,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - UpdateTeamMemberSchemeRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberSchemeRoles>`_
         """
-        return self.client.put(f"/teams/{team_id}/members/{user_id}/schemeRoles", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/schemeRoles", options=options)
 
     def get_teams_unread_for_user(self, user_id, params=None):
         """Get team unreads for a user
@@ -295,7 +295,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamsUnreadForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsUnreadForUser>`_
         """
-        return self.client.get(f"/users/{user_id}/teams/unread", params=params)
+        return self.client.get(f"/api/v4/users/{user_id}/teams/unread", params=params)
 
     def get_team_unread(self, user_id, team_id):
         """Get unreads for a team
@@ -305,7 +305,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamUnread) <https://api.mattermost.com/#tag/teams/operation/GetTeamUnread>`_
         """
-        return self.client.get(f"/users/{user_id}/teams/{team_id}/unread")
+        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/unread")
 
     def invite_users_to_team(self, team_id, options):
         """Invite users to the team by email
@@ -314,7 +314,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - InviteUsersToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteUsersToTeam>`_
         """
-        return self.client.post(f"/teams/{team_id}/invite/email", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/invite/email", options=options)
 
     def invite_guests_to_team(self, team_id, options):
         """Invite guests to the team by email
@@ -326,13 +326,13 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteGuestsToTeam>`_
         """
-        return self.client.post(f"/teams/{team_id}/invite-guests/email", options=options)
+        return self.client.post(f"/api/v4/teams/{team_id}/invite-guests/email", options=options)
 
     def invalidate_email_invites(self):
         """Invalidate active email invitations
         `Read in Mattermost API docs (teams - InvalidateEmailInvites) <https://api.mattermost.com/#tag/teams/operation/InvalidateEmailInvites>`_
         """
-        return self.client.delete("""/teams/invites/email""")
+        return self.client.delete("""/api/v4/teams/invites/email""")
 
     def import_team(self, team_id, files, data=None):
         """Import a Team from other application
@@ -344,7 +344,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - ImportTeam) <https://api.mattermost.com/#tag/teams/operation/ImportTeam>`_
         """
-        return self.client.post(f"/teams/{team_id}/import", files=files, data=data)
+        return self.client.post(f"/api/v4/teams/{team_id}/import", files=files, data=data)
 
     def get_team_invite_info(self, invite_id):
         """Get invite info for a team
@@ -353,7 +353,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - GetTeamInviteInfo) <https://api.mattermost.com/#tag/teams/operation/GetTeamInviteInfo>`_
         """
-        return self.client.get(f"/teams/invite/{invite_id}")
+        return self.client.get(f"/api/v4/teams/invite/{invite_id}")
 
     def update_team_scheme(self, team_id, options):
         """Set a team's scheme
@@ -363,7 +363,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - UpdateTeamScheme) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamScheme>`_
         """
-        return self.client.put(f"/teams/{team_id}/scheme", options=options)
+        return self.client.put(f"/api/v4/teams/{team_id}/scheme", options=options)
 
     def team_members_minus_group_members(self, team_id, params=None):
         """Team members minus group members.
@@ -375,7 +375,7 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - TeamMembersMinusGroupMembers) <https://api.mattermost.com/#tag/teams/operation/TeamMembersMinusGroupMembers>`_
         """
-        return self.client.get(f"/teams/{team_id}/members_minus_group_members", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/members_minus_group_members", params=params)
 
     def search_files(self, team_id, data):
         """Search files in a team
@@ -390,4 +390,4 @@ class Teams(Base):
 
         `Read in Mattermost API docs (teams - SearchFiles) <https://api.mattermost.com/#tag/teams/operation/SearchFiles>`_
         """
-        return self.client.post(f"/teams/{team_id}/files/search", data=data)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

@@ -6,10 +6,10 @@ class Usage(Base):
         """Get current usage of posts
         `Read in Mattermost API docs (usage - GetPostsUsage) <https://api.mattermost.com/#tag/usage/operation/GetPostsUsage>`_
         """
-        return self.client.get("""/usage/posts""")
+        return self.client.get("""/api/v4/usage/posts""")
 
     def get_storage_usage(self):
         """Get the total file storage usage for the instance in bytes.
         `Read in Mattermost API docs (usage - GetStorageUsage) <https://api.mattermost.com/#tag/usage/operation/GetStorageUsage>`_
         """
-        return self.client.get("""/usage/storage""")
+        return self.client.get("""/api/v4/usage/storage""")

@@ -6,7 +6,7 @@ class Brand(Base):
         """Get brand image
         `Read in Mattermost API docs (brand - GetBrandImage) <https://api.mattermost.com/#tag/brand/operation/GetBrandImage>`_
         """
-        return self.client.get("""/brand/image""")
+        return self.client.get("""/api/v4/brand/image""")
 
     def upload_brand_image(self, files, data=None):
         """Upload brand image
@@ -15,10 +15,10 @@ class Brand(Base):
 
         `Read in Mattermost API docs (brand - UploadBrandImage) <https://api.mattermost.com/#tag/brand/operation/UploadBrandImage>`_
         """
-        return self.client.post("""/brand/image""", files=files, data=data)
+        return self.client.post("""/api/v4/brand/image""", files=files, data=data)
 
     def delete_brand_image(self):
         """Delete current brand image
         `Read in Mattermost API docs (brand - DeleteBrandImage) <https://api.mattermost.com/#tag/brand/operation/DeleteBrandImage>`_
         """
-        return self.client.delete("""/brand/image""")
+        return self.client.delete("""/api/v4/brand/image""")

@@ -6,7 +6,7 @@ class Exports(Base):
         """List export files
         `Read in Mattermost API docs (exports - ListExports) <https://api.mattermost.com/#tag/exports/operation/ListExports>`_
         """
-        return self.client.get("""/exports""")
+        return self.client.get("""/api/v4/exports""")
 
     def download_export(self, export_name):
         """Download an export file
@@ -15,7 +15,7 @@ class Exports(Base):
 
         `Read in Mattermost API docs (exports - DownloadExport) <https://api.mattermost.com/#tag/exports/operation/DownloadExport>`_
         """
-        return self.client.get(f"/exports/{export_name}")
+        return self.client.get(f"/api/v4/exports/{export_name}")
 
     def delete_export(self, export_name):
         """Delete an export file
@@ -24,4 +24,4 @@ class Exports(Base):
 
         `Read in Mattermost API docs (exports - DeleteExport) <https://api.mattermost.com/#tag/exports/operation/DeleteExport>`_
         """
-        return self.client.delete(f"/exports/{export_name}")
+        return self.client.delete(f"/api/v4/exports/{export_name}")

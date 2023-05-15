@@ -6,7 +6,7 @@ class Reactions(Base):
         """Create a reaction
         `Read in Mattermost API docs (reactions - SaveReaction) <https://api.mattermost.com/#tag/reactions/operation/SaveReaction>`_
         """
-        return self.client.post("""/reactions""", options=options)
+        return self.client.post("""/api/v4/reactions""", options=options)
 
     def get_reactions(self, post_id):
         """Get a list of reactions to a post
@@ -15,7 +15,7 @@ class Reactions(Base):
 
         `Read in Mattermost API docs (reactions - GetReactions) <https://api.mattermost.com/#tag/reactions/operation/GetReactions>`_
         """
-        return self.client.get(f"/posts/{post_id}/reactions")
+        return self.client.get(f"/api/v4/posts/{post_id}/reactions")
 
     def delete_reaction(self, user_id, post_id, emoji_name):
         """Remove a reaction from a post
@@ -26,10 +26,10 @@ class Reactions(Base):
 
         `Read in Mattermost API docs (reactions - DeleteReaction) <https://api.mattermost.com/#tag/reactions/operation/DeleteReaction>`_
         """
-        return self.client.delete(f"/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
+        return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
 
     def get_bulk_reactions(self, options):
         """Bulk get the reaction for posts
         `Read in Mattermost API docs (reactions - GetBulkReactions) <https://api.mattermost.com/#tag/reactions/operation/GetBulkReactions>`_
         """
-        return self.client.post("""/posts/ids/reactions""", options=options)
+        return self.client.post("""/api/v4/posts/ids/reactions""", options=options)

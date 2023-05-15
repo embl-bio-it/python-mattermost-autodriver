@@ -14,7 +14,7 @@ class Playbooks(Base):
 
         `Read in Mattermost API docs (Playbooks - getPlaybooks) <https://api.mattermost.com/#tag/Playbooks/operation/getPlaybooks>`_
         """
-        return self.client.get("""/playbooks""", params=params)
+        return self.client.get("""/plugins/playbooks/api/v0/playbooks""", params=params)
 
     def create_playbook(self, options=None):
         """Create a playbook
@@ -23,6 +23,7 @@ class Playbooks(Base):
         description: The description of the playbook.
         team_id: The identifier of the team where the playbook is in.
         create_public_playbook_run: A boolean indicating whether the playbook runs created from this playbook should be public or private.
+        public: A boolean indicating whether the playbook is licensed as public or private. Required 'true' for free tier.
         checklists: The stages defined by this playbook.
         member_ids: The identifiers of all the users that are members of this playbook.
         broadcast_channel_ids: The IDs of the channels where all the status updates will be broadcasted. The team of the broadcast channel must be the same as the playbook's team.
@@ -39,7 +40,7 @@ class Playbooks(Base):
 
         `Read in Mattermost API docs (Playbooks - createPlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/createPlaybook>`_
         """
-        return self.client.post("""/playbooks""", options=options)
+        return self.client.post("""/plugins/playbooks/api/v0/playbooks""", options=options)
 
     def get_playbook(self, id):
         """Get a playbook
@@ -48,7 +49,7 @@ class Playbooks(Base):
 
         `Read in Mattermost API docs (Playbooks - getPlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/getPlaybook>`_
         """
-        return self.client.get(f"/playbooks/{id}")
+        return self.client.get(f"/plugins/playbooks/api/v0/playbooks/{id}")
 
     def update_playbook(self, id, options=None):
         """Update a playbook
@@ -57,7 +58,7 @@ class Playbooks(Base):
 
         `Read in Mattermost API docs (Playbooks - updatePlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/updatePlaybook>`_
         """
-        return self.client.put(f"/playbooks/{id}", options=options)
+        return self.client.put(f"/plugins/playbooks/api/v0/playbooks/{id}", options=options)
 
     def delete_playbook(self, id):
         """Delete a playbook
@@ -66,4 +67,4 @@ class Playbooks(Base):
 
         `Read in Mattermost API docs (Playbooks - deletePlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/deletePlaybook>`_
         """
-        return self.client.delete(f"/playbooks/{id}")
+        return self.client.delete(f"/plugins/playbooks/api/v0/playbooks/{id}")

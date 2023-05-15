@@ -15,4 +15,4 @@ class Search(Base):
 
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
         """
-        return self.client.post(f"/teams/{team_id}/files/search", data=data)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

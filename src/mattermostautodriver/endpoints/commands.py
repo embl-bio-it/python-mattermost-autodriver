@@ -12,7 +12,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - CreateCommand) <https://api.mattermost.com/#tag/commands/operation/CreateCommand>`_
         """
-        return self.client.post("""/commands""", options=options)
+        return self.client.post("""/api/v4/commands""", options=options)
 
     def list_commands(self, params=None):
         """List commands for a team
@@ -24,7 +24,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - ListCommands) <https://api.mattermost.com/#tag/commands/operation/ListCommands>`_
         """
-        return self.client.get("""/commands""", params=params)
+        return self.client.get("""/api/v4/commands""", params=params)
 
     def list_autocomplete_commands(self, team_id):
         """List autocomplete commands
@@ -33,7 +33,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - ListAutocompleteCommands) <https://api.mattermost.com/#tag/commands/operation/ListAutocompleteCommands>`_
         """
-        return self.client.get(f"/teams/{team_id}/commands/autocomplete")
+        return self.client.get(f"/api/v4/teams/{team_id}/commands/autocomplete")
 
     def list_command_autocomplete_suggestions(self, team_id, params=None):
         """List commands' autocomplete data
@@ -52,7 +52,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - GetCommandById) <https://api.mattermost.com/#tag/commands/operation/GetCommandById>`_
         """
-        return self.client.get(f"/commands/{command_id}")
+        return self.client.get(f"/api/v4/commands/{command_id}")
 
     def update_command(self, command_id, options):
         """Update a command
@@ -61,7 +61,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - UpdateCommand) <https://api.mattermost.com/#tag/commands/operation/UpdateCommand>`_
         """
-        return self.client.put(f"/commands/{command_id}", options=options)
+        return self.client.put(f"/api/v4/commands/{command_id}", options=options)
 
     def delete_command(self, command_id):
         """Delete a command
@@ -70,7 +70,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - DeleteCommand) <https://api.mattermost.com/#tag/commands/operation/DeleteCommand>`_
         """
-        return self.client.delete(f"/commands/{command_id}")
+        return self.client.delete(f"/api/v4/commands/{command_id}")
 
     def move_command(self, command_id, options):
         """Move a command
@@ -80,7 +80,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - MoveCommand) <https://api.mattermost.com/#tag/commands/operation/MoveCommand>`_
         """
-        return self.client.put(f"/commands/{command_id}/move", options=options)
+        return self.client.put(f"/api/v4/commands/{command_id}/move", options=options)
 
     def regen_command_token(self, command_id):
         """Generate a new token
@@ -89,7 +89,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - RegenCommandToken) <https://api.mattermost.com/#tag/commands/operation/RegenCommandToken>`_
         """
-        return self.client.put(f"/commands/{command_id}/regen_token")
+        return self.client.put(f"/api/v4/commands/{command_id}/regen_token")
 
     def execute_command(self, options):
         """Execute a command
@@ -99,4 +99,4 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - ExecuteCommand) <https://api.mattermost.com/#tag/commands/operation/ExecuteCommand>`_
         """
-        return self.client.post("""/commands/execute""", options=options)
+        return self.client.post("""/api/v4/commands/execute""", options=options)

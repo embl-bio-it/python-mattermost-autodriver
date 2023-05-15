@@ -10,7 +10,7 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - GetJobs) <https://api.mattermost.com/#tag/jobs/operation/GetJobs>`_
         """
-        return self.client.get("""/jobs""", params=params)
+        return self.client.get("""/api/v4/jobs""", params=params)
 
     def create_job(self, options):
         """Create a new job.
@@ -20,7 +20,7 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - CreateJob) <https://api.mattermost.com/#tag/jobs/operation/CreateJob>`_
         """
-        return self.client.post("""/jobs""", options=options)
+        return self.client.post("""/api/v4/jobs""", options=options)
 
     def get_job(self, job_id):
         """Get a job.
@@ -29,7 +29,7 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - GetJob) <https://api.mattermost.com/#tag/jobs/operation/GetJob>`_
         """
-        return self.client.get(f"/jobs/{job_id}")
+        return self.client.get(f"/api/v4/jobs/{job_id}")
 
     def download_job(self, job_id):
         """Download the results of a job.
@@ -38,7 +38,7 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - DownloadJob) <https://api.mattermost.com/#tag/jobs/operation/DownloadJob>`_
         """
-        return self.client.get(f"/jobs/{job_id}/download")
+        return self.client.get(f"/api/v4/jobs/{job_id}/download")
 
     def cancel_job(self, job_id):
         """Cancel a job.
@@ -47,7 +47,7 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - CancelJob) <https://api.mattermost.com/#tag/jobs/operation/CancelJob>`_
         """
-        return self.client.post(f"/jobs/{job_id}/cancel")
+        return self.client.post(f"/api/v4/jobs/{job_id}/cancel")
 
     def get_jobs_by_type(self, type, params=None):
         """Get the jobs of the given type.
@@ -58,4 +58,4 @@ class Jobs(Base):
 
         `Read in Mattermost API docs (jobs - GetJobsByType) <https://api.mattermost.com/#tag/jobs/operation/GetJobsByType>`_
         """
-        return self.client.get(f"/jobs/type/{type}", params=params)
+        return self.client.get(f"/api/v4/jobs/type/{type}", params=params)

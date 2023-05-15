@@ -9,7 +9,7 @@ class Preferences(Base):
 
         `Read in Mattermost API docs (preferences - GetPreferences) <https://api.mattermost.com/#tag/preferences/operation/GetPreferences>`_
         """
-        return self.client.get(f"/users/{user_id}/preferences")
+        return self.client.get(f"/api/v4/users/{user_id}/preferences")
 
     def update_preferences(self, user_id, options):
         """Save the user's preferences
@@ -18,7 +18,7 @@ class Preferences(Base):
 
         `Read in Mattermost API docs (preferences - UpdatePreferences) <https://api.mattermost.com/#tag/preferences/operation/UpdatePreferences>`_
         """
-        return self.client.put(f"/users/{user_id}/preferences", options=options)
+        return self.client.put(f"/api/v4/users/{user_id}/preferences", options=options)
 
     def delete_preferences(self, user_id, options):
         """Delete user's preferences
@@ -27,7 +27,7 @@ class Preferences(Base):
 
         `Read in Mattermost API docs (preferences - DeletePreferences) <https://api.mattermost.com/#tag/preferences/operation/DeletePreferences>`_
         """
-        return self.client.post(f"/users/{user_id}/preferences/delete", options=options)
+        return self.client.post(f"/api/v4/users/{user_id}/preferences/delete", options=options)
 
     def get_preferences_by_category(self, user_id, category):
         """List a user's preferences by category
@@ -37,7 +37,7 @@ class Preferences(Base):
 
         `Read in Mattermost API docs (preferences - GetPreferencesByCategory) <https://api.mattermost.com/#tag/preferences/operation/GetPreferencesByCategory>`_
         """
-        return self.client.get(f"/users/{user_id}/preferences/{category}")
+        return self.client.get(f"/api/v4/users/{user_id}/preferences/{category}")
 
     def get_preferences_by_category_by_name(self, user_id, category, preference_name):
         """Get a specific user preference
@@ -48,4 +48,4 @@ class Preferences(Base):
 
         `Read in Mattermost API docs (preferences - GetPreferencesByCategoryByName) <https://api.mattermost.com/#tag/preferences/operation/GetPreferencesByCategoryByName>`_
         """
-        return self.client.get(f"/users/{user_id}/preferences/{category}/name/{preference_name}")
+        return self.client.get(f"/api/v4/users/{user_id}/preferences/{category}/name/{preference_name}")

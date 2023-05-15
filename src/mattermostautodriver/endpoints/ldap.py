@@ -11,7 +11,7 @@ class Ldap(Base):
 
         `Read in Mattermost API docs (ldap - GetLdapGroups) <https://api.mattermost.com/#tag/ldap/operation/GetLdapGroups>`_
         """
-        return self.client.get("""/ldap/groups""", params=params)
+        return self.client.get("""/api/v4/ldap/groups""", params=params)
 
     def link_ldap_group(self, remote_id):
         """Link a LDAP group
@@ -20,4 +20,4 @@ class Ldap(Base):
 
         `Read in Mattermost API docs (ldap - LinkLdapGroup) <https://api.mattermost.com/#tag/ldap/operation/LinkLdapGroup>`_
         """
-        return self.client.post(f"/ldap/groups/{remote_id}/link")
+        return self.client.post(f"/api/v4/ldap/groups/{remote_id}/link")

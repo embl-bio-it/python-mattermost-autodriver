@@ -14,7 +14,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateIncomingWebhook>`_
         """
-        return self.client.post("""/hooks/incoming""", options=options)
+        return self.client.post("""/api/v4/hooks/incoming""", options=options)
 
     def get_incoming_webhooks(self, params=None):
         """List incoming webhooks
@@ -25,7 +25,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
         """
-        return self.client.get("""/hooks/incoming""", params=params)
+        return self.client.get("""/api/v4/hooks/incoming""", params=params)
 
     def get_incoming_webhook(self, hook_id):
         """Get an incoming webhook
@@ -34,7 +34,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhook>`_
         """
-        return self.client.get(f"/hooks/incoming/{hook_id}")
+        return self.client.get(f"/api/v4/hooks/incoming/{hook_id}")
 
     def delete_incoming_webhook(self, hook_id):
         """Delete an incoming webhook
@@ -43,7 +43,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - DeleteIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteIncomingWebhook>`_
         """
-        return self.client.delete(f"/hooks/incoming/{hook_id}")
+        return self.client.delete(f"/api/v4/hooks/incoming/{hook_id}")
 
     def update_incoming_webhook(self, hook_id, options):
         """Update an incoming webhook
@@ -58,7 +58,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateIncomingWebhook>`_
         """
-        return self.client.put(f"/hooks/incoming/{hook_id}", options=options)
+        return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=options)
 
     def create_outgoing_webhook(self, options):
         """Create an outgoing webhook
@@ -75,7 +75,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateOutgoingWebhook>`_
         """
-        return self.client.post("""/hooks/outgoing""", options=options)
+        return self.client.post("""/api/v4/hooks/outgoing""", options=options)
 
     def get_outgoing_webhooks(self, params=None):
         """List outgoing webhooks
@@ -87,7 +87,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhooks>`_
         """
-        return self.client.get("""/hooks/outgoing""", params=params)
+        return self.client.get("""/api/v4/hooks/outgoing""", params=params)
 
     def get_outgoing_webhook(self, hook_id):
         """Get an outgoing webhook
@@ -96,7 +96,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - GetOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhook>`_
         """
-        return self.client.get(f"/hooks/outgoing/{hook_id}")
+        return self.client.get(f"/api/v4/hooks/outgoing/{hook_id}")
 
     def delete_outgoing_webhook(self, hook_id):
         """Delete an outgoing webhook
@@ -105,7 +105,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - DeleteOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteOutgoingWebhook>`_
         """
-        return self.client.delete(f"/hooks/outgoing/{hook_id}")
+        return self.client.delete(f"/api/v4/hooks/outgoing/{hook_id}")
 
     def update_outgoing_webhook(self, hook_id, options):
         """Update an outgoing webhook
@@ -118,7 +118,7 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateOutgoingWebhook>`_
         """
-        return self.client.put(f"/hooks/outgoing/{hook_id}", options=options)
+        return self.client.put(f"/api/v4/hooks/outgoing/{hook_id}", options=options)
 
     def regen_outgoing_hook_token(self, hook_id):
         """Regenerate the token for the outgoing webhook.
@@ -127,4 +127,4 @@ class Webhooks(Base):
 
         `Read in Mattermost API docs (webhooks - RegenOutgoingHookToken) <https://api.mattermost.com/#tag/webhooks/operation/RegenOutgoingHookToken>`_
         """
-        return self.client.post(f"/hooks/outgoing/{hook_id}/regen_token")
+        return self.client.post(f"/api/v4/hooks/outgoing/{hook_id}/regen_token")

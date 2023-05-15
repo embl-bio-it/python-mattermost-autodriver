@@ -10,4 +10,4 @@ class Permissions(Base):
 
         `Read in Mattermost API docs (permissions - GetAncillaryPermissions) <https://api.mattermost.com/#tag/permissions/operation/GetAncillaryPermissions>`_
         """
-        return self.client.get("""/permissions/ancillary""", params=params)
+        return self.client.get("""/api/v4/permissions/ancillary""", params=params)

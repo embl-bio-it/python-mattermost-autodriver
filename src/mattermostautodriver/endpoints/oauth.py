@@ -14,7 +14,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - CreateOAuthApp) <https://api.mattermost.com/#tag/OAuth/operation/CreateOAuthApp>`_
         """
-        return self.client.post("""/oauth/apps""", options=options)
+        return self.client.post("""/api/v4/oauth/apps""", options=options)
 
     def get_o_auth_apps(self, params=None):
         """Get OAuth apps
@@ -24,7 +24,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - GetOAuthApps) <https://api.mattermost.com/#tag/OAuth/operation/GetOAuthApps>`_
         """
-        return self.client.get("""/oauth/apps""", params=params)
+        return self.client.get("""/api/v4/oauth/apps""", params=params)
 
     def get_o_auth_app(self, app_id):
         """Get an OAuth app
@@ -33,7 +33,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - GetOAuthApp) <https://api.mattermost.com/#tag/OAuth/operation/GetOAuthApp>`_
         """
-        return self.client.get(f"/oauth/apps/{app_id}")
+        return self.client.get(f"/api/v4/oauth/apps/{app_id}")
 
     def update_o_auth_app(self, app_id, options):
         """Update an OAuth app
@@ -49,7 +49,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - UpdateOAuthApp) <https://api.mattermost.com/#tag/OAuth/operation/UpdateOAuthApp>`_
         """
-        return self.client.put(f"/oauth/apps/{app_id}", options=options)
+        return self.client.put(f"/api/v4/oauth/apps/{app_id}", options=options)
 
     def delete_o_auth_app(self, app_id):
         """Delete an OAuth app
@@ -58,7 +58,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - DeleteOAuthApp) <https://api.mattermost.com/#tag/OAuth/operation/DeleteOAuthApp>`_
         """
-        return self.client.delete(f"/oauth/apps/{app_id}")
+        return self.client.delete(f"/api/v4/oauth/apps/{app_id}")
 
     def regenerate_o_auth_app_secret(self, app_id):
         """Regenerate OAuth app secret
@@ -67,7 +67,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - RegenerateOAuthAppSecret) <https://api.mattermost.com/#tag/OAuth/operation/RegenerateOAuthAppSecret>`_
         """
-        return self.client.post(f"/oauth/apps/{app_id}/regen_secret")
+        return self.client.post(f"/api/v4/oauth/apps/{app_id}/regen_secret")
 
     def get_o_auth_app_info(self, app_id):
         """Get info on an OAuth app
@@ -76,7 +76,7 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - GetOAuthAppInfo) <https://api.mattermost.com/#tag/OAuth/operation/GetOAuthAppInfo>`_
         """
-        return self.client.get(f"/oauth/apps/{app_id}/info")
+        return self.client.get(f"/api/v4/oauth/apps/{app_id}/info")
 
     def get_authorized_o_auth_apps_for_user(self, user_id, params=None):
         """Get authorized OAuth apps
@@ -87,4 +87,4 @@ class OAuth(Base):
 
         `Read in Mattermost API docs (OAuth - GetAuthorizedOAuthAppsForUser) <https://api.mattermost.com/#tag/OAuth/operation/GetAuthorizedOAuthAppsForUser>`_
         """
-        return self.client.get(f"/users/{user_id}/oauth/apps/authorized", params=params)
+        return self.client.get(f"/api/v4/users/{user_id}/oauth/apps/authorized", params=params)

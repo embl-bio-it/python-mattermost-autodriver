@@ -17,7 +17,7 @@ class Internal(Base):
 
         `Read in Mattermost API docs (Internal - createPlaybookRunFromDialog) <https://api.mattermost.com/#tag/Internal/operation/createPlaybookRunFromDialog>`_
         """
-        return self.client.post("""/runs/dialog""", options=options)
+        return self.client.post("""/plugins/playbooks/api/v0/runs/dialog""", options=options)
 
     def get_checklist_autocomplete(self, params=None):
         """Get autocomplete data for /playbook check
@@ -26,7 +26,7 @@ class Internal(Base):
 
         `Read in Mattermost API docs (Internal - getChecklistAutocomplete) <https://api.mattermost.com/#tag/Internal/operation/getChecklistAutocomplete>`_
         """
-        return self.client.get("""/runs/checklist-autocomplete""", params=params)
+        return self.client.get("""/plugins/playbooks/api/v0/runs/checklist-autocomplete""", params=params)
 
     def end_playbook_run_dialog(self, id):
         """End a playbook run from dialog
@@ -35,7 +35,7 @@ class Internal(Base):
 
         `Read in Mattermost API docs (Internal - endPlaybookRunDialog) <https://api.mattermost.com/#tag/Internal/operation/endPlaybookRunDialog>`_
         """
-        return self.client.post(f"/runs/{id}/end")
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/end")
 
     def next_stage_dialog(self, id, options=None):
         """Go to next stage from dialog
@@ -45,4 +45,4 @@ class Internal(Base):
 
         `Read in Mattermost API docs (Internal - nextStageDialog) <https://api.mattermost.com/#tag/Internal/operation/nextStageDialog>`_
         """
-        return self.client.post(f"/runs/{id}/next-stage-dialog", options=options)
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/next-stage-dialog", options=options)

@@ -11,7 +11,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - GetSchemes) <https://api.mattermost.com/#tag/schemes/operation/GetSchemes>`_
         """
-        return self.client.get("""/schemes""", params=params)
+        return self.client.get("""/api/v4/schemes""", params=params)
 
     def create_scheme(self, options):
         """Create a scheme
@@ -22,7 +22,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - CreateScheme) <https://api.mattermost.com/#tag/schemes/operation/CreateScheme>`_
         """
-        return self.client.post("""/schemes""", options=options)
+        return self.client.post("""/api/v4/schemes""", options=options)
 
     def get_scheme(self, scheme_id):
         """Get a scheme
@@ -31,7 +31,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - GetScheme) <https://api.mattermost.com/#tag/schemes/operation/GetScheme>`_
         """
-        return self.client.get(f"/schemes/{scheme_id}")
+        return self.client.get(f"/api/v4/schemes/{scheme_id}")
 
     def delete_scheme(self, scheme_id):
         """Delete a scheme
@@ -40,7 +40,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - DeleteScheme) <https://api.mattermost.com/#tag/schemes/operation/DeleteScheme>`_
         """
-        return self.client.delete(f"/schemes/{scheme_id}")
+        return self.client.delete(f"/api/v4/schemes/{scheme_id}")
 
     def patch_scheme(self, scheme_id, options):
         """Patch a scheme
@@ -51,7 +51,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - PatchScheme) <https://api.mattermost.com/#tag/schemes/operation/PatchScheme>`_
         """
-        return self.client.put(f"/schemes/{scheme_id}/patch", options=options)
+        return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=options)
 
     def get_teams_for_scheme(self, scheme_id, params=None):
         """Get a page of teams which use this scheme.
@@ -62,7 +62,7 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetTeamsForScheme>`_
         """
-        return self.client.get(f"/schemes/{scheme_id}/teams", params=params)
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=params)
 
     def get_channels_for_scheme(self, scheme_id, params=None):
         """Get a page of channels which use this scheme.
@@ -73,4 +73,4 @@ class Schemes(Base):
 
         `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetChannelsForScheme>`_
         """
-        return self.client.get(f"/schemes/{scheme_id}/channels", params=params)
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=params)

@@ -11,7 +11,7 @@ class Uploads(Base):
 
         `Read in Mattermost API docs (uploads - CreateUpload) <https://api.mattermost.com/#tag/uploads/operation/CreateUpload>`_
         """
-        return self.client.post("""/uploads""", options=options)
+        return self.client.post("""/api/v4/uploads""", options=options)
 
     def get_upload(self, upload_id):
         """Get an upload session
@@ -20,7 +20,7 @@ class Uploads(Base):
 
         `Read in Mattermost API docs (uploads - GetUpload) <https://api.mattermost.com/#tag/uploads/operation/GetUpload>`_
         """
-        return self.client.get(f"/uploads/{upload_id}")
+        return self.client.get(f"/api/v4/uploads/{upload_id}")
 
     def upload_data(self, upload_id, files, options=None):
         """Perform a file upload
@@ -29,4 +29,4 @@ class Uploads(Base):
 
         `Read in Mattermost API docs (uploads - UploadData) <https://api.mattermost.com/#tag/uploads/operation/UploadData>`_
         """
-        return self.client.post(f"/uploads/{upload_id}", files=files, options=options)
+        return self.client.post(f"/api/v4/uploads/{upload_id}", files=files, options=options)

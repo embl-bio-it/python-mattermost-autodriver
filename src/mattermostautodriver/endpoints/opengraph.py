@@ -9,4 +9,4 @@ class OpenGraph(Base):
 
         `Read in Mattermost API docs (OpenGraph - OpenGraph) <https://api.mattermost.com/#tag/OpenGraph/operation/OpenGraph>`_
         """
-        return self.client.post("""/opengraph""", options=options)
+        return self.client.post("""/api/v4/opengraph""", options=options)

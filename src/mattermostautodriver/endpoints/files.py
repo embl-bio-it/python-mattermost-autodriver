@@ -11,7 +11,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - UploadFile) <https://api.mattermost.com/#tag/files/operation/UploadFile>`_
         """
-        return self.client.post("""/files""", files=files, data=data)
+        return self.client.post("""/api/v4/files""", files=files, data=data)
 
     def get_file(self, file_id):
         """Get a file
@@ -20,7 +20,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFile) <https://api.mattermost.com/#tag/files/operation/GetFile>`_
         """
-        return self.client.get(f"/files/{file_id}")
+        return self.client.get(f"/api/v4/files/{file_id}")
 
     def get_file_thumbnail(self, file_id):
         """Get a file's thumbnail
@@ -29,7 +29,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFileThumbnail) <https://api.mattermost.com/#tag/files/operation/GetFileThumbnail>`_
         """
-        return self.client.get(f"/files/{file_id}/thumbnail")
+        return self.client.get(f"/api/v4/files/{file_id}/thumbnail")
 
     def get_file_preview(self, file_id):
         """Get a file's preview
@@ -38,7 +38,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFilePreview) <https://api.mattermost.com/#tag/files/operation/GetFilePreview>`_
         """
-        return self.client.get(f"/files/{file_id}/preview")
+        return self.client.get(f"/api/v4/files/{file_id}/preview")
 
     def get_file_link(self, file_id):
         """Get a public file link
@@ -47,7 +47,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFileLink) <https://api.mattermost.com/#tag/files/operation/GetFileLink>`_
         """
-        return self.client.get(f"/files/{file_id}/link")
+        return self.client.get(f"/api/v4/files/{file_id}/link")
 
     def get_file_info(self, file_id):
         """Get metadata for a file
@@ -56,7 +56,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFileInfo) <https://api.mattermost.com/#tag/files/operation/GetFileInfo>`_
         """
-        return self.client.get(f"/files/{file_id}/info")
+        return self.client.get(f"/api/v4/files/{file_id}/info")
 
     def get_file_public(self, file_id, params=None):
         """Get a public file
@@ -66,7 +66,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFilePublic) <https://api.mattermost.com/#tag/files/operation/GetFilePublic>`_
         """
-        return self.client.get(f"/files/{file_id}/public", params=params)
+        return self.client.get(f"/api/v4/files/{file_id}/public", params=params)
 
     def search_files(self, team_id, data):
         """Search files in a team
@@ -81,4 +81,4 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
         """
-        return self.client.post(f"/teams/{team_id}/files/search", data=data)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

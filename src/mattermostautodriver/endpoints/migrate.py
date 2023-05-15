@@ -11,7 +11,7 @@ class Migrate(Base):
 
         `Read in Mattermost API docs (migrate - MigrateAuthToLdap) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToLdap>`_
         """
-        return self.client.post("""/users/migrate_auth/ldap""", options=options)
+        return self.client.post("""/api/v4/users/migrate_auth/ldap""", options=options)
 
     def migrate_auth_to_saml(self, options=None):
         """Migrate user accounts authentication type to SAML.
@@ -22,4 +22,4 @@ class Migrate(Base):
 
         `Read in Mattermost API docs (migrate - MigrateAuthToSaml) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToSaml>`_
         """
-        return self.client.post("""/users/migrate_auth/saml""", options=options)
+        return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options)

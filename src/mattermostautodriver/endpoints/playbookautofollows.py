@@ -9,4 +9,4 @@ class PlaybookAutofollows(Base):
 
         `Read in Mattermost API docs (PlaybookAutofollows - getAutoFollows) <https://api.mattermost.com/#tag/PlaybookAutofollows/operation/getAutoFollows>`_
         """
-        return self.client.get(f"/playbooks/{id}/autofollows")
+        return self.client.get(f"/plugins/playbooks/api/v0/playbooks/{id}/autofollows")

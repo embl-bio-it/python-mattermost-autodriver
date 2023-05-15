@@ -10,7 +10,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - CreateEmoji) <https://api.mattermost.com/#tag/emoji/operation/CreateEmoji>`_
         """
-        return self.client.post("""/emoji""", files=files, data=data)
+        return self.client.post("""/api/v4/emoji""", files=files, data=data)
 
     def get_emoji_list(self, params=None):
         """Get a list of custom emoji
@@ -21,7 +21,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - GetEmojiList) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiList>`_
         """
-        return self.client.get("""/emoji""", params=params)
+        return self.client.get("""/api/v4/emoji""", params=params)
 
     def get_emoji(self, emoji_id):
         """Get a custom emoji
@@ -30,7 +30,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - GetEmoji) <https://api.mattermost.com/#tag/emoji/operation/GetEmoji>`_
         """
-        return self.client.get(f"/emoji/{emoji_id}")
+        return self.client.get(f"/api/v4/emoji/{emoji_id}")
 
     def delete_emoji(self, emoji_id):
         """Delete a custom emoji
@@ -39,7 +39,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - DeleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/DeleteEmoji>`_
         """
-        return self.client.delete(f"/emoji/{emoji_id}")
+        return self.client.delete(f"/api/v4/emoji/{emoji_id}")
 
     def get_emoji_by_name(self, emoji_name):
         """Get a custom emoji by name
@@ -48,7 +48,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - GetEmojiByName) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiByName>`_
         """
-        return self.client.get(f"/emoji/name/{emoji_name}")
+        return self.client.get(f"/api/v4/emoji/name/{emoji_name}")
 
     def get_emoji_image(self, emoji_id):
         """Get custom emoji image
@@ -57,7 +57,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - GetEmojiImage) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiImage>`_
         """
-        return self.client.get(f"/emoji/{emoji_id}/image")
+        return self.client.get(f"/api/v4/emoji/{emoji_id}/image")
 
     def search_emoji(self, options):
         """Search custom emoji
@@ -67,7 +67,7 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - SearchEmoji) <https://api.mattermost.com/#tag/emoji/operation/SearchEmoji>`_
         """
-        return self.client.post("""/emoji/search""", options=options)
+        return self.client.post("""/api/v4/emoji/search""", options=options)
 
     def autocomplete_emoji(self, params=None):
         """Autocomplete custom emoji
@@ -76,4 +76,4 @@ class Emoji(Base):
 
         `Read in Mattermost API docs (emoji - AutocompleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/AutocompleteEmoji>`_
         """
-        return self.client.get("""/emoji/autocomplete""", params=params)
+        return self.client.get("""/api/v4/emoji/autocomplete""", params=params)

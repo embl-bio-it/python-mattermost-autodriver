@@ -17,7 +17,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - listPlaybookRuns) <https://api.mattermost.com/#tag/PlaybookRuns/operation/listPlaybookRuns>`_
         """
-        return self.client.get("""/runs""", params=params)
+        return self.client.get("""/plugins/playbooks/api/v0/runs""", params=params)
 
     def create_playbook_run_from_post(self, options=None):
         """Create a new playbook run
@@ -31,7 +31,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - createPlaybookRunFromPost) <https://api.mattermost.com/#tag/PlaybookRuns/operation/createPlaybookRunFromPost>`_
         """
-        return self.client.post("""/runs""", options=options)
+        return self.client.post("""/plugins/playbooks/api/v0/runs""", options=options)
 
     def get_owners(self, params=None):
         """Get all owners
@@ -40,7 +40,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - getOwners) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getOwners>`_
         """
-        return self.client.get("""/runs/owners""", params=params)
+        return self.client.get("""/plugins/playbooks/api/v0/runs/owners""", params=params)
 
     def get_channels(self, params=None):
         """Get playbook run channels
@@ -55,7 +55,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - getChannels) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getChannels>`_
         """
-        return self.client.get("""/runs/channels""", params=params)
+        return self.client.get("""/plugins/playbooks/api/v0/runs/channels""", params=params)
 
     def get_playbook_run_by_channel_id(self, channel_id):
         """Find playbook run by channel ID
@@ -64,7 +64,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - getPlaybookRunByChannelId) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getPlaybookRunByChannelId>`_
         """
-        return self.client.get(f"/runs/channel/{channel_id}")
+        return self.client.get(f"/plugins/playbooks/api/v0/runs/channel/{channel_id}")
 
     def get_playbook_run(self, id):
         """Get a playbook run
@@ -73,7 +73,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - getPlaybookRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getPlaybookRun>`_
         """
-        return self.client.get(f"/runs/{id}")
+        return self.client.get(f"/plugins/playbooks/api/v0/runs/{id}")
 
     def update_playbook_run(self, id, options=None):
         """Update a playbook run
@@ -83,7 +83,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - updatePlaybookRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/updatePlaybookRun>`_
         """
-        return self.client.patch(f"/runs/{id}", options=options)
+        return self.client.patch(f"/plugins/playbooks/api/v0/runs/{id}", options=options)
 
     def get_playbook_run_metadata(self, id):
         """Get playbook run metadata
@@ -92,7 +92,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - getPlaybookRunMetadata) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getPlaybookRunMetadata>`_
         """
-        return self.client.get(f"/runs/{id}/metadata")
+        return self.client.get(f"/plugins/playbooks/api/v0/runs/{id}/metadata")
 
     def end_playbook_run(self, id):
         """End a playbook run
@@ -101,7 +101,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - endPlaybookRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/endPlaybookRun>`_
         """
-        return self.client.put(f"/runs/{id}/end")
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/end")
 
     def restart_playbook_run(self, id):
         """Restart a playbook run
@@ -110,7 +110,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - restartPlaybookRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/restartPlaybookRun>`_
         """
-        return self.client.put(f"/runs/{id}/restart")
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/restart")
 
     def status(self, id, options=None):
         """Update a playbook run's status
@@ -121,7 +121,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - status) <https://api.mattermost.com/#tag/PlaybookRuns/operation/status>`_
         """
-        return self.client.post(f"/runs/{id}/status", options=options)
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/status", options=options)
 
     def finish(self, id):
         """Finish a playbook
@@ -130,7 +130,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - finish) <https://api.mattermost.com/#tag/PlaybookRuns/operation/finish>`_
         """
-        return self.client.put(f"/runs/{id}/finish")
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/finish")
 
     def change_owner(self, id, options=None):
         """Update playbook run owner
@@ -140,7 +140,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - changeOwner) <https://api.mattermost.com/#tag/PlaybookRuns/operation/changeOwner>`_
         """
-        return self.client.post(f"/runs/{id}/owner", options=options)
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/owner", options=options)
 
     def add_checklist_item(self, id, checklist, options=None):
         """Add an item to a playbook run's checklist
@@ -158,7 +158,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - addChecklistItem) <https://api.mattermost.com/#tag/PlaybookRuns/operation/addChecklistItem>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/add", options=options)
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/add", options=options)
 
     def reoder_checklist_item(self, id, checklist, options=None):
         """Reorder an item in a playbook run's checklist
@@ -170,7 +170,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - reoderChecklistItem) <https://api.mattermost.com/#tag/PlaybookRuns/operation/reoderChecklistItem>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/reorder", options=options)
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/reorder", options=options)
 
     def item_rename(self, id, checklist, item, options=None):
         """Update an item of a playbook run's checklist
@@ -183,7 +183,9 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - itemRename) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemRename>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/item/{item}", options=options)
+        return self.client.put(
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}", options=options
+        )
 
     def item_delete(self, id, checklist, item):
         """Delete an item of a playbook run's checklist
@@ -194,7 +196,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - itemDelete) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemDelete>`_
         """
-        return self.client.delete(f"/runs/{id}/checklists/{checklist}/item/{item}")
+        return self.client.delete(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}")
 
     def item_set_state(self, id, checklist, item, options=None):
         """Update the state of an item
@@ -206,7 +208,9 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - itemSetState) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemSetState>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/item/{item}/state", options=options)
+        return self.client.put(
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/state", options=options
+        )
 
     def item_set_assignee(self, id, checklist, item, options=None):
         """Update the assignee of an item
@@ -218,7 +222,9 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - itemSetAssignee) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemSetAssignee>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/item/{item}/assignee", options=options)
+        return self.client.put(
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/assignee", options=options
+        )
 
     def item_run(self, id, checklist, item):
         """Run an item's slash command
@@ -229,4 +235,4 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - itemRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemRun>`_
         """
-        return self.client.put(f"/runs/{id}/checklists/{checklist}/item/{item}/run")
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/run")

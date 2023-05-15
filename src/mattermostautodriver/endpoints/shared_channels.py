@@ -11,7 +11,7 @@ class SharedChannels(Base):
 
         `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://api.mattermost.com/#tag/shared_channels/operation/GetAllSharedChannels>`_
         """
-        return self.client.get(f"/sharedchannels/{team_id}", params=params)
+        return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params)
 
     def get_remote_cluster_info(self, remote_id):
         """Get remote cluster info by ID for user.
@@ -20,4 +20,4 @@ class SharedChannels(Base):
 
         `Read in Mattermost API docs (shared_channels - GetRemoteClusterInfo) <https://api.mattermost.com/#tag/shared_channels/operation/GetRemoteClusterInfo>`_
         """
-        return self.client.get(f"/sharedchannels/remote_info/{remote_id}")
+        return self.client.get(f"/api/v4/sharedchannels/remote_info/{remote_id}")
