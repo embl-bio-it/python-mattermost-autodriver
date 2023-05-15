@@ -69,7 +69,7 @@ Usage
         """
         'scheme': 'https',
         'port': 8065,
-        'basepath': '/api/v4',
+        'basepath': '',
         'verify': True,  # Or /path/to/file.pem
         'mfa_token': 'YourMFAToken',
         """
