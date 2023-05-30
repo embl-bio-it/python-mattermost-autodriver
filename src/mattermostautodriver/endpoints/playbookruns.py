@@ -158,7 +158,7 @@ class PlaybookRuns(Base):
 
         `Read in Mattermost API docs (PlaybookRuns - addChecklistItem) <https://api.mattermost.com/#tag/PlaybookRuns/operation/addChecklistItem>`_
         """
-        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/add", options=options)
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/add", options=options)
 
     def reoder_checklist_item(self, id, checklist, options=None):
         """Reorder an item in a playbook run's checklist
