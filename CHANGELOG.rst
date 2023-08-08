@@ -14,7 +14,9 @@ Documentation
 Maintenance
 '''''''''''
 
--
+- Update GitHub Actions to resolve deprecation warnings
+- Fix GitHub Action Python 3.10 related failures
+- Add possiblity to manually release to PyPi
 
 1.2.4
 """""
