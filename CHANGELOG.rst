@@ -36,6 +36,7 @@ Maintenance
 
 - GitHub action renamed to clarify purpose and action taken
 - Restart CHANGELOG.md to reflect mattermostautodriver changes and releases
+- Add Python 3.11 to list of supported versions
 
 
 1.2.3
