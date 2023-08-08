@@ -1,347 +1,164 @@
 Unreleased
+""""""""""
+
+Code
+''''
+
+-
+
+Documentation
+'''''''''''''
+
+-
+
+Maintenance
 '''''''''''
 
-Added
-  - HTTP proxy support for http + websocket calls
-  - Websocket calls are now using aiohttp
+-
 
-7.3.2
-''''''
-Fixed
- - Login failed in version 6.3.0 #112
+1.2.4
+"""""
 
-Thanks a lot to @iprok for their contribution!
+Code
+''''
 
-7.3.1
-''''''
-Fixed
- - Missing documentation endpoints #95
- - Incorrect submit dialog #94
- - Disconnect not working #91
+- Include playbook API interface changes as of 2023-05-31
+- Remove basepath to accomodate API changes due to the inclusion of playbook endpoints
+- Endpoint root paths now include the full API path
 
-Requirement changes
- - websockets bumped from 8.1 to 9.1
+Documentation
+'''''''''''''
 
-Thanks a lot to @unode and @wonsungkang for their contribution!
+- Hide table of contents from index page
 
-7.3.0
-''''''
-Added
- - New keepalive option, `keepalive` and `keepalive_delay`, default `False` #86
- - New `websocket_kw_args` option which is passed to the websocket library on `connect()` #86
+Maintenance
+'''''''''''
 
-Thanks a lot to @ttuffin and @attzonko for their contribution!
+- GitHub action renamed to clarify purpose and action taken
+- Restart CHANGELOG.md to reflect mattermostautodriver changes and releases
 
-7.2.0
-''''''
-Requirement changes
- - websocket bumped from 6.0 to 8.1
- - requests bumped from 2.20.0 to 2.25.1
 
-Added
- - Add Driver.disconnect function #80
- - Raise errors from None to reduce traceback noise #69
+1.2.3
+"""""
 
-Fixes
- - Correct url for role by name #78
- - Add oldest unread endpoint #76
+Code
+''''
 
-Documentation:
- - Improve documentation about verify #64
+- Include playbook API interface changes as of 2023-03-21
+- Fix syntax problem in install_requires
 
-Thanks a lot to @jneeven for his contribution!
+Maintenance
+'''''''''''
 
-7.1.0
-'''''
-Added endpoints
- - `IntegrationActions`
+- Update deployment python version in GitHub action
 
-Thanks a lot to @ritelle for his contribution!
+1.2.2
+"""""
 
-7.0.1
-'''''
-Fixes
- - Log `WebSocket authentication failed` even if WebSocket authentication was successful
-
-Thanks a lot to @icedevml for his contribution!
+Code
+''''
 
-7.0.0
-'''''
-Added Endpoints:
- - `opengraph`
- - `bots`
+- Endpoints updated to reflect Mattermost API status as of 2022-10-11
+- Logout API endpoint renamed - endpoint is logout() not logout_user()
+- Thread-specific API endpoints are now available
+- Mattermost API documentation is now linked from method docstrings
+- The dependency ``inflection`` was pinned to at least version 0.5.1
 
-Fixes:
- - Some pylint rules that failed have been fixed or where suppressed
+Documentation
+'''''''''''''
 
-Added:
- - Support for Python 3.8
- - Github actions with pylint is now active
+- Documentation was reworked to include links to Mattermost API docs
 
-BREAKING CHANGES:
- - Support for python 3.4 was dropped
-
-Thanks a lot to @maxbrunet for his contribution!
-
-6.3.1
-'''''
-Fixes
- - Authentication without `auth` option works again
-
-6.3.0
-'''''
-Features:
- - Added authentication with .netrc
+Maintenance
+'''''''''''
 
-Thanks a lot to @apfeiffer1 for his contribution!
-
-6.2.0
-'''''
-Fixes:
- - Fix documentation to make Json valid
-
-Features:
- - Added a configurable timeout #40
-
-Thanks a lot to @sahasrara62 for his contribution!
-
-6.1.3
-'''''
-Fixes:
- - Add missing endpoints to the driver
-
-Thanks a lot to @opalmer for this fix!
-
-6.1.2
-'''''
-Fixes:
- - Don't parse non JSON errors #31
- - Logout before cleaning up #37
-
-Thanks a lot to @maxbrunet for these two fixes!
-
-6.1.1
-'''''
-Update requirements:
-- requests@2.20.0
-
-6.1.0
-'''''
-Added Endpoints:
-- Reactions
-
-Thanks a lot to @aedho3yn for this!
-
-6.0.1
-'''''
-Fixes:
- - Unable to create custom emojies #33
- - Use ResourceNotFound for 404 #34
-
-Thanks a lot to @Sakarah and @maxbrunet for these fixes!
-
-6.0.0
-'''''
-POSSIBLE BREAKING CHANGES:
- Requirements have been updated:
- - websockets==6.0
-
-This requirement (and requests from 5.0.0) are now included in the setup.py file.
-If you didn't need to update before it is possible you do now,
-which could cause a breaking change this time.
-Not exactly sure about this, but better safe then sorry!
-
-5.0.1
-'''''
-Fixes:
- - Do not try to parse responses as json when it's clear they are not. Thanks Kenan!
-
-5.0.0
-'''''
-POSSIBLE BREAKING CHANGES:
- Requirements have been updated:
- - requests==2.19.1
- - websockets==5.0
-
-Fixes:
- - The error message 'Websocket authentication failed' was not always correct
-
-4.6.0
-'''''
-Release for Mattermost 5.0 api changes.
-
-Yes, I skipped the 4.9 release because of holiday time ;-)
-
-Added endpoints:
- - `scheme` as a whole new endpoint
- - `update_scheme_derived_roles_of_channel_member` in `channels`
- - `set_channel_scheme` in `channels`
- - `convert_channel` in `channels`
- - `update_scheme_derived_roles_of_team_member` in `teams`
- - `delete_team_icon` in `teams`
- - `set_team_scheme` in `teams`
- - `get_stats` in `users`
+- Missing operationId is now fatal when converting
 
-Fixes:
- - `create_user` in `users` was missing the query parameters
-
-4.5.0
-'''''
-Release for Mattermost 4.8 api changes.
-
-Yes this release is quite a bit behind schedule, sorry for that!
-
-Added endpoints:
- - `status` as a whole new endpoint
- - `roles` as a whole new endpoint
- - `test_aws_s3_connection` in `system`
- - `get_configuration_environment` in `system`
- - `send_test_email` in `system`
- - `create_ephemeral_post` in `posts`
- - `get_team_icon` in `teams`
- - `set_team_icon` in `teams`
-
-Fixes:
- - Example for `call_webhook` was incorrect #26
- - A slash was missing in `update_user_authentication_method` #27
-
-4.4.0
-'''''
-Release for Mattermost 4.7 api changes.
-
-Added endpoints:
- - `get_custom_emoji_by_name` in `emoji`
- - `search_custom_emoji` in `emoji`
- - `autocomplete_custom_emoji` in `emoji`
- - `autocomplete_channels` in `channels`
-
-Fixes:
- - `update_user_authentication_method` was missing the request body
-
-4.3.2
-'''''
-Fixes
- - https://github.com/Vaelor/python-mattermost-driver/issues/24
-
-4.3.1
-'''''
-Added endpoints
- - `create_user_access_token` in `/users`
-
-4.2.1
-'''''
-Fixes
- - https://github.com/Vaelor/python-mattermost-driver/pull/21
- - https://github.com/Vaelor/python-mattermost-driver/pull/22
-
-Thanks to @dan-klasson for these!!
-
-4.2.0
-'''''
-Release for Mattermost 4.6 api changes.
-
-Added endpoints:
- - `get_user_access_token` in `/users`
- - `search_tokens` in `/users`
- - `update_user_authentication_method` in `/users`
-
-4.1.0
-'''''
-This release mostly improves on the documentation.
-
-The sphinx theme has been changed to the readthedocs one.
-
-This also adds a `debug` option, which enables a very verbose log output.
-Be careful, as everything, even your mattermost password when you log in,
-is readable in the log output!
-This is definitely not for production usage!
-
-4.0.2
-'''''
-This release makes some internal changes on how the endpoints are accessed.
-
-Since this works much better then using `api['endpoint']` has been deprecated for the next Major release.
-
-Fixes https://github.com/Vaelor/python-mattermost-driver/issues/5
-
-
-4.0.1
-'''''
-The release 4.0.0 was not quite correct, since the following changes did not really happen, only the api documentation for mattermost 4.4.0 changed.
-
-.. code::
-
-    Endpoints moved from team to channels https://github.com/mattermost/mattermost-api-reference/pull/298/files
-     - get_public_channels
-     - get_deleted_channels
-     - search_channels
-
-
-4.0.0
-'''''
-This has some changes related to Mattermost 4.4
-
-BREAKING CHANGES:
- - Endpoints moved from `team` to `channels` https://github.com/mattermost/mattermost-api-reference/pull/298/files
-   - `get_public_channels`
-   - `get_deleted_channels`
-   - `search_channels`
-
-Added endpoints:
- - `revoke_all_user_sessions` in `/users`
- - `disable_personal_access_token` in `/users`
- - `enable_personal_access_token` in `/users`
-
-Also, you can now access the api endpoints directly,
-without using `Driver.api['endpoint']`, instead you can
-`Driver.users.get_user('me')`.
-Both ways are working, so no breaking change there.
-Related Issue for this: https://github.com/Vaelor/python-mattermost-driver/issues/5
-
-3.0.1
-'''''
-Thanks to SmartHoneyBee!
- - Changed setup of the logger #14
-
-3.0.0
-'''''
- - Removed python 3.3 from supported versions
- - Add data_retention endpoint
-
-2.3.0
-'''''
-Make a `basepath` available in `Client.make_request()`.
-This is mainly needed for calling `/hooks`.
-
-2.2.0
-'''''
-Support for personal access tokens and MFA Token.
-
-2.0.0
+1.2.1
+"""""
+
+Code
+''''
+
+- Only documentation changes occurred in this release.
+
+Documentation
+'''''''''''''
+
+- Several style formatting changes
+- Sphinx now specifies english as documentation language
+
+Maintenance
+'''''''''''
+
+- Fix indentation alignment issues
+- Reduce number of line breaks around titles
+
+1.2.0
 '''''
 
-Breaking change for file uploads.
-Instead of a `data` dict containing all formdata,
-a `files` dict is in the following endpoints
+Code
+''''
 
- - emoji
-   - `create_custom_emoji()` takes `emoji_name` additionally to a `files` dict
+- Only documentation changes occurred in this release
 
- - files
-   - `upload_file()` takes `channel_id` additionally to a `files` dict
+Documentation
+'''''''''''''
 
- - brand
-   - `upload_brand_image()`
+- Several style formatting changes
+- Sphinx now specifies english as documentation language
 
- - saml
-   - `upload_idp_certificate()`
-   - `upload_public_certificate()`
-   - `upload_private_key()`
+Maintenance
+Update API according to upload semantics
+Add files attribute to any API call involving uploads
+Update command as swagget2openapi isn't always available
+Update API spec as of 2022-08-25
+Update location of call_webhook
 
- - system
-   - `upload_license_file()`
+1.1.5
+'''''
+Don't check hostname when using ssl.CERT_NONE
+Update endpoints docs
 
- - users
-   - `set_user_profile_image()`
+1.1.4
+'''''
+Re-fix __new__ signature
 
-See the documentation for an example.
+1.1.3
+'''''
+Fix __new__ signature
+
+1.1.2
+'''''
+Fix version require
+
+1.1.1
+'''''
+Change auth method
+Fixing commas in README
+
+1.1.0
+'''''
+Re-add call_webhook previous webhooks.call_webhook
+Add get_last_trial_license endpoint
+Replace hardcoded property endpoints with dynamic ones
+Add doc about (re)generating API spec
+Update API spec to latest
+Use CamelCase for class names in API
+Add black and inflection to dependencies
+Use CamelCase for class names
+
+1.0.0
+'''''
+
+Clarify relation to mattermostdriver
+Rename driver to mattermostautodriver
+Bump version to 8.0.0 due to many API renames and backwards incompatibility
+Add self-generated endpoints
+Use pyproject.toml as black config
+Add helper script to generate updated endpoints
+Format all files with black in a single invocation
+Use lowecase names for modules
+Avoid adding f-strings when containing no attributes
+Remove unused logging configuration
+Implement OpenAPI conversion using Python AST
