@@ -232,7 +232,7 @@ class Client(BaseClient):
         return self.make_request("delete", endpoint, options=options, params=params, data=data).json()
 
     def call_webhook(self, hook_id, options=None):
-        return self.make_request("post", "/" + hook_id, options=options, basepath="/hooks")
+        return self.make_request("post", "/hooks/" + hook_id, options=options)
 
 
 class AsyncClient(BaseClient):
@@ -284,5 +284,5 @@ class AsyncClient(BaseClient):
         return response.json()
 
     async def call_webhook(self, hook_id, options=None):
-        response = await self.make_request("post", "/" + hook_id, options=options, basepath="/hooks")
+        response = await self.make_request("post", "/hooks/" + hook_id, options=options)
         return response.json()

@@ -4,7 +4,7 @@ Unreleased
 Code
 ''''
 
--
+- Minor refactor to avoid using basepath in hook calls
 
 Documentation
 '''''''''''''
