@@ -4,12 +4,29 @@ Unreleased
 Code
 ''''
 
-- Minor refactor to avoid using basepath in hook calls
+-
 
 Documentation
 '''''''''''''
 
 -
+
+Maintenance
+'''''''''''
+
+-
+
+1.3.0
+"""""
+
+Release 1.2.3 and 1.2.4 should have been made under a new minor digit.
+This release addresses this mistake.
+
+Code
+''''
+
+- Minor refactor to avoid using basepath in hook calls
+- Fix missing /api/v4 in websocket handcrafted URL
 
 Maintenance
 '''''''''''
