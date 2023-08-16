@@ -45,11 +45,29 @@ class BaseClient:
 
     @staticmethod
     def activate_verbose_logging(level=logging.DEBUG):
-        log.setLevel(level)
-        # enable trace level logging in httpx
-        httpx_log = logging.getLogger("httpx")
-        httpx_log.setLevel(level)
-        httpx_log.propagate = True
+        # We register handlers for mattermostautodriver which takes care of
+        # mattermostautodriver.websocket and mattermostautodriver.api
+        #
+        # In addition we also add handlers to httpx and httpcore loggers
+        # if none are present
+
+        loggers = (
+            "mattermostautodriver",
+            "httpx",
+            "httpcore",
+        )
+
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter(
+            "%(levelname)s [%(asctime)s] %(name)s - %(message)s"
+        ))
+
+        for logger in loggers:
+            _logger = logging.getLogger(logger)
+            _logger.setLevel(level)
+
+            if not _logger.hasHandlers():
+                _logger.addHandler(handler)
 
     @property
     def userid(self):
