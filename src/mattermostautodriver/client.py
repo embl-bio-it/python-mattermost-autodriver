@@ -48,7 +48,7 @@ class BaseClient:
         log.setLevel(level)
         # enable trace level logging in httpx
         httpx_log = logging.getLogger("httpx")
-        httpx_log.setLevel("TRACE")
+        httpx_log.setLevel(level)
         httpx_log.propagate = True
 
     @property
