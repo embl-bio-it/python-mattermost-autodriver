@@ -1,4 +1,4 @@
-name: "Build and deploy sphinx docs"
+name: Build and deploy sphinx docs
 on:
   push:
     branches: ["main"]

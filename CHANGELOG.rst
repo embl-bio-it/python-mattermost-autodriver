@@ -15,7 +15,7 @@ Documentation
 Maintenance
 '''''''''''
 
--
+- Rename GitHub Actions for clarity
 
 1.3.0
 """""
