@@ -4,7 +4,8 @@ Unreleased
 Code
 ''''
 
--
+- Remove non-standard "TRACE" debug level in httpx code
+- Fix logging output when passing debug=True to Driver()
 
 Documentation
 '''''''''''''
