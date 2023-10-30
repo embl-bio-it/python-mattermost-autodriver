@@ -167,7 +167,7 @@ class Driver(BaseDriver):
             self.client.token = self.options["token"]
             result = self.users.get_user("me")
         else:
-            response = self.users.login_user(
+            response = self.users.login(
                 {
                     "login_id": self.options["login_id"],
                     "password": self.options["password"],
@@ -260,7 +260,7 @@ class AsyncDriver(BaseDriver):
             self.client.token = self.options["token"]
             result = await self.users.get_user("me")
         else:
-            response = await self.users.login_user(
+            response = await self.users.login(
                 {
                     "login_id": self.options["login_id"],
                     "password": self.options["password"],
