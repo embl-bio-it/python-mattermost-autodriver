@@ -21,6 +21,22 @@ This project is forked from https://github.com/Vaelor/python-mattermost-driver b
 
 Python 3.6 or later is required.
 
+.. warning::
+   This repository generates code in a fully automated fashion based on the API specification provided by mattermost developers.
+   No additional effort of backwards compatibility is made.
+
+Versions and Releases
+---------------------
+
+Due to frequent API breaking changes, the versioning scheme used by this repository is not strict `SemanticVersioning <https://semver.org/>`_.
+Instead, the following should be considered for changes in MAJOR.MINOR.PATCH version digits:
+
+- PATCH: includes bugfixes, non-breaking changes or addition of new endpoints
+- MINOR: includes breaking changes such as removal of single endpoints
+- MAJOR: includes breaking changes including removal of entire modules or collections of endpoints
+
+In production environments you are advised to pin to the MINOR digit (e.g. 1.3.x).
+
 Installation
 ------------
 
@@ -32,6 +48,7 @@ Installation
 
 Documentation
 -------------
+
 Documentation can be found at https://embl-bio-it.github.io/python-mattermost-autodriver/ .
 
 Usage
