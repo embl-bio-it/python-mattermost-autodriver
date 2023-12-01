@@ -66,7 +66,7 @@ class Files(Base):
 
         `Read in Mattermost API docs (files - GetFilePublic) <https://api.mattermost.com/#tag/files/operation/GetFilePublic>`_
         """
-        return self.client.get(f"/api/v4/files/{file_id}/public", params=params)
+        return self.client.get(f"/files/{file_id}/public", params=params)
 
     def search_files(self, team_id, data):
         """Search files in a team

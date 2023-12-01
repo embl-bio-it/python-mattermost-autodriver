@@ -60,6 +60,12 @@ class Cloud(Base):
         """
         return self.client.get("""/api/v4/cloud/subscription""")
 
+    def get_endpoint_for_installation_information(self):
+        """GET endpoint for Installation information
+        `Read in Mattermost API docs (cloud - GetEndpointForInstallationInformation) <https://api.mattermost.com/#tag/cloud/operation/GetEndpointForInstallationInformation>`_
+        """
+        return self.client.get("""/api/v4/cloud/installation""")
+
     def get_invoices_for_subscription(self):
         """Get cloud subscription invoices
         `Read in Mattermost API docs (cloud - GetInvoicesForSubscription) <https://api.mattermost.com/#tag/cloud/operation/GetInvoicesForSubscription>`_

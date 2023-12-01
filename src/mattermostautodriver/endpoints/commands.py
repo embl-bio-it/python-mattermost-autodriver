@@ -43,7 +43,7 @@ class Commands(Base):
 
         `Read in Mattermost API docs (commands - ListCommandAutocompleteSuggestions) <https://api.mattermost.com/#tag/commands/operation/ListCommandAutocompleteSuggestions>`_
         """
-        return self.client.get(f"/teams/{team_id}/commands/autocomplete_suggestions", params=params)
+        return self.client.get(f"/api/v4/teams/{team_id}/commands/autocomplete_suggestions", params=params)
 
     def get_command_by_id(self, command_id):
         """Get a command

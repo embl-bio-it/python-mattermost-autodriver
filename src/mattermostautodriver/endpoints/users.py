@@ -669,6 +669,16 @@ class Users(Base):
         """
         return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options)
 
+    def get_users_with_invalid_emails(self, params=None):
+        """Get users with invalid emails
+
+        page: The page to select.
+        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+
+        `Read in Mattermost API docs (users - GetUsersWithInvalidEmails) <https://api.mattermost.com/#tag/users/operation/GetUsersWithInvalidEmails>`_
+        """
+        return self.client.get("""/api/v4/users/invalid_emails""", params=params)
+
     def convert_bot_to_user(self, bot_user_id, options):
         """Convert a bot into a user
 

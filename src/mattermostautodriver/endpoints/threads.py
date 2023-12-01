@@ -61,7 +61,7 @@ class Threads(Base):
 
         `Read in Mattermost API docs (threads - SetThreadUnreadByPostId) <https://api.mattermost.com/#tag/threads/operation/SetThreadUnreadByPostId>`_
         """
-        return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}")
+        return self.client.post(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}")
 
     def start_following_thread(self, user_id, team_id, thread_id):
         """Start following a thread

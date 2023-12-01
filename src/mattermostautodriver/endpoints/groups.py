@@ -69,6 +69,15 @@ class Groups(Base):
         """
         return self.client.put(f"/api/v4/groups/{group_id}/patch", options=options)
 
+    def restore_group(self, group_id):
+        """Restore a previously deleted group.
+
+        group_id: Group GUID
+
+        `Read in Mattermost API docs (groups - RestoreGroup) <https://api.mattermost.com/#tag/groups/operation/RestoreGroup>`_
+        """
+        return self.client.post(f"/api/v4/groups/{group_id}/restore")
+
     def link_group_syncable_for_team(self, group_id, team_id):
         """Link a team to a group
 

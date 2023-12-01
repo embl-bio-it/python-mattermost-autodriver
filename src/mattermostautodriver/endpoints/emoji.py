@@ -77,3 +77,9 @@ class Emoji(Base):
         `Read in Mattermost API docs (emoji - AutocompleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/AutocompleteEmoji>`_
         """
         return self.client.get("""/api/v4/emoji/autocomplete""", params=params)
+
+    def get_emojis_by_names(self, options):
+        """Get custom emojis by name
+        `Read in Mattermost API docs (emoji - GetEmojisByNames) <https://api.mattermost.com/#tag/emoji/operation/GetEmojisByNames>`_
+        """
+        return self.client.post("""/api/v4/emoji/names""", options=options)
