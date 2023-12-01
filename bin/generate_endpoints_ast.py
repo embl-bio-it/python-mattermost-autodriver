@@ -61,7 +61,7 @@ from .base import Base
 """
 
 
-def load_json(filepath="mattermost-api-reference/openapi.json"):
+def load_json(filepath="mattermost/api/openapi.json"):
     with open(filepath) as fh:
         return json.loads(fh.read())
 
