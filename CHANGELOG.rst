@@ -44,6 +44,7 @@ Maintenance
 '''''''''''
 
 - Rename GitHub Actions for clarity
+- Force upgrade of pip in sphinx build GitHub Action - fixes docutils incompatibility resolution
 
 1.3.0
 """""
