@@ -14,7 +14,7 @@ Python Mattermost Auto Driver (APIv4)
 Info
 ----
 
-The repository will try to keep up with the master of https://github.com/mattermost/mattermost-api-reference
+The repository will try to keep up with the ``api`` specification in https://github.com/mattermost/mattermost/ (subfolder ``api``)
 Changes in API of ``mattermostautodriver`` will likely be due to a change in the reference mattermost API documentation.
 
 This project is forked from https://github.com/Vaelor/python-mattermost-driver but uses an automatic approach to generate all Python endpoint files from the mattermost OpenAPI specification.
@@ -209,11 +209,11 @@ First we need to obtain Mattermost's API in an OpenAPI JSON.
 
 .. code:: shell
 
-    git clone https://github.com/mattermost/mattermost-api-reference
-    cd mattermost-api-reference
+    git clone --depth=1 --filter=tree:0 https://github.com/mattermost/mattermost
+    cd mattermost/api
     make build
     ./node_modules/.bin/swagger-cli bundle --outfile openapi.json v4/html/static/mattermost-openapi-v4.yaml
-    cd ..
+    cd -
 
 With the above commands you will have cloned and created an ``openapi.json`` file that will be used by the conversion script.
 
