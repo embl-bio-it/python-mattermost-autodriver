@@ -250,5 +250,12 @@ Finally, with the virtual environment still loaded execute
 
 to generate the updated endpoint definition.
 
+.. code:: shell
+
+    cd docs
+    ./update_endpoints.py
+
+needs to be executed after to update endpoint documentation.
+
 The current API conversion code was designed for Python 3.9.
 As it uses Python's AST parser and generator, alongside with `Black <https://github.com/psf/black>`_ different versions of Python may result in some differences in the generated code. Double check with a ``git diff`` once complete.

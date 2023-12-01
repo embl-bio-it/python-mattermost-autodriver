@@ -121,6 +121,14 @@ Files
     :undoc-members:
     :show-inheritance:
 
+Filtering
+---------
+
+.. automodule:: mattermostautodriver.endpoints.filtering
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Groups
 ------
 
@@ -137,18 +145,26 @@ Imports
     :undoc-members:
     :show-inheritance:
 
-Insights
---------
-
-.. automodule:: mattermostautodriver.endpoints.insights
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Integration Actions
 -------------------
 
 .. automodule:: mattermostautodriver.endpoints.integration_actions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Internal
+--------
+
+.. automodule:: mattermostautodriver.endpoints.internal
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Ip
+--
+
+.. automodule:: mattermostautodriver.endpoints.ip
     :members:
     :undoc-members:
     :show-inheritance:
@@ -185,18 +201,34 @@ Oauth
     :undoc-members:
     :show-inheritance:
 
-Opengraph
----------
-
-.. automodule:: mattermostautodriver.endpoints.opengraph
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Permissions
 -----------
 
 .. automodule:: mattermostautodriver.endpoints.permissions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Playbookautofollows
+-------------------
+
+.. automodule:: mattermostautodriver.endpoints.playbookautofollows
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Playbookruns
+------------
+
+.. automodule:: mattermostautodriver.endpoints.playbookruns
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Playbooks
+---------
+
+.. automodule:: mattermostautodriver.endpoints.playbooks
     :members:
     :undoc-members:
     :show-inheritance:
@@ -317,6 +349,14 @@ Threads
 -------
 
 .. automodule:: mattermostautodriver.endpoints.threads
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Timeline
+--------
+
+.. automodule:: mattermostautodriver.endpoints.timeline
     :members:
     :undoc-members:
     :show-inheritance:
