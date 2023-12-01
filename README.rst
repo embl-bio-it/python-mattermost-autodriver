@@ -21,9 +21,11 @@ This project is forked from https://github.com/Vaelor/python-mattermost-driver b
 
 Python 3.6 or later is required.
 
-.. warning::
-   This repository generates code in a fully automated fashion based on the API specification provided by mattermost developers.
-   No additional effort of backwards compatibility is made.
+Warning
+^^^^^^^
+
+This repository generates code in a fully automated fashion based on the API specification provided by mattermost developers.
+No additional effort of backwards compatibility is made.
 
 Versions and Releases
 ---------------------
