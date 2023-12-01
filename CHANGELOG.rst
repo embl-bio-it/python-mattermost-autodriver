@@ -4,13 +4,41 @@ Unreleased
 Code
 ''''
 
-- Remove non-standard "TRACE" debug level in httpx code
-- Fix logging output when passing debug=True to Driver()
+-
 
 Documentation
 '''''''''''''
 
 -
+
+Maintenance
+'''''''''''
+
+-
+
+2.0.0
+"""""
+
+Code
+''''
+
+- Remove non-standard "TRACE" debug level in httpx code
+- Fix logging output when passing ``debug=True`` to ``Driver()``
+- Include API cnanges as of 2023-12-01
+- Add ``cloud.get_endpoint_for_installation_information``
+- Add ``emoji.get_emojis_by_names``
+- Add ``groups.restore_group``
+- Add ``users.get_users_with_invalid_emails``
+- Fix URL of ``commands.list_command_autocomplete_suggestions``
+- Fix URL of ``files.get_file_public``
+- Remove ``insights`` and ``opengraph`` endpoints
+- New endpoints ``filtering`` and ``ip``
+- ``threads.set_thread_unread_by_post_id`` now uses POST
+
+Documentation
+'''''''''''''
+
+- Updated README API clone instructions. API is now part of main mattermost repository.
 
 Maintenance
 '''''''''''
@@ -116,7 +144,7 @@ Maintenance
 - Reduce number of line breaks around titles
 
 1.2.0
-'''''
+"""""
 
 Code
 ''''
@@ -130,56 +158,64 @@ Documentation
 - Sphinx now specifies english as documentation language
 
 Maintenance
-Update API according to upload semantics
-Add files attribute to any API call involving uploads
-Update command as swagget2openapi isn't always available
-Update API spec as of 2022-08-25
-Update location of call_webhook
+'''''''''''
+
+- Update API according to upload semantics
+- Add files attribute to any API call involving uploads
+- Update command as swagget2openapi isn't always available
+- Update API spec as of 2022-08-25
+- Update location of call_webhook
 
 1.1.5
-'''''
-Don't check hostname when using ssl.CERT_NONE
-Update endpoints docs
+"""""
+
+- Don't check hostname when using ssl.CERT_NONE
+- Update endpoints docs
 
 1.1.4
-'''''
-Re-fix __new__ signature
+"""""
+
+- Re-fix __new__ signature
 
 1.1.3
-'''''
-Fix __new__ signature
+"""""
+
+- Fix __new__ signature
 
 1.1.2
-'''''
-Fix version require
+"""""
+
+- Fix version require
 
 1.1.1
-'''''
-Change auth method
-Fixing commas in README
+"""""
+
+- Change auth method
+- Fixing commas in README
 
 1.1.0
-'''''
-Re-add call_webhook previous webhooks.call_webhook
-Add get_last_trial_license endpoint
-Replace hardcoded property endpoints with dynamic ones
-Add doc about (re)generating API spec
-Update API spec to latest
-Use CamelCase for class names in API
-Add black and inflection to dependencies
-Use CamelCase for class names
+"""""
+
+- Re-add call_webhook previous webhooks.call_webhook
+- Add get_last_trial_license endpoint
+- Replace hardcoded property endpoints with dynamic ones
+- Add doc about (re)generating API spec
+- Update API spec to latest
+- Use CamelCase for class names in API
+- Add black and inflection to dependencies
+- Use CamelCase for class names
 
 1.0.0
-'''''
+"""""
 
-Clarify relation to mattermostdriver
-Rename driver to mattermostautodriver
-Bump version to 8.0.0 due to many API renames and backwards incompatibility
-Add self-generated endpoints
-Use pyproject.toml as black config
-Add helper script to generate updated endpoints
-Format all files with black in a single invocation
-Use lowecase names for modules
-Avoid adding f-strings when containing no attributes
-Remove unused logging configuration
-Implement OpenAPI conversion using Python AST
+- Clarify relation to mattermostdriver
+- Rename driver to mattermostautodriver
+- Bump version to 8.0.0 due to many API renames and backwards incompatibility
+- Add self-generated endpoints
+- Use pyproject.toml as black config
+- Add helper script to generate updated endpoints
+- Format all files with black in a single invocation
+- Use lowecase names for modules
+- Avoid adding f-strings when containing no attributes
+- Remove unused logging configuration
+- Implement OpenAPI conversion using Python AST
