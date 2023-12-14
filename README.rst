@@ -35,7 +35,7 @@ Instead, the following should be considered for changes in MAJOR.MINOR.PATCH ver
 
 - PATCH: includes bugfixes, non-breaking changes or addition of new endpoints
 - MINOR: includes breaking changes such as removal of single endpoints
-- MAJOR: includes breaking changes including removal of entire modules or collections of endpoints
+- MAJOR: includes breaking changes such as removal of entire modules or collections of endpoints
 
 In production environments you are advised to pin to the MINOR digit (e.g. 1.3.x).
 
