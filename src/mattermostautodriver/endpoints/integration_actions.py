@@ -2,6 +2,7 @@ from .base import Base
 
 
 class IntegrationActions(Base):
+
     def open_interactive_dialog(self, options):
         """Open a dialog
 
@@ -10,6 +11,7 @@ class IntegrationActions(Base):
         dialog: Post object to create
 
         `Read in Mattermost API docs (integration_actions - OpenInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/OpenInteractiveDialog>`_
+
         """
         return self.client.post("""/api/v4/actions/dialogs/open""", options=options)
 
@@ -25,5 +27,6 @@ class IntegrationActions(Base):
         cancelled: Set to true if the dialog was cancelled
 
         `Read in Mattermost API docs (integration_actions - SubmitInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/SubmitInteractiveDialog>`_
+
         """
         return self.client.post("""/api/v4/actions/dialogs/submit""", options=options)

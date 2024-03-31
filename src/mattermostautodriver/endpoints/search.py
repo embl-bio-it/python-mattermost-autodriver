@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Search(Base):
+
     def search_files(self, team_id, data):
         """Search files in a team
 
@@ -14,5 +15,6 @@ class Search(Base):
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

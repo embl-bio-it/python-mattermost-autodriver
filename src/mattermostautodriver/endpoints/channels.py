@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Channels(Base):
+
     def get_all_channels(self, params=None):
         """Get a list of all channels
 
@@ -15,6 +16,7 @@ class Channels(Base):
         *Minimum server version*: 5.35
 
         `Read in Mattermost API docs (channels - GetAllChannels) <https://api.mattermost.com/#tag/channels/operation/GetAllChannels>`_
+
         """
         return self.client.get("""/api/v4/channels""", params=params)
 
@@ -29,18 +31,21 @@ class Channels(Base):
         type: 'O' for a public channel, 'P' for a private channel
 
         `Read in Mattermost API docs (channels - CreateChannel) <https://api.mattermost.com/#tag/channels/operation/CreateChannel>`_
+
         """
         return self.client.post("""/api/v4/channels""", options=options)
 
     def create_direct_channel(self, options):
         """Create a direct message channel
         `Read in Mattermost API docs (channels - CreateDirectChannel) <https://api.mattermost.com/#tag/channels/operation/CreateDirectChannel>`_
+
         """
         return self.client.post("""/api/v4/channels/direct""", options=options)
 
     def create_group_channel(self, options):
         """Create a group message channel
         `Read in Mattermost API docs (channels - CreateGroupChannel) <https://api.mattermost.com/#tag/channels/operation/CreateGroupChannel>`_
+
         """
         return self.client.post("""/api/v4/channels/group""", options=options)
 
@@ -84,6 +89,7 @@ class Channels(Base):
 
 
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://api.mattermost.com/#tag/channels/operation/SearchAllChannels>`_
+
         """
         return self.client.post("""/api/v4/channels/search""", options=options)
 
@@ -93,6 +99,7 @@ class Channels(Base):
         term: The search term to match against the members' usernames of the group channels
 
         `Read in Mattermost API docs (channels - SearchGroupChannels) <https://api.mattermost.com/#tag/channels/operation/SearchGroupChannels>`_
+
         """
         return self.client.post("""/api/v4/channels/group/search""", options=options)
 
@@ -102,6 +109,7 @@ class Channels(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (channels - GetPublicChannelsByIdsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetPublicChannelsByIdsForTeam>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/channels/ids", options=options)
 
@@ -111,6 +119,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannelMembersTimezones) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembersTimezones>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/timezones")
 
@@ -120,6 +129,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannel) <https://api.mattermost.com/#tag/channels/operation/GetChannel>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}")
 
@@ -134,6 +144,7 @@ class Channels(Base):
         header: Markdown-formatted text to display in the header of the channel
 
         `Read in Mattermost API docs (channels - UpdateChannel) <https://api.mattermost.com/#tag/channels/operation/UpdateChannel>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}", options=options)
 
@@ -143,6 +154,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - DeleteChannel) <https://api.mattermost.com/#tag/channels/operation/DeleteChannel>`_
+
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}")
 
@@ -156,6 +168,7 @@ class Channels(Base):
         header: Markdown-formatted text to display in the header of the channel
 
         `Read in Mattermost API docs (channels - PatchChannel) <https://api.mattermost.com/#tag/channels/operation/PatchChannel>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/patch", options=options)
 
@@ -166,6 +179,7 @@ class Channels(Base):
         privacy: Channel privacy setting: 'O' for a public channel, 'P' for a private channel
 
         `Read in Mattermost API docs (channels - UpdateChannelPrivacy) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelPrivacy>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/privacy", options=options)
 
@@ -175,6 +189,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - RestoreChannel) <https://api.mattermost.com/#tag/channels/operation/RestoreChannel>`_
+
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/restore")
 
@@ -186,6 +201,7 @@ class Channels(Base):
         force: Remove members those are not member of target team before moving the channel.
 
         `Read in Mattermost API docs (channels - MoveChannel) <https://api.mattermost.com/#tag/channels/operation/MoveChannel>`_
+
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/move", options=options)
 
@@ -195,6 +211,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannelStats) <https://api.mattermost.com/#tag/channels/operation/GetChannelStats>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/stats")
 
@@ -204,6 +221,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetPinnedPosts) <https://api.mattermost.com/#tag/channels/operation/GetPinnedPosts>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/pinned")
 
@@ -215,6 +233,7 @@ class Channels(Base):
         per_page: The number of public channels per page.
 
         `Read in Mattermost API docs (channels - GetPublicChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetPublicChannelsForTeam>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels", params=params)
 
@@ -226,6 +245,7 @@ class Channels(Base):
         per_page: The number of private channels per page.
 
         `Read in Mattermost API docs (channels - GetPrivateChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetPrivateChannelsForTeam>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/private", params=params)
 
@@ -237,6 +257,7 @@ class Channels(Base):
         per_page: The number of public channels per page.
 
         `Read in Mattermost API docs (channels - GetDeletedChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetDeletedChannelsForTeam>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/deleted", params=params)
 
@@ -247,6 +268,7 @@ class Channels(Base):
         name: Name or display name
 
         `Read in Mattermost API docs (channels - AutocompleteChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/AutocompleteChannelsForTeam>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/autocomplete", params=params)
 
@@ -257,6 +279,7 @@ class Channels(Base):
         name: Name or display name
 
         `Read in Mattermost API docs (channels - AutocompleteChannelsForTeamForSearch) <https://api.mattermost.com/#tag/channels/operation/AutocompleteChannelsForTeamForSearch>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/search_autocomplete", params=params)
 
@@ -267,6 +290,7 @@ class Channels(Base):
         term: The search term to match against the name or display name of channels
 
         `Read in Mattermost API docs (channels - SearchChannels) <https://api.mattermost.com/#tag/channels/operation/SearchChannels>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/channels/search", options=options)
 
@@ -277,6 +301,7 @@ class Channels(Base):
         term: The search term to match against the name or display name of archived channels
 
         `Read in Mattermost API docs (channels - SearchArchivedChannels) <https://api.mattermost.com/#tag/channels/operation/SearchArchivedChannels>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/channels/search_archived", options=options)
 
@@ -288,6 +313,7 @@ class Channels(Base):
         include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+)
 
         `Read in Mattermost API docs (channels - GetChannelByName) <https://api.mattermost.com/#tag/channels/operation/GetChannelByName>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/name/{channel_name}", params=params)
 
@@ -299,6 +325,7 @@ class Channels(Base):
         include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+)
 
         `Read in Mattermost API docs (channels - GetChannelByNameForTeamName) <https://api.mattermost.com/#tag/channels/operation/GetChannelByNameForTeamName>`_
+
         """
         return self.client.get(f"/api/v4/teams/name/{team_name}/channels/name/{channel_name}", params=params)
 
@@ -310,6 +337,7 @@ class Channels(Base):
         per_page: The number of members per page. There is a maximum limit of 200 members.
 
         `Read in Mattermost API docs (channels - GetChannelMembers) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembers>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/members", params=params)
 
@@ -321,6 +349,7 @@ class Channels(Base):
         post_root_id: The ID of root post where link to add channel member originates
 
         `Read in Mattermost API docs (channels - AddChannelMember) <https://api.mattermost.com/#tag/channels/operation/AddChannelMember>`_
+
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/members", options=options)
 
@@ -330,6 +359,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannelMembersByIds) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembersByIds>`_
+
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/members/ids", options=options)
 
@@ -340,6 +370,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - GetChannelMember) <https://api.mattermost.com/#tag/channels/operation/GetChannelMember>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/members/{user_id}")
 
@@ -350,6 +381,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - RemoveUserFromChannel) <https://api.mattermost.com/#tag/channels/operation/RemoveUserFromChannel>`_
+
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}/members/{user_id}")
 
@@ -361,6 +393,7 @@ class Channels(Base):
         roles:
 
         `Read in Mattermost API docs (channels - UpdateChannelRoles) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelRoles>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/roles", options=options)
 
@@ -373,6 +406,7 @@ class Channels(Base):
         scheme_user:
 
         `Read in Mattermost API docs (channels - UpdateChannelMemberSchemeRoles) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelMemberSchemeRoles>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/schemeRoles", options=options)
 
@@ -383,6 +417,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - UpdateChannelNotifyProps) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelNotifyProps>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/notify_props", options=options)
 
@@ -394,6 +429,7 @@ class Channels(Base):
         prev_channel_id: The channel ID of the previous channel, used when switching channels. Providing this ID will cause push notifications to clear on the channel being switched to.
 
         `Read in Mattermost API docs (channels - ViewChannel) <https://api.mattermost.com/#tag/channels/operation/ViewChannel>`_
+
         """
         return self.client.post(f"/api/v4/channels/members/{user_id}/view", options=options)
 
@@ -404,6 +440,7 @@ class Channels(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (channels - GetChannelMembersForUser) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembersForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels/members")
 
@@ -416,6 +453,7 @@ class Channels(Base):
         last_delete_at: Filters the deleted channels by this time in epoch format. Does not have any effect if include_deleted is set to false.
 
         `Read in Mattermost API docs (channels - GetChannelsForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/GetChannelsForTeamForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels", params=params)
 
@@ -427,6 +465,7 @@ class Channels(Base):
         include_deleted: Defines if deleted channels should be returned or not
 
         `Read in Mattermost API docs (channels - GetChannelsForUser) <https://api.mattermost.com/#tag/channels/operation/GetChannelsForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/channels", params=params)
 
@@ -437,6 +476,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannelUnread) <https://api.mattermost.com/#tag/channels/operation/GetChannelUnread>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/channels/{channel_id}/unread")
 
@@ -447,6 +487,7 @@ class Channels(Base):
         scheme_id: The ID of the scheme.
 
         `Read in Mattermost API docs (channels - UpdateChannelScheme) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelScheme>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/scheme", options=options)
 
@@ -459,6 +500,7 @@ class Channels(Base):
         per_page: The number of users per page.
 
         `Read in Mattermost API docs (channels - ChannelMembersMinusGroupMembers) <https://api.mattermost.com/#tag/channels/operation/ChannelMembersMinusGroupMembers>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/members_minus_group_members", params=params)
 
@@ -469,6 +511,7 @@ class Channels(Base):
         include_timezones: Defines if member timezone counts should be returned or not
 
         `Read in Mattermost API docs (channels - GetChannelMemberCountsByGroup) <https://api.mattermost.com/#tag/channels/operation/GetChannelMemberCountsByGroup>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/member_counts_by_group", params=params)
 
@@ -478,6 +521,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - GetChannelModerations) <https://api.mattermost.com/#tag/channels/operation/GetChannelModerations>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/moderations")
 
@@ -487,6 +531,7 @@ class Channels(Base):
         channel_id: Channel GUID
 
         `Read in Mattermost API docs (channels - PatchChannelModerations) <https://api.mattermost.com/#tag/channels/operation/PatchChannelModerations>`_
+
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/moderations/patch", options=options)
 
@@ -497,6 +542,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - GetSidebarCategoriesForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/GetSidebarCategoriesForTeamForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories")
 
@@ -507,6 +553,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - CreateSidebarCategoryForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/CreateSidebarCategoryForTeamForUser>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories", options=options)
 
@@ -517,6 +564,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - UpdateSidebarCategoriesForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/UpdateSidebarCategoriesForTeamForUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories", options=options)
 
@@ -527,6 +575,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - GetSidebarCategoryOrderForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/GetSidebarCategoryOrderForTeamForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/order")
 
@@ -537,6 +586,7 @@ class Channels(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (channels - UpdateSidebarCategoryOrderForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/UpdateSidebarCategoryOrderForTeamForUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/order", options=options)
 
@@ -548,6 +598,7 @@ class Channels(Base):
         category_id: Category GUID
 
         `Read in Mattermost API docs (channels - GetSidebarCategoryForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/GetSidebarCategoryForTeamForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
 
@@ -559,6 +610,7 @@ class Channels(Base):
         category_id: Category GUID
 
         `Read in Mattermost API docs (channels - UpdateSidebarCategoryForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/UpdateSidebarCategoryForTeamForUser>`_
+
         """
         return self.client.put(
             f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}", options=options
@@ -572,5 +624,6 @@ class Channels(Base):
         category_id: Category GUID
 
         `Read in Mattermost API docs (channels - RemoveSidebarCategoryForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/RemoveSidebarCategoryForTeamForUser>`_
+
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")

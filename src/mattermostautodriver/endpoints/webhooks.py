@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Webhooks(Base):
+
     def create_incoming_webhook(self, options):
         """Create an incoming webhook
 
@@ -13,6 +14,7 @@ class Webhooks(Base):
         icon_url: The profile picture this incoming webhook will use when posting.
 
         `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateIncomingWebhook>`_
+
         """
         return self.client.post("""/api/v4/hooks/incoming""", options=options)
 
@@ -24,6 +26,7 @@ class Webhooks(Base):
         team_id: The ID of the team to get hooks for.
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
+
         """
         return self.client.get("""/api/v4/hooks/incoming""", params=params)
 
@@ -33,6 +36,7 @@ class Webhooks(Base):
         hook_id: Incoming Webhook GUID
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhook>`_
+
         """
         return self.client.get(f"/api/v4/hooks/incoming/{hook_id}")
 
@@ -42,6 +46,7 @@ class Webhooks(Base):
         hook_id: Incoming webhook GUID
 
         `Read in Mattermost API docs (webhooks - DeleteIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteIncomingWebhook>`_
+
         """
         return self.client.delete(f"/api/v4/hooks/incoming/{hook_id}")
 
@@ -57,6 +62,7 @@ class Webhooks(Base):
         icon_url: The profile picture this incoming webhook will use when posting.
 
         `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateIncomingWebhook>`_
+
         """
         return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=options)
 
@@ -74,6 +80,7 @@ class Webhooks(Base):
         content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded``
 
         `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateOutgoingWebhook>`_
+
         """
         return self.client.post("""/api/v4/hooks/outgoing""", options=options)
 
@@ -86,6 +93,7 @@ class Webhooks(Base):
         channel_id: The ID of the channel to get hooks for.
 
         `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhooks>`_
+
         """
         return self.client.get("""/api/v4/hooks/outgoing""", params=params)
 
@@ -95,6 +103,7 @@ class Webhooks(Base):
         hook_id: Outgoing webhook GUID
 
         `Read in Mattermost API docs (webhooks - GetOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhook>`_
+
         """
         return self.client.get(f"/api/v4/hooks/outgoing/{hook_id}")
 
@@ -104,6 +113,7 @@ class Webhooks(Base):
         hook_id: Outgoing webhook GUID
 
         `Read in Mattermost API docs (webhooks - DeleteOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteOutgoingWebhook>`_
+
         """
         return self.client.delete(f"/api/v4/hooks/outgoing/{hook_id}")
 
@@ -117,6 +127,7 @@ class Webhooks(Base):
         description: The description for this incoming webhook
 
         `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateOutgoingWebhook>`_
+
         """
         return self.client.put(f"/api/v4/hooks/outgoing/{hook_id}", options=options)
 
@@ -126,5 +137,6 @@ class Webhooks(Base):
         hook_id: Outgoing webhook GUID
 
         `Read in Mattermost API docs (webhooks - RegenOutgoingHookToken) <https://api.mattermost.com/#tag/webhooks/operation/RegenOutgoingHookToken>`_
+
         """
         return self.client.post(f"/api/v4/hooks/outgoing/{hook_id}/regen_token")

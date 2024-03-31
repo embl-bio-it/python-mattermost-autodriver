@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Threads(Base):
+
     def get_user_threads(self, user_id, team_id, params=None):
         """Get all threads that user is following
 
@@ -16,6 +17,7 @@ class Threads(Base):
         threadsOnly: Setting this to true will only return threads.
 
         `Read in Mattermost API docs (threads - GetUserThreads) <https://api.mattermost.com/#tag/threads/operation/GetUserThreads>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=params)
 
@@ -26,6 +28,7 @@ class Threads(Base):
         team_id: The ID of the team in which the thread is.
 
         `Read in Mattermost API docs (threads - GetThreadMentionCountsByChannel) <https://api.mattermost.com/#tag/threads/operation/GetThreadMentionCountsByChannel>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads/mention_counts")
 
@@ -36,6 +39,7 @@ class Threads(Base):
         team_id: The ID of the team in which the thread is.
 
         `Read in Mattermost API docs (threads - UpdateThreadsReadForUser) <https://api.mattermost.com/#tag/threads/operation/UpdateThreadsReadForUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/read")
 
@@ -48,6 +52,7 @@ class Threads(Base):
         timestamp: The timestamp to which the thread's "last read" state will be reset.
 
         `Read in Mattermost API docs (threads - UpdateThreadReadForUser) <https://api.mattermost.com/#tag/threads/operation/UpdateThreadReadForUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/read/{timestamp}")
 
@@ -60,6 +65,7 @@ class Threads(Base):
         post_id: The ID of a post belonging to the thread to mark as unread.
 
         `Read in Mattermost API docs (threads - SetThreadUnreadByPostId) <https://api.mattermost.com/#tag/threads/operation/SetThreadUnreadByPostId>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}")
 
@@ -71,6 +77,7 @@ class Threads(Base):
         thread_id: The ID of the thread to follow
 
         `Read in Mattermost API docs (threads - StartFollowingThread) <https://api.mattermost.com/#tag/threads/operation/StartFollowingThread>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
@@ -82,6 +89,7 @@ class Threads(Base):
         thread_id: The ID of the thread to update
 
         `Read in Mattermost API docs (threads - StopFollowingThread) <https://api.mattermost.com/#tag/threads/operation/StopFollowingThread>`_
+
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
@@ -93,5 +101,6 @@ class Threads(Base):
         thread_id: The ID of the thread to follow
 
         `Read in Mattermost API docs (threads - GetUserThread) <https://api.mattermost.com/#tag/threads/operation/GetUserThread>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}")

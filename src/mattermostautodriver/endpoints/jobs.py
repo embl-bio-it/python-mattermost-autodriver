@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Jobs(Base):
+
     def get_jobs(self, params=None):
         """Get the jobs.
 
@@ -9,6 +10,7 @@ class Jobs(Base):
         per_page: The number of jobs per page.
 
         `Read in Mattermost API docs (jobs - GetJobs) <https://api.mattermost.com/#tag/jobs/operation/GetJobs>`_
+
         """
         return self.client.get("""/api/v4/jobs""", params=params)
 
@@ -19,6 +21,7 @@ class Jobs(Base):
         data: An object containing any additional data required for this job type
 
         `Read in Mattermost API docs (jobs - CreateJob) <https://api.mattermost.com/#tag/jobs/operation/CreateJob>`_
+
         """
         return self.client.post("""/api/v4/jobs""", options=options)
 
@@ -28,6 +31,7 @@ class Jobs(Base):
         job_id: Job GUID
 
         `Read in Mattermost API docs (jobs - GetJob) <https://api.mattermost.com/#tag/jobs/operation/GetJob>`_
+
         """
         return self.client.get(f"/api/v4/jobs/{job_id}")
 
@@ -37,6 +41,7 @@ class Jobs(Base):
         job_id: Job GUID
 
         `Read in Mattermost API docs (jobs - DownloadJob) <https://api.mattermost.com/#tag/jobs/operation/DownloadJob>`_
+
         """
         return self.client.get(f"/api/v4/jobs/{job_id}/download")
 
@@ -46,6 +51,7 @@ class Jobs(Base):
         job_id: Job GUID
 
         `Read in Mattermost API docs (jobs - CancelJob) <https://api.mattermost.com/#tag/jobs/operation/CancelJob>`_
+
         """
         return self.client.post(f"/api/v4/jobs/{job_id}/cancel")
 
@@ -57,5 +63,6 @@ class Jobs(Base):
         per_page: The number of jobs per page.
 
         `Read in Mattermost API docs (jobs - GetJobsByType) <https://api.mattermost.com/#tag/jobs/operation/GetJobsByType>`_
+
         """
         return self.client.get(f"/api/v4/jobs/type/{type}", params=params)

@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Files(Base):
+
     def upload_file(self, files, data=None):
         """Upload a file
 
@@ -10,6 +11,7 @@ class Files(Base):
         client_ids: A unique identifier for the file that will be returned in the response
 
         `Read in Mattermost API docs (files - UploadFile) <https://api.mattermost.com/#tag/files/operation/UploadFile>`_
+
         """
         return self.client.post("""/api/v4/files""", files=files, data=data)
 
@@ -19,6 +21,7 @@ class Files(Base):
         file_id: The ID of the file to get
 
         `Read in Mattermost API docs (files - GetFile) <https://api.mattermost.com/#tag/files/operation/GetFile>`_
+
         """
         return self.client.get(f"/api/v4/files/{file_id}")
 
@@ -28,6 +31,7 @@ class Files(Base):
         file_id: The ID of the file to get
 
         `Read in Mattermost API docs (files - GetFileThumbnail) <https://api.mattermost.com/#tag/files/operation/GetFileThumbnail>`_
+
         """
         return self.client.get(f"/api/v4/files/{file_id}/thumbnail")
 
@@ -37,6 +41,7 @@ class Files(Base):
         file_id: The ID of the file to get
 
         `Read in Mattermost API docs (files - GetFilePreview) <https://api.mattermost.com/#tag/files/operation/GetFilePreview>`_
+
         """
         return self.client.get(f"/api/v4/files/{file_id}/preview")
 
@@ -46,6 +51,7 @@ class Files(Base):
         file_id: The ID of the file to get a link for
 
         `Read in Mattermost API docs (files - GetFileLink) <https://api.mattermost.com/#tag/files/operation/GetFileLink>`_
+
         """
         return self.client.get(f"/api/v4/files/{file_id}/link")
 
@@ -55,6 +61,7 @@ class Files(Base):
         file_id: The ID of the file info to get
 
         `Read in Mattermost API docs (files - GetFileInfo) <https://api.mattermost.com/#tag/files/operation/GetFileInfo>`_
+
         """
         return self.client.get(f"/api/v4/files/{file_id}/info")
 
@@ -65,6 +72,7 @@ class Files(Base):
         h: File hash
 
         `Read in Mattermost API docs (files - GetFilePublic) <https://api.mattermost.com/#tag/files/operation/GetFilePublic>`_
+
         """
         return self.client.get(f"/files/{file_id}/public", params=params)
 
@@ -80,5 +88,6 @@ class Files(Base):
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

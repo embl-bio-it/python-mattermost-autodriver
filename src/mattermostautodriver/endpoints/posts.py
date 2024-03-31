@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Posts(Base):
+
     def create_post(self, options):
         """Create a post
 
@@ -13,6 +14,7 @@ class Posts(Base):
         metadata: A JSON object to add post metadata, e.g the post's priority
 
         `Read in Mattermost API docs (posts - CreatePost) <https://api.mattermost.com/#tag/posts/operation/CreatePost>`_
+
         """
         return self.client.post("""/api/v4/posts""", options=options)
 
@@ -23,6 +25,7 @@ class Posts(Base):
         post: Post object to create
 
         `Read in Mattermost API docs (posts - CreatePostEphemeral) <https://api.mattermost.com/#tag/posts/operation/CreatePostEphemeral>`_
+
         """
         return self.client.post("""/api/v4/posts/ephemeral""", options=options)
 
@@ -33,6 +36,7 @@ class Posts(Base):
         include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
 
         `Read in Mattermost API docs (posts - GetPost) <https://api.mattermost.com/#tag/posts/operation/GetPost>`_
+
         """
         return self.client.get(f"/api/v4/posts/{post_id}", params=params)
 
@@ -42,6 +46,7 @@ class Posts(Base):
         post_id: ID of the post to delete
 
         `Read in Mattermost API docs (posts - DeletePost) <https://api.mattermost.com/#tag/posts/operation/DeletePost>`_
+
         """
         return self.client.delete(f"/api/v4/posts/{post_id}")
 
@@ -56,6 +61,7 @@ class Posts(Base):
         props: A general JSON property bag to attach to the post
 
         `Read in Mattermost API docs (posts - UpdatePost) <https://api.mattermost.com/#tag/posts/operation/UpdatePost>`_
+
         """
         return self.client.put(f"/api/v4/posts/{post_id}", options=options)
 
@@ -66,6 +72,7 @@ class Posts(Base):
         post_id: Post GUID
 
         `Read in Mattermost API docs (posts - SetPostUnread) <https://api.mattermost.com/#tag/posts/operation/SetPostUnread>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/set_unread")
 
@@ -80,6 +87,7 @@ class Posts(Base):
         props: A general JSON property bag to attach to the post
 
         `Read in Mattermost API docs (posts - PatchPost) <https://api.mattermost.com/#tag/posts/operation/PatchPost>`_
+
         """
         return self.client.put(f"/api/v4/posts/{post_id}/patch", options=options)
 
@@ -96,6 +104,7 @@ class Posts(Base):
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://api.mattermost.com/#tag/posts/operation/GetPostThread>`_
+
         """
         return self.client.get(f"/api/v4/posts/{post_id}/thread", params=params)
 
@@ -109,6 +118,7 @@ class Posts(Base):
         per_page: The number of posts per page
 
         `Read in Mattermost API docs (posts - GetFlaggedPostsForUser) <https://api.mattermost.com/#tag/posts/operation/GetFlaggedPostsForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/posts/flagged", params=params)
 
@@ -119,6 +129,7 @@ class Posts(Base):
         include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
 
         `Read in Mattermost API docs (posts - GetFileInfosForPost) <https://api.mattermost.com/#tag/posts/operation/GetFileInfosForPost>`_
+
         """
         return self.client.get(f"/api/v4/posts/{post_id}/files/info", params=params)
 
@@ -134,6 +145,7 @@ class Posts(Base):
         include_deleted: Whether to include deleted posts or not. Must have system admin permissions.
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://api.mattermost.com/#tag/posts/operation/GetPostsForChannel>`_
+
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=params)
 
@@ -149,6 +161,7 @@ class Posts(Base):
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
 
         `Read in Mattermost API docs (posts - GetPostsAroundLastUnread) <https://api.mattermost.com/#tag/posts/operation/GetPostsAroundLastUnread>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/channels/{channel_id}/posts/unread", params=params)
 
@@ -164,6 +177,7 @@ class Posts(Base):
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
         `Read in Mattermost API docs (posts - SearchPosts) <https://api.mattermost.com/#tag/posts/operation/SearchPosts>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/posts/search", options=options)
 
@@ -173,6 +187,7 @@ class Posts(Base):
         post_id: Post GUID
 
         `Read in Mattermost API docs (posts - PinPost) <https://api.mattermost.com/#tag/posts/operation/PinPost>`_
+
         """
         return self.client.post(f"/api/v4/posts/{post_id}/pin")
 
@@ -182,6 +197,7 @@ class Posts(Base):
         post_id: Post GUID
 
         `Read in Mattermost API docs (posts - UnpinPost) <https://api.mattermost.com/#tag/posts/operation/UnpinPost>`_
+
         """
         return self.client.post(f"/api/v4/posts/{post_id}/unpin")
 
@@ -192,12 +208,14 @@ class Posts(Base):
         action_id: Action GUID
 
         `Read in Mattermost API docs (posts - DoPostAction) <https://api.mattermost.com/#tag/posts/operation/DoPostAction>`_
+
         """
         return self.client.post(f"/api/v4/posts/{post_id}/actions/{action_id}")
 
     def get_posts_by_ids(self, options):
         """Get posts by a list of ids
         `Read in Mattermost API docs (posts - getPostsByIds) <https://api.mattermost.com/#tag/posts/operation/getPostsByIds>`_
+
         """
         return self.client.post("""/api/v4/posts/ids""", options=options)
 
@@ -209,6 +227,7 @@ class Posts(Base):
         target_time: Target time for the reminder
 
         `Read in Mattermost API docs (posts - SetPostReminder) <https://api.mattermost.com/#tag/posts/operation/SetPostReminder>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/reminder", options=options)
 
@@ -219,15 +238,28 @@ class Posts(Base):
         post_id: Post GUID
 
         `Read in Mattermost API docs (posts - SaveAcknowledgementForPost) <https://api.mattermost.com/#tag/posts/operation/SaveAcknowledgementForPost>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/ack")
 
-    def save_acknowledgement_for_post(self, user_id, post_id):
+    def delete_acknowledgement_for_post(self, user_id, post_id):
         """Delete a post acknowledgement
 
         user_id: User GUID
         post_id: Post GUID
 
-        `Read in Mattermost API docs (posts - SaveAcknowledgementForPost) <https://api.mattermost.com/#tag/posts/operation/SaveAcknowledgementForPost>`_
+        `Read in Mattermost API docs (posts - DeleteAcknowledgementForPost) <https://api.mattermost.com/#tag/posts/operation/DeleteAcknowledgementForPost>`_
+
         """
         return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/ack")
+
+    def move_thread(self, post_id, options):
+        """Move a post (and any posts within that post's thread)
+
+        post_id: The identifier of the post to move
+        channel_id: The channel identifier of where the post/thread is to be moved
+
+        `Read in Mattermost API docs (posts - MoveThread) <https://api.mattermost.com/#tag/posts/operation/MoveThread>`_
+
+        """
+        return self.client.post(f"/api/v4/posts/{post_id}/move", options=options)

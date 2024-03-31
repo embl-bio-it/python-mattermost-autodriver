@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Teams(Base):
+
     def create_team(self, options):
         """Create a team
 
@@ -10,6 +11,7 @@ class Teams(Base):
         type: ``'O'`` for open, ``'I'`` for invite only
 
         `Read in Mattermost API docs (teams - CreateTeam) <https://api.mattermost.com/#tag/teams/operation/CreateTeam>`_
+
         """
         return self.client.post("""/api/v4/teams""", options=options)
 
@@ -23,6 +25,7 @@ class Teams(Base):
         *Minimum server version*: 5.35
 
         `Read in Mattermost API docs (teams - GetAllTeams) <https://api.mattermost.com/#tag/teams/operation/GetAllTeams>`_
+
         """
         return self.client.get("""/api/v4/teams""", params=params)
 
@@ -32,6 +35,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - GetTeam) <https://api.mattermost.com/#tag/teams/operation/GetTeam>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}")
 
@@ -48,6 +52,7 @@ class Teams(Base):
         allow_open_invite:
 
         `Read in Mattermost API docs (teams - UpdateTeam) <https://api.mattermost.com/#tag/teams/operation/UpdateTeam>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}", options=options)
 
@@ -57,6 +62,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://api.mattermost.com/#tag/teams/operation/SoftDeleteTeam>`_
+
         """
         return self.client.delete(f"/api/v4/teams/{team_id}")
 
@@ -71,6 +77,7 @@ class Teams(Base):
         allow_open_invite:
 
         `Read in Mattermost API docs (teams - PatchTeam) <https://api.mattermost.com/#tag/teams/operation/PatchTeam>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}/patch", options=options)
 
@@ -81,6 +88,7 @@ class Teams(Base):
         privacy: Team privacy setting: 'O' for a public (open) team, 'I' for a private (invitation only) team
 
         `Read in Mattermost API docs (teams - UpdateTeamPrivacy) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamPrivacy>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}/privacy", options=options)
 
@@ -90,6 +98,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - RestoreTeam) <https://api.mattermost.com/#tag/teams/operation/RestoreTeam>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/restore")
 
@@ -99,6 +108,7 @@ class Teams(Base):
         name: Team Name
 
         `Read in Mattermost API docs (teams - GetTeamByName) <https://api.mattermost.com/#tag/teams/operation/GetTeamByName>`_
+
         """
         return self.client.get(f"/api/v4/teams/name/{name}")
 
@@ -121,6 +131,7 @@ class Teams(Base):
 
 
         `Read in Mattermost API docs (teams - SearchTeams) <https://api.mattermost.com/#tag/teams/operation/SearchTeams>`_
+
         """
         return self.client.post("""/api/v4/teams/search""", options=options)
 
@@ -130,6 +141,7 @@ class Teams(Base):
         name: Team Name
 
         `Read in Mattermost API docs (teams - TeamExists) <https://api.mattermost.com/#tag/teams/operation/TeamExists>`_
+
         """
         return self.client.get(f"/api/v4/teams/name/{name}/exists")
 
@@ -139,6 +151,7 @@ class Teams(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (teams - GetTeamsForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams")
 
@@ -150,6 +163,7 @@ class Teams(Base):
         per_page: The number of users per page.
 
         `Read in Mattermost API docs (teams - GetTeamMembers) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembers>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/members", params=params)
 
@@ -161,12 +175,14 @@ class Teams(Base):
         user_id:
 
         `Read in Mattermost API docs (teams - AddTeamMember) <https://api.mattermost.com/#tag/teams/operation/AddTeamMember>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/members", options=options)
 
     def add_team_member_from_invite(self):
         """Add user to team from invite
         `Read in Mattermost API docs (teams - AddTeamMemberFromInvite) <https://api.mattermost.com/#tag/teams/operation/AddTeamMemberFromInvite>`_
+
         """
         return self.client.post("""/api/v4/teams/members/invite""")
 
@@ -176,6 +192,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - AddTeamMembers) <https://api.mattermost.com/#tag/teams/operation/AddTeamMembers>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/members/batch", options=options)
 
@@ -185,6 +202,7 @@ class Teams(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (teams - GetTeamMembersForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/members")
 
@@ -195,6 +213,7 @@ class Teams(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (teams - GetTeamMember) <https://api.mattermost.com/#tag/teams/operation/GetTeamMember>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/members/{user_id}")
 
@@ -205,6 +224,7 @@ class Teams(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (teams - RemoveTeamMember) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamMember>`_
+
         """
         return self.client.delete(f"/api/v4/teams/{team_id}/members/{user_id}")
 
@@ -214,6 +234,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - GetTeamMembersByIds) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembersByIds>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/members/ids", options=options)
 
@@ -223,6 +244,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - GetTeamStats) <https://api.mattermost.com/#tag/teams/operation/GetTeamStats>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/stats")
 
@@ -232,6 +254,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - RegenerateTeamInviteId) <https://api.mattermost.com/#tag/teams/operation/RegenerateTeamInviteId>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/regenerate_invite_id")
 
@@ -241,6 +264,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - GetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/GetTeamIcon>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/image")
 
@@ -251,6 +275,7 @@ class Teams(Base):
         image: The image to be uploaded
 
         `Read in Mattermost API docs (teams - SetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/SetTeamIcon>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/image", files=files, data=data)
 
@@ -260,6 +285,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - RemoveTeamIcon) <https://api.mattermost.com/#tag/teams/operation/RemoveTeamIcon>`_
+
         """
         return self.client.delete(f"/api/v4/teams/{team_id}/image")
 
@@ -271,6 +297,7 @@ class Teams(Base):
         roles:
 
         `Read in Mattermost API docs (teams - UpdateTeamMemberRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberRoles>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/roles", options=options)
 
@@ -283,6 +310,7 @@ class Teams(Base):
         scheme_user:
 
         `Read in Mattermost API docs (teams - UpdateTeamMemberSchemeRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberSchemeRoles>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/schemeRoles", options=options)
 
@@ -294,6 +322,7 @@ class Teams(Base):
         include_collapsed_threads: Boolean to determine whether the collapsed threads should be included or not
 
         `Read in Mattermost API docs (teams - GetTeamsUnreadForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsUnreadForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/unread", params=params)
 
@@ -304,6 +333,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - GetTeamUnread) <https://api.mattermost.com/#tag/teams/operation/GetTeamUnread>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/unread")
 
@@ -313,6 +343,7 @@ class Teams(Base):
         team_id: Team GUID
 
         `Read in Mattermost API docs (teams - InviteUsersToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteUsersToTeam>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/invite/email", options=options)
 
@@ -325,12 +356,14 @@ class Teams(Base):
         message: Message to include in the invite
 
         `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteGuestsToTeam>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/invite-guests/email", options=options)
 
     def invalidate_email_invites(self):
         """Invalidate active email invitations
         `Read in Mattermost API docs (teams - InvalidateEmailInvites) <https://api.mattermost.com/#tag/teams/operation/InvalidateEmailInvites>`_
+
         """
         return self.client.delete("""/api/v4/teams/invites/email""")
 
@@ -343,6 +376,7 @@ class Teams(Base):
         importFrom: String that defines from which application the team was exported to be imported into Mattermost.
 
         `Read in Mattermost API docs (teams - ImportTeam) <https://api.mattermost.com/#tag/teams/operation/ImportTeam>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/import", files=files, data=data)
 
@@ -352,6 +386,7 @@ class Teams(Base):
         invite_id: Invite id for a team
 
         `Read in Mattermost API docs (teams - GetTeamInviteInfo) <https://api.mattermost.com/#tag/teams/operation/GetTeamInviteInfo>`_
+
         """
         return self.client.get(f"/api/v4/teams/invite/{invite_id}")
 
@@ -362,6 +397,7 @@ class Teams(Base):
         scheme_id: The ID of the scheme.
 
         `Read in Mattermost API docs (teams - UpdateTeamScheme) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamScheme>`_
+
         """
         return self.client.put(f"/api/v4/teams/{team_id}/scheme", options=options)
 
@@ -374,6 +410,7 @@ class Teams(Base):
         per_page: The number of users per page.
 
         `Read in Mattermost API docs (teams - TeamMembersMinusGroupMembers) <https://api.mattermost.com/#tag/teams/operation/TeamMembersMinusGroupMembers>`_
+
         """
         return self.client.get(f"/api/v4/teams/{team_id}/members_minus_group_members", params=params)
 
@@ -389,5 +426,6 @@ class Teams(Base):
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
         `Read in Mattermost API docs (teams - SearchFiles) <https://api.mattermost.com/#tag/teams/operation/SearchFiles>`_
+
         """
         return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)

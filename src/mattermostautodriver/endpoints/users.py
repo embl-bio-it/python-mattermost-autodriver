@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Users(Base):
+
     def login(self, options):
         """Login to Mattermost server
 
@@ -13,6 +14,7 @@ class Users(Base):
         password: The password used for email authentication.
 
         `Read in Mattermost API docs (users - Login) <https://api.mattermost.com/#tag/users/operation/Login>`_
+
         """
         return self.client.post("""/api/v4/users/login""", options=options)
 
@@ -23,12 +25,14 @@ class Users(Base):
         cws_token:
 
         `Read in Mattermost API docs (users - LoginByCwsToken) <https://api.mattermost.com/#tag/users/operation/LoginByCwsToken>`_
+
         """
         return self.client.post("""/api/v4/users/login/cws""", options=options)
 
     def logout(self):
         """Logout from the Mattermost server
         `Read in Mattermost API docs (users - Logout) <https://api.mattermost.com/#tag/users/operation/Logout>`_
+
         """
         return self.client.post("""/api/v4/users/logout""")
 
@@ -48,6 +52,7 @@ class Users(Base):
         notify_props:
 
         `Read in Mattermost API docs (users - CreateUser) <https://api.mattermost.com/#tag/users/operation/CreateUser>`_
+
         """
         return self.client.post("""/api/v4/users""", options=options)
 
@@ -71,6 +76,7 @@ class Users(Base):
         ##### ``in_team``
         Can be "", "last_activity_at" or "create_at".
         When left blank, sorting is done by username.
+        Note that when "last_activity_at" is specified, an additional "last_activity_at" field will be returned in the response packet.
         *Minimum server version*: 4.0
         ##### ``in_channel``
         Can be "", "status".
@@ -101,30 +107,35 @@ class Users(Base):
 
 
         `Read in Mattermost API docs (users - GetUsers) <https://api.mattermost.com/#tag/users/operation/GetUsers>`_
+
         """
         return self.client.get("""/api/v4/users""", params=params)
 
     def permanent_delete_all_users(self):
         """Permanent delete all users
         `Read in Mattermost API docs (users - PermanentDeleteAllUsers) <https://api.mattermost.com/#tag/users/operation/PermanentDeleteAllUsers>`_
+
         """
         return self.client.delete("""/api/v4/users""")
 
     def get_users_by_ids(self, options):
         """Get users by ids
         `Read in Mattermost API docs (users - GetUsersByIds) <https://api.mattermost.com/#tag/users/operation/GetUsersByIds>`_
+
         """
         return self.client.post("""/api/v4/users/ids""", options=options)
 
     def get_users_by_group_channel_ids(self, options):
         """Get users by group channels ids
         `Read in Mattermost API docs (users - GetUsersByGroupChannelIds) <https://api.mattermost.com/#tag/users/operation/GetUsersByGroupChannelIds>`_
+
         """
         return self.client.post("""/api/v4/users/group_channels""", options=options)
 
     def get_users_by_usernames(self, options):
         """Get users by usernames
         `Read in Mattermost API docs (users - GetUsersByUsernames) <https://api.mattermost.com/#tag/users/operation/GetUsersByUsernames>`_
+
         """
         return self.client.post("""/api/v4/users/usernames""", options=options)
 
@@ -146,6 +157,7 @@ class Users(Base):
 
 
         `Read in Mattermost API docs (users - SearchUsers) <https://api.mattermost.com/#tag/users/operation/SearchUsers>`_
+
         """
         return self.client.post("""/api/v4/users/search""", options=options)
 
@@ -161,18 +173,21 @@ class Users(Base):
 
 
         `Read in Mattermost API docs (users - AutocompleteUsers) <https://api.mattermost.com/#tag/users/operation/AutocompleteUsers>`_
+
         """
         return self.client.get("""/api/v4/users/autocomplete""", params=params)
 
     def get_known_users(self):
         """Get user IDs of known users
         `Read in Mattermost API docs (users - GetKnownUsers) <https://api.mattermost.com/#tag/users/operation/GetKnownUsers>`_
+
         """
         return self.client.get("""/api/v4/users/known""")
 
     def get_total_users_stats(self):
         """Get total count of users in the system
         `Read in Mattermost API docs (users - GetTotalUsersStats) <https://api.mattermost.com/#tag/users/operation/GetTotalUsersStats>`_
+
         """
         return self.client.get("""/api/v4/users/stats""")
 
@@ -197,6 +212,7 @@ class Users(Base):
 
 
         `Read in Mattermost API docs (users - GetTotalUsersStatsFiltered) <https://api.mattermost.com/#tag/users/operation/GetTotalUsersStatsFiltered>`_
+
         """
         return self.client.get("""/api/v4/users/stats/filtered""", params=params)
 
@@ -206,6 +222,7 @@ class Users(Base):
         user_id: User GUID. This can also be "me" which will point to the current user.
 
         `Read in Mattermost API docs (users - GetUser) <https://api.mattermost.com/#tag/users/operation/GetUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}")
 
@@ -226,6 +243,7 @@ class Users(Base):
         notify_props:
 
         `Read in Mattermost API docs (users - UpdateUser) <https://api.mattermost.com/#tag/users/operation/UpdateUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}", options=options)
 
@@ -235,6 +253,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - DeleteUser) <https://api.mattermost.com/#tag/users/operation/DeleteUser>`_
+
         """
         return self.client.delete(f"/api/v4/users/{user_id}")
 
@@ -253,6 +272,7 @@ class Users(Base):
         notify_props:
 
         `Read in Mattermost API docs (users - PatchUser) <https://api.mattermost.com/#tag/users/operation/PatchUser>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/patch", options=options)
 
@@ -263,6 +283,7 @@ class Users(Base):
         roles:
 
         `Read in Mattermost API docs (users - UpdateUserRoles) <https://api.mattermost.com/#tag/users/operation/UpdateUserRoles>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/roles", options=options)
 
@@ -273,6 +294,7 @@ class Users(Base):
         active:
 
         `Read in Mattermost API docs (users - UpdateUserActive) <https://api.mattermost.com/#tag/users/operation/UpdateUserActive>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/active", options=options)
 
@@ -283,6 +305,7 @@ class Users(Base):
         _: Not used by the server. Clients can pass in the last picture update time of the user to potentially take advantage of caching
 
         `Read in Mattermost API docs (users - GetProfileImage) <https://api.mattermost.com/#tag/users/operation/GetProfileImage>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/image", params=params)
 
@@ -293,6 +316,7 @@ class Users(Base):
         image: The image to be uploaded
 
         `Read in Mattermost API docs (users - SetProfileImage) <https://api.mattermost.com/#tag/users/operation/SetProfileImage>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/image", files=files, data=data)
 
@@ -302,6 +326,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - SetDefaultProfileImage) <https://api.mattermost.com/#tag/users/operation/SetDefaultProfileImage>`_
+
         """
         return self.client.delete(f"/api/v4/users/{user_id}/image")
 
@@ -311,6 +336,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - GetDefaultProfileImage) <https://api.mattermost.com/#tag/users/operation/GetDefaultProfileImage>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/image/default")
 
@@ -320,6 +346,7 @@ class Users(Base):
         username: Username
 
         `Read in Mattermost API docs (users - GetUserByUsername) <https://api.mattermost.com/#tag/users/operation/GetUserByUsername>`_
+
         """
         return self.client.get(f"/api/v4/users/username/{username}")
 
@@ -330,6 +357,7 @@ class Users(Base):
         new_password: The new password for the user
 
         `Read in Mattermost API docs (users - ResetPassword) <https://api.mattermost.com/#tag/users/operation/ResetPassword>`_
+
         """
         return self.client.post("""/api/v4/users/password/reset""", options=options)
 
@@ -341,6 +369,7 @@ class Users(Base):
         code: The code produced by your MFA client. Required if ``activate`` is true
 
         `Read in Mattermost API docs (users - UpdateUserMfa) <https://api.mattermost.com/#tag/users/operation/UpdateUserMfa>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/mfa", options=options)
 
@@ -350,6 +379,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - GenerateMfaSecret) <https://api.mattermost.com/#tag/users/operation/GenerateMfaSecret>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/mfa/generate")
 
@@ -359,6 +389,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - DemoteUserToGuest) <https://api.mattermost.com/#tag/users/operation/DemoteUserToGuest>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/demote")
 
@@ -368,6 +399,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - PromoteGuestToUser) <https://api.mattermost.com/#tag/users/operation/PromoteGuestToUser>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/promote")
 
@@ -377,6 +409,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - ConvertUserToBot) <https://api.mattermost.com/#tag/users/operation/ConvertUserToBot>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/convert_to_bot")
 
@@ -386,6 +419,7 @@ class Users(Base):
         login_id: The email or username used to login
 
         `Read in Mattermost API docs (users - CheckUserMfa) <https://api.mattermost.com/#tag/users/operation/CheckUserMfa>`_
+
         """
         return self.client.post("""/api/v4/users/mfa""", options=options)
 
@@ -397,6 +431,7 @@ class Users(Base):
         new_password: The new password for the user
 
         `Read in Mattermost API docs (users - UpdateUserPassword) <https://api.mattermost.com/#tag/users/operation/UpdateUserPassword>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/password", options=options)
 
@@ -406,6 +441,7 @@ class Users(Base):
         email: The email of the user
 
         `Read in Mattermost API docs (users - SendPasswordResetEmail) <https://api.mattermost.com/#tag/users/operation/SendPasswordResetEmail>`_
+
         """
         return self.client.post("""/api/v4/users/password/reset/send""", options=options)
 
@@ -415,6 +451,7 @@ class Users(Base):
         email: User Email
 
         `Read in Mattermost API docs (users - GetUserByEmail) <https://api.mattermost.com/#tag/users/operation/GetUserByEmail>`_
+
         """
         return self.client.get(f"/api/v4/users/email/{email}")
 
@@ -424,6 +461,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - GetSessions) <https://api.mattermost.com/#tag/users/operation/GetSessions>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/sessions")
 
@@ -434,6 +472,7 @@ class Users(Base):
         session_id: The session GUID to revoke.
 
         `Read in Mattermost API docs (users - RevokeSession) <https://api.mattermost.com/#tag/users/operation/RevokeSession>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/sessions/revoke", options=options)
 
@@ -443,6 +482,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - RevokeAllSessions) <https://api.mattermost.com/#tag/users/operation/RevokeAllSessions>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/sessions/revoke/all")
 
@@ -452,6 +492,7 @@ class Users(Base):
         device_id: Mobile device id. For Android prefix the id with ``android:`` and Apple with ``apple:``
 
         `Read in Mattermost API docs (users - AttachDeviceId) <https://api.mattermost.com/#tag/users/operation/AttachDeviceId>`_
+
         """
         return self.client.put("""/api/v4/users/sessions/device""", options=options)
 
@@ -461,6 +502,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - GetUserAudits) <https://api.mattermost.com/#tag/users/operation/GetUserAudits>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/audits")
 
@@ -470,6 +512,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - VerifyUserEmailWithoutToken) <https://api.mattermost.com/#tag/users/operation/VerifyUserEmailWithoutToken>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/email/verify/member")
 
@@ -479,6 +522,7 @@ class Users(Base):
         token: The token given to validate the email
 
         `Read in Mattermost API docs (users - VerifyUserEmail) <https://api.mattermost.com/#tag/users/operation/VerifyUserEmail>`_
+
         """
         return self.client.post("""/api/v4/users/email/verify""", options=options)
 
@@ -488,6 +532,7 @@ class Users(Base):
         email: Email of a user
 
         `Read in Mattermost API docs (users - SendVerificationEmail) <https://api.mattermost.com/#tag/users/operation/SendVerificationEmail>`_
+
         """
         return self.client.post("""/api/v4/users/email/verify/send""", options=options)
 
@@ -502,6 +547,7 @@ class Users(Base):
         ldap_id: The LDAP/AD id of the user
 
         `Read in Mattermost API docs (users - SwitchAccountType) <https://api.mattermost.com/#tag/users/operation/SwitchAccountType>`_
+
         """
         return self.client.post("""/api/v4/users/login/switch""", options=options)
 
@@ -512,6 +558,7 @@ class Users(Base):
         description: A description of the token usage
 
         `Read in Mattermost API docs (users - CreateUserAccessToken) <https://api.mattermost.com/#tag/users/operation/CreateUserAccessToken>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/tokens", options=options)
 
@@ -523,6 +570,7 @@ class Users(Base):
         per_page: The number of tokens per page.
 
         `Read in Mattermost API docs (users - GetUserAccessTokensForUser) <https://api.mattermost.com/#tag/users/operation/GetUserAccessTokensForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/tokens", params=params)
 
@@ -533,6 +581,7 @@ class Users(Base):
         per_page: The number of tokens per page.
 
         `Read in Mattermost API docs (users - GetUserAccessTokens) <https://api.mattermost.com/#tag/users/operation/GetUserAccessTokens>`_
+
         """
         return self.client.get("""/api/v4/users/tokens""", params=params)
 
@@ -542,6 +591,7 @@ class Users(Base):
         token_id: The user access token GUID to revoke
 
         `Read in Mattermost API docs (users - RevokeUserAccessToken) <https://api.mattermost.com/#tag/users/operation/RevokeUserAccessToken>`_
+
         """
         return self.client.post("""/api/v4/users/tokens/revoke""", options=options)
 
@@ -551,6 +601,7 @@ class Users(Base):
         token_id: User access token GUID
 
         `Read in Mattermost API docs (users - GetUserAccessToken) <https://api.mattermost.com/#tag/users/operation/GetUserAccessToken>`_
+
         """
         return self.client.get(f"/api/v4/users/tokens/{token_id}")
 
@@ -560,6 +611,7 @@ class Users(Base):
         token_id: The personal access token GUID to disable
 
         `Read in Mattermost API docs (users - DisableUserAccessToken) <https://api.mattermost.com/#tag/users/operation/DisableUserAccessToken>`_
+
         """
         return self.client.post("""/api/v4/users/tokens/disable""", options=options)
 
@@ -569,6 +621,7 @@ class Users(Base):
         token_id: The personal access token GUID to enable
 
         `Read in Mattermost API docs (users - EnableUserAccessToken) <https://api.mattermost.com/#tag/users/operation/EnableUserAccessToken>`_
+
         """
         return self.client.post("""/api/v4/users/tokens/enable""", options=options)
 
@@ -578,6 +631,7 @@ class Users(Base):
         term: The search term to match against the token id, user id or username.
 
         `Read in Mattermost API docs (users - SearchUserAccessTokens) <https://api.mattermost.com/#tag/users/operation/SearchUserAccessTokens>`_
+
         """
         return self.client.post("""/api/v4/users/tokens/search""", options=options)
 
@@ -587,6 +641,7 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - UpdateUserAuth) <https://api.mattermost.com/#tag/users/operation/UpdateUserAuth>`_
+
         """
         return self.client.put(f"/api/v4/users/{user_id}/auth", options=options)
 
@@ -598,6 +653,7 @@ class Users(Base):
         accepted: true or false, indicates whether the user accepted or rejected the terms of service.
 
         `Read in Mattermost API docs (users - RegisterTermsOfServiceAction) <https://api.mattermost.com/#tag/users/operation/RegisterTermsOfServiceAction>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/terms_of_service", options=options)
 
@@ -607,12 +663,14 @@ class Users(Base):
         user_id: User GUID
 
         `Read in Mattermost API docs (users - GetUserTermsOfService) <https://api.mattermost.com/#tag/users/operation/GetUserTermsOfService>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/terms_of_service")
 
     def revoke_sessions_from_all_users(self):
         """Revoke all sessions from all users.
         `Read in Mattermost API docs (users - RevokeSessionsFromAllUsers) <https://api.mattermost.com/#tag/users/operation/RevokeSessionsFromAllUsers>`_
+
         """
         return self.client.post("""/api/v4/users/sessions/revoke/all""")
 
@@ -624,6 +682,7 @@ class Users(Base):
         parent_id: The optional id of the root post of the thread to which the user is replying. If unset, the typing event is directed at the entire channel.
 
         `Read in Mattermost API docs (users - PublishUserTyping) <https://api.mattermost.com/#tag/users/operation/PublishUserTyping>`_
+
         """
         return self.client.post(f"/api/v4/users/{user_id}/typing", options=options)
 
@@ -633,6 +692,7 @@ class Users(Base):
         user_id: The ID of the user. This can also be "me" which will point to the current user.
 
         `Read in Mattermost API docs (users - GetUploadsForUser) <https://api.mattermost.com/#tag/users/operation/GetUploadsForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/uploads")
 
@@ -644,6 +704,7 @@ class Users(Base):
         pageSize: PageSize specifies the size of the returned chunk of results.
 
         `Read in Mattermost API docs (users - GetChannelMembersWithTeamDataForUser) <https://api.mattermost.com/#tag/users/operation/GetChannelMembersWithTeamDataForUser>`_
+
         """
         return self.client.get(f"/api/v4/users/{user_id}/channel_members", params=params)
 
@@ -655,6 +716,7 @@ class Users(Base):
         force:
 
         `Read in Mattermost API docs (users - MigrateAuthToLdap) <https://api.mattermost.com/#tag/users/operation/MigrateAuthToLdap>`_
+
         """
         return self.client.post("""/api/v4/users/migrate_auth/ldap""", options=options)
 
@@ -666,6 +728,7 @@ class Users(Base):
         auto:
 
         `Read in Mattermost API docs (users - MigrateAuthToSaml) <https://api.mattermost.com/#tag/users/operation/MigrateAuthToSaml>`_
+
         """
         return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options)
 
@@ -676,6 +739,7 @@ class Users(Base):
         per_page: The number of users per page. There is a maximum limit of 200 users per page.
 
         `Read in Mattermost API docs (users - GetUsersWithInvalidEmails) <https://api.mattermost.com/#tag/users/operation/GetUsersWithInvalidEmails>`_
+
         """
         return self.client.get("""/api/v4/users/invalid_emails""", params=params)
 
@@ -695,5 +759,50 @@ class Users(Base):
         notify_props:
 
         `Read in Mattermost API docs (users - ConvertBotToUser) <https://api.mattermost.com/#tag/users/operation/ConvertBotToUser>`_
+
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", options=options)
+
+    def get_users_for_reporting(self, params=None):
+        """Get a list of paged and sorted users for admin reporting purposes
+
+        sort_column: The column to sort the users by. Must be one of ("CreateAt", "Username", "FirstName", "LastName", "Nickname", "Email") or the API will return an error.
+        direction: The direction in which to accept paging values from. Will return values ahead of the cursor if "up", and below the cursor if "down". Default is "down".
+        sort_direction: The sorting direction. Must be one of ("asc", "desc"). Will default to 'asc' if not specified or the input is invalid.
+        page_size: The maximum number of users to return.
+        from_column_value: The value of the sorted column corresponding to the cursor to read from. Should be blank for the first page asked for.
+        from_id: The value of the user id corresponding to the cursor to read from. Should be blank for the first page asked for.
+        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid.
+        role_filter: Filter users by their role.
+        team_filter: Filter users by a specified team ID.
+        has_no_team: If true, show only users that have no team. Will ignore provided "team_filter" if true.
+        hide_active: If true, show only users that are inactive. Cannot be used at the same time as "hide_inactive"
+        hide_inactive: If true, show only users that are active. Cannot be used at the same time as "hide_active"
+        search_term: A filtering search term that allows filtering by Username, FirstName, LastName, Nickname or Email
+
+        `Read in Mattermost API docs (users - GetUsersForReporting) <https://api.mattermost.com/#tag/users/operation/GetUsersForReporting>`_
+
+        """
+        return self.client.get("""/api/v4/reports/users""", params=params)
+
+    def get_user_count_for_reporting(self, params=None):
+        """Gets the full count of users that match the filter.
+
+        role_filter: Filter users by their role.
+        team_filter: Filter users by a specified team ID.
+        has_no_team: If true, show only users that have no team. Will ignore provided "team_filter" if true.
+        hide_active: If true, show only users that are inactive. Cannot be used at the same time as "hide_inactive"
+        hide_inactive: If true, show only users that are active. Cannot be used at the same time as "hide_active"
+        search_term: A filtering search term that allows filtering by Username, FirstName, LastName, Nickname or Email
+
+        `Read in Mattermost API docs (users - GetUserCountForReporting) <https://api.mattermost.com/#tag/users/operation/GetUserCountForReporting>`_
+
+        """
+        return self.client.get("""/api/v4/reports/users/count""", params=params)
+
+    def get_user_limits(self):
+        """Gets the user limits for the server
+        `Read in Mattermost API docs (users - getUserLimits) <https://api.mattermost.com/#tag/users/operation/getUserLimits>`_
+
+        """
+        return self.client.get("""/api/v4/limits/users""")

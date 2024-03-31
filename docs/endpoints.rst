@@ -25,6 +25,14 @@ Bleve
     :undoc-members:
     :show-inheritance:
 
+Bookmarks
+---------
+
+.. automodule:: mattermostautodriver.endpoints.bookmarks
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Bots
 ----
 
@@ -201,6 +209,22 @@ Oauth
     :undoc-members:
     :show-inheritance:
 
+Outgoing Connections
+--------------------
+
+.. automodule:: mattermostautodriver.endpoints.outgoing_connections
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Outgoing Oauth Connections
+--------------------------
+
+.. automodule:: mattermostautodriver.endpoints.outgoing_oauth_connections
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Permissions
 -----------
 
@@ -261,6 +285,14 @@ Reactions
 ---------
 
 .. automodule:: mattermostautodriver.endpoints.reactions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Reports
+-------
+
+.. automodule:: mattermostautodriver.endpoints.reports
     :members:
     :undoc-members:
     :show-inheritance:

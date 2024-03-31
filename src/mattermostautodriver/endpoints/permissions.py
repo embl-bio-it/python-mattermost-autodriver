@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Permissions(Base):
+
     def get_ancillary_permissions(self, params=None):
         """Return all system console subsection ancillary permissions
 
@@ -9,5 +10,6 @@ class Permissions(Base):
 
 
         `Read in Mattermost API docs (permissions - GetAncillaryPermissions) <https://api.mattermost.com/#tag/permissions/operation/GetAncillaryPermissions>`_
+
         """
         return self.client.get("""/api/v4/permissions/ancillary""", params=params)

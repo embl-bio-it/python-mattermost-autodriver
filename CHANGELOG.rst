@@ -16,6 +16,34 @@ Maintenance
 
 -
 
+Code
+''''
+
+-
+
+2.1.0
+"""""
+
+Documentation
+'''''''''''''
+
+- Minor typos corrected and slight reformatting
+
+Maintenance
+'''''''''''
+
+- New endpoints ``Bookmarks``, ``OutgoingConnections``, ``OutgoingOauthConnections`` and ``Reports``
+- Modified ``oauth.Oauth`` endpoints extensively
+- Renamed ``posts.save_acknowledgement_for_post`` to ``posts.delete_acknowledgement_for_post``
+- Add ``posts.move_thread``
+- Add option ``use_rest_semantics`` to ``system.get_ping``
+- Remove ``system.get_warn_metrics_status``
+- Remove ``system.send_warn_metric_ack``
+- Remove ``system.send_trial_license_warn_metric_ack``
+- Add ``users.get_users_for_reporting``
+- Add ``users.get_user_count_for_reporting``
+- Add ``users.get_user_limits``
+
 2.0.0
 """""
 

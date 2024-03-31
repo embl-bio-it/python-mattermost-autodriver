@@ -2,6 +2,7 @@ from .base import Base
 
 
 class Migrate(Base):
+
     def migrate_auth_to_ldap(self, options=None):
         """Migrate user accounts authentication type to LDAP.
 
@@ -10,6 +11,7 @@ class Migrate(Base):
         force:
 
         `Read in Mattermost API docs (migrate - MigrateAuthToLdap) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToLdap>`_
+
         """
         return self.client.post("""/api/v4/users/migrate_auth/ldap""", options=options)
 
@@ -21,5 +23,6 @@ class Migrate(Base):
         auto:
 
         `Read in Mattermost API docs (migrate - MigrateAuthToSaml) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToSaml>`_
+
         """
         return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options)
