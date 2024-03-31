@@ -16,21 +16,11 @@ Maintenance
 
 -
 
-Code
-''''
-
--
-
 2.1.0
 """""
 
-Documentation
-'''''''''''''
-
-- Minor typos corrected and slight reformatting
-
-Maintenance
-'''''''''''
+Code
+''''
 
 - New endpoints ``Bookmarks``, ``OutgoingConnections``, ``OutgoingOauthConnections`` and ``Reports``
 - Modified ``oauth.Oauth`` endpoints extensively
@@ -43,6 +33,11 @@ Maintenance
 - Add ``users.get_users_for_reporting``
 - Add ``users.get_user_count_for_reporting``
 - Add ``users.get_user_limits``
+
+Documentation
+'''''''''''''
+
+- Minor typos corrected and slight reformatting
 
 2.0.0
 """""
