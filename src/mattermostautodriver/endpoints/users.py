@@ -60,7 +60,7 @@ class Users(Base):
         """Get users
 
         page: The page to select.
-        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+        per_page: The number of users per page.
         in_team: The ID of the team to get users for.
         not_in_team: The ID of the team to exclude users for. Must not be used with "in_team" query parameter.
         in_channel: The ID of the channel to get users for.
@@ -736,7 +736,7 @@ class Users(Base):
         """Get users with invalid emails
 
         page: The page to select.
-        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+        per_page: The number of users per page.
 
         `Read in Mattermost API docs (users - GetUsersWithInvalidEmails) <https://api.mattermost.com/#tag/users/operation/GetUsersWithInvalidEmails>`_
 

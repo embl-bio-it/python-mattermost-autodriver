@@ -8,7 +8,7 @@ class Ldap(Base):
 
         q: Search term
         page: The page to select.
-        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+        per_page: The number of users per page. per page.
 
         `Read in Mattermost API docs (ldap - GetLdapGroups) <https://api.mattermost.com/#tag/ldap/operation/GetLdapGroups>`_
 

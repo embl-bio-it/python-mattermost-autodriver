@@ -8,7 +8,7 @@ class DataRetention(Base):
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         page: The page to select.
-        per_page: The number of policies per page. There is a maximum limit of 200 per page.
+        per_page: The number of policies per page.
 
         `Read in Mattermost API docs (data_retention - GetTeamPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamPoliciesForUser>`_
 
@@ -20,7 +20,7 @@ class DataRetention(Base):
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         page: The page to select.
-        per_page: The number of policies per page. There is a maximum limit of 200 per page.
+        per_page: The number of policies per page.
 
         `Read in Mattermost API docs (data_retention - GetChannelPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelPoliciesForUser>`_
 
@@ -45,7 +45,7 @@ class DataRetention(Base):
         """Get the granular data retention policies
 
         page: The page to select.
-        per_page: The number of policies per page. There is a maximum limit of 200 per page.
+        per_page: The number of policies per page.
 
         `Read in Mattermost API docs (data_retention - GetDataRetentionPolicies) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPolicies>`_
 
@@ -94,7 +94,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
         page: The page to select.
-        per_page: The number of teams per page. There is a maximum limit of 200 per page.
+        per_page: The number of teams per page.
 
         `Read in Mattermost API docs (data_retention - GetTeamsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamsForRetentionPolicy>`_
 
@@ -137,7 +137,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
         page: The page to select.
-        per_page: The number of channels per page. There is a maximum limit of 200 per page.
+        per_page: The number of channels per page.
 
         `Read in Mattermost API docs (data_retention - GetChannelsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelsForRetentionPolicy>`_
 

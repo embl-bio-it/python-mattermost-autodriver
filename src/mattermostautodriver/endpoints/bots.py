@@ -29,7 +29,7 @@ class Bots(Base):
         """Get bots
 
         page: The page to select.
-        per_page: The number of users per page. There is a maximum limit of 200 users per page.
+        per_page: The number of users per page.
         include_deleted: If deleted bots should be returned.
         only_orphaned: When true, only orphaned bots will be returned. A bot is considered orphaned if its owner has been deactivated.
 

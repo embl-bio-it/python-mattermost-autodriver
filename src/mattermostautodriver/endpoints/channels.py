@@ -334,7 +334,7 @@ class Channels(Base):
 
         channel_id: Channel GUID
         page: The page to select.
-        per_page: The number of members per page. There is a maximum limit of 200 members.
+        per_page: The number of members per page.
 
         `Read in Mattermost API docs (channels - GetChannelMembers) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembers>`_
 
