@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 120
-target-version = ['py36']
+target-version = ['py38']
 include = 'src\/.*\.py$'
 extend-exclude = '''
 # A regex preceded with ^/ will apply only to files and directories
