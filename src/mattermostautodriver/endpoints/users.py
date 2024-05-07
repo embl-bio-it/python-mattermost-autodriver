@@ -800,9 +800,9 @@ class Users(Base):
         """
         return self.client.get("""/api/v4/reports/users/count""", params=params)
 
-    def get_user_limits(self):
-        """Gets the user limits for the server
-        `Read in Mattermost API docs (users - getUserLimits) <https://api.mattermost.com/#tag/users/operation/getUserLimits>`_
+    def get_server_limits(self):
+        """Gets the server limits for the server
+        `Read in Mattermost API docs (users - GetServerLimits) <https://api.mattermost.com/#tag/users/operation/GetServerLimits>`_
 
         """
-        return self.client.get("""/api/v4/limits/users""")
+        return self.client.get("""/api/v4/limits/server""")

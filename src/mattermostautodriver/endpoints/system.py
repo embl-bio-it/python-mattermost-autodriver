@@ -286,12 +286,22 @@ class System(Base):
         """
         return self.client.post("""/api/v4/integrity""")
 
-    def generate_support_packet(self):
+    def generate_support_packet(self, params=None):
         """Download a zip file which contains helpful and useful information for troubleshooting your mattermost instance.
+
+        basic_server_logs: Specifies whether the server should include or exclude log files. Default value is true.
+
+        *Minimum server version*: 9.8.0
+
+        plugin_packets: Specifies plugin identifiers whose content should be included in the support packet.
+
+        *Minimum server version*: 9.8.0
+
+
         `Read in Mattermost API docs (system - GenerateSupportPacket) <https://api.mattermost.com/#tag/system/operation/GenerateSupportPacket>`_
 
         """
-        return self.client.get("""/api/v4/system/support_packet""")
+        return self.client.get("""/api/v4/system/support_packet""", params=params)
 
     def update_marketplace_visited_by_admin(self, options):
         """Stores that the Plugin Marketplace has been visited by at least an admin.
