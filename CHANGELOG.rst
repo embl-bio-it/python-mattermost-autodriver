@@ -16,6 +16,20 @@ Maintenance
 
 -
 
+2.2.0
+"""""
+
+Code
+''''
+
+- Add ``params`` argument to ``system.generate_support_packet``
+- Rename ``users.get_user_limits`` to ``users.get_server_limits``
+
+Documentation
+'''''''''''''
+
+- Update descriptions and remove mention of limit of 200 users per page
+
 2.1.0
 """""
 
