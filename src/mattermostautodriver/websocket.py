@@ -77,7 +77,7 @@ class Websocket:
         """
         log.debug("Starting websocket loop")
         # TODO: move to create_task when cpython 3.7 is minimum supported python version
-        keep_alive = asyncio.ensure_future(self._do_heartbeats(websocket))
+        keep_alive = asyncio.create_task(self._do_heartbeats(websocket))
         log.debug("Waiting for messages on websocket")
         while self._alive:
             message = await websocket.receive_str()
