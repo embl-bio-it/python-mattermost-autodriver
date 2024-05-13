@@ -4,7 +4,7 @@ Unreleased
 Code
 ''''
 
--
+- ``driver.disconnect()`` no longer errors if not connected or initialized
 
 Documentation
 '''''''''''''

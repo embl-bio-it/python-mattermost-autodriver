@@ -111,7 +111,8 @@ class BaseDriver:
 
     def disconnect(self):
         """Disconnects the driver from the server, stopping the websocket event loop."""
-        self.websocket.disconnect()
+        if self.websocket is not None:
+            self.websocket.disconnect()
 
 
 class Driver(BaseDriver):
