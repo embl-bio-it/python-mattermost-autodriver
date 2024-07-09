@@ -161,6 +161,8 @@ class Teams(Base):
         team_id: Team GUID
         page: The page to select.
         per_page: The number of users per page.
+        sort: To sort by Username, set to 'Username', otherwise sort is by 'UserID'
+        exclude_deleted_users: Excludes deleted users from the results
 
         `Read in Mattermost API docs (teams - GetTeamMembers) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembers>`_
 

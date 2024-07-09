@@ -5,11 +5,14 @@ Code
 ''''
 
 - ``driver.disconnect()`` no longer errors if not connected or initialized
+- Add ``jobs.update_job_status``
+- New endpoints ``Logs`` and ``RemoteClusters``
 
 Documentation
 '''''''''''''
 
--
+- Update ``channels.add_channel_member``
+- Update ``jobs.get_jobs``
 
 Maintenance
 '''''''''''

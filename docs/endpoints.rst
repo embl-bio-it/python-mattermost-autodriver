@@ -193,6 +193,14 @@ Ldap
     :undoc-members:
     :show-inheritance:
 
+Logs
+----
+
+.. automodule:: mattermostautodriver.endpoints.logs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Migrate
 -------
 
@@ -285,6 +293,14 @@ Reactions
 ---------
 
 .. automodule:: mattermostautodriver.endpoints.reactions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Remote Clusters
+---------------
+
+.. automodule:: mattermostautodriver.endpoints.remote_clusters
     :members:
     :undoc-members:
     :show-inheritance:

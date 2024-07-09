@@ -342,10 +342,11 @@ class Channels(Base):
         return self.client.get(f"/api/v4/channels/{channel_id}/members", params=params)
 
     def add_channel_member(self, channel_id, options):
-        """Add user to channel
+        """Add user(s) to channel
 
         channel_id: The channel ID
-        user_id: The ID of user to add into the channel
+        user_id: The ID of user to add into the channel, for backwards compatibility.
+        user_ids: The IDs of users to add into the channel, required if 'user_id' doess not exist.
         post_root_id: The ID of root post where link to add channel member originates
 
         `Read in Mattermost API docs (channels - AddChannelMember) <https://api.mattermost.com/#tag/channels/operation/AddChannelMember>`_

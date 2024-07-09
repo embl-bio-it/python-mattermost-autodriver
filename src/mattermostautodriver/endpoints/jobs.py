@@ -8,6 +8,8 @@ class Jobs(Base):
 
         page: The page to select.
         per_page: The number of jobs per page.
+        job_type: The type of jobs to fetch.
+        status: The status of jobs to fetch.
 
         `Read in Mattermost API docs (jobs - GetJobs) <https://api.mattermost.com/#tag/jobs/operation/GetJobs>`_
 
@@ -66,3 +68,15 @@ class Jobs(Base):
 
         """
         return self.client.get(f"/api/v4/jobs/type/{type}", params=params)
+
+    def update_job_status(self, job_id, options):
+        """Update the status of a job
+
+        job_id: Job GUID
+        status: The status you want to set
+        force: Set this to true to bypass status restrictions
+
+        `Read in Mattermost API docs (jobs - UpdateJobStatus) <https://api.mattermost.com/#tag/jobs/operation/UpdateJobStatus>`_
+
+        """
+        return self.client.patch(f"/api/v4/jobs/{job_id}/status", options=options)
