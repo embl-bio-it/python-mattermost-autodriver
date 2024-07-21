@@ -58,9 +58,7 @@ class BaseClient:
         )
 
         handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter(
-            "%(levelname)s [%(asctime)s] %(name)s - %(message)s"
-        ))
+        handler.setFormatter(logging.Formatter("%(levelname)s [%(asctime)s] %(name)s - %(message)s"))
 
         for logger in loggers:
             _logger = logging.getLogger(logger)
