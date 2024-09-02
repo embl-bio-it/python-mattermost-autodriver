@@ -24,6 +24,7 @@ class Webhooks(Base):
         page: The page to select.
         per_page: The number of hooks per page.
         team_id: The ID of the team to get hooks for.
+        include_total_count: Appends a total count of returned hooks inside the response object - ex: ``{ "incoming_webhooks": [], "total_count": 0 }``.
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
 

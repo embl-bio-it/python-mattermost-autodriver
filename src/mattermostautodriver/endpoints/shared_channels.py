@@ -15,6 +15,20 @@ class SharedChannels(Base):
         """
         return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params)
 
+    def get_shared_channel_remotes_by_remote_cluster(self, remote_id, params=None):
+        """Get shared channel remotes by remote cluster.
+
+        remote_id: The remote cluster GUID
+        exclude_home: Show only those Shared channel remotes that were shared with this server
+        exclude_remote: Show only those Shared channel remotes that were shared from this server
+        page: The page to select
+        per_page: The number of shared channels per page
+
+        `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotesByRemoteCluster) <https://api.mattermost.com/#tag/shared_channels/operation/GetSharedChannelRemotesByRemoteCluster>`_
+
+        """
+        return self.client.get(f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=params)
+
     def get_remote_cluster_info(self, remote_id):
         """Get remote cluster info by ID for user.
 
@@ -24,3 +38,25 @@ class SharedChannels(Base):
 
         """
         return self.client.get(f"/api/v4/sharedchannels/remote_info/{remote_id}")
+
+    def invite_remote_cluster_to_channel(self, remote_id, channel_id):
+        """Invites a remote cluster to a channel.
+
+        remote_id: The remote cluster GUID
+        channel_id: The channel GUID to invite the remote cluster to
+
+        `Read in Mattermost API docs (shared_channels - InviteRemoteClusterToChannel) <https://api.mattermost.com/#tag/shared_channels/operation/InviteRemoteClusterToChannel>`_
+
+        """
+        return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/invite")
+
+    def uninvite_remote_cluster_to_channel(self, remote_id, channel_id):
+        """Uninvites a remote cluster to a channel.
+
+        remote_id: The remote cluster GUID
+        channel_id: The channel GUID to uninvite the remote cluster to
+
+        `Read in Mattermost API docs (shared_channels - UninviteRemoteClusterToChannel) <https://api.mattermost.com/#tag/shared_channels/operation/UninviteRemoteClusterToChannel>`_
+
+        """
+        return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/uninvite")

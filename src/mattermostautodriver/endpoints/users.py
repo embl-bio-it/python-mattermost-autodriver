@@ -44,6 +44,8 @@ class Users(Base):
         first_name:
         last_name:
         nickname:
+        position:
+        timezone:
         auth_data: Service-specific authentication data, such as email address.
         auth_service: The authentication service, one of "email", "gitlab", "ldap", "saml", "office365", "google", and "".
         password: The password used for email authentication.
@@ -268,6 +270,7 @@ class Users(Base):
         nickname:
         locale:
         position:
+        timezone:
         props:
         notify_props:
 
@@ -700,8 +703,8 @@ class Users(Base):
         """Get all channel members from all teams for a user
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
-        page: Page specifies which part of the results to return, by PageSize.
-        pageSize: PageSize specifies the size of the returned chunk of results.
+        page: Page specifies which part of the results to return, by perPage.
+        per_page: The size of the returned chunk of results.
 
         `Read in Mattermost API docs (users - GetChannelMembersWithTeamDataForUser) <https://api.mattermost.com/#tag/users/operation/GetChannelMembersWithTeamDataForUser>`_
 

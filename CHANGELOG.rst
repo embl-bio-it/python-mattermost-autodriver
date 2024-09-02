@@ -7,6 +7,15 @@ Code
 - ``driver.disconnect()`` no longer errors if not connected or initialized
 - Add ``jobs.update_job_status``
 - New endpoints ``Logs`` and ``RemoteClusters``
+- Rename ``permissions.get_ancillary_permissions`` to ``permissions.get_ancillary_permissions_post``
+- Add ``shared_channels.get_shared_channel_remotes_by_remote_cluster``
+- Add ``shared_channels.invite_remote_cluster_to_channel``
+- Add ``shared_channels.uninvite_remote_cluster_to_channel``
+- New attribute ``default_team_id`` in ``remote_clusters.patch_remote_cluster``
+- New attribute ``include_total_count`` in ``webhooks.get_incoming_webhoooks``
+- New attribute ``timezone`` in ``users.update_user`` and ``users.patch_user``
+- New attribute ``position`` in ``users.patch_user``
+- Rename attribute ``pageSize`` to ``per_page`` in ``threads.get_user_threads`` and ``users.get_users``
 
 Documentation
 '''''''''''''

@@ -25,7 +25,10 @@ class RemoteClusters(Base):
 
         name:
         display_name:
-        password: The password to use in the invite code.
+        password: The password to use in the invite code. If empty,
+        the server will generate one and it will be part
+        of the response
+
 
         `Read in Mattermost API docs (remote_clusters - CreateRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/CreateRemoteCluster>`_
 
@@ -47,6 +50,7 @@ class RemoteClusters(Base):
 
         remote_id: Remote Cluster GUID
         display_name:
+        default_team_id: The team where channels from invites are created
 
         `Read in Mattermost API docs (remote_clusters - PatchRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/PatchRemoteCluster>`_
 

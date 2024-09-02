@@ -11,8 +11,8 @@ class Threads(Base):
         since: Since filters the threads based on their LastUpdateAt timestamp.
         deleted: Deleted will specify that even deleted threads should be returned (For mobile sync).
         extended: Extended will enrich the response with participant details.
-        page: Page specifies which part of the results to return, by PageSize.
-        pageSize: PageSize specifies the size of the returned chunk of results.
+        page: Page specifies which part of the results to return, by per_page.
+        per_page: The size of the returned chunk of results.
         totalsOnly: Setting this to true will only return the total counts.
         threadsOnly: Setting this to true will only return threads.
 

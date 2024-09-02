@@ -293,7 +293,7 @@ class System(Base):
 
         *Minimum server version*: 9.8.0
 
-        plugin_packets: Specifies plugin identifiers whose content should be included in the support packet.
+        plugin_packets: Specifies plugin identifiers whose content should be included in the Support Packet.
 
         *Minimum server version*: 9.8.0
 
