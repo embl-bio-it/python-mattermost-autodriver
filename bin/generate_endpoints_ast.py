@@ -146,9 +146,9 @@ def get_request_body_type(body):
     if not body:
         return None
 
-    assert len(body["content"].keys()) == 1
+    assert len(body["content"]) == 1
 
-    return next(iter(body["content"].keys()))
+    return next(iter(body["content"]))
 
 
 def get_requestbody_parameters(body, request_type):
@@ -189,7 +189,7 @@ def get_requestbody_parameters(body, request_type):
 def get_locations(tags):
     # Locations = which module the function call should be added to
     # NOTE that some identical function calls are present in more than one module/tag
-    return list(map(lambda x: x.replace(" ", "_"), tags))
+    return [x.replace(" ", "_") for x in tags]
 
 
 def get_payload_params_or_properties(data, request_type):
@@ -441,7 +441,7 @@ def main():
 
     filenames = []
 
-    for module in methods.keys():
+    for module in methods:
         code = make_ast(methods, module)
         filename = f"src/mattermostautodriver/endpoints/{module.lower()}.py"
 
