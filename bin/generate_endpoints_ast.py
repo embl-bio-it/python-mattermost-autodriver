@@ -120,16 +120,12 @@ def get_descriptions(params):
     def fix_docstr(doc):
         return (
             doc.replace("\n", f"\n{doc_pad}")  # Indentation
-               .replace("`", "``")  # Convert monospace
-               .replace("__", "*")  # Convert emphasis
-           )
+            .replace("`", "``")  # Convert monospace
+            .replace("__", "*")  # Convert emphasis
+        )
 
     return (
-        "\n\n"
-        + "\n".join(
-            [f"{doc_pad}{par.name}: {fix_docstr(par.description)}" for par in params]
-        )
-        + f"\n{doc_pad}"
+        "\n\n" + "\n".join([f"{doc_pad}{par.name}: {fix_docstr(par.description)}" for par in params]) + f"\n{doc_pad}"
     )
 
 
@@ -171,9 +167,7 @@ def get_requestbody_parameters(body, request_type):
 
     req_body_type = get_request_body_type(body)
 
-    required_fields, parameters = parse_req_body(
-        req_body_type, body["content"][req_body_type]["schema"]
-    )
+    required_fields, parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
 
     binary = any(filter(lambda x: x.format == "binary", parameters))
 
@@ -206,6 +200,7 @@ def get_link_to_api_docs(tag, operation):
         f"<https://api.mattermost.com/#tag/{tag}/operation/{operation}>`_\n\n"
     )
 
+
 def json_to_ast(api):
     blocks = {}
 
@@ -229,8 +224,7 @@ def json_to_ast(api):
             url_parameters = get_parameters(rdata.get("parameters", {}), "path")
 
             docstring = rdata["summary"] + get_descriptions(
-                url_parameters.get("parameters", [])
-                + payload_params.get("parameters", [])
+                url_parameters.get("parameters", []) + payload_params.get("parameters", [])
             )
 
             req_body = rdata.get("requestBody", {})
@@ -245,12 +239,8 @@ def json_to_ast(api):
                 "put": "options",
             }
 
-            def_params = prepare_def_keywords(
-                url_parameters, payload_params, operations[request_type], req_body_type
-            )
-            call_kwargs = prepare_call_keywords(
-                url_parameters, payload_params, operations[request_type], req_body_type
-            )
+            def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
+            call_kwargs = prepare_call_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
 
             for loc in locations:
                 if loc not in blocks:
@@ -304,9 +294,7 @@ def prepare_call_keywords(url_params, payload_params, operation_arg, req_body_ty
             kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
 
     else:
-        raise NotImplementedError(
-            f"Request body of type '{req_body_type}' is not implemented."
-        )
+        raise NotImplementedError(f"Request body of type '{req_body_type}' is not implemented.")
 
     return kwargs
 
@@ -370,15 +358,13 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
             kwargs.append(ast.Constant(None))
 
     else:
-        raise NotImplementedError(
-            f"Request body of type '{req_body_type}' is not implemented."
-        )
+        raise NotImplementedError(f"Request body of type '{req_body_type}' is not implemented.")
 
     return {"args": args, "defaults": kwargs}
 
 
 def ast_request(request_type, endpoint, call_params):
-    args = [ast.parse(('f"' if '{' in endpoint else '"') + endpoint + '"')]
+    args = [ast.parse(('f"' if "{" in endpoint else '"') + endpoint + '"')]
 
     return ast.Return(
         ast.Call(
