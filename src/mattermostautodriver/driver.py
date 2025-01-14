@@ -20,7 +20,6 @@ class BaseDriver:
         "scheme": "https",
         "url": "localhost",
         "port": 8065,
-        "basepath": "",
         "verify": True,
         "timeout": 30,
         "request_timeout": None,
@@ -56,9 +55,6 @@ class BaseDriver:
         - mfa_token (None)
         - auth (None)
         - debug (False)
-
-    Should not be changed
-        - basepath ('') - this is a deprecated setting that modifies the API by adding a prefix
     """
 
     def __new__(cls, options=None, client_cls=Client, *args, **kwargs):

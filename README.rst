@@ -81,14 +81,13 @@ Usage
         Optional options
 
         These options already have useful defaults or are just not needed in every case.
-        In most cases, you won't need to modify these, especially the basepath.
+        In most cases, you won't need to modify these.
         If you can only use a self signed/insecure certificate, you should set
         verify to your CA file or to False. Please double check this if you have any errors while
         using a self signed certificate!
         """
         'scheme': 'https',
         'port': 8065,
-        'basepath': '',
         'verify': True,  # Or /path/to/file.pem
         'mfa_token': 'YourMFAToken',
         """
@@ -212,7 +211,7 @@ Usage
         'file_ids': [file_id]})
 
     # If needed, you can make custom requests by calling `make_request`
-    foo.client.make_request('post', '/endpoint', options=None, params=None, data=None, files=None, basepath=None)
+    foo.client.make_request('post', '/endpoint', options=None, params=None, data=None, files=None)
 
     # If you want to call a webhook/execute it use the `call_webhook` method.
     # This method does not exist on the mattermost api AFAIK, I added it for ease of use.

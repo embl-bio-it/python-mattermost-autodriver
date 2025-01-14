@@ -22,9 +22,8 @@ log.setLevel(logging.INFO)
 
 class BaseClient:
     def __init__(self, options):
-        self._url = self._make_url(options["scheme"], options["url"], options["port"], options["basepath"])
+        self._url = self._make_url(options["scheme"], options["url"], options["port"])
         self._scheme = options["scheme"]
-        self._basepath = options["basepath"]
         self._port = options["port"]
         self._auth = options["auth"]
         if options["debug"]:
@@ -40,8 +39,8 @@ class BaseClient:
             self._proxies = {"all://": options["proxy"]}
 
     @staticmethod
-    def _make_url(scheme, url, port, basepath):
-        return f"{scheme:s}://{url:s}:{port:d}{basepath:s}"
+    def _make_url(scheme, url, port):
+        return f"{scheme:s}://{url:s}:{port:d}"
 
     @staticmethod
     def activate_verbose_logging(level=logging.DEBUG):
@@ -129,15 +128,12 @@ class BaseClient:
             return {}
         return {"Authorization": "Bearer {token:s}".format(token=self._token)}
 
-    def _build_request(self, method, options=None, params=None, data=None, files=None, basepath=None):
+    def _build_request(self, method, options=None, params=None, data=None, files=None):
         if params is None:
             params = {}
         if data is None:
             data = {}
-        if basepath:
-            url = self._make_url(self._options["scheme"], self._options["url"], self._options["port"], basepath)
-        else:
-            url = self.url
+        url = self.url
 
         request_params = {"headers": self.auth_header(), "timeout": self.request_timeout}
 
@@ -211,8 +207,8 @@ class Client(BaseClient):
             verify=options.get("verify", True),
         )
 
-    def make_request(self, method, endpoint, options=None, params=None, data=None, files=None, basepath=None):
-        request, url, request_params = self._build_request(method, options, params, data, files, basepath)
+    def make_request(self, method, endpoint, options=None, params=None, data=None, files=None):
+        request, url, request_params = self._build_request(method, options, params, data, files)
         response = request(url + endpoint, **request_params)
 
         self._check_response(response)
@@ -268,7 +264,10 @@ class AsyncClient(BaseClient):
         return await self.client.__aexit__(*exc_info)
 
     async def make_request(self, method, endpoint, options=None, params=None, data=None, files=None, basepath=None):
-        request, url, request_params = self._build_request(method, options, params, data, files, basepath)
+        if basepath is not None:
+            raise DeprecationWarning("'basepath' no longer has any effect and will be removed in version 3.x. "
+                                     "Please remove it from your code.")
+        request, url, request_params = self._build_request(method, options, params, data, files)
         response = await request(url + endpoint, **request_params)
 
         self._check_response(response)

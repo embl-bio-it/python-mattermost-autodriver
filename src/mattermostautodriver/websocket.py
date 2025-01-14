@@ -39,8 +39,8 @@ class Websocket:
             scheme = "ws://"
             context = None
 
-        url = "{scheme:s}{url:s}:{port:s}{basepath:s}/api/v4/websocket".format(
-            scheme=scheme, url=self.options["url"], port=str(self.options["port"]), basepath=self.options["basepath"]
+        url = "{scheme:s}{url:s}:{port:s}/api/v4/websocket".format(
+            scheme=scheme, url=self.options["url"], port=str(self.options["port"])
         )
 
         self._alive = True

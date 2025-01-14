@@ -4,11 +4,15 @@ Unreleased
 Code
 ''''
 
+- Remove deprecated ``basepath`` connection argument (backwards incompatible change)
+
 Documentation
 '''''''''''''
 
+
 Maintenance
 '''''''''''
+
 
 2.3.0
 """""
