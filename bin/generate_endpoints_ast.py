@@ -206,7 +206,12 @@ def json_to_ast(api):
 
     for endpoint in api["paths"]:
         for request_type, rdata in api["paths"][endpoint].items():
-            locations = get_locations(rdata["tags"])
+            try:
+                locations = get_locations(rdata["tags"])
+            except KeyError:
+                print(f"Endpoint {endpoint} for requests of type {request_type} is missing a 'tags' attribute. "
+                      "This should be reported upstream. Skipped for now.")
+                continue
 
             try:
                 operation_id = rdata["operationId"]

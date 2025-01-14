@@ -26,7 +26,7 @@ Documentation
 Maintenance
 '''''''''''
 
--
+- Pin ``httpx`` to 0.28.0 to address removed argument - see issue #15
 
 2.2.0
 """""
