@@ -489,12 +489,14 @@ class Users(Base):
         """
         return self.client.post(f"/api/v4/users/{user_id}/sessions/revoke/all")
 
-    def attach_device_id(self, options):
-        """Attach mobile device
+    def attach_device_extra_props(self, options):
+        """Attach mobile device and extra props to the session object
 
         device_id: Mobile device id. For Android prefix the id with ``android:`` and Apple with ``apple:``
+        deviceNotificationDisabled: Whether the mobile device has notifications disabled. Accepted values are "true" or "false".
+        mobileVersion: Mobile app version. The version must be parseable as a semver.
 
-        `Read in Mattermost API docs (users - AttachDeviceId) <https://api.mattermost.com/#tag/users/operation/AttachDeviceId>`_
+        `Read in Mattermost API docs (users - AttachDeviceExtraProps) <https://api.mattermost.com/#tag/users/operation/AttachDeviceExtraProps>`_
 
         """
         return self.client.put("""/api/v4/users/sessions/device""", options=options)

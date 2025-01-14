@@ -17,6 +17,11 @@ Code
 - New attribute ``position`` in ``users.patch_user``
 - Rename attribute ``pageSize`` to ``per_page`` in ``threads.get_user_threads`` and ``users.get_users``
 - Tolerate but warn about missing tags in mattermost documentation
+- Add ``files.search_files`` and ``search.search_files``
+- Add ``system.test_notification``
+- Rename ``users.attach_device_id`` to ``users.attach_device_extra_props``
+- Fix trailing slash in URL used in ``timeline.remove_timeline_event``
+- New endpoints ``Metrics`` and ``Scheduled Post``
 
 Documentation
 '''''''''''''

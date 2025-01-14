@@ -56,6 +56,13 @@ class System(Base):
         """
         return self.client.post("""/api/v4/email/test""", options=options)
 
+    def test_notification(self):
+        """Send a test notification
+        `Read in Mattermost API docs (system - TestNotification) <https://api.mattermost.com/#tag/system/operation/TestNotification>`_
+
+        """
+        return self.client.post("""/api/v4/notifications/test""")
+
     def test_site_url(self, options):
         """Checks the validity of a Site URL
 
