@@ -19,6 +19,7 @@ class Schemes(Base):
         """Create a scheme
 
         name: The name of the scheme
+        display_name: The display name of the scheme
         description: The description of the scheme
         scope: The scope of the scheme ("team" or "channel")
 

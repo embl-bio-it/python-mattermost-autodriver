@@ -14,6 +14,7 @@ class RemoteClusters(Base):
         only_confirmed: Select only remote clusters already confirmed
         only_plugins: Select only remote clusters that belong to a plugin
         exclude_plugins: Select only remote clusters that don't belong to a plugin
+        include_deleted: Include those remote clusters that have been deleted
 
         `Read in Mattermost API docs (remote_clusters - GetRemoteClusters) <https://api.mattermost.com/#tag/remote_clusters/operation/GetRemoteClusters>`_
 
@@ -25,6 +26,7 @@ class RemoteClusters(Base):
 
         name:
         display_name:
+        default_team_id:
         password: The password to use in the invite code. If empty,
         the server will generate one and it will be part
         of the response
@@ -83,6 +85,7 @@ class RemoteClusters(Base):
         invite:
         name:
         display_name:
+        default_team_id:
         password: The password to decrypt the invite code.
 
         `Read in Mattermost API docs (remote_clusters - AcceptRemoteClusterInvite) <https://api.mattermost.com/#tag/remote_clusters/operation/AcceptRemoteClusterInvite>`_

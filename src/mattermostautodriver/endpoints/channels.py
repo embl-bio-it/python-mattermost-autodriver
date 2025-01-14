@@ -87,6 +87,9 @@ class Channels(Base):
         include_search_by_id: If set to true, returns channels where given search 'term' matches channel ID.
         *Minimum server version*: 5.35
 
+        exclude_remote: If set to true, only returns channels that are local to this server.
+        *Minimum server version*: 10.2
+
 
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://api.mattermost.com/#tag/channels/operation/SearchAllChannels>`_
 

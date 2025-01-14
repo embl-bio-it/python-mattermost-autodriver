@@ -201,6 +201,14 @@ Logs
     :undoc-members:
     :show-inheritance:
 
+Metrics
+-------
+
+.. automodule:: mattermostautodriver.endpoints.metrics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Migrate
 -------
 
@@ -333,6 +341,14 @@ Saml
 ----
 
 .. automodule:: mattermostautodriver.endpoints.saml
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Scheduled Post
+--------------
+
+.. automodule:: mattermostautodriver.endpoints.scheduled_post
     :members:
     :undoc-members:
     :show-inheritance:

@@ -16,12 +16,21 @@ Code
 - New attribute ``timezone`` in ``users.update_user`` and ``users.patch_user``
 - New attribute ``position`` in ``users.patch_user``
 - Rename attribute ``pageSize`` to ``per_page`` in ``threads.get_user_threads`` and ``users.get_users``
+- Tolerate but warn about missing tags in mattermost documentation
 
 Documentation
 '''''''''''''
 
 - Update ``channels.add_channel_member``
+- Update ``channels.search_all_channels`` - document ``exclude_remote``
 - Update ``jobs.get_jobs``
+- Update ``remote_clusters.accept_remote_cluster_invite`` - add ``default_team_id``
+- Update ``remote_clusters.create_remote_cluster`` - add ``default_team_id``
+- Update ``remote_clusters.get_remote_clusters`` - document ``included_deleted``
+- Update ``schemes.create_scheme`` - document ``display_name``
+- Update ``shared_channels.get_shared_channel_remotes_by_remote_cluster`` - document ``include_unconfirmed``, ``exclude_confirmed``, ``include_deleted``
+- Add ``Metrics`` automodule
+- Add ``Scheduled Post`` automodule
 
 Maintenance
 '''''''''''

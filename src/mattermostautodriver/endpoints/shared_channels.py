@@ -19,8 +19,11 @@ class SharedChannels(Base):
         """Get shared channel remotes by remote cluster.
 
         remote_id: The remote cluster GUID
+        include_unconfirmed: Include those Shared channel remotes that are unconfirmed
+        exclude_confirmed: Show only those Shared channel remotes that are not confirmed yet
         exclude_home: Show only those Shared channel remotes that were shared with this server
         exclude_remote: Show only those Shared channel remotes that were shared from this server
+        include_deleted: Include those Shared channel remotes that have been deleted
         page: The page to select
         per_page: The number of shared channels per page
 
