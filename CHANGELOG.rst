@@ -4,6 +4,18 @@ Unreleased
 Code
 ''''
 
+Documentation
+'''''''''''''
+
+Maintenance
+'''''''''''
+
+2.3.0
+"""""
+
+Code
+''''
+
 - ``driver.disconnect()`` no longer errors if not connected or initialized
 - Add ``jobs.update_job_status``
 - New endpoints ``Logs`` and ``RemoteClusters``
@@ -16,7 +28,6 @@ Code
 - New attribute ``timezone`` in ``users.update_user`` and ``users.patch_user``
 - New attribute ``position`` in ``users.patch_user``
 - Rename attribute ``pageSize`` to ``per_page`` in ``threads.get_user_threads`` and ``users.get_users``
-- Tolerate but warn about missing tags in mattermost documentation
 - Add ``files.search_files`` and ``search.search_files``
 - Add ``system.test_notification``
 - Rename ``users.attach_device_id`` to ``users.attach_device_extra_props``
@@ -41,6 +52,7 @@ Maintenance
 '''''''''''
 
 - Pin ``httpx`` to 0.28.0 to address removed argument - see issue #15
+- Tolerate but warn about missing tags in mattermost documentation
 
 2.2.0
 """""
