@@ -207,7 +207,10 @@ class Client(BaseClient):
             verify=options.get("verify", True),
         )
 
-    def make_request(self, method, endpoint, options=None, params=None, data=None, files=None):
+    def make_request(self, method, endpoint, options=None, params=None, data=None, files=None, basepath=None):
+        if basepath is not None:
+            raise DeprecationWarning("'basepath' no longer has any effect and will be removed in version 3.x. "
+                                     "Please remove it from your code.")
         request, url, request_params = self._build_request(method, options, params, data, files)
         response = request(url + endpoint, **request_params)
 
