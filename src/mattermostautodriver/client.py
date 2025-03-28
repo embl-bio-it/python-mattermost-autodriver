@@ -34,9 +34,9 @@ class BaseClient:
         self._cookies = None
         self._userid = ""
         self._username = ""
-        self._proxies = None
+        self._proxy = None
         if options["proxy"]:
-            self._proxies = {"all://": options["proxy"]}
+            self._proxy = {"all://": options["proxy"]}
 
     @staticmethod
     def _make_url(scheme, url, port):
@@ -203,7 +203,7 @@ class Client(BaseClient):
         super().__init__(options)
         self.client = httpx.Client(
             http2=options.get("http2", False),
-            proxies=self._proxies,
+            proxy=self._proxy,
             verify=options.get("verify", True),
         )
 
@@ -255,7 +255,7 @@ class AsyncClient(BaseClient):
         super().__init__(options)
         self.client = httpx.AsyncClient(
             http2=options.get("http2", False),
-            proxies=self._proxies,
+            proxy=self._proxy,
             verify=options.get("verify", True),
         )
 
