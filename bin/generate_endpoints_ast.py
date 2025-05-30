@@ -71,7 +71,6 @@ def get_parameters(params, key):
         "description": "",
         "parameters": [],
         "required": False,
-        "required_fields": [],
     }
 
     for param in params:
@@ -94,20 +93,17 @@ def get_properties(schema):
     props = schema.get("properties", {})
     required = schema.get("required", [])
 
-    return (
-        required,
-        [
-            Parameter(
-                prop,
-                values.get("description", ""),
-                prop in required,
-                values.get("type", None),
-                values.get("default", None),
-                values.get("format", None),
-            )
-            for prop, values in props.items()
-        ],
-    )
+    return [
+        Parameter(
+            prop,
+            values.get("description", ""),
+            prop in required,
+            values.get("type", None),
+            values.get("default", None),
+            values.get("format", None),
+        )
+        for prop, values in props.items()
+    ]
 
 
 def get_descriptions(params):
@@ -133,7 +129,7 @@ def parse_req_body(req_body_type, schema):
     if req_body_type in ("application/json", "multipart/form-data"):
         return get_properties(schema)
     elif req_body_type == "application/x-www-form-urlencoded":
-        return (False, [])
+        return []
     else:
         raise NotImplementedError(f"request body type {req_body_type} is not supported")
 
@@ -167,7 +163,7 @@ def get_requestbody_parameters(body, request_type):
 
     req_body_type = get_request_body_type(body)
 
-    required_fields, parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
+    parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
 
     binary = any(filter(lambda x: x.format == "binary", parameters))
 
@@ -176,7 +172,6 @@ def get_requestbody_parameters(body, request_type):
         "parameters": parameters,
         "required": body.get("required", False),
         "binary": binary,
-        "required_fields": required_fields,
     }
 
 
