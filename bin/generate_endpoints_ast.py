@@ -52,7 +52,7 @@ from inflection import underscore, camelize
 # format = "binary" for upload fields, "int64" for some numeric fields
 Parameter = namedtuple(
     "Parameter",
-    ["name", "description", "required", "type", "default", "format"],
+    ["name", "description", "required", "type", "default", "format", "schema"],
 )
 
 
@@ -83,6 +83,7 @@ def get_parameters(params, key):
                     param["schema"]["type"],
                     param["schema"].get("default", None),
                     param["schema"].get("format", None),
+                    param["schema"],
                 )
             )
 
@@ -101,6 +102,7 @@ def get_properties(schema):
             values.get("type", None),
             values.get("default", None),
             values.get("format", None),
+            values,
         )
         for prop, values in props.items()
     ]
@@ -204,8 +206,10 @@ def json_to_ast(api):
             try:
                 locations = get_locations(rdata["tags"])
             except KeyError:
-                print(f"Endpoint {endpoint} for requests of type {request_type} is missing a 'tags' attribute. "
-                      "This should be reported upstream. Skipped for now.")
+                print(
+                    f"Endpoint {endpoint} for requests of type {request_type} is missing a 'tags' attribute. "
+                    "This should be reported upstream. Skipped for now."
+                )
                 continue
 
             try:
@@ -263,6 +267,45 @@ def json_to_ast(api):
     return blocks
 
 
+def generate_type_annotation(schema, required):
+    def get_annotation(schema):
+        type_mapping = {
+            "string": "str",
+            "integer": "int",
+            "number": "float",
+            "boolean": "bool",
+            "array": "list",
+            "object": "dict",
+        }
+        schema_type = schema["type"]
+
+        if schema_type == "array":
+            item_type = get_annotation(schema["items"])
+
+            return ast.Subscript(value=ast.Name(id="List", ctx=ast.Load()), slice=item_type, ctx=ast.Load())
+        elif schema_type == "object":
+            return ast.Subscript(
+                value=ast.Name(id="Dict", ctx=ast.Load()),
+                slice=ast.Tuple(
+                    elts=[ast.Name(id="str", ctx=ast.Load()), ast.Name(id="Any", ctx=ast.Load())], ctx=ast.Load()
+                ),
+                ctx=ast.Load(),
+            )
+
+        elif schema_type in type_mapping:
+            return ast.Name(id=type_mapping[schema_type], ctx=ast.Load())
+
+        else:
+            raise NotImplementedError(f"Type {schema_type} is not supported")
+
+    annotation = get_annotation(schema)
+
+    if not required:
+        return ast.BinOp(left=annotation, op=ast.BitOr(), right=ast.Constant(value=None))
+    else:
+        return annotation
+
+
 def prepare_call_keywords(url_params, payload_params, operation_arg, req_body_type):
     """Convert url parameters to function call arguments
 
@@ -312,9 +355,10 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     binary_upload = payload_params.get("binary", False)
 
     for param in url_params["parameters"]:
+        annotation = generate_type_annotation(param.schema, param.required)
+        args.append(ast.arg(arg=param.name, annotation=annotation))
+
         if param.required:
-            args.append(ast.arg(arg=param.name))
-            # Always need to add a position matching None to AST kwargs
             kwargs.append(None)
         else:
             kwargs.append(ast.Constant(param.default))
