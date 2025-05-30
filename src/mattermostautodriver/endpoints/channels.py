@@ -631,3 +631,13 @@ class Channels(Base):
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
+
+    def get_channel_access_control_attributes(self, channel_id):
+        """Get access control attributes for a channel
+
+        channel_id: The ID of the channel.
+
+        `Read in Mattermost API docs (channels - GetChannelAccessControlAttributes) <https://api.mattermost.com/#tag/channels/operation/GetChannelAccessControlAttributes>`_
+
+        """
+        return self.client.get(f"/api/v4/channels/{channel_id}/access_control/attributes")

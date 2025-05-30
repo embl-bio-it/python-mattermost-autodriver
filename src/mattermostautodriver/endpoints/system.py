@@ -80,12 +80,22 @@ class System(Base):
         """
         return self.client.post("""/api/v4/file/s3_test""", options=options)
 
-    def get_config(self):
+    def get_config(self, params=None):
         """Get configuration
+
+        remove_masked: Remove masked values from the exported configuration.
+
+        *Minimum server version*: 10.4.0
+
+        remove_defaults: Remove default values from the exported configuration.
+
+        *Minimum server version*: 10.4.0
+
+
         `Read in Mattermost API docs (system - GetConfig) <https://api.mattermost.com/#tag/system/operation/GetConfig>`_
 
         """
-        return self.client.get("""/api/v4/config""")
+        return self.client.get("""/api/v4/config""", params=params)
 
     def update_config(self, options):
         """Update configuration
@@ -151,6 +161,13 @@ class System(Base):
 
         """
         return self.client.get("""/api/v4/license/client""", params=params)
+
+    def get_license_load_metric(self):
+        """Get license load metric
+        `Read in Mattermost API docs (system - GetLicenseLoadMetric) <https://api.mattermost.com/#tag/system/operation/GetLicenseLoadMetric>`_
+
+        """
+        return self.client.get("""/api/v4/license/load_metric""")
 
     def request_license_renewal_link(self):
         """Request the license renewal link

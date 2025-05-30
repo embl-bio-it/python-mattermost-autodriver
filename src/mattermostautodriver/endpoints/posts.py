@@ -98,10 +98,12 @@ class Posts(Base):
         perPage: The number of posts per page
         fromPost: The post_id to return the next page of posts from
         fromCreateAt: The create_at timestamp to return the next page of posts from
+        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down.
         direction: The direction to return the posts. Either up or down.
         skipFetchThreads: Whether to skip fetching threads or not
         collapsedThreads: Whether the client uses CRT or not
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
+        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt.
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://api.mattermost.com/#tag/posts/operation/GetPostThread>`_
 
@@ -263,3 +265,14 @@ class Posts(Base):
 
         """
         return self.client.post(f"/api/v4/posts/{post_id}/move", options=options)
+
+    def restore_post_version(self, post_id, restore_version_id):
+        """Restores a past version of a post
+
+        post_id: The identifier of the post to restore
+        restore_version_id: The identifier of the past version of post to restore to
+
+        `Read in Mattermost API docs (posts - RestorePostVersion) <https://api.mattermost.com/#tag/posts/operation/RestorePostVersion>`_
+
+        """
+        return self.client.post(f"/api/v4/posts/{post_id}/restore/{restore_version_id}")

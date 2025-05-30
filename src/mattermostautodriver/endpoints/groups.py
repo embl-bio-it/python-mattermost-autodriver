@@ -260,6 +260,15 @@ class Groups(Base):
         page: The page to select.
         per_page: The number of groups per page.
         filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
+        include_member_count: Boolean which adds a ``member_count`` field to each group object.
+        include_timezones: Boolean which adds timezone information for group members.
+        include_total_count: Boolean which adds total count of groups in the response.
+        include_archived: Boolean which includes archived groups in the response.
+        filter_archived: Boolean which filters out archived groups from the response.
+        filter_parent_team_permitted: Boolean which filters groups based on parent team permissions.
+        filter_has_member: User ID to filter groups that have this member.
+        include_member_ids: Boolean which adds member IDs to the group objects.
+        only_syncable_sources: Boolean which includes groups from syncable sources.
 
         `Read in Mattermost API docs (groups - GetGroupsByTeam) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByTeam>`_
 
