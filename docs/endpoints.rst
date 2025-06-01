@@ -1,22 +1,6 @@
 Endpoints
 =========
 
-Access Control
---------------
-
-.. automodule:: mattermostautodriver.endpoints.access_control
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-Audit Logs
-----------
-
-.. automodule:: mattermostautodriver.endpoints.audit_logs
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Authentication
 --------------
 
