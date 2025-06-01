@@ -30,14 +30,13 @@ No additional effort of backwards compatibility is made.
 Versions and Releases
 ---------------------
 
-Due to frequent API breaking changes, the versioning scheme used by this repository is not strict `SemanticVersioning <https://semver.org/>`_.
-Instead, the following should be considered for changes in MAJOR.MINOR.PATCH version digits:
+.. warning::
+    Starting with version 10.8.2 this project now follows releases of
+    `the official Mattermost server <https://docs.mattermost.com/about/mattermost-server-releases.html>`_.
 
-- PATCH: includes bugfixes, non-breaking changes or addition of new endpoints
-- MINOR: includes breaking changes such as removal of single endpoints
-- MAJOR: includes breaking changes such as removal of entire modules or collections of endpoints
+See `pull request #21 <https://github.com/embl-bio-it/python-mattermost-autodriver/issues/21>`_ for additional context.
 
-In production environments you are advised to pin to the MINOR digit (e.g. 1.3.x).
+In production environments you are advised to keep this package in sync with Mattermost server updates.
 
 Installation
 ------------
