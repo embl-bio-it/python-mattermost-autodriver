@@ -59,6 +59,6 @@ or that arguments are passed explicitly:
 I want to continue using the old API
 ------------------------------------
 
-If you want to continue using the deprecated API you can do so by initializing the ``Driver`` with ``Driver(old_api=True)`` which will allow you to use the old interface but will raise a ``DeprecationWarning``.
+If you want to continue using the deprecated API you can do so by initializing ``Driver(options)`` with ``Driver(options, old_api=True)`` which will allow you to use the old interface but will raise a ``DeprecationWarning``.
 
-Please note that this interface will be removed in the future so we recommend that you update your endpoint calls as soon as possible.
+Please note that this interface will be removed in the future so we recommend that you update your code as soon as possible.
