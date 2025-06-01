@@ -129,6 +129,14 @@ class BaseClient:
         return {"Authorization": "Bearer {token:s}".format(token=self._token)}
 
     def _build_request(self, method, options=None, params=None, data=None, files=None):
+        def filter_dict(d):
+            filtered_d = {k: v for k, v in d.items() if v is not None}
+
+            if filtered_d:
+                return filtered_d
+
+            return None
+
         if params is None:
             params = {}
         if data is None:
@@ -137,16 +145,21 @@ class BaseClient:
 
         request_params = {"headers": self.auth_header(), "timeout": self.request_timeout}
 
-        if params is not None:
-            request_params["params"] = params
+        filtered_params = filter_dict(params)
+        filtered_options = filter_dict(options)
+        filtered_data = filter_dict(data)
+        filtered_files = filter_dict(files)
+
+        if filtered_params is not None:
+            request_params["params"] = filtered_params
 
         if method in ("post", "put"):
-            if options is not None:
-                request_params["json"] = options
-            if data is not None:
-                request_params["data"] = data
-            if files is not None:
-                request_params["files"] = files
+            if filtered_options is not None:
+                request_params["json"] = filtered_options
+            if filtered_data is not None:
+                request_params["data"] = filtered_data
+            if filtered_files is not None:
+                request_params["files"] = filtered_files
 
         if self._auth is not None:
             request_params["auth"] = self._auth()
