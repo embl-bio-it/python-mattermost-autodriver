@@ -48,6 +48,7 @@ Examples from clashes include ``from``
 or that arguments are passed explicitly:
 
 .. code:: python
+
     dri.channels.create_channel(
         team_id=team_id,
         name="awesome-channel",
