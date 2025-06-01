@@ -67,6 +67,11 @@ __all__ = ["{classname}"]
 # Internal Variable Postfix - used to avoid name collisions with call params
 IVP = "71f8b7431cd64fcfa0dabd300d0636d2"
 
+known_double_arguments = (
+    ("update_user_status", "user_id"),
+    ("add_team_member", "team_id"),
+)
+
 
 def load_json(filepath="mattermost/api/openapi.json"):
     with open(filepath) as fh:
@@ -252,7 +257,7 @@ def json_to_ast(api):
                 "put": "options",
             }
 
-            def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
+            def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type, function_name=function_name)
             call_kwargs = prepare_call_keywords(payload_params, operations[request_type], req_body_type)
             data_dicts = prepare_data_dictionaries(payload_params, operations[request_type], req_body_type)
 
@@ -364,7 +369,7 @@ def prepare_call_keywords(payload_params, operation_arg, req_body_type):
     return kwargs
 
 
-def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_type):
+def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_type, function_name):
     """Convert url parameters to function arguments
 
     e.g. def func(arg1, arg2=...):
@@ -412,7 +417,9 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
 
     for param in request_params:
         if param.name in existing_params:
-            print(param.name)
+            # Some API endpoints repeat arguments in the URL and as part of the payload
+            if (function_name, param.name) not in known_double_arguments:
+                raise ValueError(f"Saw parameter {param.name} multiple times in endpoint {function_name}")
             continue
         existing_params.append(param.name)
         unique_params.append(param)
