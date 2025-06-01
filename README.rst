@@ -246,7 +246,7 @@ Finally, with the virtual environment still loaded execute
 
 .. code:: shell
 
-    ./generate_endpoints.sh
+    ./scripts/generate_endpoints.sh
 
 to generate the updated endpoint definition.
 This script will also update the documentation by running:
