@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class Schemes(Base):
 
-    def get_schemes(self, params=None):
+    def get_schemes(self, scope: str | None = "", page: int | None = 0, per_page: int | None = 60):
         """Get the schemes.
 
         scope: Limit the results returned to the provided scope, either ``team`` or ``channel``.
@@ -13,9 +14,10 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetSchemes) <https://api.mattermost.com/#tag/schemes/operation/GetSchemes>`_
 
         """
-        return self.client.get("""/api/v4/schemes""", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"scope": scope, "page": page, "per_page": per_page}
+        return self.client.get("""/api/v4/schemes""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def create_scheme(self, options):
+    def create_scheme(self, display_name: str, scope: str, name: str | None = None, description: str | None = None):
         """Create a scheme
 
         name: The name of the scheme
@@ -26,9 +28,15 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - CreateScheme) <https://api.mattermost.com/#tag/schemes/operation/CreateScheme>`_
 
         """
-        return self.client.post("""/api/v4/schemes""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "name": name,
+            "display_name": display_name,
+            "description": description,
+            "scope": scope,
+        }
+        return self.client.post("""/api/v4/schemes""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_scheme(self, scheme_id):
+    def get_scheme(self, scheme_id: str):
         """Get a scheme
 
         scheme_id: Scheme GUID
@@ -38,7 +46,7 @@ class Schemes(Base):
         """
         return self.client.get(f"/api/v4/schemes/{scheme_id}")
 
-    def delete_scheme(self, scheme_id):
+    def delete_scheme(self, scheme_id: str):
         """Delete a scheme
 
         scheme_id: ID of the scheme to delete
@@ -48,7 +56,7 @@ class Schemes(Base):
         """
         return self.client.delete(f"/api/v4/schemes/{scheme_id}")
 
-    def patch_scheme(self, scheme_id, options):
+    def patch_scheme(self, scheme_id: str, name: str | None = None, description: str | None = None):
         """Patch a scheme
 
         scheme_id: Scheme GUID
@@ -58,9 +66,10 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - PatchScheme) <https://api.mattermost.com/#tag/schemes/operation/PatchScheme>`_
 
         """
-        return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"name": name, "description": description}
+        return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_teams_for_scheme(self, scheme_id, params=None):
+    def get_teams_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get a page of teams which use this scheme.
 
         scheme_id: Scheme GUID
@@ -70,9 +79,10 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetTeamsForScheme>`_
 
         """
-        return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_channels_for_scheme(self, scheme_id, params=None):
+    def get_channels_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get a page of channels which use this scheme.
 
         scheme_id: Scheme GUID
@@ -82,4 +92,5 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetChannelsForScheme>`_
 
         """
-        return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2)

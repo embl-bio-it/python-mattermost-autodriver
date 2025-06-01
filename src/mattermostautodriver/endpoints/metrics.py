@@ -1,9 +1,19 @@
 from .base import Base
+from typing import Any
 
 
 class Metrics(Base):
 
-    def submit_performance_report(self, options=None):
+    def submit_performance_report(
+        self,
+        version: str,
+        start: int,
+        end: int,
+        client_id: str | None = None,
+        labels: list[str] | None = None,
+        counters: list[dict[str, Any]] | None = None,
+        histograms: list[dict[str, Any]] | None = None,
+    ):
         """Report client performance metrics
 
         version: An identifier for the schema of the data being submitted which currently must be "0.1.0"
@@ -17,4 +27,13 @@ class Metrics(Base):
         `Read in Mattermost API docs (metrics - SubmitPerformanceReport) <https://api.mattermost.com/#tag/metrics/operation/SubmitPerformanceReport>`_
 
         """
-        return self.client.post("""/api/v4/client_perf""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "version": version,
+            "client_id": client_id,
+            "labels": labels,
+            "start": start,
+            "end": end,
+            "counters": counters,
+            "histograms": histograms,
+        }
+        return self.client.post("""/api/v4/client_perf""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)

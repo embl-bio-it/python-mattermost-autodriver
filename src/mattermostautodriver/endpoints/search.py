@@ -1,9 +1,19 @@
 from .base import Base
+from typing import Any
 
 
 class Search(Base):
 
-    def search_files(self, team_id, data):
+    def search_files(
+        self,
+        team_id: str,
+        terms: str,
+        is_or_search: bool,
+        time_zone_offset: int | None = 0,
+        include_deleted_channels: bool | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Search files in a team
 
         team_id: Team GUID
@@ -17,9 +27,25 @@ class Search(Base):
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
 
         """
-        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "terms": terms,
+            "is_or_search": is_or_search,
+            "time_zone_offset": time_zone_offset,
+            "include_deleted_channels": include_deleted_channels,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def search_files(self, data):
+    def search_files(
+        self,
+        terms: str,
+        is_or_search: bool,
+        time_zone_offset: int | None = 0,
+        include_deleted_channels: bool | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Search files across the teams of the current user
 
         terms: The search terms as entered by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
@@ -32,4 +58,12 @@ class Search(Base):
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
 
         """
-        return self.client.post("""/api/v4/files/search""", data=data)
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "terms": terms,
+            "is_or_search": is_or_search,
+            "time_zone_offset": time_zone_offset,
+            "include_deleted_channels": include_deleted_channels,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.post("""/api/v4/files/search""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)

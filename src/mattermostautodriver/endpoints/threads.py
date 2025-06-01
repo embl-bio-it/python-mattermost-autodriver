@@ -1,9 +1,21 @@
 from .base import Base
+from typing import Any
 
 
 class Threads(Base):
 
-    def get_user_threads(self, user_id, team_id, params=None):
+    def get_user_threads(
+        self,
+        user_id: str,
+        team_id: str,
+        since: int | None = None,
+        deleted: bool | None = False,
+        extended: bool | None = False,
+        page: int | None = 0,
+        per_page: int | None = 60,
+        totalsOnly: bool | None = False,
+        threadsOnly: bool | None = False,
+    ):
         """Get all threads that user is following
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -19,9 +31,20 @@ class Threads(Base):
         `Read in Mattermost API docs (threads - GetUserThreads) <https://api.mattermost.com/#tag/threads/operation/GetUserThreads>`_
 
         """
-        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "since": since,
+            "deleted": deleted,
+            "extended": extended,
+            "page": page,
+            "per_page": per_page,
+            "totalsOnly": totalsOnly,
+            "threadsOnly": threadsOnly,
+        }
+        return self.client.get(
+            f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=params_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def get_thread_mention_counts_by_channel(self, user_id, team_id):
+    def get_thread_mention_counts_by_channel(self, user_id: str, team_id: str):
         """Get all unread mention counts from followed threads, per-channel
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -32,7 +55,7 @@ class Threads(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads/mention_counts")
 
-    def update_threads_read_for_user(self, user_id, team_id):
+    def update_threads_read_for_user(self, user_id: str, team_id: str):
         """Mark all threads that user is following as read
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -43,7 +66,7 @@ class Threads(Base):
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/read")
 
-    def update_thread_read_for_user(self, user_id, team_id, thread_id, timestamp):
+    def update_thread_read_for_user(self, user_id: str, team_id: str, thread_id: str, timestamp: str):
         """Mark a thread that user is following read state to the timestamp
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -56,7 +79,7 @@ class Threads(Base):
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/read/{timestamp}")
 
-    def set_thread_unread_by_post_id(self, user_id, team_id, thread_id, post_id):
+    def set_thread_unread_by_post_id(self, user_id: str, team_id: str, thread_id: str, post_id: str):
         """Mark a thread that user is following as unread based on a post id
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -69,7 +92,7 @@ class Threads(Base):
         """
         return self.client.post(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}")
 
-    def start_following_thread(self, user_id, team_id, thread_id):
+    def start_following_thread(self, user_id: str, team_id: str, thread_id: str):
         """Start following a thread
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -81,7 +104,7 @@ class Threads(Base):
         """
         return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
-    def stop_following_thread(self, user_id, team_id, thread_id):
+    def stop_following_thread(self, user_id: str, team_id: str, thread_id: str):
         """Stop following a thread
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
@@ -93,7 +116,7 @@ class Threads(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/threads/{thread_id}/following")
 
-    def get_user_thread(self, user_id, team_id, thread_id):
+    def get_user_thread(self, user_id: str, team_id: str, thread_id: str):
         """Get a thread followed by the user
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.

@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class Files(Base):
 
-    def upload_file(self, files, data=None):
+    def upload_file(self, files: str | None = None, channel_id: str | None = None, client_ids: str | None = None):
         """Upload a file
 
         files: A file to be uploaded
@@ -13,9 +14,15 @@ class Files(Base):
         `Read in Mattermost API docs (files - UploadFile) <https://api.mattermost.com/#tag/files/operation/UploadFile>`_
 
         """
-        return self.client.post("""/api/v4/files""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"files": files}
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_id": channel_id, "client_ids": client_ids}
+        return self.client.post(
+            """/api/v4/files""",
+            files=files_71f8b7431cd64fcfa0dabd300d0636d2,
+            data=data_71f8b7431cd64fcfa0dabd300d0636d2,
+        )
 
-    def get_file(self, file_id):
+    def get_file(self, file_id: str):
         """Get a file
 
         file_id: The ID of the file to get
@@ -25,7 +32,7 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}")
 
-    def get_file_thumbnail(self, file_id):
+    def get_file_thumbnail(self, file_id: str):
         """Get a file's thumbnail
 
         file_id: The ID of the file to get
@@ -35,7 +42,7 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}/thumbnail")
 
-    def get_file_preview(self, file_id):
+    def get_file_preview(self, file_id: str):
         """Get a file's preview
 
         file_id: The ID of the file to get
@@ -45,7 +52,7 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}/preview")
 
-    def get_file_link(self, file_id):
+    def get_file_link(self, file_id: str):
         """Get a public file link
 
         file_id: The ID of the file to get a link for
@@ -55,7 +62,7 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}/link")
 
-    def get_file_info(self, file_id):
+    def get_file_info(self, file_id: str):
         """Get metadata for a file
 
         file_id: The ID of the file info to get
@@ -65,7 +72,7 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}/info")
 
-    def get_file_public(self, file_id, params=None):
+    def get_file_public(self, file_id: str, h: str):
         """Get a public file
 
         file_id: The ID of the file to get
@@ -74,9 +81,19 @@ class Files(Base):
         `Read in Mattermost API docs (files - GetFilePublic) <https://api.mattermost.com/#tag/files/operation/GetFilePublic>`_
 
         """
-        return self.client.get(f"/files/{file_id}/public", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"h": h}
+        return self.client.get(f"/files/{file_id}/public", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def search_files(self, team_id, data):
+    def search_files(
+        self,
+        team_id: str,
+        terms: str,
+        is_or_search: bool,
+        time_zone_offset: int | None = 0,
+        include_deleted_channels: bool | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Search files in a team
 
         team_id: Team GUID
@@ -90,9 +107,25 @@ class Files(Base):
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
 
         """
-        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data)
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "terms": terms,
+            "is_or_search": is_or_search,
+            "time_zone_offset": time_zone_offset,
+            "include_deleted_channels": include_deleted_channels,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def search_files(self, data):
+    def search_files(
+        self,
+        terms: str,
+        is_or_search: bool,
+        time_zone_offset: int | None = 0,
+        include_deleted_channels: bool | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Search files across the teams of the current user
 
         terms: The search terms as entered by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
@@ -105,4 +138,12 @@ class Files(Base):
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
 
         """
-        return self.client.post("""/api/v4/files/search""", data=data)
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "terms": terms,
+            "is_or_search": is_or_search,
+            "time_zone_offset": time_zone_offset,
+            "include_deleted_channels": include_deleted_channels,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.post("""/api/v4/files/search""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)

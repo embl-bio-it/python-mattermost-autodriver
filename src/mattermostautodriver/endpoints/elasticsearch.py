@@ -1,4 +1,5 @@
 from .base import Base
+from typing import Any
 
 
 class Elasticsearch(Base):

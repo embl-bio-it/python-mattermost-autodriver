@@ -1,4 +1,5 @@
 from .base import Base
+from typing import Any
 
 
 class Roles(Base):
@@ -10,7 +11,7 @@ class Roles(Base):
         """
         return self.client.get("""/api/v4/roles""")
 
-    def get_role(self, role_id):
+    def get_role(self, role_id: str):
         """Get a role
 
         role_id: Role GUID
@@ -20,7 +21,7 @@ class Roles(Base):
         """
         return self.client.get(f"/api/v4/roles/{role_id}")
 
-    def get_role_by_name(self, role_name):
+    def get_role_by_name(self, role_name: str):
         """Get a role
 
         role_name: Role Name
@@ -30,7 +31,7 @@ class Roles(Base):
         """
         return self.client.get(f"/api/v4/roles/name/{role_name}")
 
-    def patch_role(self, role_id, options):
+    def patch_role(self, role_id: str, permissions: list[str] | None = None):
         """Patch a role
 
         role_id: Role GUID
@@ -39,9 +40,10 @@ class Roles(Base):
         `Read in Mattermost API docs (roles - PatchRole) <https://api.mattermost.com/#tag/roles/operation/PatchRole>`_
 
         """
-        return self.client.put(f"/api/v4/roles/{role_id}/patch", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"permissions": permissions}
+        return self.client.put(f"/api/v4/roles/{role_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_roles_by_names(self, options):
+    def get_roles_by_names(self, options: list[str]):
         """Get a list of roles by name
         `Read in Mattermost API docs (roles - GetRolesByNames) <https://api.mattermost.com/#tag/roles/operation/GetRolesByNames>`_
 

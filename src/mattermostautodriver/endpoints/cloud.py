@@ -1,4 +1,5 @@
 from .base import Base
+from typing import Any
 
 
 class Cloud(Base):
@@ -24,7 +25,7 @@ class Cloud(Base):
         """
         return self.client.post("""/api/v4/cloud/payment""")
 
-    def confirm_customer_payment(self, data=None):
+    def confirm_customer_payment(self, stripe_setup_intent_id: str | None = None):
         """Completes the payment setup intent
 
         stripe_setup_intent_id:
@@ -32,7 +33,8 @@ class Cloud(Base):
         `Read in Mattermost API docs (cloud - ConfirmCustomerPayment) <https://api.mattermost.com/#tag/cloud/operation/ConfirmCustomerPayment>`_
 
         """
-        return self.client.post("""/api/v4/cloud/payment/confirm""", data=data)
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"stripe_setup_intent_id": stripe_setup_intent_id}
+        return self.client.post("""/api/v4/cloud/payment/confirm""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def get_cloud_customer(self):
         """Get cloud customer
@@ -41,7 +43,14 @@ class Cloud(Base):
         """
         return self.client.get("""/api/v4/cloud/customer""")
 
-    def update_cloud_customer(self, options):
+    def update_cloud_customer(
+        self,
+        name: str | None = None,
+        email: str | None = None,
+        contact_first_name: str | None = None,
+        contact_last_name: str | None = None,
+        num_employees: str | None = None,
+    ):
         """Update cloud customer
 
         name:
@@ -53,9 +62,16 @@ class Cloud(Base):
         `Read in Mattermost API docs (cloud - UpdateCloudCustomer) <https://api.mattermost.com/#tag/cloud/operation/UpdateCloudCustomer>`_
 
         """
-        return self.client.put("""/api/v4/cloud/customer""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "name": name,
+            "email": email,
+            "contact_first_name": contact_first_name,
+            "contact_last_name": contact_last_name,
+            "num_employees": num_employees,
+        }
+        return self.client.put("""/api/v4/cloud/customer""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def update_cloud_customer_address(self, options):
+    def update_cloud_customer_address(self, options: Any):
         """Update cloud customer address
         `Read in Mattermost API docs (cloud - UpdateCloudCustomerAddress) <https://api.mattermost.com/#tag/cloud/operation/UpdateCloudCustomerAddress>`_
 
@@ -83,7 +99,7 @@ class Cloud(Base):
         """
         return self.client.get("""/api/v4/cloud/subscription/invoices""")
 
-    def get_invoice_for_subscription_as_pdf(self, invoice_id):
+    def get_invoice_for_subscription_as_pdf(self, invoice_id: str):
         """Get cloud invoice PDF
 
         invoice_id: Invoice ID

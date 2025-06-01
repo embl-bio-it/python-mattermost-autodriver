@@ -1,9 +1,25 @@
 from .base import Base
+from typing import Any
 
 
 class Reports(Base):
 
-    def get_users_for_reporting(self, params=None):
+    def get_users_for_reporting(
+        self,
+        sort_column: str | None = "Username",
+        direction: str | None = "next",
+        sort_direction: str | None = "asc",
+        page_size: int | None = 50,
+        from_column_value: str | None = None,
+        from_id: str | None = None,
+        date_range: str | None = "alltime",
+        role_filter: str | None = None,
+        team_filter: str | None = None,
+        has_no_team: bool | None = None,
+        hide_active: bool | None = None,
+        hide_inactive: bool | None = None,
+        search_term: str | None = None,
+    ):
         """Get a list of paged and sorted users for admin reporting purposes
 
         sort_column: The column to sort the users by. Must be one of ("CreateAt", "Username", "FirstName", "LastName", "Nickname", "Email") or the API will return an error.
@@ -23,9 +39,32 @@ class Reports(Base):
         `Read in Mattermost API docs (reports - GetUsersForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUsersForReporting>`_
 
         """
-        return self.client.get("""/api/v4/reports/users""", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "sort_column": sort_column,
+            "direction": direction,
+            "sort_direction": sort_direction,
+            "page_size": page_size,
+            "from_column_value": from_column_value,
+            "from_id": from_id,
+            "date_range": date_range,
+            "role_filter": role_filter,
+            "team_filter": team_filter,
+            "has_no_team": has_no_team,
+            "hide_active": hide_active,
+            "hide_inactive": hide_inactive,
+            "search_term": search_term,
+        }
+        return self.client.get("""/api/v4/reports/users""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_user_count_for_reporting(self, params=None):
+    def get_user_count_for_reporting(
+        self,
+        role_filter: str | None = None,
+        team_filter: str | None = None,
+        has_no_team: bool | None = None,
+        hide_active: bool | None = None,
+        hide_inactive: bool | None = None,
+        search_term: str | None = None,
+    ):
         """Gets the full count of users that match the filter.
 
         role_filter: Filter users by their role.
@@ -38,7 +77,15 @@ class Reports(Base):
         `Read in Mattermost API docs (reports - GetUserCountForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUserCountForReporting>`_
 
         """
-        return self.client.get("""/api/v4/reports/users/count""", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "role_filter": role_filter,
+            "team_filter": team_filter,
+            "has_no_team": has_no_team,
+            "hide_active": hide_active,
+            "hide_inactive": hide_inactive,
+            "search_term": search_term,
+        }
+        return self.client.get("""/api/v4/reports/users/count""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def start_batch_users_export(self):
         """Starts a job to export the users to a report file.

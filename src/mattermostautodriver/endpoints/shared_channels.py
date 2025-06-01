@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class SharedChannels(Base):
 
-    def get_all_shared_channels(self, team_id, params=None):
+    def get_all_shared_channels(self, team_id: str, page: int | None = 0, per_page: int | None = 0):
         """Get all shared channels for team.
 
         team_id: Team Id
@@ -13,9 +14,20 @@ class SharedChannels(Base):
         `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://api.mattermost.com/#tag/shared_channels/operation/GetAllSharedChannels>`_
 
         """
-        return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_shared_channel_remotes_by_remote_cluster(self, remote_id, params=None):
+    def get_shared_channel_remotes_by_remote_cluster(
+        self,
+        remote_id: str,
+        include_unconfirmed: bool | None = None,
+        exclude_confirmed: bool | None = None,
+        exclude_home: bool | None = None,
+        exclude_remote: bool | None = None,
+        include_deleted: bool | None = None,
+        page: int | None = None,
+        per_page: int | None = None,
+    ):
         """Get shared channel remotes by remote cluster.
 
         remote_id: The remote cluster GUID
@@ -30,9 +42,20 @@ class SharedChannels(Base):
         `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotesByRemoteCluster) <https://api.mattermost.com/#tag/shared_channels/operation/GetSharedChannelRemotesByRemoteCluster>`_
 
         """
-        return self.client.get(f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "include_unconfirmed": include_unconfirmed,
+            "exclude_confirmed": exclude_confirmed,
+            "exclude_home": exclude_home,
+            "exclude_remote": exclude_remote,
+            "include_deleted": include_deleted,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.get(
+            f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=params_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def get_remote_cluster_info(self, remote_id):
+    def get_remote_cluster_info(self, remote_id: str):
         """Get remote cluster info by ID for user.
 
         remote_id: Remote Cluster GUID
@@ -42,7 +65,7 @@ class SharedChannels(Base):
         """
         return self.client.get(f"/api/v4/sharedchannels/remote_info/{remote_id}")
 
-    def invite_remote_cluster_to_channel(self, remote_id, channel_id):
+    def invite_remote_cluster_to_channel(self, remote_id: str, channel_id: str):
         """Invites a remote cluster to a channel.
 
         remote_id: The remote cluster GUID
@@ -53,7 +76,7 @@ class SharedChannels(Base):
         """
         return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/invite")
 
-    def uninvite_remote_cluster_to_channel(self, remote_id, channel_id):
+    def uninvite_remote_cluster_to_channel(self, remote_id: str, channel_id: str):
         """Uninvites a remote cluster to a channel.
 
         remote_id: The remote cluster GUID

@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class TermsOfService(Base):
 
-    def register_terms_of_service_action(self, user_id, options):
+    def register_terms_of_service_action(self, user_id: str, serviceTermsId: str, accepted: str):
         """Records user action when they accept or decline custom terms of service
 
         user_id: User GUID
@@ -13,9 +14,12 @@ class TermsOfService(Base):
         `Read in Mattermost API docs (terms_of_service - RegisterTermsOfServiceAction) <https://api.mattermost.com/#tag/terms_of_service/operation/RegisterTermsOfServiceAction>`_
 
         """
-        return self.client.post(f"/api/v4/users/{user_id}/terms_of_service", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"serviceTermsId": serviceTermsId, "accepted": accepted}
+        return self.client.post(
+            f"/api/v4/users/{user_id}/terms_of_service", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def get_user_terms_of_service(self, user_id):
+    def get_user_terms_of_service(self, user_id: str):
         """Fetches user's latest terms of service action if the latest action was for acceptance.
 
         user_id: User GUID

@@ -1,4 +1,5 @@
 from .base import Base
+from typing import Any
 
 
 class Exports(Base):
@@ -10,7 +11,7 @@ class Exports(Base):
         """
         return self.client.get("""/api/v4/exports""")
 
-    def download_export(self, export_name):
+    def download_export(self, export_name: str):
         """Download an export file
 
         export_name: The name of the export file to download
@@ -20,7 +21,7 @@ class Exports(Base):
         """
         return self.client.get(f"/api/v4/exports/{export_name}")
 
-    def delete_export(self, export_name):
+    def delete_export(self, export_name: str):
         """Delete an export file
 
         export_name: The name of the export file to delete

@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class Preferences(Base):
 
-    def get_preferences(self, user_id):
+    def get_preferences(self, user_id: str):
         """Get the user's preferences
 
         user_id: User GUID
@@ -13,7 +14,7 @@ class Preferences(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/preferences")
 
-    def update_preferences(self, user_id, options):
+    def update_preferences(self, user_id: str, options: list[Any]):
         """Save the user's preferences
 
         user_id: User GUID
@@ -23,7 +24,7 @@ class Preferences(Base):
         """
         return self.client.put(f"/api/v4/users/{user_id}/preferences", options=options)
 
-    def delete_preferences(self, user_id, options):
+    def delete_preferences(self, user_id: str, options: list[Any]):
         """Delete user's preferences
 
         user_id: User GUID
@@ -33,7 +34,7 @@ class Preferences(Base):
         """
         return self.client.post(f"/api/v4/users/{user_id}/preferences/delete", options=options)
 
-    def get_preferences_by_category(self, user_id, category):
+    def get_preferences_by_category(self, user_id: str, category: str):
         """List a user's preferences by category
 
         user_id: User GUID
@@ -44,7 +45,7 @@ class Preferences(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/preferences/{category}")
 
-    def get_preferences_by_category_by_name(self, user_id, category, preference_name):
+    def get_preferences_by_category_by_name(self, user_id: str, category: str, preference_name: str):
         """Get a specific user preference
 
         user_id: User GUID

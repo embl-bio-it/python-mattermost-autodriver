@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any
 
 
 class AuditLogs(Base):
 
-    def add_audit_log_certificate(self, files, data=None):
+    def add_audit_log_certificate(self, certificate: str):
         """Upload audit log certificate
 
         certificate: The certificate file
@@ -11,7 +12,8 @@ class AuditLogs(Base):
         `Read in Mattermost API docs (audit_logs - AddAuditLogCertificate) <https://api.mattermost.com/#tag/audit_logs/operation/AddAuditLogCertificate>`_
 
         """
-        return self.client.post("""/api/v4/audit_logs/certificate""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"certificate": certificate}
+        return self.client.post("""/api/v4/audit_logs/certificate""", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def remove_audit_log_certificate(self):
         """Remove audit log certificate
