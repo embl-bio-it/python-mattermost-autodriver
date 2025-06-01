@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   release:
     types: [ created ]
+  # To activate once the fully automatic update of versions from Mattermost is complete
+  # push:
+  #   tags:
+  #     - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build-n-publish:
