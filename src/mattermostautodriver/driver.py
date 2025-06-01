@@ -67,7 +67,7 @@ class BaseDriver:
                 "See https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html "
                 "for additional details."
             )
-            warnings.warn(message, DeprecationWarning)
+            warnings.warn(message, DeprecationWarning, stacklevel=2)
             cls._endpoints_path = "endpoints_old"
         else:
             cls._endpoints_path = "endpoints"
