@@ -15,12 +15,12 @@ jobs:
         with:
           fetch-depth: 0  # Ensure all tags are available
 
-      - name: Set up tools
+      - name: Set up initial dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y jq make npm python3 python3-pip git
+          sudo apt-get install -y jq
 
-      - name: Check for latest tag and PyPI version
+      - name: Check for latest Mattermost Server tag and MMAutoDriver PyPI version
         id: version_check
         run: |
           if ! TAGS_JSON="$(curl -s -f https://api.github.com/repos/mattermost/mattermost/tags)"; then
@@ -63,19 +63,25 @@ jobs:
           echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
           echo "tag=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Clone tagged repo version
+      - name: Set up additional dependencies for the entire check
+        if: steps.version_check.outputs.version != ''
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make npm python3 python3-pip git
+
+      - name: Clone Mattermost server files matching tagged version
         if: steps.version_check.outputs.version != ''
         run: |
           git clone --depth 1 --branch "${{ steps.version_check.outputs.version }}" https://github.com/mattermost/mattermost mattermost
 
-      - name: Run custom build script (npm, make, python, jq)
+      - name: Build OpenAPI JSON specification
         if: steps.version_check.outputs.version != ''
         run: |
           cd mattermost/api
           make build
           ./node_modules/.bin/swagger-cli bundle --outfile openapi.json v4/html/static/mattermost-openapi-v4.yaml
 
-      - name: Run Python-only script on this repo
+      - name: Generate endpoints from API specification
         if: steps.version_check.outputs.version != ''
         run: |
           python3 -m venv .venv
@@ -84,7 +90,7 @@ jobs:
           pip install -r requirements.txt
           ./scripts/generate_endpoints.sh
 
-      - name: Commit and tag new version
+      - name: Commit endpoint changes and tag new version
         if: steps.version_check.outputs.version != ''
         run: |
           git config user.name "Github-Actions"
@@ -93,7 +99,7 @@ jobs:
           git commit -m "Prepare release ${{ steps.version_check.outputs.version }}"
           git tag "${{ steps.version_check.outputs.tag }}"
 
-      - name: Push changes and tag
+      - name: Push changes and tag to mattermostautodriver repo
         if: steps.version_check.outputs.version != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
