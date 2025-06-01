@@ -1,9 +1,18 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Posts(Base):
 
-    def create_post(self, options):
+    def create_post(
+        self,
+        channel_id: str,
+        message: str,
+        root_id: str | None = None,
+        file_ids: list[str] | None = None,
+        props: dict[str, Any] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ):
         """Create a post
 
         channel_id: The channel ID to post in
@@ -16,9 +25,17 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - CreatePost) <https://api.mattermost.com/#tag/posts/operation/CreatePost>`_
 
         """
-        return self.client.post("""/api/v4/posts""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "channel_id": channel_id,
+            "message": message,
+            "root_id": root_id,
+            "file_ids": file_ids,
+            "props": props,
+            "metadata": metadata,
+        }
+        return self.client.post("""/api/v4/posts""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def create_post_ephemeral(self, options):
+    def create_post_ephemeral(self, user_id: str, post: dict[str, Any]):
         """Create a ephemeral post
 
         user_id: The target user id for the ephemeral post
@@ -27,9 +44,10 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - CreatePostEphemeral) <https://api.mattermost.com/#tag/posts/operation/CreatePostEphemeral>`_
 
         """
-        return self.client.post("""/api/v4/posts/ephemeral""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"user_id": user_id, "post": post}
+        return self.client.post("""/api/v4/posts/ephemeral""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_post(self, post_id, params=None):
+    def get_post(self, post_id: str, include_deleted: bool | None = False):
         """Get a post
 
         post_id: ID of the post to get
@@ -38,9 +56,10 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - GetPost) <https://api.mattermost.com/#tag/posts/operation/GetPost>`_
 
         """
-        return self.client.get(f"/api/v4/posts/{post_id}", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/posts/{post_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def delete_post(self, post_id):
+    def delete_post(self, post_id: str):
         """Delete a post
 
         post_id: ID of the post to delete
@@ -50,7 +69,15 @@ class Posts(Base):
         """
         return self.client.delete(f"/api/v4/posts/{post_id}")
 
-    def update_post(self, post_id, options):
+    def update_post(
+        self,
+        post_id: str,
+        id: str,
+        is_pinned: bool | None = None,
+        message: str | None = None,
+        has_reactions: bool | None = None,
+        props: str | None = None,
+    ):
         """Update a post
 
         post_id: ID of the post to update
@@ -63,9 +90,16 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - UpdatePost) <https://api.mattermost.com/#tag/posts/operation/UpdatePost>`_
 
         """
-        return self.client.put(f"/api/v4/posts/{post_id}", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "id": id,
+            "is_pinned": is_pinned,
+            "message": message,
+            "has_reactions": has_reactions,
+            "props": props,
+        }
+        return self.client.put(f"/api/v4/posts/{post_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def set_post_unread(self, user_id, post_id):
+    def set_post_unread(self, user_id: str, post_id: str):
         """Mark as unread from a post.
 
         user_id: User GUID
@@ -76,7 +110,15 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/set_unread")
 
-    def patch_post(self, post_id, options):
+    def patch_post(
+        self,
+        post_id: str,
+        is_pinned: bool | None = None,
+        message: str | None = None,
+        file_ids: list[str] | None = None,
+        has_reactions: bool | None = None,
+        props: str | None = None,
+    ):
         """Patch a post
 
         post_id: Post GUID
@@ -89,26 +131,65 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - PatchPost) <https://api.mattermost.com/#tag/posts/operation/PatchPost>`_
 
         """
-        return self.client.put(f"/api/v4/posts/{post_id}/patch", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "is_pinned": is_pinned,
+            "message": message,
+            "file_ids": file_ids,
+            "has_reactions": has_reactions,
+            "props": props,
+        }
+        return self.client.put(f"/api/v4/posts/{post_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_post_thread(self, post_id, params=None):
+    def get_post_thread(
+        self,
+        post_id: str,
+        perPage: int | None = 0,
+        fromPost: str | None = "",
+        fromCreateAt: int | None = 0,
+        fromUpdateAt: int | None = 0,
+        direction: str | None = "",
+        skipFetchThreads: bool | None = False,
+        collapsedThreads: bool | None = False,
+        collapsedThreadsExtended: bool | None = False,
+        updatesOnly: bool | None = False,
+    ):
         """Get a thread
 
         post_id: ID of a post in the thread
         perPage: The number of posts per page
         fromPost: The post_id to return the next page of posts from
         fromCreateAt: The create_at timestamp to return the next page of posts from
+        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down.
         direction: The direction to return the posts. Either up or down.
         skipFetchThreads: Whether to skip fetching threads or not
         collapsedThreads: Whether the client uses CRT or not
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
+        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt.
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://api.mattermost.com/#tag/posts/operation/GetPostThread>`_
 
         """
-        return self.client.get(f"/api/v4/posts/{post_id}/thread", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "perPage": perPage,
+            "fromPost": fromPost,
+            "fromCreateAt": fromCreateAt,
+            "fromUpdateAt": fromUpdateAt,
+            "direction": direction,
+            "skipFetchThreads": skipFetchThreads,
+            "collapsedThreads": collapsedThreads,
+            "collapsedThreadsExtended": collapsedThreadsExtended,
+            "updatesOnly": updatesOnly,
+        }
+        return self.client.get(f"/api/v4/posts/{post_id}/thread", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_flagged_posts_for_user(self, user_id, params=None):
+    def get_flagged_posts_for_user(
+        self,
+        user_id: str,
+        team_id: str | None = None,
+        channel_id: str | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Get a list of flagged posts
 
         user_id: ID of the user
@@ -120,9 +201,15 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - GetFlaggedPostsForUser) <https://api.mattermost.com/#tag/posts/operation/GetFlaggedPostsForUser>`_
 
         """
-        return self.client.get(f"/api/v4/users/{user_id}/posts/flagged", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "team_id": team_id,
+            "channel_id": channel_id,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.get(f"/api/v4/users/{user_id}/posts/flagged", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_file_infos_for_post(self, post_id, params=None):
+    def get_file_infos_for_post(self, post_id: str, include_deleted: bool | None = False):
         """Get file info for post
 
         post_id: ID of the post
@@ -131,9 +218,19 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - GetFileInfosForPost) <https://api.mattermost.com/#tag/posts/operation/GetFileInfosForPost>`_
 
         """
-        return self.client.get(f"/api/v4/posts/{post_id}/files/info", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/posts/{post_id}/files/info", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_posts_for_channel(self, channel_id, params=None):
+    def get_posts_for_channel(
+        self,
+        channel_id: str,
+        page: int | None = 0,
+        per_page: int | None = 60,
+        since: int | None = None,
+        before: str | None = None,
+        after: str | None = None,
+        include_deleted: bool | None = False,
+    ):
         """Get posts for a channel
 
         channel_id: The channel ID to get the posts for
@@ -147,9 +244,26 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://api.mattermost.com/#tag/posts/operation/GetPostsForChannel>`_
 
         """
-        return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "page": page,
+            "per_page": per_page,
+            "since": since,
+            "before": before,
+            "after": after,
+            "include_deleted": include_deleted,
+        }
+        return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_posts_around_last_unread(self, user_id, channel_id, params=None):
+    def get_posts_around_last_unread(
+        self,
+        user_id: str,
+        channel_id: str,
+        limit_before: int | None = 60,
+        limit_after: int | None = 60,
+        skipFetchThreads: bool | None = False,
+        collapsedThreads: bool | None = False,
+        collapsedThreadsExtended: bool | None = False,
+    ):
         """Get posts around oldest unread
 
         user_id: ID of the user
@@ -163,9 +277,28 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - GetPostsAroundLastUnread) <https://api.mattermost.com/#tag/posts/operation/GetPostsAroundLastUnread>`_
 
         """
-        return self.client.get(f"/api/v4/users/{user_id}/channels/{channel_id}/posts/unread", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "limit_before": limit_before,
+            "limit_after": limit_after,
+            "skipFetchThreads": skipFetchThreads,
+            "collapsedThreads": collapsedThreads,
+            "collapsedThreadsExtended": collapsedThreadsExtended,
+        }
+        return self.client.get(
+            f"/api/v4/users/{user_id}/channels/{channel_id}/posts/unread",
+            params=params_71f8b7431cd64fcfa0dabd300d0636d2,
+        )
 
-    def search_posts(self, team_id, options):
+    def search_posts(
+        self,
+        team_id: str,
+        terms: str,
+        is_or_search: bool,
+        time_zone_offset: int | None = 0,
+        include_deleted_channels: bool | None = None,
+        page: int | None = 0,
+        per_page: int | None = 60,
+    ):
         """Search for team posts
 
         team_id: Team GUID
@@ -179,9 +312,19 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - SearchPosts) <https://api.mattermost.com/#tag/posts/operation/SearchPosts>`_
 
         """
-        return self.client.post(f"/api/v4/teams/{team_id}/posts/search", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "terms": terms,
+            "is_or_search": is_or_search,
+            "time_zone_offset": time_zone_offset,
+            "include_deleted_channels": include_deleted_channels,
+            "page": page,
+            "per_page": per_page,
+        }
+        return self.client.post(
+            f"/api/v4/teams/{team_id}/posts/search", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def pin_post(self, post_id):
+    def pin_post(self, post_id: str):
         """Pin a post to the channel
 
         post_id: Post GUID
@@ -191,7 +334,7 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/posts/{post_id}/pin")
 
-    def unpin_post(self, post_id):
+    def unpin_post(self, post_id: str):
         """Unpin a post to the channel
 
         post_id: Post GUID
@@ -201,7 +344,7 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/posts/{post_id}/unpin")
 
-    def do_post_action(self, post_id, action_id):
+    def do_post_action(self, post_id: str, action_id: str):
         """Perform a post action
 
         post_id: Post GUID
@@ -212,14 +355,14 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/posts/{post_id}/actions/{action_id}")
 
-    def get_posts_by_ids(self, options):
+    def get_posts_by_ids(self, options: list[str]):
         """Get posts by a list of ids
         `Read in Mattermost API docs (posts - getPostsByIds) <https://api.mattermost.com/#tag/posts/operation/getPostsByIds>`_
 
         """
         return self.client.post("""/api/v4/posts/ids""", options=options)
 
-    def set_post_reminder(self, user_id, post_id, options):
+    def set_post_reminder(self, user_id: str, post_id: str, target_time: int):
         """Set a post reminder
 
         user_id: User GUID
@@ -229,9 +372,12 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - SetPostReminder) <https://api.mattermost.com/#tag/posts/operation/SetPostReminder>`_
 
         """
-        return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/reminder", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"target_time": target_time}
+        return self.client.post(
+            f"/api/v4/users/{user_id}/posts/{post_id}/reminder", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def save_acknowledgement_for_post(self, user_id, post_id):
+    def save_acknowledgement_for_post(self, user_id: str, post_id: str):
         """Acknowledge a post
 
         user_id: User GUID
@@ -242,7 +388,7 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/users/{user_id}/posts/{post_id}/ack")
 
-    def delete_acknowledgement_for_post(self, user_id, post_id):
+    def delete_acknowledgement_for_post(self, user_id: str, post_id: str):
         """Delete a post acknowledgement
 
         user_id: User GUID
@@ -253,7 +399,7 @@ class Posts(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/ack")
 
-    def move_thread(self, post_id, options):
+    def move_thread(self, post_id: str, channel_id: str):
         """Move a post (and any posts within that post's thread)
 
         post_id: The identifier of the post to move
@@ -262,4 +408,16 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - MoveThread) <https://api.mattermost.com/#tag/posts/operation/MoveThread>`_
 
         """
-        return self.client.post(f"/api/v4/posts/{post_id}/move", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_id": channel_id}
+        return self.client.post(f"/api/v4/posts/{post_id}/move", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+
+    def restore_post_version(self, post_id: str, restore_version_id: str):
+        """Restores a past version of a post
+
+        post_id: The identifier of the post to restore
+        restore_version_id: The identifier of the past version of post to restore to
+
+        `Read in Mattermost API docs (posts - RestorePostVersion) <https://api.mattermost.com/#tag/posts/operation/RestorePostVersion>`_
+
+        """
+        return self.client.post(f"/api/v4/posts/{post_id}/restore/{restore_version_id}")

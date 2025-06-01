@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Bookmarks(Base):
 
-    def list_channel_bookmarks_for_channel(self, channel_id, params=None):
+    def list_channel_bookmarks_for_channel(self, channel_id: str, bookmarks_since: float | None = None):
         """Get channel bookmarks for Channel
 
         channel_id: Channel GUID
@@ -15,9 +16,21 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - ListChannelBookmarksForChannel) <https://api.mattermost.com/#tag/bookmarks/operation/ListChannelBookmarksForChannel>`_
 
         """
-        return self.client.get(f"/api/v4/channels/{channel_id}/bookmarks", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"bookmarks_since": bookmarks_since}
+        return self.client.get(
+            f"/api/v4/channels/{channel_id}/bookmarks", params=params_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def create_channel_bookmark(self, channel_id, options):
+    def create_channel_bookmark(
+        self,
+        channel_id: str,
+        display_name: str,
+        type: str,
+        file_id: str | None = None,
+        link_url: str | None = None,
+        image_url: str | None = None,
+        emoji: str | None = None,
+    ):
         """Create channel bookmark
 
         channel_id: Channel GUID
@@ -33,9 +46,30 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - CreateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/CreateChannelBookmark>`_
 
         """
-        return self.client.post(f"/api/v4/channels/{channel_id}/bookmarks", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "file_id": file_id,
+            "display_name": display_name,
+            "link_url": link_url,
+            "image_url": image_url,
+            "emoji": emoji,
+            "type": type,
+        }
+        return self.client.post(
+            f"/api/v4/channels/{channel_id}/bookmarks", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def update_channel_bookmark(self, channel_id, bookmark_id, options):
+    def update_channel_bookmark(
+        self,
+        channel_id: str,
+        bookmark_id: str,
+        file_id: str | None = None,
+        display_name: str | None = None,
+        sort_order: int | None = None,
+        link_url: str | None = None,
+        image_url: str | None = None,
+        emoji: str | None = None,
+        type: str | None = None,
+    ):
         """Update channel bookmark
 
         channel_id: Channel GUID
@@ -53,9 +87,20 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - UpdateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/UpdateChannelBookmark>`_
 
         """
-        return self.client.patch(f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "file_id": file_id,
+            "display_name": display_name,
+            "sort_order": sort_order,
+            "link_url": link_url,
+            "image_url": image_url,
+            "emoji": emoji,
+            "type": type,
+        }
+        return self.client.patch(
+            f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def delete_channel_bookmark(self, channel_id, bookmark_id):
+    def delete_channel_bookmark(self, channel_id: str, bookmark_id: str):
         """Delete channel bookmark
 
         channel_id: Channel GUID
@@ -66,7 +111,7 @@ class Bookmarks(Base):
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}")
 
-    def update_channel_bookmark_sort_order(self, channel_id, bookmark_id, options=None):
+    def update_channel_bookmark_sort_order(self, channel_id: str, bookmark_id: str, options: float | None = None):
         """Update channel bookmark's order
 
         channel_id: Channel GUID

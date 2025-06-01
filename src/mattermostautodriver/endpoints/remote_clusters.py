@@ -1,9 +1,21 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class RemoteClusters(Base):
 
-    def get_remote_clusters(self, params=None):
+    def get_remote_clusters(
+        self,
+        page: int | None = None,
+        per_page: int | None = None,
+        exclude_offline: bool | None = None,
+        in_channel: str | None = None,
+        not_in_channel: str | None = None,
+        only_confirmed: bool | None = None,
+        only_plugins: bool | None = None,
+        exclude_plugins: bool | None = None,
+        include_deleted: bool | None = None,
+    ):
         """Get a list of remote clusters.
 
         page: The page to select
@@ -19,9 +31,22 @@ class RemoteClusters(Base):
         `Read in Mattermost API docs (remote_clusters - GetRemoteClusters) <https://api.mattermost.com/#tag/remote_clusters/operation/GetRemoteClusters>`_
 
         """
-        return self.client.get("""/api/v4/remotecluster""", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "page": page,
+            "per_page": per_page,
+            "exclude_offline": exclude_offline,
+            "in_channel": in_channel,
+            "not_in_channel": not_in_channel,
+            "only_confirmed": only_confirmed,
+            "only_plugins": only_plugins,
+            "exclude_plugins": exclude_plugins,
+            "include_deleted": include_deleted,
+        }
+        return self.client.get("""/api/v4/remotecluster""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def create_remote_cluster(self, options=None):
+    def create_remote_cluster(
+        self, name: str, default_team_id: str, display_name: str | None = None, password: str | None = None
+    ):
         """Create a new remote cluster.
 
         name:
@@ -35,9 +60,15 @@ class RemoteClusters(Base):
         `Read in Mattermost API docs (remote_clusters - CreateRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/CreateRemoteCluster>`_
 
         """
-        return self.client.post("""/api/v4/remotecluster""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "name": name,
+            "display_name": display_name,
+            "default_team_id": default_team_id,
+            "password": password,
+        }
+        return self.client.post("""/api/v4/remotecluster""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_remote_cluster(self, remote_id):
+    def get_remote_cluster(self, remote_id: str):
         """Get a remote cluster.
 
         remote_id: Remote Cluster GUID
@@ -47,7 +78,7 @@ class RemoteClusters(Base):
         """
         return self.client.get(f"/api/v4/remotecluster/{remote_id}")
 
-    def patch_remote_cluster(self, remote_id, options=None):
+    def patch_remote_cluster(self, remote_id: str, display_name: str | None = None, default_team_id: str | None = None):
         """Patch a remote cluster.
 
         remote_id: Remote Cluster GUID
@@ -57,9 +88,10 @@ class RemoteClusters(Base):
         `Read in Mattermost API docs (remote_clusters - PatchRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/PatchRemoteCluster>`_
 
         """
-        return self.client.patch(f"/api/v4/remotecluster/{remote_id}", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"display_name": display_name, "default_team_id": default_team_id}
+        return self.client.patch(f"/api/v4/remotecluster/{remote_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def delete_remote_cluster(self, remote_id):
+    def delete_remote_cluster(self, remote_id: str):
         """Delete a remote cluster.
 
         remote_id: Remote Cluster GUID
@@ -69,7 +101,7 @@ class RemoteClusters(Base):
         """
         return self.client.delete(f"/api/v4/remotecluster/{remote_id}")
 
-    def generate_remote_cluster_invite(self, options=None):
+    def generate_remote_cluster_invite(self, password: str):
         """Generate invite code.
 
         password: The password to encrypt the invite code with.
@@ -77,9 +109,14 @@ class RemoteClusters(Base):
         `Read in Mattermost API docs (remote_clusters - GenerateRemoteClusterInvite) <https://api.mattermost.com/#tag/remote_clusters/operation/GenerateRemoteClusterInvite>`_
 
         """
-        return self.client.post(f"/api/v4/remotecluster/{remote_id}/generate_invite", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"password": password}
+        return self.client.post(
+            f"/api/v4/remotecluster/{remote_id}/generate_invite", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def accept_remote_cluster_invite(self, options=None):
+    def accept_remote_cluster_invite(
+        self, invite: str, name: str, default_team_id: str, password: str, display_name: str | None = None
+    ):
         """Accept a remote cluster invite code.
 
         invite:
@@ -91,4 +128,13 @@ class RemoteClusters(Base):
         `Read in Mattermost API docs (remote_clusters - AcceptRemoteClusterInvite) <https://api.mattermost.com/#tag/remote_clusters/operation/AcceptRemoteClusterInvite>`_
 
         """
-        return self.client.post("""/api/v4/remotecluster/accept_invite""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "invite": invite,
+            "name": name,
+            "display_name": display_name,
+            "default_team_id": default_team_id,
+            "password": password,
+        }
+        return self.client.post(
+            """/api/v4/remotecluster/accept_invite""", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )

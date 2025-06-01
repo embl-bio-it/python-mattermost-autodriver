@@ -1,16 +1,17 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Reactions(Base):
 
-    def save_reaction(self, options):
+    def save_reaction(self, options: Any):
         """Create a reaction
         `Read in Mattermost API docs (reactions - SaveReaction) <https://api.mattermost.com/#tag/reactions/operation/SaveReaction>`_
 
         """
         return self.client.post("""/api/v4/reactions""", options=options)
 
-    def get_reactions(self, post_id):
+    def get_reactions(self, post_id: str):
         """Get a list of reactions to a post
 
         post_id: ID of a post
@@ -20,7 +21,7 @@ class Reactions(Base):
         """
         return self.client.get(f"/api/v4/posts/{post_id}/reactions")
 
-    def delete_reaction(self, user_id, post_id, emoji_name):
+    def delete_reaction(self, user_id: str, post_id: str, emoji_name: str):
         """Remove a reaction from a post
 
         user_id: ID of the user
@@ -32,7 +33,7 @@ class Reactions(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
 
-    def get_bulk_reactions(self, options):
+    def get_bulk_reactions(self, options: list[str]):
         """Bulk get the reaction for posts
         `Read in Mattermost API docs (reactions - GetBulkReactions) <https://api.mattermost.com/#tag/reactions/operation/GetBulkReactions>`_
 

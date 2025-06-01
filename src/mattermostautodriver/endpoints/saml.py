@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class SAML(Base):
 
-    def migrate_auth_to_saml(self, options=None):
+    def migrate_auth_to_saml(self, from_: str, matches: dict[str, Any], auto: bool):
         """Migrate user accounts authentication type to SAML.
 
         from: The current authentication type for the matched users.
@@ -13,7 +14,8 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - MigrateAuthToSaml) <https://api.mattermost.com/#tag/SAML/operation/MigrateAuthToSaml>`_
 
         """
-        return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"from": from_, "matches": matches, "auto": auto}
+        return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def get_saml_metadata(self):
         """Get metadata
@@ -22,7 +24,7 @@ class SAML(Base):
         """
         return self.client.get("""/api/v4/saml/metadata""")
 
-    def get_saml_metadata_from_idp(self, options=None):
+    def get_saml_metadata_from_idp(self, saml_metadata_url: str | None = None):
         """Get metadata from Identity Provider
 
         saml_metadata_url: The URL from which to retrieve the SAML IDP data.
@@ -30,9 +32,10 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - GetSamlMetadataFromIdp) <https://api.mattermost.com/#tag/SAML/operation/GetSamlMetadataFromIdp>`_
 
         """
-        return self.client.post("""/api/v4/saml/metadatafromidp""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"saml_metadata_url": saml_metadata_url}
+        return self.client.post("""/api/v4/saml/metadatafromidp""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def upload_saml_idp_certificate(self, files, data=None):
+    def upload_saml_idp_certificate(self, certificate: BinaryIO):
         """Upload IDP certificate
 
         certificate: The IDP certificate file
@@ -40,7 +43,8 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - UploadSamlIdpCertificate) <https://api.mattermost.com/#tag/SAML/operation/UploadSamlIdpCertificate>`_
 
         """
-        return self.client.post("""/api/v4/saml/certificate/idp""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"certificate": certificate}
+        return self.client.post("""/api/v4/saml/certificate/idp""", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def delete_saml_idp_certificate(self):
         """Remove IDP certificate
@@ -49,7 +53,7 @@ class SAML(Base):
         """
         return self.client.delete("""/api/v4/saml/certificate/idp""")
 
-    def upload_saml_public_certificate(self, files, data=None):
+    def upload_saml_public_certificate(self, certificate: BinaryIO):
         """Upload public certificate
 
         certificate: The public certificate file
@@ -57,7 +61,8 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - UploadSamlPublicCertificate) <https://api.mattermost.com/#tag/SAML/operation/UploadSamlPublicCertificate>`_
 
         """
-        return self.client.post("""/api/v4/saml/certificate/public""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"certificate": certificate}
+        return self.client.post("""/api/v4/saml/certificate/public""", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def delete_saml_public_certificate(self):
         """Remove public certificate
@@ -66,7 +71,7 @@ class SAML(Base):
         """
         return self.client.delete("""/api/v4/saml/certificate/public""")
 
-    def upload_saml_private_certificate(self, files, data=None):
+    def upload_saml_private_certificate(self, certificate: BinaryIO):
         """Upload private key
 
         certificate: The private key file
@@ -74,7 +79,8 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - UploadSamlPrivateCertificate) <https://api.mattermost.com/#tag/SAML/operation/UploadSamlPrivateCertificate>`_
 
         """
-        return self.client.post("""/api/v4/saml/certificate/private""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"certificate": certificate}
+        return self.client.post("""/api/v4/saml/certificate/private""", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def delete_saml_private_certificate(self):
         """Remove private key
@@ -90,7 +96,9 @@ class SAML(Base):
         """
         return self.client.get("""/api/v4/saml/certificate/status""")
 
-    def reset_saml_auth_data_to_email(self, options=None):
+    def reset_saml_auth_data_to_email(
+        self, include_deleted: bool | None = False, dry_run: bool | None = False, user_ids: list[str] | None = []
+    ):
         """Reset AuthData to Email
 
         include_deleted: Whether to include deleted users.
@@ -100,4 +108,9 @@ class SAML(Base):
         `Read in Mattermost API docs (SAML - ResetSamlAuthDataToEmail) <https://api.mattermost.com/#tag/SAML/operation/ResetSamlAuthDataToEmail>`_
 
         """
-        return self.client.post("""/api/v4/saml/reset_auth_data""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "include_deleted": include_deleted,
+            "dry_run": dry_run,
+            "user_ids": user_ids,
+        }
+        return self.client.post("""/api/v4/saml/reset_auth_data""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)

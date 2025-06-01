@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Timeline(Base):
 
-    def remove_timeline_event(self, id, event_id):
+    def remove_timeline_event(self, id: str, event_id: str):
         """Remove a timeline event from the playbook run
 
         id: ID of the playbook run whose timeline event will be modified.

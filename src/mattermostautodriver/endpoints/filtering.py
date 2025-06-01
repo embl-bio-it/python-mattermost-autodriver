@@ -1,4 +1,5 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Filtering(Base):
@@ -10,7 +11,7 @@ class Filtering(Base):
         """
         return self.client.get("""/api/v4/ip_filtering""")
 
-    def apply_ip_filters(self, options):
+    def apply_ip_filters(self, options: list[Any]):
         """Get all IP filters
         `Read in Mattermost API docs (filtering - ApplyIPFilters) <https://api.mattermost.com/#tag/filtering/operation/ApplyIPFilters>`_
 

@@ -1,9 +1,18 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class ScheduledPost(Base):
 
-    def create_scheduled_post(self, options=None):
+    def create_scheduled_post(
+        self,
+        scheduled_at: int,
+        channel_id: str,
+        message: str,
+        root_id: str | None = None,
+        file_ids: list[Any] | None = None,
+        props: dict[str, Any] | None = None,
+    ):
         """Creates a scheduled post
 
         scheduled_at: UNIX timestamp in milliseconds of the time when the scheduled post should be sent
@@ -16,9 +25,17 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - CreateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/CreateScheduledPost>`_
 
         """
-        return self.client.post("""/api/v4/posts/schedule""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "scheduled_at": scheduled_at,
+            "channel_id": channel_id,
+            "message": message,
+            "root_id": root_id,
+            "file_ids": file_ids,
+            "props": props,
+        }
+        return self.client.post("""/api/v4/posts/schedule""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_user_scheduled_posts(self, params=None):
+    def get_user_scheduled_posts(self, includeDirectChannels: bool | None = False):
         """Gets all scheduled posts for a user for the specified team..
 
         includeDirectChannels: Whether to include scheduled posts from DMs an GMs or not. Default is false
@@ -26,9 +43,14 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - GetUserScheduledPosts) <https://api.mattermost.com/#tag/scheduled_post/operation/GetUserScheduledPosts>`_
 
         """
-        return self.client.get(f"/api/v4/posts/scheduled/team/{team_id}", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"includeDirectChannels": includeDirectChannels}
+        return self.client.get(
+            f"/api/v4/posts/scheduled/team/{team_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def update_scheduled_post(self, scheduled_post_id, options=None):
+    def update_scheduled_post(
+        self, scheduled_post_id: str, id: str, channel_id: str, user_id: str, scheduled_at: int, message: str
+    ):
         """Update a scheduled post
 
         scheduled_post_id: ID of the scheduled post to update
@@ -41,9 +63,18 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - UpdateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/UpdateScheduledPost>`_
 
         """
-        return self.client.put(f"/api/v4/posts/schedule/{scheduled_post_id}", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "id": id,
+            "channel_id": channel_id,
+            "user_id": user_id,
+            "scheduled_at": scheduled_at,
+            "message": message,
+        }
+        return self.client.put(
+            f"/api/v4/posts/schedule/{scheduled_post_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2
+        )
 
-    def delete_scheduled_post(self, scheduled_post_id):
+    def delete_scheduled_post(self, scheduled_post_id: str):
         """Delete a scheduled post
 
         scheduled_post_id: ID of the scheduled post to delete

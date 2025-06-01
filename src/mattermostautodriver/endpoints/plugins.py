@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class Plugins(Base):
 
-    def upload_plugin(self, files, data=None):
+    def upload_plugin(self, plugin: BinaryIO, force: str | None = None):
         """Upload plugin
 
         plugin: The plugin image to be uploaded
@@ -12,7 +13,13 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - UploadPlugin) <https://api.mattermost.com/#tag/plugins/operation/UploadPlugin>`_
 
         """
-        return self.client.post("""/api/v4/plugins""", files=files, data=data)
+        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"plugin": plugin}
+        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"force": force}
+        return self.client.post(
+            """/api/v4/plugins""",
+            files=files_71f8b7431cd64fcfa0dabd300d0636d2,
+            data=data_71f8b7431cd64fcfa0dabd300d0636d2,
+        )
 
     def get_plugins(self):
         """Get plugins
@@ -28,7 +35,7 @@ class Plugins(Base):
         """
         return self.client.post("""/api/v4/plugins/install_from_url""")
 
-    def remove_plugin(self, plugin_id):
+    def remove_plugin(self, plugin_id: str):
         """Remove plugin
 
         plugin_id: Id of the plugin to be removed
@@ -38,7 +45,7 @@ class Plugins(Base):
         """
         return self.client.delete(f"/api/v4/plugins/{plugin_id}")
 
-    def enable_plugin(self, plugin_id):
+    def enable_plugin(self, plugin_id: str):
         """Enable plugin
 
         plugin_id: Id of the plugin to be enabled
@@ -48,7 +55,7 @@ class Plugins(Base):
         """
         return self.client.post(f"/api/v4/plugins/{plugin_id}/enable")
 
-    def disable_plugin(self, plugin_id):
+    def disable_plugin(self, plugin_id: str):
         """Disable plugin
 
         plugin_id: Id of the plugin to be disabled
@@ -72,7 +79,7 @@ class Plugins(Base):
         """
         return self.client.get("""/api/v4/plugins/statuses""")
 
-    def install_marketplace_plugin(self, options):
+    def install_marketplace_plugin(self, id: str, version: str):
         """Installs a marketplace plugin
 
         id: The ID of the plugin to install.
@@ -81,9 +88,17 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - InstallMarketplacePlugin) <https://api.mattermost.com/#tag/plugins/operation/InstallMarketplacePlugin>`_
 
         """
-        return self.client.post("""/api/v4/plugins/marketplace""", options=options)
+        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"id": id, "version": version}
+        return self.client.post("""/api/v4/plugins/marketplace""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def get_marketplace_plugins(self, params=None):
+    def get_marketplace_plugins(
+        self,
+        page: int | None = None,
+        per_page: int | None = None,
+        filter: str | None = None,
+        server_version: str | None = None,
+        local_only: bool | None = None,
+    ):
         """Gets all the marketplace plugins
 
         page: Page number to be fetched. (not yet implemented)
@@ -95,7 +110,14 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - GetMarketplacePlugins) <https://api.mattermost.com/#tag/plugins/operation/GetMarketplacePlugins>`_
 
         """
-        return self.client.get("""/api/v4/plugins/marketplace""", params=params)
+        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+            "page": page,
+            "per_page": per_page,
+            "filter": filter,
+            "server_version": server_version,
+            "local_only": local_only,
+        }
+        return self.client.get("""/api/v4/plugins/marketplace""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
     def get_marketplace_visited_by_admin(self):
         """Get if the Plugin Marketplace has been visited by at least an admin.

@@ -4,6 +4,7 @@ from collections import namedtuple
 from subprocess import run
 
 from inflection import underscore, camelize
+from keyword import iskeyword
 
 # Notes about parsing openapi file
 #
@@ -52,15 +53,19 @@ from inflection import underscore, camelize
 # format = "binary" for upload fields, "int64" for some numeric fields
 Parameter = namedtuple(
     "Parameter",
-    ["name", "description", "required", "type", "default", "format"],
+    ["name", "description", "required", "type", "default", "format", "schema"],
 )
 
 
 ast_template = """
 from ._base import Base
+from typing import Any, BinaryIO
 
 __all__ = ["{classname}"]
 """
+
+# Internal Variable Postfix - used to avoid name collisions with call params
+IVP = "71f8b7431cd64fcfa0dabd300d0636d2"
 
 
 def load_json(filepath="mattermost/api/openapi.json"):
@@ -73,7 +78,7 @@ def get_parameters(params, key):
         "description": "",
         "parameters": [],
         "required": False,
-        "required_fields": [],
+        "schema": None,
     }
 
     for param in params:
@@ -86,6 +91,7 @@ def get_parameters(params, key):
                     param["schema"]["type"],
                     param["schema"].get("default", None),
                     param["schema"].get("format", None),
+                    param["schema"],
                 )
             )
 
@@ -96,20 +102,18 @@ def get_properties(schema):
     props = schema.get("properties", {})
     required = schema.get("required", [])
 
-    return (
-        required,
-        [
-            Parameter(
-                prop,
-                values.get("description", ""),
-                prop in required,
-                values.get("type", None),
-                values.get("default", None),
-                values.get("format", None),
-            )
-            for prop, values in props.items()
-        ],
-    )
+    return [
+        Parameter(
+            prop,
+            values.get("description", ""),
+            prop in required,
+            values.get("type", None),
+            values.get("default", None),
+            values.get("format", None),
+            values,
+        )
+        for prop, values in props.items()
+    ]
 
 
 def get_descriptions(params):
@@ -135,7 +139,7 @@ def parse_req_body(req_body_type, schema):
     if req_body_type in ("application/json", "multipart/form-data"):
         return get_properties(schema)
     elif req_body_type == "application/x-www-form-urlencoded":
-        return (False, [])
+        return []
     else:
         raise NotImplementedError(f"request body type {req_body_type} is not supported")
 
@@ -169,16 +173,16 @@ def get_requestbody_parameters(body, request_type):
 
     req_body_type = get_request_body_type(body)
 
-    required_fields, parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
+    parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
 
-    binary = any(filter(lambda x: x.format == "binary", parameters))
+    binary = [param for param in parameters if param.format == "binary"]
 
     return {
         "description": body.get("description", ""),
         "parameters": parameters,
+        "schema": body["content"][req_body_type]["schema"],
         "required": body.get("required", False),
         "binary": binary,
-        "required_fields": required_fields,
     }
 
 
@@ -211,8 +215,10 @@ def json_to_ast(api):
             try:
                 locations = get_locations(rdata["tags"])
             except KeyError:
-                print(f"Endpoint {endpoint} for requests of type {request_type} is missing a 'tags' attribute. "
-                      "This should be reported upstream. Skipped for now.")
+                print(
+                    f"Endpoint {endpoint} for requests of type {request_type} is missing a 'tags' attribute. "
+                    "This should be reported upstream. Skipped for now."
+                )
                 continue
 
             try:
@@ -247,7 +253,8 @@ def json_to_ast(api):
             }
 
             def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
-            call_kwargs = prepare_call_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
+            call_kwargs = prepare_call_keywords(payload_params, operations[request_type], req_body_type)
+            data_dicts = prepare_data_dictionaries(payload_params, operations[request_type], req_body_type)
 
             for loc in locations:
                 if loc not in blocks:
@@ -264,13 +271,64 @@ def json_to_ast(api):
                         "docstring": this_docstring,
                         "call_kwargs": call_kwargs,
                         "def_params": def_params,
+                        "data_dicts": data_dicts,
                     }
                 )
 
     return blocks
 
 
-def prepare_call_keywords(url_params, payload_params, operation_arg, req_body_type):
+def generate_type_annotation(schema, required, binary):
+    def get_annotation(schema):
+        type_mapping = {
+            "string": "str",
+            "integer": "int",
+            "number": "float",
+            "boolean": "bool",
+            "array": "list",
+            "object": "dict",
+        }
+        if binary:
+            return ast.Name(id="BinaryIO", ctx=ast.Load())
+
+        schema_type = schema.get("type", None)
+
+        if schema_type is None:
+            return ast.Name(id="Any", ctx=ast.Load())
+
+        if schema_type == "array":
+            schema_items = schema.get("items", None)
+
+            if schema_items is None:
+                item_type = ast.Name(id="Any", ctx=ast.Load())
+            else:
+                item_type = get_annotation(schema_items)
+
+            return ast.Subscript(value=ast.Name(id="list", ctx=ast.Load()), slice=item_type, ctx=ast.Load())
+        elif schema_type == "object":
+            return ast.Subscript(
+                value=ast.Name(id="dict", ctx=ast.Load()),
+                slice=ast.Tuple(
+                    elts=[ast.Name(id="str", ctx=ast.Load()), ast.Name(id="Any", ctx=ast.Load())], ctx=ast.Load()
+                ),
+                ctx=ast.Load(),
+            )
+
+        elif schema_type in type_mapping:
+            return ast.Name(id=type_mapping[schema_type], ctx=ast.Load())
+
+        else:
+            raise NotImplementedError(f"Type {schema_type} is not supported")
+
+    annotation = get_annotation(schema)
+
+    if not required:
+        return ast.BinOp(left=annotation, op=ast.BitOr(), right=ast.Constant(value=None))
+    else:
+        return annotation
+
+
+def prepare_call_keywords(payload_params, operation_arg, req_body_type):
     """Convert url parameters to function call arguments
 
     e.g. func(arg1, arg2=...)
@@ -278,30 +336,30 @@ def prepare_call_keywords(url_params, payload_params, operation_arg, req_body_ty
 
     # Add self to argument list because the function will be part of a class
     kwargs = []
-    for param in url_params["parameters"]:
-        if not param.required:
-            kwargs.append(ast.keyword(arg=param.name, value=ast.Name(param.name)))
 
-    # Add attributes specific to the operation being performed
-    if req_body_type == "application/json":
-        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
+    params = payload_params.get("parameters", [])
 
+    if req_body_type == "multipart/form-data" and payload_params["binary"]:
+        kwargs.append(ast.keyword(arg="files", value=ast.Name(f"files_{IVP}")))
+
+    if req_body_type == "multipart/form-data" and [
+        param for param in payload_params["parameters"] if param.format != "binary"
+    ]:
+        kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data_{IVP}")))
     elif req_body_type == "application/x-www-form-urlencoded":
-        kwargs.append(ast.keyword(arg="files", value=ast.Name("files")))
-        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
+        if params:
+            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data_{IVP}")))
+        else:
+            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data")))
 
-    elif req_body_type == "multipart/form-data":
-        if payload_params["binary"]:
-            kwargs.append(ast.keyword(arg="files", value=ast.Name("files")))
-        kwargs.append(ast.keyword(arg="data", value=ast.Name("data")))
+    if req_body_type == "application/json":
+        if params:
+            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}_{IVP}")))
+        else:
+            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}")))
 
-    elif req_body_type is None:
-        if payload_params.get("parameters", False):
-            # Only add the argument if there are optional payload arguments
-            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(operation_arg)))
-
-    else:
-        raise NotImplementedError(f"Request body of type '{req_body_type}' is not implemented.")
+    elif req_body_type is None and payload_params.get("parameters", False):
+        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}_{IVP}")))
 
     return kwargs
 
@@ -312,62 +370,97 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     e.g. def func(arg1, arg2=...):
     """
 
+    def add_param(name, schema, required, binary, default, args, kwargs):
+        if iskeyword(name):
+            name = name + "_"
+        else:
+            name = name
+
+        annotation = generate_type_annotation(schema, required, binary)
+        args.append(ast.arg(arg=name, annotation=annotation))
+
+        if default is not None:
+            kwargs.append(ast.Constant(default))
+        elif required:
+            kwargs.append(None)
+        else:
+            kwargs.append(ast.Constant(default))
+
     args = [ast.arg(arg="self")]
     kwargs = []
 
-    payload_required = payload_params.get("required", False)
-    binary_upload = payload_params.get("binary", False)
+    request_params = [*url_params["parameters"]]
 
-    for param in url_params["parameters"]:
-        if param.required:
-            args.append(ast.arg(arg=param.name))
-            # Always need to add a position matching None to AST kwargs
-            kwargs.append(None)
-        else:
-            kwargs.append(ast.Constant(param.default))
+    params = payload_params.get("parameters", [])
 
-    # Add attributes specific to the operation being performed
-    if req_body_type == "application/json":
-        args.append(ast.arg(arg=operation_arg))
-
-        if payload_required:
-            # Always need to add a position matching None to AST kwargs
-            kwargs.append(None)
-        else:
-            kwargs.append(ast.Constant(None))
-
+    if params:
+        request_params += params
+    elif payload_params and payload_params["schema"] and req_body_type == "application/json":
+        request_params.append(
+            Parameter(f"{operation_arg}", "", payload_params["required"], None, None, None, payload_params["schema"])
+        )
     elif req_body_type == "application/x-www-form-urlencoded":
-        args.append(ast.arg(arg="files"))
-        args.append(ast.arg(arg=operation_arg))
+        request_params.append(
+            Parameter(f"data", "", payload_params["required"], None, None, None, payload_params["schema"])
+        )
 
-        if payload_required:
-            # Always need to add a position matching None to AST kwargs
-            # but make 'files' a required attribute
-            kwargs.append(None)
-        else:
-            # but make 'files' a required attribute
-            kwargs.append(ast.Constant(None))
+    # Ensure params without default values come first
+    request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
 
+    existing_params = []
+    unique_params = []
+
+    for param in request_params:
+        if param.name in existing_params:
+            print(param.name)
+            continue
+        existing_params.append(param.name)
+        unique_params.append(param)
+
+    for param in unique_params:
+        add_param(param.name, param.schema, param.required, param.format == "binary", param.default, args, kwargs)
+
+    return {"args": args, "defaults": kwargs}
+
+
+def prepare_data_dictionaries(payload_params, operation_arg, req_body_type):
+    def create_dict(name, params):
+        def escape_name(name):
+            if iskeyword(name):
+                return name + "_"
+            else:
+                return name
+
+        return ast.Assign(
+            targets=[ast.Name(id=f"{name}_{IVP}", ctx=ast.Store())],
+            value=ast.Dict(
+                keys=[ast.Constant(value=param.name) for param in params],
+                values=[ast.Name(id=escape_name(param.name), ctx=ast.Load()) for param in params],
+            ),
+        )
+
+    dicts = []
+
+    params = payload_params.get("parameters", [])
+    binary_params = [param for param in params if param.format == "binary"]
+    non_binary_params = [param for param in params if param.format != "binary"]
+
+    if binary_params:
+        dicts.append(create_dict("files", binary_params))
+
+    if req_body_type == "application/json" or req_body_type is None:
+        if non_binary_params:
+            dicts.append(create_dict(operation_arg, non_binary_params))
     elif req_body_type == "multipart/form-data":
-        if binary_upload:
-            args.append(ast.arg(arg="files"))
-        args.append(ast.arg(arg="data"))
-
-        if payload_required:
-            kwargs.append(None)
-        else:
-            kwargs.append(ast.Constant(None))
-
-    elif req_body_type is None:
-        if payload_params.get("parameters", False):
-            # Only add the argument if there are optional payload arguments
-            args.append(ast.arg(arg=operation_arg))
-            kwargs.append(ast.Constant(None))
-
+        if non_binary_params:
+            dicts.append(create_dict("data", non_binary_params))
+    elif req_body_type == "application/x-www-form-urlencoded":
+        if params:
+            dicts.append(create_dict("data", params))
     else:
         raise NotImplementedError(f"Request body of type '{req_body_type}' is not implemented.")
 
-    return {"args": args, "defaults": kwargs}
+    return dicts
 
 
 def ast_request(request_type, endpoint, call_params):
@@ -393,9 +486,11 @@ def ast_function(method):
     docstring = method["docstring"]
     def_params = method["def_params"]
     call_kwargs = method["call_kwargs"]
+    data_dicts = method["data_dicts"]
 
     body = [
         ast.Expr(value=ast.Constant(value=docstring)),
+        *data_dicts,
         ast_request(method["request_type"], method["endpoint"], call_kwargs),
     ]
 
@@ -439,6 +534,7 @@ def main():
         filename = f"src/mattermostautodriver/endpoints/{module.lower()}.py"
 
         with open(filename, "w") as fh:
+            ast.fix_missing_locations(code)
             fh.write(ast.unparse(code))
 
         filenames.append(filename)

@@ -1,9 +1,10 @@
 from .base import Base
+from typing import Any, BinaryIO
 
 
 class PlaybookAutofollows(Base):
 
-    def get_auto_follows(self, id):
+    def get_auto_follows(self, id: str):
         """Get the list of followers' user IDs of a playbook
 
         id: ID of the playbook to retrieve followers from.
