@@ -1,0 +1,88 @@
+name: Check new Mattermost releases and self update preparing for package release
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Runs weekly on Monday at 08:00
+  workflow_dispatch:    # Also allows manual trigger
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+
+      - name: Set up tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq make npm python3 python3-pip git
+
+      - name: Check for latest tag and PyPI version
+        id: version_check
+        run: |
+          if ! TAGS_JSON="$(curl -s -f https://api.github.com/repos/mattermost/mattermost/tags)"
+            echo "GitHub API call failed"
+            exit 1
+          fi
+
+          LATEST_TAG="$(echo "$TAGS_JSON" | jq -r '.[].name' | grep '^v' | grep -v -- '-rc' | sort -V | tail -n 1)"
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No tags found"
+            exit 1
+          fi
+
+          VERSION="${LATEST_TAG#v}"
+          echo "Latest tag: $LATEST_TAG"
+
+          if ! PYPI_VERSIONS="$(curl -s -f https://pypi.org/pypi/mattermostautodriver/json)"; then
+            echo "Failed to retrieve versions from PyPI"
+            exit 1
+          fi
+
+          if echo "$PYPI_VERSIONS" | jq -e --arg ver "$VERSION" '.releases[$ver]' > /dev/null; then
+            echo "Version $VERSION already on PyPI"
+            exit 0
+          fi
+
+          echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Clone tagged repo version
+        if: steps.version_check.outputs.version != ''
+        run: |
+          git clone --depth 1 --branch "${{ steps.version_check.outputs.version }}" https://github.com/mattermost/mattermost mattermost
+
+      - name: Run custom build script (npm, make, python, jq)
+        if: steps.version_check.outputs.version != ''
+        run: |
+          cd mattermost/api
+          make build
+          ./node_modules/.bin/swagger-cli bundle --outfile openapi.json v4/html/static/mattermost-openapi-v4.yaml
+
+      - name: Run Python-only script on this repo
+        if: steps.version_check.outputs.version != ''
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          ./scripts/generate_endpoints.sh
+
+      - name: Commit and tag new version
+        if: steps.version_check.outputs.version != ''
+        run: |
+          git config user.name "Github-Actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Prepare release ${{ steps.version_check.outputs.version }}"
+          git tag "${{ steps.version_check.outputs.tag }}"
+
+      - name: Push changes and tag
+        if: steps.version_check.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin HEAD
+          git push origin "${{ steps.version_check.outputs.tag }}"
+
