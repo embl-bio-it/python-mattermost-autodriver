@@ -3,7 +3,7 @@ name: Check new Mattermost releases and self update preparing for package releas
 on:
   schedule:
     - cron: '0 8 * * 1' # Runs weekly on Monday at 08:00
-  workflow_dispatch:    # Also allows manual trigger
+  workflow_dispatch:    # Allows manual trigger
 
 jobs:
   check-and-release:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure all tags are available
 
       - name: Set up tools
         run: |
@@ -32,17 +34,30 @@ jobs:
             exit 1
           fi
 
-          VERSION="${LATEST_TAG#v}"
-          echo "Latest tag: $LATEST_TAG"
+          echo "Latest Mattermost Server tag: $LATEST_TAG"
+
+          MM_VERSION="${LATEST_TAG#v}"
+          OUR_TAG="$(git tag | sort -V | tail -n 1)"
+          if [ -z "$OUR_TAG" ]; then
+            echo "No tags found"
+            exit 1
+          fi
+
+          echo "Latest MattermostAutoDriver git tag: $OUR_TAG"
+
+          if [ "$OUR_TAG" = "$LATEST_TAG" ]; then
+            echo "MattermostAutoDriver and Mattermost Server versions match! We are up-to-date"
+            exit 0
+          fi
 
           if ! PYPI_VERSIONS="$(curl -s -f https://pypi.org/pypi/mattermostautodriver/json)"; then
             echo "Failed to retrieve versions from PyPI"
             exit 1
           fi
 
-          if echo "$PYPI_VERSIONS" | jq -e --arg ver "$VERSION" '.releases[$ver]' > /dev/null; then
-            echo "Version $VERSION already on PyPI"
-            exit 0
+          if echo "$PYPI_VERSIONS" | jq -e --arg ver "$MM_VERSION" '.releases[$ver]' > /dev/null; then
+            echo "Version $VERSION already on PyPI - Unexpected! Not tagged but released?"
+            exit 1
           fi
 
           echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
