@@ -64,9 +64,6 @@ from typing import Any, BinaryIO
 __all__ = ["{classname}"]
 """
 
-# Internal Variable Postfix - used to avoid name collisions with call params
-IVP = "71f8b7431cd64fcfa0dabd300d0636d2"
-
 known_double_arguments = (
     ("update_user_status", "user_id"),
     ("add_team_member", "team_id"),
@@ -345,26 +342,26 @@ def prepare_call_keywords(payload_params, operation_arg, req_body_type):
     params = payload_params.get("parameters", [])
 
     if req_body_type == "multipart/form-data" and payload_params["binary"]:
-        kwargs.append(ast.keyword(arg="files", value=ast.Name(f"files_{IVP}")))
+        kwargs.append(ast.keyword(arg="files", value=ast.Name(f"__files")))
 
     if req_body_type == "multipart/form-data" and [
         param for param in payload_params["parameters"] if param.format != "binary"
     ]:
-        kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data_{IVP}")))
+        kwargs.append(ast.keyword(arg="data", value=ast.Name(f"__data")))
     elif req_body_type == "application/x-www-form-urlencoded":
         if params:
-            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data_{IVP}")))
+            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"__data")))
         else:
             kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data")))
 
     if req_body_type == "application/json":
         if params:
-            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}_{IVP}")))
+            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"__{operation_arg}")))
         else:
             kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}")))
 
     elif req_body_type is None and payload_params.get("parameters", False):
-        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}_{IVP}")))
+        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"__{operation_arg}")))
 
     return kwargs
 
@@ -439,7 +436,7 @@ def prepare_data_dictionaries(payload_params, operation_arg, req_body_type):
                 return name
 
         return ast.Assign(
-            targets=[ast.Name(id=f"{name}_{IVP}", ctx=ast.Store())],
+            targets=[ast.Name(id=f"__{name}", ctx=ast.Store())],
             value=ast.Dict(
                 keys=[ast.Constant(value=param.name) for param in params],
                 values=[ast.Name(id=escape_name(param.name), ctx=ast.Load()) for param in params],
