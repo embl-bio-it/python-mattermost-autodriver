@@ -23,7 +23,7 @@ jobs:
       - name: Check for latest tag and PyPI version
         id: version_check
         run: |
-          if ! TAGS_JSON="$(curl -s -f https://api.github.com/repos/mattermost/mattermost/tags)"
+          if ! TAGS_JSON="$(curl -s -f https://api.github.com/repos/mattermost/mattermost/tags)"; then
             echo "GitHub API call failed"
             exit 1
           fi
