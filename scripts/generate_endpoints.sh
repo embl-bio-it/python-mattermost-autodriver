@@ -12,8 +12,8 @@ set -eu
 STORE_DIR="mattermostautodriver"
 
 for DEST in "endpoints" "endpoints_old"; do
-    rm -f "src/$STORE_DIR/$DEST/*.py"
-    touch "src/$STORE_DIR/$DEST/__init__.py"
+    rm -f src/$STORE_DIR/$DEST/*.py
+    touch src/$STORE_DIR/$DEST/__init__.py
 
     cat << EOF > src/$STORE_DIR/$DEST/_base.py
 class Base:
