@@ -1,5 +1,5 @@
 aiohttp>=3.9.5,<4.0.0
-httpx>=0.28.0
+httpx~=0.28.1
 sphinx-rtd-theme
-inflection>=0.5.1
+inflection~=0.5.1
 black
