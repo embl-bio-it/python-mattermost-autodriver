@@ -129,7 +129,10 @@ class BaseClient:
         return {"Authorization": "Bearer {token:s}".format(token=self._token)}
 
     def _build_request(self, method, options=None, params=None, data=None, files=None):
-        def filter_dict(d):
+        def filter_dict_or_none(d):
+            if d is None:
+                return None
+
             filtered_d = {k: v for k, v in d.items() if v is not None}
 
             if filtered_d:
@@ -137,18 +140,12 @@ class BaseClient:
 
             return None
 
-        if params is None:
-            params = {}
-        if data is None:
-            data = {}
-        url = self.url
-
         request_params = {"headers": self.auth_header(), "timeout": self.request_timeout}
 
-        filtered_params = filter_dict(params)
-        filtered_options = filter_dict(options)
-        filtered_data = filter_dict(data)
-        filtered_files = filter_dict(files)
+        filtered_params = filter_dict_or_none(params)
+        filtered_options = filter_dict_or_none(options)
+        filtered_data = filter_dict_or_none(data)
+        filtered_files = filter_dict_or_none(files)
 
         if filtered_params is not None:
             request_params["params"] = filtered_params
@@ -164,7 +161,7 @@ class BaseClient:
         if self._auth is not None:
             request_params["auth"] = self._auth()
 
-        return self._get_request_method(method, self.client), url, request_params
+        return self._get_request_method(method, self.client), self.url, request_params
 
     @staticmethod
     def _check_response(response):
