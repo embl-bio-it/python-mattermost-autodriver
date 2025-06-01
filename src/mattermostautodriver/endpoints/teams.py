@@ -247,7 +247,7 @@ class Teams(Base):
         }
         return self.client.get(f"/api/v4/teams/{team_id}/members", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def add_team_member(self, team_id: str, team_id: str | None = None, user_id: str | None = None):
+    def add_team_member(self, team_id: str, user_id: str | None = None):
         """Add user to team
 
         team_id: Team GUID

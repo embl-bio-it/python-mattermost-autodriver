@@ -387,7 +387,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     args = [ast.arg(arg="self")]
     kwargs = []
 
-    request_params = url_params["parameters"]
+    request_params = [*url_params["parameters"]]
 
     params = payload_params.get("parameters", [])
 
@@ -405,7 +405,17 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     # Ensure params without default values come first
     request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
 
-    for param in url_params["parameters"]:
+    existing_params = []
+    unique_params = []
+
+    for param in request_params:
+        if param.name in existing_params:
+            print(param.name)
+            continue
+        existing_params.append(param.name)
+        unique_params.append(param)
+
+    for param in unique_params:
         add_param(param.name, param.schema, param.required, param.format == "binary", param.default, args, kwargs)
 
     return {"args": args, "defaults": kwargs}

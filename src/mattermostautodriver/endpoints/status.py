@@ -14,7 +14,7 @@ class Status(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/status")
 
-    def update_user_status(self, user_id: str, user_id: str, status: str, dnd_end_time: int | None = None):
+    def update_user_status(self, user_id: str, status: str, dnd_end_time: int | None = None):
         """Update user status
 
         user_id: User ID
