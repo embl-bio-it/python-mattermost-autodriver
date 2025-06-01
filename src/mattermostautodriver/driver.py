@@ -77,7 +77,7 @@ class BaseDriver:
             # Load module and find the main module class
             # e.g. mattermostautodriver.endpoints.users -> Users
             module = importlib.import_module(f".endpoints.{end}", __package__)
-            classnames = [x for x in dir(module) if x != "Base" and not x.startswith("_")]
+            classnames = [x for x in dir(module) if x != "Base" and not x.startswith("_") and x not in ["Any", "BinaryIO"]]
 
             assert len(classnames) == 1, f"Unexpected endpoint configuration: {end}. Please report bug"
 
