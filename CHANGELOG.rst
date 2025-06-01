@@ -4,7 +4,6 @@ Unreleased
 Code
 ''''
 
-- Remove deprecated ``basepath`` connection argument (backwards incompatible change)
 
 Documentation
 '''''''''''''
@@ -13,6 +12,32 @@ Documentation
 Maintenance
 '''''''''''
 
+
+10.8.2
+""""""
+
+Code
+''''
+
+- Remove deprecated ``basepath`` connection argument (backwards incompatible change)
+
+Documentation
+'''''''''''''
+
+- Examples of a sync and async client have been added to the documentation
+
+Maintenance
+'''''''''''
+
+- API breaking changes - A new endpoint interface is now in place that exposes individual API arguments.
+  See `the API deprecation docs <https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html>`_ for more information.
+
+.. warning::
+    Starting with version 10.8.2 this project now follows releases of the official Mattermost server.
+    This changelog will also no longer document API changes as those are available as part of release notes of
+    `the Mattermost project <https://docs.mattermost.com/about/mattermost-server-releases.html>`_.
+
+    This changelog will therefore only include changes that concern this project and the wrapping code.
 
 2.3.0
 """""
