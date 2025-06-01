@@ -83,18 +83,18 @@ class BaseDriver:
         for endpoint in os.listdir(endpoint_path):
             end = os.path.splitext(os.path.basename(endpoint))[0]
 
-            if end == "base" or end.startswith("_"):
-                # Skip base endpoint and any file starting with _ (__init__)
+            if end.startswith("_"):
+                # Skip _base endpoint and any other file starting with _ (e.g. __init__)
                 continue
 
             # Load module and find the main module class
             # e.g. mattermostautodriver.endpoints.users -> Users
             module = importlib.import_module(f".endpoints.{end}", __package__)
-            classnames = [x for x in dir(module) if x != "Base" and not x.startswith("_")]
+            classnames = module.__all__
 
             assert len(classnames) == 1, f"Unexpected endpoint configuration: {end}. Please report bug"
 
-            _class = getattr(module, classnames.pop())
+            _class = getattr(module, classnames[0])
 
             # Setting self.module = property(ModuleClass(self.client))
             # Note: We need to bind the _class in the lambda scope or

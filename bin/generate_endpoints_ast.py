@@ -57,7 +57,9 @@ Parameter = namedtuple(
 
 
 ast_template = """
-from .base import Base
+from ._base import Base
+
+__all__ = ["{classname}"]
 """
 
 
@@ -411,7 +413,7 @@ def ast_function(method):
 
 
 def make_ast(methods, module):
-    base = ast.parse(ast_template)
+    base = ast.parse(ast_template.format(classname=camelize(module)))
     funcs = [ast_function(method) for method in methods[module]]
     base.body.append(
         ast.ClassDef(
