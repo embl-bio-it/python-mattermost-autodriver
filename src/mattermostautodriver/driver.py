@@ -89,7 +89,7 @@ class BaseDriver:
 
             # Load module and find the main module class
             # e.g. mattermostautodriver.endpoints.users -> Users
-            module = importlib.import_module(f".endpoints.{end}", __package__)
+            module = importlib.import_module(f".{cls._endpoints_path}.{end}", __package__)
             classnames = module.__all__
 
             assert len(classnames) == 1, f"Unexpected endpoint configuration: {end}. Please report bug"
