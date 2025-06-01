@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Playbooks"]
 
 
 class Playbooks(Base):
@@ -25,7 +27,7 @@ class Playbooks(Base):
         `Read in Mattermost API docs (Playbooks - getPlaybooks) <https://api.mattermost.com/#tag/Playbooks/operation/getPlaybooks>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "team_id": team_id,
             "page": page,
             "per_page": per_page,
@@ -33,9 +35,7 @@ class Playbooks(Base):
             "direction": direction,
             "with_archived": with_archived,
         }
-        return self.client.get(
-            """/plugins/playbooks/api/v0/playbooks""", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.get("""/plugins/playbooks/api/v0/playbooks""", params=__params)
 
     def create_playbook(
         self,
@@ -82,7 +82,7 @@ class Playbooks(Base):
         `Read in Mattermost API docs (Playbooks - createPlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/createPlaybook>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "title": title,
             "description": description,
             "team_id": team_id,
@@ -102,9 +102,7 @@ class Playbooks(Base):
             "webhook_on_status_update_url": webhook_on_status_update_url,
             "webhook_on_status_update_enabled": webhook_on_status_update_enabled,
         }
-        return self.client.post(
-            """/plugins/playbooks/api/v0/playbooks""", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.post("""/plugins/playbooks/api/v0/playbooks""", options=__options)
 
     def get_playbook(self, id: str):
         """Get a playbook

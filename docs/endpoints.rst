@@ -1,18 +1,26 @@
 Endpoints
 =========
 
-Authentication
+Access Control
 --------------
 
-.. automodule:: mattermostautodriver.endpoints.authentication
+.. automodule:: mattermostautodriver.endpoints.access_control
     :members:
     :undoc-members:
     :show-inheritance:
 
-Base
-----
+Audit Logs
+----------
 
-.. automodule:: mattermostautodriver.endpoints.base
+.. automodule:: mattermostautodriver.endpoints.audit_logs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Authentication
+--------------
+
+.. automodule:: mattermostautodriver.endpoints.authentication
     :members:
     :undoc-members:
     :show-inheritance:
@@ -85,6 +93,14 @@ Compliance
 ----------
 
 .. automodule:: mattermostautodriver.endpoints.compliance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Custom Profile Attributes
+-------------------------
+
+.. automodule:: mattermostautodriver.endpoints.custom_profile_attributes
     :members:
     :undoc-members:
     :show-inheritance:

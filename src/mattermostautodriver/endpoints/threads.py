@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Threads"]
 
 
 class Threads(Base):
@@ -31,7 +33,7 @@ class Threads(Base):
         `Read in Mattermost API docs (threads - GetUserThreads) <https://api.mattermost.com/#tag/threads/operation/GetUserThreads>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "since": since,
             "deleted": deleted,
             "extended": extended,
@@ -40,9 +42,7 @@ class Threads(Base):
             "totalsOnly": totalsOnly,
             "threadsOnly": threadsOnly,
         }
-        return self.client.get(
-            f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=__params)
 
     def get_thread_mention_counts_by_channel(self, user_id: str, team_id: str):
         """Get all unread mention counts from followed threads, per-channel

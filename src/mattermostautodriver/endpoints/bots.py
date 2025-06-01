@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Bots"]
 
 
 class Bots(Base):
@@ -24,12 +26,8 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - CreateBot) <https://api.mattermost.com/#tag/bots/operation/CreateBot>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "username": username,
-            "display_name": display_name,
-            "description": description,
-        }
-        return self.client.post("""/api/v4/bots""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"username": username, "display_name": display_name, "description": description}
+        return self.client.post("""/api/v4/bots""", options=__options)
 
     def get_bots(
         self,
@@ -48,13 +46,13 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - GetBots) <https://api.mattermost.com/#tag/bots/operation/GetBots>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "include_deleted": include_deleted,
             "only_orphaned": only_orphaned,
         }
-        return self.client.get("""/api/v4/bots""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/bots""", params=__params)
 
     def patch_bot(
         self, bot_user_id: str, username: str, display_name: str | None = None, description: str | None = None
@@ -69,12 +67,8 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - PatchBot) <https://api.mattermost.com/#tag/bots/operation/PatchBot>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "username": username,
-            "display_name": display_name,
-            "description": description,
-        }
-        return self.client.put(f"/api/v4/bots/{bot_user_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"username": username, "display_name": display_name, "description": description}
+        return self.client.put(f"/api/v4/bots/{bot_user_id}", options=__options)
 
     def get_bot(self, bot_user_id: str, include_deleted: bool | None = None):
         """Get a bot
@@ -85,8 +79,8 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - GetBot) <https://api.mattermost.com/#tag/bots/operation/GetBot>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted}
-        return self.client.get(f"/api/v4/bots/{bot_user_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/bots/{bot_user_id}", params=__params)
 
     def disable_bot(self, bot_user_id: str):
         """Disable a bot
@@ -138,8 +132,8 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - SetBotIconImage) <https://api.mattermost.com/#tag/bots/operation/SetBotIconImage>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"image": image}
-        return self.client.post(f"/api/v4/bots/{bot_user_id}/icon", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
+        __files = {"image": image}
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/icon", files=__files)
 
     def delete_bot_icon_image(self, bot_user_id: str):
         """Delete bot's LHS icon image
@@ -182,7 +176,7 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - ConvertBotToUser) <https://api.mattermost.com/#tag/bots/operation/ConvertBotToUser>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "email": email,
             "username": username,
             "password": password,
@@ -194,6 +188,4 @@ class Bots(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post(
-            f"/api/v4/bots/{bot_user_id}/convert_to_user", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", options=__options)

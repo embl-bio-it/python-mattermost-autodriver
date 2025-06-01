@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Migrate"]
 
 
 class Migrate(Base):
@@ -14,8 +16,8 @@ class Migrate(Base):
         `Read in Mattermost API docs (migrate - MigrateAuthToLdap) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToLdap>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"from": from_, "match_field": match_field, "force": force}
-        return self.client.post("""/api/v4/users/migrate_auth/ldap""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"from": from_, "match_field": match_field, "force": force}
+        return self.client.post("""/api/v4/users/migrate_auth/ldap""", options=__options)
 
     def migrate_auth_to_saml(self, from_: str, matches: dict[str, Any], auto: bool):
         """Migrate user accounts authentication type to SAML.
@@ -27,5 +29,5 @@ class Migrate(Base):
         `Read in Mattermost API docs (migrate - MigrateAuthToSaml) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToSaml>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"from": from_, "matches": matches, "auto": auto}
-        return self.client.post("""/api/v4/users/migrate_auth/saml""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"from": from_, "matches": matches, "auto": auto}
+        return self.client.post("""/api/v4/users/migrate_auth/saml""", options=__options)

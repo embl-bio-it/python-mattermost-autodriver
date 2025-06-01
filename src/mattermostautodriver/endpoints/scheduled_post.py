@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["ScheduledPost"]
 
 
 class ScheduledPost(Base):
@@ -25,7 +27,7 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - CreateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/CreateScheduledPost>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "scheduled_at": scheduled_at,
             "channel_id": channel_id,
             "message": message,
@@ -33,7 +35,7 @@ class ScheduledPost(Base):
             "file_ids": file_ids,
             "props": props,
         }
-        return self.client.post("""/api/v4/posts/schedule""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/posts/schedule""", options=__options)
 
     def get_user_scheduled_posts(self, includeDirectChannels: bool | None = False):
         """Gets all scheduled posts for a user for the specified team..
@@ -43,10 +45,8 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - GetUserScheduledPosts) <https://api.mattermost.com/#tag/scheduled_post/operation/GetUserScheduledPosts>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"includeDirectChannels": includeDirectChannels}
-        return self.client.get(
-            f"/api/v4/posts/scheduled/team/{team_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"includeDirectChannels": includeDirectChannels}
+        return self.client.get(f"/api/v4/posts/scheduled/team/{team_id}", params=__params)
 
     def update_scheduled_post(
         self, scheduled_post_id: str, id: str, channel_id: str, user_id: str, scheduled_at: int, message: str
@@ -63,16 +63,14 @@ class ScheduledPost(Base):
         `Read in Mattermost API docs (scheduled_post - UpdateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/UpdateScheduledPost>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "id": id,
             "channel_id": channel_id,
             "user_id": user_id,
             "scheduled_at": scheduled_at,
             "message": message,
         }
-        return self.client.put(
-            f"/api/v4/posts/schedule/{scheduled_post_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.put(f"/api/v4/posts/schedule/{scheduled_post_id}", options=__options)
 
     def delete_scheduled_post(self, scheduled_post_id: str):
         """Delete a scheduled post

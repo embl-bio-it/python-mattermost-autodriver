@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Groups"]
 
 
 class Groups(Base):
@@ -41,7 +43,7 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - GetGroups) <https://api.mattermost.com/#tag/groups/operation/GetGroups>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "q": q,
@@ -51,7 +53,7 @@ class Groups(Base):
             "since": since,
             "filter_allow_reference": filter_allow_reference,
         }
-        return self.client.get("""/api/v4/groups""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/groups""", params=__params)
 
     def create_group(self, group: dict[str, Any], user_ids: list[str]):
         """Create a custom group
@@ -62,8 +64,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - CreateGroup) <https://api.mattermost.com/#tag/groups/operation/CreateGroup>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"group": group, "user_ids": user_ids}
-        return self.client.post("""/api/v4/groups""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"group": group, "user_ids": user_ids}
+        return self.client.post("""/api/v4/groups""", options=__options)
 
     def get_group(self, group_id: str):
         """Get a group
@@ -98,12 +100,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - PatchGroup) <https://api.mattermost.com/#tag/groups/operation/PatchGroup>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "name": name,
-            "display_name": display_name,
-            "description": description,
-        }
-        return self.client.put(f"/api/v4/groups/{group_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"name": name, "display_name": display_name, "description": description}
+        return self.client.put(f"/api/v4/groups/{group_id}/patch", options=__options)
 
     def restore_group(self, group_id: str):
         """Restore a previously deleted group.
@@ -211,10 +209,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - PatchGroupSyncableForTeam) <https://api.mattermost.com/#tag/groups/operation/PatchGroupSyncableForTeam>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"auto_add": auto_add}
-        return self.client.put(
-            f"/api/v4/groups/{group_id}/teams/{team_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"auto_add": auto_add}
+        return self.client.put(f"/api/v4/groups/{group_id}/teams/{team_id}/patch", options=__options)
 
     def patch_group_syncable_for_channel(self, group_id: str, channel_id: str, auto_add: bool | None = None):
         """Patch a GroupSyncable associated to Channel
@@ -226,10 +222,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - PatchGroupSyncableForChannel) <https://api.mattermost.com/#tag/groups/operation/PatchGroupSyncableForChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"auto_add": auto_add}
-        return self.client.put(
-            f"/api/v4/groups/{group_id}/channels/{channel_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"auto_add": auto_add}
+        return self.client.put(f"/api/v4/groups/{group_id}/channels/{channel_id}/patch", options=__options)
 
     def get_group_users(self, group_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get group users
@@ -241,8 +235,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - GetGroupUsers) <https://api.mattermost.com/#tag/groups/operation/GetGroupUsers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/groups/{group_id}/members", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/groups/{group_id}/members", params=__params)
 
     def delete_group_members(self, group_id: str, user_ids: list[str] | None = None):
         """Removes members from a custom group
@@ -253,8 +247,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - DeleteGroupMembers) <https://api.mattermost.com/#tag/groups/operation/DeleteGroupMembers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"user_ids": user_ids}
-        return self.client.delete(f"/api/v4/groups/{group_id}/members", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"user_ids": user_ids}
+        return self.client.delete(f"/api/v4/groups/{group_id}/members", params=__params)
 
     def add_group_members(self, group_id: str, user_ids: list[str] | None = None):
         """Adds members to a custom group
@@ -265,8 +259,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - AddGroupMembers) <https://api.mattermost.com/#tag/groups/operation/AddGroupMembers>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"user_ids": user_ids}
-        return self.client.post(f"/api/v4/groups/{group_id}/members", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"user_ids": user_ids}
+        return self.client.post(f"/api/v4/groups/{group_id}/members", options=__options)
 
     def get_group_stats(self, group_id: str):
         """Get group stats
@@ -295,12 +289,8 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - GetGroupsByChannel) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByChannel>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "page": page,
-            "per_page": per_page,
-            "filter_allow_reference": filter_allow_reference,
-        }
-        return self.client.get(f"/api/v4/channels/{channel_id}/groups", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page, "filter_allow_reference": filter_allow_reference}
+        return self.client.get(f"/api/v4/channels/{channel_id}/groups", params=__params)
 
     def get_groups_by_team(
         self,
@@ -337,7 +327,7 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - GetGroupsByTeam) <https://api.mattermost.com/#tag/groups/operation/GetGroupsByTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "filter_allow_reference": filter_allow_reference,
@@ -351,7 +341,7 @@ class Groups(Base):
             "include_member_ids": include_member_ids,
             "only_syncable_sources": only_syncable_sources,
         }
-        return self.client.get(f"/api/v4/teams/{team_id}/groups", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get(f"/api/v4/teams/{team_id}/groups", params=__params)
 
     def get_groups_associated_to_channels_by_team(
         self,
@@ -372,15 +362,13 @@ class Groups(Base):
         `Read in Mattermost API docs (groups - GetGroupsAssociatedToChannelsByTeam) <https://api.mattermost.com/#tag/groups/operation/GetGroupsAssociatedToChannelsByTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "filter_allow_reference": filter_allow_reference,
             "paginate": paginate,
         }
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/groups_by_channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.get(f"/api/v4/teams/{team_id}/groups_by_channels", params=__params)
 
     def get_groups_by_user_id(self, user_id: str):
         """Get groups for a userId

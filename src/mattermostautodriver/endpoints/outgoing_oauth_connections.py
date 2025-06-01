@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["OutgoingOauthConnections"]
 
 
 class OutgoingOauthConnections(Base):
@@ -12,8 +14,8 @@ class OutgoingOauthConnections(Base):
         `Read in Mattermost API docs (outgoing_oauth_connections - ListOutgoingOAuthConnections) <https://api.mattermost.com/#tag/outgoing_oauth_connections/operation/ListOutgoingOAuthConnections>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id}
-        return self.client.get("""/api/v4/oauth/outgoing_connections""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"team_id": team_id}
+        return self.client.get("""/api/v4/oauth/outgoing_connections""", params=__params)
 
     def create_outgoing_o_auth_connection(self, options: Any | None = None):
         """Create a connection
@@ -30,10 +32,8 @@ class OutgoingOauthConnections(Base):
         `Read in Mattermost API docs (outgoing_oauth_connections - GetOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_oauth_connections/operation/GetOutgoingOAuthConnection>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id}
-        return self.client.get(
-            f"/api/v4/oauth/outgoing_connections/{connection_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"team_id": team_id}
+        return self.client.get(f"/api/v4/oauth/outgoing_connections/{connection_id}", params=__params)
 
     def update_outgoing_o_auth_connection(self, options: Any | None = None):
         """Update a connection

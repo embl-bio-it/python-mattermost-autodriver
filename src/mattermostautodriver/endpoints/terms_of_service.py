@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["TermsOfService"]
 
 
 class TermsOfService(Base):
@@ -14,10 +16,8 @@ class TermsOfService(Base):
         `Read in Mattermost API docs (terms_of_service - RegisterTermsOfServiceAction) <https://api.mattermost.com/#tag/terms_of_service/operation/RegisterTermsOfServiceAction>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"serviceTermsId": serviceTermsId, "accepted": accepted}
-        return self.client.post(
-            f"/api/v4/users/{user_id}/terms_of_service", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"serviceTermsId": serviceTermsId, "accepted": accepted}
+        return self.client.post(f"/api/v4/users/{user_id}/terms_of_service", options=__options)
 
     def get_user_terms_of_service(self, user_id: str):
         """Fetches user's latest terms of service action if the latest action was for acceptance.

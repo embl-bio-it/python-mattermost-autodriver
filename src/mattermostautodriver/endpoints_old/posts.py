@@ -265,3 +265,14 @@ class Posts(Base):
 
         """
         return self.client.post(f"/api/v4/posts/{post_id}/move", options=options)
+
+    def restore_post_version(self, post_id, restore_version_id):
+        """Restores a past version of a post
+
+        post_id: The identifier of the post to restore
+        restore_version_id: The identifier of the past version of post to restore to
+
+        `Read in Mattermost API docs (posts - RestorePostVersion) <https://api.mattermost.com/#tag/posts/operation/RestorePostVersion>`_
+
+        """
+        return self.client.post(f"/api/v4/posts/{post_id}/restore/{restore_version_id}")

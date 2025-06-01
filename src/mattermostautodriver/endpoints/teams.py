@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Teams"]
 
 
 class Teams(Base):
@@ -14,8 +16,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - CreateTeam) <https://api.mattermost.com/#tag/teams/operation/CreateTeam>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"name": name, "display_name": display_name, "type": type}
-        return self.client.post("""/api/v4/teams""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"name": name, "display_name": display_name, "type": type}
+        return self.client.post("""/api/v4/teams""", options=__options)
 
     def get_all_teams(
         self,
@@ -35,13 +37,13 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - GetAllTeams) <https://api.mattermost.com/#tag/teams/operation/GetAllTeams>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "include_total_count": include_total_count,
             "exclude_policy_constrained": exclude_policy_constrained,
         }
-        return self.client.get("""/api/v4/teams""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/teams""", params=__params)
 
     def get_team(self, team_id: str):
         """Get a team
@@ -78,7 +80,7 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - UpdateTeam) <https://api.mattermost.com/#tag/teams/operation/UpdateTeam>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "id": id,
             "display_name": display_name,
             "description": description,
@@ -87,7 +89,7 @@ class Teams(Base):
             "invite_id": invite_id,
             "allow_open_invite": allow_open_invite,
         }
-        return self.client.put(f"/api/v4/teams/{team_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.put(f"/api/v4/teams/{team_id}", options=__options)
 
     def soft_delete_team(self, team_id: str):
         """Delete a team
@@ -120,14 +122,14 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - PatchTeam) <https://api.mattermost.com/#tag/teams/operation/PatchTeam>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "display_name": display_name,
             "description": description,
             "company_name": company_name,
             "invite_id": invite_id,
             "allow_open_invite": allow_open_invite,
         }
-        return self.client.put(f"/api/v4/teams/{team_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.put(f"/api/v4/teams/{team_id}/patch", options=__options)
 
     def update_team_privacy(self, team_id: str, privacy: str):
         """Update teams's privacy
@@ -138,8 +140,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - UpdateTeamPrivacy) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamPrivacy>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"privacy": privacy}
-        return self.client.put(f"/api/v4/teams/{team_id}/privacy", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"privacy": privacy}
+        return self.client.put(f"/api/v4/teams/{team_id}/privacy", options=__options)
 
     def restore_team(self, team_id: str):
         """Restore a team
@@ -190,7 +192,7 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - SearchTeams) <https://api.mattermost.com/#tag/teams/operation/SearchTeams>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "term": term,
             "page": page,
             "per_page": per_page,
@@ -198,7 +200,7 @@ class Teams(Base):
             "group_constrained": group_constrained,
             "exclude_policy_constrained": exclude_policy_constrained,
         }
-        return self.client.post("""/api/v4/teams/search""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/teams/search""", options=__options)
 
     def team_exists(self, name: str):
         """Check if team exists
@@ -239,13 +241,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - GetTeamMembers) <https://api.mattermost.com/#tag/teams/operation/GetTeamMembers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "page": page,
-            "per_page": per_page,
-            "sort": sort,
-            "exclude_deleted_users": exclude_deleted_users,
-        }
-        return self.client.get(f"/api/v4/teams/{team_id}/members", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page, "sort": sort, "exclude_deleted_users": exclude_deleted_users}
+        return self.client.get(f"/api/v4/teams/{team_id}/members", params=__params)
 
     def add_team_member(self, team_id: str, user_id: str | None = None):
         """Add user to team
@@ -257,8 +254,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - AddTeamMember) <https://api.mattermost.com/#tag/teams/operation/AddTeamMember>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id, "user_id": user_id}
-        return self.client.post(f"/api/v4/teams/{team_id}/members", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"team_id": team_id, "user_id": user_id}
+        return self.client.post(f"/api/v4/teams/{team_id}/members", options=__options)
 
     def add_team_member_from_invite(self):
         """Add user to team from invite
@@ -358,8 +355,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - SetTeamIcon) <https://api.mattermost.com/#tag/teams/operation/SetTeamIcon>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"image": image}
-        return self.client.post(f"/api/v4/teams/{team_id}/image", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
+        __files = {"image": image}
+        return self.client.post(f"/api/v4/teams/{team_id}/image", files=__files)
 
     def remove_team_icon(self, team_id: str):
         """Remove the team icon
@@ -381,10 +378,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - UpdateTeamMemberRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberRoles>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"roles": roles}
-        return self.client.put(
-            f"/api/v4/teams/{team_id}/members/{user_id}/roles", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"roles": roles}
+        return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/roles", options=__options)
 
     def update_team_member_scheme_roles(self, team_id: str, user_id: str, scheme_admin: bool, scheme_user: bool):
         """Update the scheme-derived roles of a team member.
@@ -397,10 +392,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - UpdateTeamMemberSchemeRoles) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamMemberSchemeRoles>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"scheme_admin": scheme_admin, "scheme_user": scheme_user}
-        return self.client.put(
-            f"/api/v4/teams/{team_id}/members/{user_id}/schemeRoles", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"scheme_admin": scheme_admin, "scheme_user": scheme_user}
+        return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/schemeRoles", options=__options)
 
     def get_teams_unread_for_user(
         self, user_id: str, exclude_team: str, include_collapsed_threads: bool | None = False
@@ -414,11 +407,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - GetTeamsUnreadForUser) <https://api.mattermost.com/#tag/teams/operation/GetTeamsUnreadForUser>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "exclude_team": exclude_team,
-            "include_collapsed_threads": include_collapsed_threads,
-        }
-        return self.client.get(f"/api/v4/users/{user_id}/teams/unread", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"exclude_team": exclude_team, "include_collapsed_threads": include_collapsed_threads}
+        return self.client.get(f"/api/v4/users/{user_id}/teams/unread", params=__params)
 
     def get_team_unread(self, user_id: str, team_id: str):
         """Get unreads for a team
@@ -452,10 +442,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://api.mattermost.com/#tag/teams/operation/InviteGuestsToTeam>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"emails": emails, "channels": channels, "message": message}
-        return self.client.post(
-            f"/api/v4/teams/{team_id}/invite-guests/email", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"emails": emails, "channels": channels, "message": message}
+        return self.client.post(f"/api/v4/teams/{team_id}/invite-guests/email", options=__options)
 
     def invalidate_email_invites(self):
         """Invalidate active email invitations
@@ -475,13 +463,9 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - ImportTeam) <https://api.mattermost.com/#tag/teams/operation/ImportTeam>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"file": file}
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"filesize": filesize, "importFrom": importFrom}
-        return self.client.post(
-            f"/api/v4/teams/{team_id}/import",
-            files=files_71f8b7431cd64fcfa0dabd300d0636d2,
-            data=data_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __files = {"file": file}
+        __data = {"filesize": filesize, "importFrom": importFrom}
+        return self.client.post(f"/api/v4/teams/{team_id}/import", files=__files, data=__data)
 
     def get_team_invite_info(self, invite_id: str):
         """Get invite info for a team
@@ -502,8 +486,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - UpdateTeamScheme) <https://api.mattermost.com/#tag/teams/operation/UpdateTeamScheme>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"scheme_id": scheme_id}
-        return self.client.put(f"/api/v4/teams/{team_id}/scheme", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"scheme_id": scheme_id}
+        return self.client.put(f"/api/v4/teams/{team_id}/scheme", options=__options)
 
     def team_members_minus_group_members(
         self, team_id: str, group_ids: str = "", page: int | None = 0, per_page: int | None = 0
@@ -518,10 +502,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - TeamMembersMinusGroupMembers) <https://api.mattermost.com/#tag/teams/operation/TeamMembersMinusGroupMembers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"group_ids": group_ids, "page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/members_minus_group_members", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"group_ids": group_ids, "page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/teams/{team_id}/members_minus_group_members", params=__params)
 
     def search_files(
         self,
@@ -546,7 +528,7 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - SearchFiles) <https://api.mattermost.com/#tag/teams/operation/SearchFiles>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __data = {
             "terms": terms,
             "is_or_search": is_or_search,
             "time_zone_offset": time_zone_offset,
@@ -554,4 +536,4 @@ class Teams(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=__data)

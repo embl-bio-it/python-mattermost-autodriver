@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Internal"]
 
 
 class Internal(Base):
@@ -31,7 +33,7 @@ class Internal(Base):
         `Read in Mattermost API docs (Internal - createPlaybookRunFromDialog) <https://api.mattermost.com/#tag/Internal/operation/createPlaybookRunFromDialog>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "type": type,
             "url": url,
             "callback_id": callback_id,
@@ -42,9 +44,7 @@ class Internal(Base):
             "submission": submission,
             "cancelled": cancelled,
         }
-        return self.client.post(
-            """/plugins/playbooks/api/v0/runs/dialog""", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.post("""/plugins/playbooks/api/v0/runs/dialog""", options=__options)
 
     def get_checklist_autocomplete(self, channel_ID: str):
         """Get autocomplete data for /playbook check
@@ -54,10 +54,8 @@ class Internal(Base):
         `Read in Mattermost API docs (Internal - getChecklistAutocomplete) <https://api.mattermost.com/#tag/Internal/operation/getChecklistAutocomplete>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_ID": channel_ID}
-        return self.client.get(
-            """/plugins/playbooks/api/v0/runs/checklist-autocomplete""", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"channel_ID": channel_ID}
+        return self.client.get("""/plugins/playbooks/api/v0/runs/checklist-autocomplete""", params=__params)
 
     def end_playbook_run_dialog(self, id: str):
         """End a playbook run from dialog
@@ -78,7 +76,5 @@ class Internal(Base):
         `Read in Mattermost API docs (Internal - nextStageDialog) <https://api.mattermost.com/#tag/Internal/operation/nextStageDialog>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"state": state}
-        return self.client.post(
-            f"/plugins/playbooks/api/v0/runs/{id}/next-stage-dialog", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"state": state}
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/next-stage-dialog", options=__options)

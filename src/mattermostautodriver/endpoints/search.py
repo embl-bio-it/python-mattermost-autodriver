@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Search"]
 
 
 class Search(Base):
@@ -27,7 +29,7 @@ class Search(Base):
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __data = {
             "terms": terms,
             "is_or_search": is_or_search,
             "time_zone_offset": time_zone_offset,
@@ -35,7 +37,7 @@ class Search(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=__data)
 
     def search_files(
         self,
@@ -58,7 +60,7 @@ class Search(Base):
         `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __data = {
             "terms": terms,
             "is_or_search": is_or_search,
             "time_zone_offset": time_zone_offset,
@@ -66,4 +68,4 @@ class Search(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.post("""/api/v4/files/search""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/files/search""", data=__data)

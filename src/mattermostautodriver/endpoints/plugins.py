@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Plugins"]
 
 
 class Plugins(Base):
@@ -13,13 +15,9 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - UploadPlugin) <https://api.mattermost.com/#tag/plugins/operation/UploadPlugin>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"plugin": plugin}
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"force": force}
-        return self.client.post(
-            """/api/v4/plugins""",
-            files=files_71f8b7431cd64fcfa0dabd300d0636d2,
-            data=data_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __files = {"plugin": plugin}
+        __data = {"force": force}
+        return self.client.post("""/api/v4/plugins""", files=__files, data=__data)
 
     def get_plugins(self):
         """Get plugins
@@ -88,8 +86,8 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - InstallMarketplacePlugin) <https://api.mattermost.com/#tag/plugins/operation/InstallMarketplacePlugin>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"id": id, "version": version}
-        return self.client.post("""/api/v4/plugins/marketplace""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"id": id, "version": version}
+        return self.client.post("""/api/v4/plugins/marketplace""", options=__options)
 
     def get_marketplace_plugins(
         self,
@@ -110,14 +108,14 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - GetMarketplacePlugins) <https://api.mattermost.com/#tag/plugins/operation/GetMarketplacePlugins>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "page": page,
             "per_page": per_page,
             "filter": filter,
             "server_version": server_version,
             "local_only": local_only,
         }
-        return self.client.get("""/api/v4/plugins/marketplace""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/plugins/marketplace""", params=__params)
 
     def get_marketplace_visited_by_admin(self):
         """Get if the Plugin Marketplace has been visited by at least an admin.

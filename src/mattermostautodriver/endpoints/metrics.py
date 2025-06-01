@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Metrics"]
 
 
 class Metrics(Base):
@@ -27,7 +29,7 @@ class Metrics(Base):
         `Read in Mattermost API docs (metrics - SubmitPerformanceReport) <https://api.mattermost.com/#tag/metrics/operation/SubmitPerformanceReport>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "version": version,
             "client_id": client_id,
             "labels": labels,
@@ -36,4 +38,4 @@ class Metrics(Base):
             "counters": counters,
             "histograms": histograms,
         }
-        return self.client.post("""/api/v4/client_perf""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/client_perf""", options=__options)

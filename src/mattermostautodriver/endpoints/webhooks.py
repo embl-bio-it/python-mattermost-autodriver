@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Webhooks"]
 
 
 class Webhooks(Base):
@@ -25,7 +27,7 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateIncomingWebhook>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "channel_id": channel_id,
             "user_id": user_id,
             "display_name": display_name,
@@ -33,7 +35,7 @@ class Webhooks(Base):
             "username": username,
             "icon_url": icon_url,
         }
-        return self.client.post("""/api/v4/hooks/incoming""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/hooks/incoming""", options=__options)
 
     def get_incoming_webhooks(
         self,
@@ -52,13 +54,8 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "page": page,
-            "per_page": per_page,
-            "team_id": team_id,
-            "include_total_count": include_total_count,
-        }
-        return self.client.get("""/api/v4/hooks/incoming""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page, "team_id": team_id, "include_total_count": include_total_count}
+        return self.client.get("""/api/v4/hooks/incoming""", params=__params)
 
     def get_incoming_webhook(self, hook_id: str):
         """Get an incoming webhook
@@ -103,7 +100,7 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateIncomingWebhook>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "id": id,
             "channel_id": channel_id,
             "display_name": display_name,
@@ -111,7 +108,7 @@ class Webhooks(Base):
             "username": username,
             "icon_url": icon_url,
         }
-        return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=__options)
 
     def create_outgoing_webhook(
         self,
@@ -140,7 +137,7 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateOutgoingWebhook>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "team_id": team_id,
             "channel_id": channel_id,
             "creator_id": creator_id,
@@ -151,7 +148,7 @@ class Webhooks(Base):
             "callback_urls": callback_urls,
             "content_type": content_type,
         }
-        return self.client.post("""/api/v4/hooks/outgoing""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/hooks/outgoing""", options=__options)
 
     def get_outgoing_webhooks(
         self, page: int | None = 0, per_page: int | None = 60, team_id: str | None = None, channel_id: str | None = None
@@ -166,13 +163,8 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhooks>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "page": page,
-            "per_page": per_page,
-            "team_id": team_id,
-            "channel_id": channel_id,
-        }
-        return self.client.get("""/api/v4/hooks/outgoing""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page, "team_id": team_id, "channel_id": channel_id}
+        return self.client.get("""/api/v4/hooks/outgoing""", params=__params)
 
     def get_outgoing_webhook(self, hook_id: str):
         """Get an outgoing webhook
@@ -206,13 +198,8 @@ class Webhooks(Base):
         `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateOutgoingWebhook>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "id": id,
-            "channel_id": channel_id,
-            "display_name": display_name,
-            "description": description,
-        }
-        return self.client.put(f"/api/v4/hooks/outgoing/{hook_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"id": id, "channel_id": channel_id, "display_name": display_name, "description": description}
+        return self.client.put(f"/api/v4/hooks/outgoing/{hook_id}", options=__options)
 
     def regen_outgoing_hook_token(self, hook_id: str):
         """Regenerate the token for the outgoing webhook.

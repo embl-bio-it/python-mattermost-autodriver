@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Schemes"]
 
 
 class Schemes(Base):
@@ -14,8 +16,8 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetSchemes) <https://api.mattermost.com/#tag/schemes/operation/GetSchemes>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"scope": scope, "page": page, "per_page": per_page}
-        return self.client.get("""/api/v4/schemes""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"scope": scope, "page": page, "per_page": per_page}
+        return self.client.get("""/api/v4/schemes""", params=__params)
 
     def create_scheme(self, display_name: str, scope: str, name: str | None = None, description: str | None = None):
         """Create a scheme
@@ -28,13 +30,8 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - CreateScheme) <https://api.mattermost.com/#tag/schemes/operation/CreateScheme>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "name": name,
-            "display_name": display_name,
-            "description": description,
-            "scope": scope,
-        }
-        return self.client.post("""/api/v4/schemes""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"name": name, "display_name": display_name, "description": description, "scope": scope}
+        return self.client.post("""/api/v4/schemes""", options=__options)
 
     def get_scheme(self, scheme_id: str):
         """Get a scheme
@@ -66,8 +63,8 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - PatchScheme) <https://api.mattermost.com/#tag/schemes/operation/PatchScheme>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"name": name, "description": description}
-        return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"name": name, "description": description}
+        return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=__options)
 
     def get_teams_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get a page of teams which use this scheme.
@@ -79,8 +76,8 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetTeamsForScheme>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=__params)
 
     def get_channels_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get a page of channels which use this scheme.
@@ -92,5 +89,5 @@ class Schemes(Base):
         `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetChannelsForScheme>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=__params)

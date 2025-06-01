@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Status"]
 
 
 class Status(Base):
@@ -25,8 +27,8 @@ class Status(Base):
         `Read in Mattermost API docs (status - UpdateUserStatus) <https://api.mattermost.com/#tag/status/operation/UpdateUserStatus>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"user_id": user_id, "status": status, "dnd_end_time": dnd_end_time}
-        return self.client.put(f"/api/v4/users/{user_id}/status", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"user_id": user_id, "status": status, "dnd_end_time": dnd_end_time}
+        return self.client.put(f"/api/v4/users/{user_id}/status", options=__options)
 
     def get_users_statuses_by_ids(self, options: list[str]):
         """Get user statuses by id
@@ -49,15 +51,8 @@ class Status(Base):
         `Read in Mattermost API docs (status - UpdateUserCustomStatus) <https://api.mattermost.com/#tag/status/operation/UpdateUserCustomStatus>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "emoji": emoji,
-            "text": text,
-            "duration": duration,
-            "expires_at": expires_at,
-        }
-        return self.client.put(
-            f"/api/v4/users/{user_id}/status/custom", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"emoji": emoji, "text": text, "duration": duration, "expires_at": expires_at}
+        return self.client.put(f"/api/v4/users/{user_id}/status/custom", options=__options)
 
     def unset_user_custom_status(self, user_id: str):
         """Unsets user custom status
@@ -81,15 +76,8 @@ class Status(Base):
         `Read in Mattermost API docs (status - RemoveRecentCustomStatus) <https://api.mattermost.com/#tag/status/operation/RemoveRecentCustomStatus>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "emoji": emoji,
-            "text": text,
-            "duration": duration,
-            "expires_at": expires_at,
-        }
-        return self.client.delete(
-            f"/api/v4/users/{user_id}/status/custom/recent", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"emoji": emoji, "text": text, "duration": duration, "expires_at": expires_at}
+        return self.client.delete(f"/api/v4/users/{user_id}/status/custom/recent", params=__params)
 
     def post_user_recent_custom_status_delete(
         self, user_id: str, emoji: str, text: str, duration: str, expires_at: str
@@ -105,12 +93,5 @@ class Status(Base):
         `Read in Mattermost API docs (status - PostUserRecentCustomStatusDelete) <https://api.mattermost.com/#tag/status/operation/PostUserRecentCustomStatusDelete>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "emoji": emoji,
-            "text": text,
-            "duration": duration,
-            "expires_at": expires_at,
-        }
-        return self.client.post(
-            f"/api/v4/users/{user_id}/status/custom/recent/delete", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"emoji": emoji, "text": text, "duration": duration, "expires_at": expires_at}
+        return self.client.post(f"/api/v4/users/{user_id}/status/custom/recent/delete", options=__options)

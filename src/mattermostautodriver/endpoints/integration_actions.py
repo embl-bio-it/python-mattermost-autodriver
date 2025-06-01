@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["IntegrationActions"]
 
 
 class IntegrationActions(Base):
@@ -14,8 +16,8 @@ class IntegrationActions(Base):
         `Read in Mattermost API docs (integration_actions - OpenInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/OpenInteractiveDialog>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"trigger_id": trigger_id, "url": url, "dialog": dialog}
-        return self.client.post("""/api/v4/actions/dialogs/open""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"trigger_id": trigger_id, "url": url, "dialog": dialog}
+        return self.client.post("""/api/v4/actions/dialogs/open""", options=__options)
 
     def submit_interactive_dialog(
         self,
@@ -40,7 +42,7 @@ class IntegrationActions(Base):
         `Read in Mattermost API docs (integration_actions - SubmitInteractiveDialog) <https://api.mattermost.com/#tag/integration_actions/operation/SubmitInteractiveDialog>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "url": url,
             "channel_id": channel_id,
             "team_id": team_id,
@@ -49,4 +51,4 @@ class IntegrationActions(Base):
             "state": state,
             "cancelled": cancelled,
         }
-        return self.client.post("""/api/v4/actions/dialogs/submit""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/actions/dialogs/submit""", options=__options)

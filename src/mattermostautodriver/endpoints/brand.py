@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Brand"]
 
 
 class Brand(Base):
@@ -19,8 +21,8 @@ class Brand(Base):
         `Read in Mattermost API docs (brand - UploadBrandImage) <https://api.mattermost.com/#tag/brand/operation/UploadBrandImage>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"image": image}
-        return self.client.post("""/api/v4/brand/image""", files=files_71f8b7431cd64fcfa0dabd300d0636d2)
+        __files = {"image": image}
+        return self.client.post("""/api/v4/brand/image""", files=__files)
 
     def delete_brand_image(self):
         """Delete current brand image

@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Reports"]
 
 
 class Reports(Base):
@@ -39,7 +41,7 @@ class Reports(Base):
         `Read in Mattermost API docs (reports - GetUsersForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUsersForReporting>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "sort_column": sort_column,
             "direction": direction,
             "sort_direction": sort_direction,
@@ -54,7 +56,7 @@ class Reports(Base):
             "hide_inactive": hide_inactive,
             "search_term": search_term,
         }
-        return self.client.get("""/api/v4/reports/users""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/reports/users""", params=__params)
 
     def get_user_count_for_reporting(
         self,
@@ -77,7 +79,7 @@ class Reports(Base):
         `Read in Mattermost API docs (reports - GetUserCountForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUserCountForReporting>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "role_filter": role_filter,
             "team_filter": team_filter,
             "has_no_team": has_no_team,
@@ -85,7 +87,7 @@ class Reports(Base):
             "hide_inactive": hide_inactive,
             "search_term": search_term,
         }
-        return self.client.get("""/api/v4/reports/users/count""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/reports/users/count""", params=__params)
 
     def start_batch_users_export(self):
         """Starts a job to export the users to a report file.

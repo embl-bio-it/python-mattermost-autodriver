@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["PlaybookRuns"]
 
 
 class PlaybookRuns(Base):
@@ -31,7 +33,7 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - listPlaybookRuns) <https://api.mattermost.com/#tag/PlaybookRuns/operation/listPlaybookRuns>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "team_id": team_id,
             "page": page,
             "per_page": per_page,
@@ -42,7 +44,7 @@ class PlaybookRuns(Base):
             "participant_id": participant_id,
             "search_term": search_term,
         }
-        return self.client.get("""/plugins/playbooks/api/v0/runs""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/plugins/playbooks/api/v0/runs""", params=__params)
 
     def create_playbook_run_from_post(
         self,
@@ -65,7 +67,7 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - createPlaybookRunFromPost) <https://api.mattermost.com/#tag/PlaybookRuns/operation/createPlaybookRunFromPost>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "name": name,
             "description": description,
             "owner_user_id": owner_user_id,
@@ -73,7 +75,7 @@ class PlaybookRuns(Base):
             "post_id": post_id,
             "playbook_id": playbook_id,
         }
-        return self.client.post("""/plugins/playbooks/api/v0/runs""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/plugins/playbooks/api/v0/runs""", options=__options)
 
     def get_owners(self, team_id: str):
         """Get all owners
@@ -83,10 +85,8 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - getOwners) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getOwners>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id}
-        return self.client.get(
-            """/plugins/playbooks/api/v0/runs/owners""", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"team_id": team_id}
+        return self.client.get("""/plugins/playbooks/api/v0/runs/owners""", params=__params)
 
     def get_channels(
         self,
@@ -111,7 +111,7 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - getChannels) <https://api.mattermost.com/#tag/PlaybookRuns/operation/getChannels>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "team_id": team_id,
             "sort": sort,
             "direction": direction,
@@ -120,9 +120,7 @@ class PlaybookRuns(Base):
             "search_term": search_term,
             "participant_id": participant_id,
         }
-        return self.client.get(
-            """/plugins/playbooks/api/v0/runs/channels""", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.get("""/plugins/playbooks/api/v0/runs/channels""", params=__params)
 
     def get_playbook_run_by_channel_id(self, channel_id: str):
         """Find playbook run by channel ID
@@ -153,10 +151,8 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - updatePlaybookRun) <https://api.mattermost.com/#tag/PlaybookRuns/operation/updatePlaybookRun>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"active_stage": active_stage}
-        return self.client.patch(
-            f"/plugins/playbooks/api/v0/runs/{id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"active_stage": active_stage}
+        return self.client.patch(f"/plugins/playbooks/api/v0/runs/{id}", options=__options)
 
     def get_playbook_run_metadata(self, id: str):
         """Get playbook run metadata
@@ -198,10 +194,8 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - status) <https://api.mattermost.com/#tag/PlaybookRuns/operation/status>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"message": message, "reminder": reminder}
-        return self.client.post(
-            f"/plugins/playbooks/api/v0/runs/{id}/status", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"message": message, "reminder": reminder}
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/status", options=__options)
 
     def finish(self, id: str):
         """Finish a playbook
@@ -222,10 +216,8 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - changeOwner) <https://api.mattermost.com/#tag/PlaybookRuns/operation/changeOwner>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"owner_id": owner_id}
-        return self.client.post(
-            f"/plugins/playbooks/api/v0/runs/{id}/owner", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"owner_id": owner_id}
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/owner", options=__options)
 
     def add_checklist_item(
         self,
@@ -256,7 +248,7 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - addChecklistItem) <https://api.mattermost.com/#tag/PlaybookRuns/operation/addChecklistItem>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "title": title,
             "state": state,
             "state_modified": state_modified,
@@ -266,10 +258,7 @@ class PlaybookRuns(Base):
             "command_last_run": command_last_run,
             "description": description,
         }
-        return self.client.post(
-            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/add",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/add", options=__options)
 
     def reoder_checklist_item(self, id: str, checklist: int, item_num: int, new_location: int):
         """Reorder an item in a playbook run's checklist
@@ -282,11 +271,8 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - reoderChecklistItem) <https://api.mattermost.com/#tag/PlaybookRuns/operation/reoderChecklistItem>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"item_num": item_num, "new_location": new_location}
-        return self.client.put(
-            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/reorder",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __options = {"item_num": item_num, "new_location": new_location}
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/reorder", options=__options)
 
     def item_rename(self, id: str, checklist: int, item: int, title: str, command: str):
         """Update an item of a playbook run's checklist
@@ -300,10 +286,9 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - itemRename) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemRename>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"title": title, "command": command}
+        __options = {"title": title, "command": command}
         return self.client.put(
-            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}", options=__options
         )
 
     def item_delete(self, id: str, checklist: int, item: int):
@@ -329,10 +314,9 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - itemSetState) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemSetState>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"new_state": new_state}
+        __options = {"new_state": new_state}
         return self.client.put(
-            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/state",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/state", options=__options
         )
 
     def item_set_assignee(self, id: str, checklist: int, item: int, assignee_id: str):
@@ -346,10 +330,9 @@ class PlaybookRuns(Base):
         `Read in Mattermost API docs (PlaybookRuns - itemSetAssignee) <https://api.mattermost.com/#tag/PlaybookRuns/operation/itemSetAssignee>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"assignee_id": assignee_id}
+        __options = {"assignee_id": assignee_id}
         return self.client.put(
-            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/assignee",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
+            f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/assignee", options=__options
         )
 
     def item_run(self, id: str, checklist: int, item: int):

@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Bookmarks"]
 
 
 class Bookmarks(Base):
@@ -16,10 +18,8 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - ListChannelBookmarksForChannel) <https://api.mattermost.com/#tag/bookmarks/operation/ListChannelBookmarksForChannel>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"bookmarks_since": bookmarks_since}
-        return self.client.get(
-            f"/api/v4/channels/{channel_id}/bookmarks", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"bookmarks_since": bookmarks_since}
+        return self.client.get(f"/api/v4/channels/{channel_id}/bookmarks", params=__params)
 
     def create_channel_bookmark(
         self,
@@ -46,7 +46,7 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - CreateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/CreateChannelBookmark>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "file_id": file_id,
             "display_name": display_name,
             "link_url": link_url,
@@ -54,9 +54,7 @@ class Bookmarks(Base):
             "emoji": emoji,
             "type": type,
         }
-        return self.client.post(
-            f"/api/v4/channels/{channel_id}/bookmarks", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.post(f"/api/v4/channels/{channel_id}/bookmarks", options=__options)
 
     def update_channel_bookmark(
         self,
@@ -87,7 +85,7 @@ class Bookmarks(Base):
         `Read in Mattermost API docs (bookmarks - UpdateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/UpdateChannelBookmark>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "file_id": file_id,
             "display_name": display_name,
             "sort_order": sort_order,
@@ -96,9 +94,7 @@ class Bookmarks(Base):
             "emoji": emoji,
             "type": type,
         }
-        return self.client.patch(
-            f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.patch(f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}", options=__options)
 
     def delete_channel_bookmark(self, channel_id: str, bookmark_id: str):
         """Delete channel bookmark

@@ -43,6 +43,8 @@ requires an expansion of the options dictionary:
     })
 
 This shortcut works so long as none of the arguments clashes with python keywords.
+Examples from clashes include ``from``
+
 or that arguments are passed explicitly:
 
 .. code:: python

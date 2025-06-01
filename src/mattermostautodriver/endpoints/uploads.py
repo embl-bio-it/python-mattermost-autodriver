@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Uploads"]
 
 
 class Uploads(Base):
@@ -14,12 +16,8 @@ class Uploads(Base):
         `Read in Mattermost API docs (uploads - CreateUpload) <https://api.mattermost.com/#tag/uploads/operation/CreateUpload>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "channel_id": channel_id,
-            "filename": filename,
-            "file_size": file_size,
-        }
-        return self.client.post("""/api/v4/uploads""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"channel_id": channel_id, "filename": filename, "file_size": file_size}
+        return self.client.post("""/api/v4/uploads""", options=__options)
 
     def get_upload(self, upload_id: str):
         """Get an upload session

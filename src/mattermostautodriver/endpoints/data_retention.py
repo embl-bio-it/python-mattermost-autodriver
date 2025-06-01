@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["DataRetention"]
 
 
 class DataRetention(Base):
@@ -14,10 +16,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - GetTeamPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamPoliciesForUser>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/users/{user_id}/data_retention/team_policies", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/users/{user_id}/data_retention/team_policies", params=__params)
 
     def get_channel_policies_for_user(self, user_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get the policies which are applied to a user's channels
@@ -29,10 +29,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - GetChannelPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelPoliciesForUser>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/users/{user_id}/data_retention/channel_policies", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/users/{user_id}/data_retention/channel_policies", params=__params)
 
     def get_data_retention_policy(self):
         """Get the global data retention policy
@@ -57,8 +55,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - GetDataRetentionPolicies) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPolicies>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get("""/api/v4/data_retention/policies""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get("""/api/v4/data_retention/policies""", params=__params)
 
     def create_data_retention_policy(self, options: Any):
         """Create a new granular data retention policy
@@ -107,10 +105,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - GetTeamsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamsForRetentionPolicy>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/data_retention/policies/{policy_id}/teams", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/data_retention/policies/{policy_id}/teams", params=__params)
 
     def add_teams_to_retention_policy(self, policy_id: str, options: list[str]):
         """Add teams to a granular data retention policy
@@ -141,11 +137,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - SearchTeamsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/SearchTeamsForRetentionPolicy>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"term": term}
-        return self.client.post(
-            f"/api/v4/data_retention/policies/{policy_id}/teams/search",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __options = {"term": term}
+        return self.client.post(f"/api/v4/data_retention/policies/{policy_id}/teams/search", options=__options)
 
     def get_channels_for_retention_policy(self, policy_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get the channels for a granular data retention policy
@@ -157,10 +150,8 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - GetChannelsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelsForRetentionPolicy>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/data_retention/policies/{policy_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/data_retention/policies/{policy_id}/channels", params=__params)
 
     def add_channels_to_retention_policy(self, policy_id: str, options: list[str]):
         """Add channels to a granular data retention policy
@@ -207,14 +198,5 @@ class DataRetention(Base):
         `Read in Mattermost API docs (data_retention - SearchChannelsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/SearchChannelsForRetentionPolicy>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "term": term,
-            "team_ids": team_ids,
-            "public": public,
-            "private": private,
-            "deleted": deleted,
-        }
-        return self.client.post(
-            f"/api/v4/data_retention/policies/{policy_id}/channels/search",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __options = {"term": term, "team_ids": team_ids, "public": public, "private": private, "deleted": deleted}
+        return self.client.post(f"/api/v4/data_retention/policies/{policy_id}/channels/search", options=__options)

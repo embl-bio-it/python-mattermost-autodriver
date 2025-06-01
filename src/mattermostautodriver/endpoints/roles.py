@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Roles"]
 
 
 class Roles(Base):
@@ -40,8 +42,8 @@ class Roles(Base):
         `Read in Mattermost API docs (roles - PatchRole) <https://api.mattermost.com/#tag/roles/operation/PatchRole>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"permissions": permissions}
-        return self.client.put(f"/api/v4/roles/{role_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"permissions": permissions}
+        return self.client.put(f"/api/v4/roles/{role_id}/patch", options=__options)
 
     def get_roles_by_names(self, options: list[str]):
         """Get a list of roles by name

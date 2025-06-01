@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Commands"]
 
 
 class Commands(Base):
@@ -15,13 +17,8 @@ class Commands(Base):
         `Read in Mattermost API docs (commands - CreateCommand) <https://api.mattermost.com/#tag/commands/operation/CreateCommand>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "team_id": team_id,
-            "method": method,
-            "trigger": trigger,
-            "url": url,
-        }
-        return self.client.post("""/api/v4/commands""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"team_id": team_id, "method": method, "trigger": trigger, "url": url}
+        return self.client.post("""/api/v4/commands""", options=__options)
 
     def list_commands(self, team_id: str | None = None, custom_only: bool | None = False):
         """List commands for a team
@@ -34,8 +31,8 @@ class Commands(Base):
         `Read in Mattermost API docs (commands - ListCommands) <https://api.mattermost.com/#tag/commands/operation/ListCommands>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id, "custom_only": custom_only}
-        return self.client.get("""/api/v4/commands""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"team_id": team_id, "custom_only": custom_only}
+        return self.client.get("""/api/v4/commands""", params=__params)
 
     def list_autocomplete_commands(self, team_id: str):
         """List autocomplete commands
@@ -56,10 +53,8 @@ class Commands(Base):
         `Read in Mattermost API docs (commands - ListCommandAutocompleteSuggestions) <https://api.mattermost.com/#tag/commands/operation/ListCommandAutocompleteSuggestions>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"user_input": user_input}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/commands/autocomplete_suggestions", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"user_input": user_input}
+        return self.client.get(f"/api/v4/teams/{team_id}/commands/autocomplete_suggestions", params=__params)
 
     def get_command_by_id(self, command_id: str):
         """Get a command
@@ -100,8 +95,8 @@ class Commands(Base):
         `Read in Mattermost API docs (commands - MoveCommand) <https://api.mattermost.com/#tag/commands/operation/MoveCommand>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id}
-        return self.client.put(f"/api/v4/commands/{command_id}/move", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"team_id": team_id}
+        return self.client.put(f"/api/v4/commands/{command_id}/move", options=__options)
 
     def regen_command_token(self, command_id: str):
         """Generate a new token
@@ -122,5 +117,5 @@ class Commands(Base):
         `Read in Mattermost API docs (commands - ExecuteCommand) <https://api.mattermost.com/#tag/commands/operation/ExecuteCommand>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_id": channel_id, "command": command}
-        return self.client.post("""/api/v4/commands/execute""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"channel_id": channel_id, "command": command}
+        return self.client.post("""/api/v4/commands/execute""", options=__options)

@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Channels"]
 
 
 class Channels(Base):
@@ -28,7 +30,7 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetAllChannels) <https://api.mattermost.com/#tag/channels/operation/GetAllChannels>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "not_associated_to_group": not_associated_to_group,
             "page": page,
             "per_page": per_page,
@@ -37,7 +39,7 @@ class Channels(Base):
             "include_total_count": include_total_count,
             "exclude_policy_constrained": exclude_policy_constrained,
         }
-        return self.client.get("""/api/v4/channels""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.get("""/api/v4/channels""", params=__params)
 
     def create_channel(
         self,
@@ -60,7 +62,7 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - CreateChannel) <https://api.mattermost.com/#tag/channels/operation/CreateChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "team_id": team_id,
             "name": name,
             "display_name": display_name,
@@ -68,7 +70,7 @@ class Channels(Base):
             "header": header,
             "type": type,
         }
-        return self.client.post("""/api/v4/channels""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/channels""", options=__options)
 
     def create_direct_channel(self, options: list[str]):
         """Create a direct message channel
@@ -145,7 +147,7 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://api.mattermost.com/#tag/channels/operation/SearchAllChannels>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "term": term,
             "not_associated_to_group": not_associated_to_group,
             "exclude_default_channels": exclude_default_channels,
@@ -161,7 +163,7 @@ class Channels(Base):
             "include_search_by_id": include_search_by_id,
             "exclude_remote": exclude_remote,
         }
-        return self.client.post("""/api/v4/channels/search""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/channels/search""", options=__options)
 
     def search_group_channels(self, term: str):
         """Search Group Channels
@@ -171,8 +173,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - SearchGroupChannels) <https://api.mattermost.com/#tag/channels/operation/SearchGroupChannels>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"term": term}
-        return self.client.post("""/api/v4/channels/group/search""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"term": term}
+        return self.client.post("""/api/v4/channels/group/search""", options=__options)
 
     def get_public_channels_by_ids_for_team(self, team_id: str, options: list[str]):
         """Get a list of channels by ids
@@ -225,14 +227,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - UpdateChannel) <https://api.mattermost.com/#tag/channels/operation/UpdateChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "id": id,
-            "name": name,
-            "display_name": display_name,
-            "purpose": purpose,
-            "header": header,
-        }
-        return self.client.put(f"/api/v4/channels/{channel_id}", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"id": id, "name": name, "display_name": display_name, "purpose": purpose, "header": header}
+        return self.client.put(f"/api/v4/channels/{channel_id}", options=__options)
 
     def delete_channel(self, channel_id: str):
         """Delete a channel
@@ -263,13 +259,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - PatchChannel) <https://api.mattermost.com/#tag/channels/operation/PatchChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "name": name,
-            "display_name": display_name,
-            "purpose": purpose,
-            "header": header,
-        }
-        return self.client.put(f"/api/v4/channels/{channel_id}/patch", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"name": name, "display_name": display_name, "purpose": purpose, "header": header}
+        return self.client.put(f"/api/v4/channels/{channel_id}/patch", options=__options)
 
     def update_channel_privacy(self, channel_id: str, privacy: str):
         """Update channel's privacy
@@ -280,10 +271,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - UpdateChannelPrivacy) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelPrivacy>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"privacy": privacy}
-        return self.client.put(
-            f"/api/v4/channels/{channel_id}/privacy", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"privacy": privacy}
+        return self.client.put(f"/api/v4/channels/{channel_id}/privacy", options=__options)
 
     def restore_channel(self, channel_id: str):
         """Restore a channel
@@ -305,8 +294,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - MoveChannel) <https://api.mattermost.com/#tag/channels/operation/MoveChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"team_id": team_id, "force": force}
-        return self.client.post(f"/api/v4/channels/{channel_id}/move", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"team_id": team_id, "force": force}
+        return self.client.post(f"/api/v4/channels/{channel_id}/move", options=__options)
 
     def get_channel_stats(self, channel_id: str):
         """Get channel statistics
@@ -338,8 +327,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetPublicChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetPublicChannelsForTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/teams/{team_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels", params=__params)
 
     def get_private_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get private channels
@@ -351,10 +340,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetPrivateChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetPrivateChannelsForTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/channels/private", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/private", params=__params)
 
     def get_deleted_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get deleted channels
@@ -366,10 +353,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetDeletedChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/GetDeletedChannelsForTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/channels/deleted", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/deleted", params=__params)
 
     def autocomplete_channels_for_team(self, team_id: str, name: str):
         """Autocomplete channels
@@ -380,10 +365,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - AutocompleteChannelsForTeam) <https://api.mattermost.com/#tag/channels/operation/AutocompleteChannelsForTeam>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"name": name}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/channels/autocomplete", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"name": name}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/autocomplete", params=__params)
 
     def autocomplete_channels_for_team_for_search(self, team_id: str, name: str):
         """Autocomplete channels for search
@@ -394,10 +377,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - AutocompleteChannelsForTeamForSearch) <https://api.mattermost.com/#tag/channels/operation/AutocompleteChannelsForTeamForSearch>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"name": name}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/channels/search_autocomplete", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"name": name}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/search_autocomplete", params=__params)
 
     def search_channels(self, team_id: str, term: str):
         """Search channels
@@ -408,10 +389,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - SearchChannels) <https://api.mattermost.com/#tag/channels/operation/SearchChannels>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"term": term}
-        return self.client.post(
-            f"/api/v4/teams/{team_id}/channels/search", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"term": term}
+        return self.client.post(f"/api/v4/teams/{team_id}/channels/search", options=__options)
 
     def search_archived_channels(self, team_id: str, term: str):
         """Search archived channels
@@ -422,10 +401,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - SearchArchivedChannels) <https://api.mattermost.com/#tag/channels/operation/SearchArchivedChannels>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"term": term}
-        return self.client.post(
-            f"/api/v4/teams/{team_id}/channels/search_archived", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"term": term}
+        return self.client.post(f"/api/v4/teams/{team_id}/channels/search_archived", options=__options)
 
     def get_channel_by_name(self, team_id: str, channel_name: str, include_deleted: bool | None = False):
         """Get a channel by name
@@ -437,10 +414,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelByName) <https://api.mattermost.com/#tag/channels/operation/GetChannelByName>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted}
-        return self.client.get(
-            f"/api/v4/teams/{team_id}/channels/name/{channel_name}", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/name/{channel_name}", params=__params)
 
     def get_channel_by_name_for_team_name(
         self, team_name: str, channel_name: str, include_deleted: bool | None = False
@@ -454,11 +429,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelByNameForTeamName) <https://api.mattermost.com/#tag/channels/operation/GetChannelByNameForTeamName>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted}
-        return self.client.get(
-            f"/api/v4/teams/name/{team_name}/channels/name/{channel_name}",
-            params=params_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __params = {"include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/teams/name/{team_name}/channels/name/{channel_name}", params=__params)
 
     def get_channel_members(self, channel_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get channel members
@@ -470,8 +442,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelMembers) <https://api.mattermost.com/#tag/channels/operation/GetChannelMembers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/channels/{channel_id}/members", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/channels/{channel_id}/members", params=__params)
 
     def add_channel_member(
         self,
@@ -490,14 +462,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - AddChannelMember) <https://api.mattermost.com/#tag/channels/operation/AddChannelMember>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "user_id": user_id,
-            "user_ids": user_ids,
-            "post_root_id": post_root_id,
-        }
-        return self.client.post(
-            f"/api/v4/channels/{channel_id}/members", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"user_id": user_id, "user_ids": user_ids, "post_root_id": post_root_id}
+        return self.client.post(f"/api/v4/channels/{channel_id}/members", options=__options)
 
     def get_channel_members_by_ids(self, channel_id: str, options: list[str]):
         """Get channel members by ids
@@ -541,10 +507,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - UpdateChannelRoles) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelRoles>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"roles": roles}
-        return self.client.put(
-            f"/api/v4/channels/{channel_id}/members/{user_id}/roles", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"roles": roles}
+        return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/roles", options=__options)
 
     def update_channel_member_scheme_roles(self, channel_id: str, user_id: str, scheme_admin: bool, scheme_user: bool):
         """Update the scheme-derived roles of a channel member.
@@ -557,11 +521,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - UpdateChannelMemberSchemeRoles) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelMemberSchemeRoles>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"scheme_admin": scheme_admin, "scheme_user": scheme_user}
-        return self.client.put(
-            f"/api/v4/channels/{channel_id}/members/{user_id}/schemeRoles",
-            options=options_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __options = {"scheme_admin": scheme_admin, "scheme_user": scheme_user}
+        return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/schemeRoles", options=__options)
 
     def update_channel_notify_props(self, channel_id: str, user_id: str, options: Any):
         """Update channel notifications
@@ -584,10 +545,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - ViewChannel) <https://api.mattermost.com/#tag/channels/operation/ViewChannel>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_id": channel_id, "prev_channel_id": prev_channel_id}
-        return self.client.post(
-            f"/api/v4/channels/members/{user_id}/view", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"channel_id": channel_id, "prev_channel_id": prev_channel_id}
+        return self.client.post(f"/api/v4/channels/members/{user_id}/view", options=__options)
 
     def get_channel_members_for_user(self, user_id: str, team_id: str):
         """Get channel memberships and roles for a user
@@ -613,10 +572,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelsForTeamForUser) <https://api.mattermost.com/#tag/channels/operation/GetChannelsForTeamForUser>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_deleted": include_deleted, "last_delete_at": last_delete_at}
-        return self.client.get(
-            f"/api/v4/users/{user_id}/teams/{team_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"include_deleted": include_deleted, "last_delete_at": last_delete_at}
+        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels", params=__params)
 
     def get_channels_for_user(self, user_id: str, last_delete_at: int | None = 0, include_deleted: bool | None = False):
         """Get all channels from all teams
@@ -628,8 +585,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelsForUser) <https://api.mattermost.com/#tag/channels/operation/GetChannelsForUser>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"last_delete_at": last_delete_at, "include_deleted": include_deleted}
-        return self.client.get(f"/api/v4/users/{user_id}/channels", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"last_delete_at": last_delete_at, "include_deleted": include_deleted}
+        return self.client.get(f"/api/v4/users/{user_id}/channels", params=__params)
 
     def get_channel_unread(self, user_id: str, channel_id: str):
         """Get unread messages
@@ -651,10 +608,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - UpdateChannelScheme) <https://api.mattermost.com/#tag/channels/operation/UpdateChannelScheme>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"scheme_id": scheme_id}
-        return self.client.put(
-            f"/api/v4/channels/{channel_id}/scheme", options=options_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __options = {"scheme_id": scheme_id}
+        return self.client.put(f"/api/v4/channels/{channel_id}/scheme", options=__options)
 
     def channel_members_minus_group_members(
         self, channel_id: str, group_ids: str = "", page: int | None = 0, per_page: int | None = 0
@@ -669,10 +624,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - ChannelMembersMinusGroupMembers) <https://api.mattermost.com/#tag/channels/operation/ChannelMembersMinusGroupMembers>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"group_ids": group_ids, "page": page, "per_page": per_page}
-        return self.client.get(
-            f"/api/v4/channels/{channel_id}/members_minus_group_members", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"group_ids": group_ids, "page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/channels/{channel_id}/members_minus_group_members", params=__params)
 
     def get_channel_member_counts_by_group(self, channel_id: str, include_timezones: bool | None = False):
         """Channel members counts for each group that has atleast one member in the channel
@@ -683,10 +636,8 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - GetChannelMemberCountsByGroup) <https://api.mattermost.com/#tag/channels/operation/GetChannelMemberCountsByGroup>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"include_timezones": include_timezones}
-        return self.client.get(
-            f"/api/v4/channels/{channel_id}/member_counts_by_group", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        __params = {"include_timezones": include_timezones}
+        return self.client.get(f"/api/v4/channels/{channel_id}/member_counts_by_group", params=__params)
 
     def get_channel_moderations(self, channel_id: str):
         """Get information about channel's moderation.
@@ -800,13 +751,3 @@ class Channels(Base):
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
-
-    def get_channel_access_control_attributes(self, channel_id: str):
-        """Get access control attributes for a channel
-
-        channel_id: The ID of the channel.
-
-        `Read in Mattermost API docs (channels - GetChannelAccessControlAttributes) <https://api.mattermost.com/#tag/channels/operation/GetChannelAccessControlAttributes>`_
-
-        """
-        return self.client.get(f"/api/v4/channels/{channel_id}/access_control/attributes")

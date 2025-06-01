@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["SharedChannels"]
 
 
 class SharedChannels(Base):
@@ -14,8 +16,8 @@ class SharedChannels(Base):
         `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://api.mattermost.com/#tag/shared_channels/operation/GetAllSharedChannels>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=__params)
 
     def get_shared_channel_remotes_by_remote_cluster(
         self,
@@ -42,7 +44,7 @@ class SharedChannels(Base):
         `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotesByRemoteCluster) <https://api.mattermost.com/#tag/shared_channels/operation/GetSharedChannelRemotesByRemoteCluster>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __params = {
             "include_unconfirmed": include_unconfirmed,
             "exclude_confirmed": exclude_confirmed,
             "exclude_home": exclude_home,
@@ -51,9 +53,7 @@ class SharedChannels(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.get(
-            f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=params_71f8b7431cd64fcfa0dabd300d0636d2
-        )
+        return self.client.get(f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=__params)
 
     def get_remote_cluster_info(self, remote_id: str):
         """Get remote cluster info by ID for user.

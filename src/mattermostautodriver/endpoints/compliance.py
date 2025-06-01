@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Compliance"]
 
 
 class Compliance(Base):
@@ -20,8 +22,8 @@ class Compliance(Base):
         `Read in Mattermost API docs (compliance - GetComplianceReports) <https://api.mattermost.com/#tag/compliance/operation/GetComplianceReports>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get("""/api/v4/compliance/reports""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get("""/api/v4/compliance/reports""", params=__params)
 
     def get_compliance_report(self, report_id: str):
         """Get a report

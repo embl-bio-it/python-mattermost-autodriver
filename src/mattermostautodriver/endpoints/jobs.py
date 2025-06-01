@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Jobs"]
 
 
 class Jobs(Base):
@@ -17,13 +19,8 @@ class Jobs(Base):
         `Read in Mattermost API docs (jobs - GetJobs) <https://api.mattermost.com/#tag/jobs/operation/GetJobs>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {
-            "page": page,
-            "per_page": per_page,
-            "job_type": job_type,
-            "status": status,
-        }
-        return self.client.get("""/api/v4/jobs""", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page, "job_type": job_type, "status": status}
+        return self.client.get("""/api/v4/jobs""", params=__params)
 
     def create_job(self, type: str, data: dict[str, Any] | None = None):
         """Create a new job.
@@ -34,8 +31,8 @@ class Jobs(Base):
         `Read in Mattermost API docs (jobs - CreateJob) <https://api.mattermost.com/#tag/jobs/operation/CreateJob>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"type": type, "data": data}
-        return self.client.post("""/api/v4/jobs""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"type": type, "data": data}
+        return self.client.post("""/api/v4/jobs""", options=__options)
 
     def get_job(self, job_id: str):
         """Get a job.
@@ -77,8 +74,8 @@ class Jobs(Base):
         `Read in Mattermost API docs (jobs - GetJobsByType) <https://api.mattermost.com/#tag/jobs/operation/GetJobsByType>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/jobs/type/{type}", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/jobs/type/{type}", params=__params)
 
     def update_job_status(self, job_id: str, status: str, force: bool | None = None):
         """Update the status of a job
@@ -90,5 +87,5 @@ class Jobs(Base):
         `Read in Mattermost API docs (jobs - UpdateJobStatus) <https://api.mattermost.com/#tag/jobs/operation/UpdateJobStatus>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {"status": status, "force": force}
-        return self.client.patch(f"/api/v4/jobs/{job_id}/status", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        __options = {"status": status, "force": force}
+        return self.client.patch(f"/api/v4/jobs/{job_id}/status", options=__options)

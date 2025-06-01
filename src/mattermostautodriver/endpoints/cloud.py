@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Cloud"]
 
 
 class Cloud(Base):
@@ -33,8 +35,8 @@ class Cloud(Base):
         `Read in Mattermost API docs (cloud - ConfirmCustomerPayment) <https://api.mattermost.com/#tag/cloud/operation/ConfirmCustomerPayment>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"stripe_setup_intent_id": stripe_setup_intent_id}
-        return self.client.post("""/api/v4/cloud/payment/confirm""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        __data = {"stripe_setup_intent_id": stripe_setup_intent_id}
+        return self.client.post("""/api/v4/cloud/payment/confirm""", data=__data)
 
     def get_cloud_customer(self):
         """Get cloud customer
@@ -62,14 +64,14 @@ class Cloud(Base):
         `Read in Mattermost API docs (cloud - UpdateCloudCustomer) <https://api.mattermost.com/#tag/cloud/operation/UpdateCloudCustomer>`_
 
         """
-        options_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __options = {
             "name": name,
             "email": email,
             "contact_first_name": contact_first_name,
             "contact_last_name": contact_last_name,
             "num_employees": num_employees,
         }
-        return self.client.put("""/api/v4/cloud/customer""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.put("""/api/v4/cloud/customer""", options=__options)
 
     def update_cloud_customer_address(self, options: Any):
         """Update cloud customer address

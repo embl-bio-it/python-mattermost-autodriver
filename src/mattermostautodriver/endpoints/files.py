@@ -1,5 +1,7 @@
-from .base import Base
+from ._base import Base
 from typing import Any, BinaryIO
+
+__all__ = ["Files"]
 
 
 class Files(Base):
@@ -14,13 +16,9 @@ class Files(Base):
         `Read in Mattermost API docs (files - UploadFile) <https://api.mattermost.com/#tag/files/operation/UploadFile>`_
 
         """
-        files_71f8b7431cd64fcfa0dabd300d0636d2 = {"files": files}
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {"channel_id": channel_id, "client_ids": client_ids}
-        return self.client.post(
-            """/api/v4/files""",
-            files=files_71f8b7431cd64fcfa0dabd300d0636d2,
-            data=data_71f8b7431cd64fcfa0dabd300d0636d2,
-        )
+        __files = {"files": files}
+        __data = {"channel_id": channel_id, "client_ids": client_ids}
+        return self.client.post("""/api/v4/files""", files=__files, data=__data)
 
     def get_file(self, file_id: str):
         """Get a file
@@ -81,8 +79,8 @@ class Files(Base):
         `Read in Mattermost API docs (files - GetFilePublic) <https://api.mattermost.com/#tag/files/operation/GetFilePublic>`_
 
         """
-        params_71f8b7431cd64fcfa0dabd300d0636d2 = {"h": h}
-        return self.client.get(f"/files/{file_id}/public", params=params_71f8b7431cd64fcfa0dabd300d0636d2)
+        __params = {"h": h}
+        return self.client.get(f"/files/{file_id}/public", params=__params)
 
     def search_files(
         self,
@@ -107,7 +105,7 @@ class Files(Base):
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __data = {
             "terms": terms,
             "is_or_search": is_or_search,
             "time_zone_offset": time_zone_offset,
@@ -115,7 +113,7 @@ class Files(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post(f"/api/v4/teams/{team_id}/files/search", data=__data)
 
     def search_files(
         self,
@@ -138,7 +136,7 @@ class Files(Base):
         `Read in Mattermost API docs (files - SearchFiles) <https://api.mattermost.com/#tag/files/operation/SearchFiles>`_
 
         """
-        data_71f8b7431cd64fcfa0dabd300d0636d2 = {
+        __data = {
             "terms": terms,
             "is_or_search": is_or_search,
             "time_zone_offset": time_zone_offset,
@@ -146,4 +144,4 @@ class Files(Base):
             "page": page,
             "per_page": per_page,
         }
-        return self.client.post("""/api/v4/files/search""", data=data_71f8b7431cd64fcfa0dabd300d0636d2)
+        return self.client.post("""/api/v4/files/search""", data=__data)
