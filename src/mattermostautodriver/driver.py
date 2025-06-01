@@ -2,6 +2,7 @@ import asyncio
 import importlib
 import logging
 import os
+import warnings
 
 from .client import AsyncClient, Client
 from .websocket import Websocket
@@ -58,12 +59,24 @@ class BaseDriver:
     """
 
     def __new__(cls, options=None, client_cls=Client, *args, **kwargs):
+        old_api = kwargs.get("old_api", False)
+        if old_api:
+            message = (
+                "The old dictionary based API interface is deprecated and will be removed in the future. "
+                "Please adapt your code to expand the arguments you would typically pass. "
+                "See https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html "
+                "for additional details."
+            )
+            warnings.warn(message, DeprecationWarning)
+            cls._endpoints_path = "endpoints_old"
+        else:
+            cls._endpoints_path = "endpoints"
         cls._initialize_endpoints(cls)
-        return super().__new__(cls, *args, **kwargs)
+        return super().__new__(cls)
 
     def _initialize_endpoints(cls):
         module_path = os.path.dirname(os.path.abspath(__file__))
-        endpoint_path = os.path.join((module_path), "endpoints")
+        endpoint_path = os.path.join((module_path), cls._endpoints_path)
 
         log.debug("Module path: %s - Endpoint path: %s", module_path, endpoint_path)
 
@@ -88,7 +101,7 @@ class BaseDriver:
             # the function won't act as a closure
             setattr(cls, end, property(lambda s, c=_class: c(s.client)))
 
-    def __init__(self, options=None, client_cls=Client):
+    def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         """
         :param options: A dict with the values from `default_options`
         :type options: dict
@@ -112,8 +125,8 @@ class BaseDriver:
 
 
 class Driver(BaseDriver):
-    def __init__(self, options=None, client_cls=Client):
-        super().__init__(options, client_cls)
+    def __init__(self, options=None, client_cls=Client, *args, **kwargs):
+        super().__init__(options, client_cls, *args, **kwargs)
 
     def __enter__(self):
         self.client.__enter__()
@@ -204,8 +217,8 @@ class Driver(BaseDriver):
 
 
 class AsyncDriver(BaseDriver):
-    def __init__(self, options=None, client_cls=AsyncClient):
-        super().__init__(options, client_cls)
+    def __init__(self, options=None, client_cls=AsyncClient, *args, **kwargs):
+        super().__init__(options, client_cls, *args, **kwargs)
 
     async def __aenter__(self):
         await self.client.__aenter__()

@@ -12,6 +12,7 @@ mattermostautodriver documentation
    :caption: Contents:
 
    endpoints
+   api_deprecation
    changelog
    contributing
 
