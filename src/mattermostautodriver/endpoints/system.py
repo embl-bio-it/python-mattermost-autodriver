@@ -1,5 +1,5 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class System(Base):
@@ -150,7 +150,7 @@ class System(Base):
         """
         return self.client.put("""/api/v4/config/patch""", options=options)
 
-    def upload_license_file(self, license: str):
+    def upload_license_file(self, license: BinaryIO):
         """Upload license file
 
         license: The license to be uploaded

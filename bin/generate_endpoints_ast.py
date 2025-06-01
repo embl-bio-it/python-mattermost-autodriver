@@ -59,7 +59,7 @@ Parameter = namedtuple(
 
 ast_template = """
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 """
 
 # Internal Variable Postfix - used to avoid name collisions with call params
@@ -276,7 +276,7 @@ def json_to_ast(api):
     return blocks
 
 
-def generate_type_annotation(schema, required):
+def generate_type_annotation(schema, required, binary):
     def get_annotation(schema):
         type_mapping = {
             "string": "str",
@@ -286,6 +286,9 @@ def generate_type_annotation(schema, required):
             "array": "list",
             "object": "dict",
         }
+        if binary:
+            return ast.Name(id="BinaryIO", ctx=ast.Load())
+
         schema_type = schema.get("type", None)
 
         if schema_type is None:
@@ -365,13 +368,13 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     e.g. def func(arg1, arg2=...):
     """
 
-    def add_param(name, schema, required, default, args, kwargs):
+    def add_param(name, schema, required, binary, default, args, kwargs):
         if iskeyword(name):
             name = name + "_"
         else:
             name = name
 
-        annotation = generate_type_annotation(schema, required)
+        annotation = generate_type_annotation(schema, required, binary)
         args.append(ast.arg(arg=name, annotation=annotation))
 
         if default is not None:
@@ -403,7 +406,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
 
     for param in url_params["parameters"]:
-        add_param(param.name, param.schema, param.required, param.default, args, kwargs)
+        add_param(param.name, param.schema, param.required, param.format == "binary", param.default, args, kwargs)
 
     return {"args": args, "defaults": kwargs}
 

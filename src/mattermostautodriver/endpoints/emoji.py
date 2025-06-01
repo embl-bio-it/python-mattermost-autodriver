@@ -1,10 +1,10 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class Emoji(Base):
 
-    def create_emoji(self, image: str, emoji: str):
+    def create_emoji(self, image: BinaryIO, emoji: str):
         """Create a custom emoji
 
         image: A file to be uploaded

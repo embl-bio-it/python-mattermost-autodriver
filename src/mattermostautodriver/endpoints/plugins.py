@@ -1,10 +1,10 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class Plugins(Base):
 
-    def upload_plugin(self, plugin: str, force: str | None = None):
+    def upload_plugin(self, plugin: BinaryIO, force: str | None = None):
         """Upload plugin
 
         plugin: The plugin image to be uploaded

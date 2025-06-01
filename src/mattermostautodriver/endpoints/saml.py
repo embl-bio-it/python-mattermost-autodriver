@@ -1,5 +1,5 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class SAML(Base):
@@ -35,7 +35,7 @@ class SAML(Base):
         options_71f8b7431cd64fcfa0dabd300d0636d2 = {"saml_metadata_url": saml_metadata_url}
         return self.client.post("""/api/v4/saml/metadatafromidp""", options=options_71f8b7431cd64fcfa0dabd300d0636d2)
 
-    def upload_saml_idp_certificate(self, certificate: str):
+    def upload_saml_idp_certificate(self, certificate: BinaryIO):
         """Upload IDP certificate
 
         certificate: The IDP certificate file
@@ -53,7 +53,7 @@ class SAML(Base):
         """
         return self.client.delete("""/api/v4/saml/certificate/idp""")
 
-    def upload_saml_public_certificate(self, certificate: str):
+    def upload_saml_public_certificate(self, certificate: BinaryIO):
         """Upload public certificate
 
         certificate: The public certificate file
@@ -71,7 +71,7 @@ class SAML(Base):
         """
         return self.client.delete("""/api/v4/saml/certificate/public""")
 
-    def upload_saml_private_certificate(self, certificate: str):
+    def upload_saml_private_certificate(self, certificate: BinaryIO):
         """Upload private key
 
         certificate: The private key file

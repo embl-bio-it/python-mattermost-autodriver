@@ -1,10 +1,10 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class AuditLogs(Base):
 
-    def add_audit_log_certificate(self, certificate: str):
+    def add_audit_log_certificate(self, certificate: BinaryIO):
         """Upload audit log certificate
 
         certificate: The certificate file

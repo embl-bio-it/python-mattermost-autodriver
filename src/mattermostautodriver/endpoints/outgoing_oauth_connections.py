@@ -1,5 +1,5 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class OutgoingOauthConnections(Base):

@@ -1,5 +1,5 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class Bots(Base):
@@ -129,7 +129,7 @@ class Bots(Base):
         """
         return self.client.get(f"/api/v4/bots/{bot_user_id}/icon")
 
-    def set_bot_icon_image(self, bot_user_id: str, image: str):
+    def set_bot_icon_image(self, bot_user_id: str, image: BinaryIO):
         """Set bot's LHS icon image
 
         bot_user_id: Bot user ID

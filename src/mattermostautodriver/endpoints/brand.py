@@ -1,5 +1,5 @@
 from .base import Base
-from typing import Any
+from typing import Any, BinaryIO
 
 
 class Brand(Base):
@@ -11,7 +11,7 @@ class Brand(Base):
         """
         return self.client.get("""/api/v4/brand/image""")
 
-    def upload_brand_image(self, image: str):
+    def upload_brand_image(self, image: BinaryIO):
         """Upload brand image
 
         image: The image to be uploaded
