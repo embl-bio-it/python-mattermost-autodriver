@@ -37,6 +37,7 @@ jobs:
           echo "Latest Mattermost Server tag: $LATEST_TAG"
 
           MM_VERSION="${LATEST_TAG#v}"
+
           OUR_TAG="$(git tag | sort -V | tail -n 1)"
           if [ -z "$OUR_TAG" ]; then
             echo "No tags found"
@@ -45,7 +46,7 @@ jobs:
 
           echo "Latest MattermostAutoDriver git tag: $OUR_TAG"
 
-          if [ "$OUR_TAG" = "$LATEST_TAG" ]; then
+          if [ "$OUR_TAG" = "$MM_VERSION" ]; then
             echo "MattermostAutoDriver and Mattermost Server versions match! We are up-to-date"
             exit 0
           fi
