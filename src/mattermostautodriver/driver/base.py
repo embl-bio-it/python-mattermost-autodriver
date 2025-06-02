@@ -1,6 +1,4 @@
-import importlib
 import logging
-import os
 import warnings
 
 from ..client import Client
@@ -69,35 +67,8 @@ class BaseDriver:
             cls._endpoints_path = "endpoints_old"
         else:
             cls._endpoints_path = "endpoints"
-        cls._initialize_endpoints(cls)
         return super().__new__(cls)
 
-    def _initialize_endpoints(cls):
-        module_path = os.path.dirname(os.path.abspath(__file__))
-        endpoint_path = os.path.join((module_path), cls._endpoints_path)
-
-        log.debug("Module path: %s - Endpoint path: %s", module_path, endpoint_path)
-
-        for endpoint in os.listdir(endpoint_path):
-            end = os.path.splitext(os.path.basename(endpoint))[0]
-
-            if end.startswith("_"):
-                # Skip _base endpoint and any other file starting with _ (e.g. __init__)
-                continue
-
-            # Load module and find the main module class
-            # e.g. mattermostautodriver.endpoints.users -> Users
-            module = importlib.import_module(f".{cls._endpoints_path}.{end}", __package__)
-            classnames = module.__all__
-
-            assert len(classnames) == 1, f"Unexpected endpoint configuration: {end}. Please report bug"
-
-            _class = getattr(module, classnames[0])
-
-            # Setting self.module = property(ModuleClass(self.client))
-            # Note: We need to bind the _class in the lambda scope or
-            # the function won't act as a closure
-            setattr(cls, end, property(lambda s, c=_class: c(s.client)))
 
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         """
