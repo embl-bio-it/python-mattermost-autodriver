@@ -69,7 +69,6 @@ class BaseDriver:
             cls._endpoints_path = "endpoints"
         return super().__new__(cls)
 
-
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         """
         :param options: A dict with the values from `default_options`
