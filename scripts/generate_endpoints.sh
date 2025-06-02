@@ -28,6 +28,9 @@ python bin/generate_endpoints_ast_deprecated.py
 color "Generating new API endpoints"
 python bin/generate_endpoints_ast.py
 
+color "Updating driver"
+python bin/generate_driver_ast.py
+
 color "Updating documentation for new endpoints"
 # Executing in a subshell so we don't have to worry about a failing chdir
 ( cd docs && python update_endpoints.py )
