@@ -56,12 +56,12 @@ jobs:
           fi
 
           if echo "$PYPI_VERSIONS" | jq -e --arg ver "$MM_VERSION" '.releases[$ver]' > /dev/null; then
-            echo "Version $VERSION already on PyPI - Unexpected! Not tagged but released?"
+            echo "Version $MM_VERSION already on PyPI - Unexpected! Not tagged but released?"
             exit 1
           fi
 
           echo "version=$LATEST_TAG" >> $GITHUB_OUTPUT
-          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$MM_VERSION" >> $GITHUB_OUTPUT
 
       - name: Set up additional dependencies for the entire check
         if: steps.version_check.outputs.version != ''
