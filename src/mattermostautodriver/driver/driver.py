@@ -1,12 +1,17 @@
 import asyncio
+import logging
 
 from ..client import AsyncClient, Client
 from ..websocket import Websocket
 
-from .base import BaseDriver
+from .endpoint_base import BaseDriverWithEndpoints
 
 
-class Driver(BaseDriver):
+log = logging.getLogger("mattermostautodriver.api")
+log.setLevel(logging.INFO)
+
+
+class Driver(BaseDriverWithEndpoints):
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
 
@@ -98,7 +103,7 @@ class Driver(BaseDriver):
         return result
 
 
-class AsyncDriver(BaseDriver):
+class AsyncDriver(BaseDriverWithEndpoints):
     def __init__(self, options=None, client_cls=AsyncClient, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
 
