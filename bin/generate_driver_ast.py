@@ -93,7 +93,7 @@ class ASTEndpointParser:
 
     def create_import_node(self, module_name: str, class_name: str) -> ast.ImportFrom:
         return ast.ImportFrom(
-            module=f"{self.endpoints_dir}.{module_name}",
+            module=f"..{self.endpoints_dir}.{module_name}",
             names=[
                 ast.alias(
                     name=class_name,
