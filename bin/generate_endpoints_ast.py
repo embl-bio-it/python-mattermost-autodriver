@@ -205,7 +205,7 @@ def get_payload_params_or_properties(data, request_type):
 def get_link_to_api_docs(tag, operation):
     return (
         f"\n        `Read in Mattermost API docs ({tag} - {operation}) "
-        f"<https://api.mattermost.com/#tag/{tag}/operation/{operation}>`_\n\n"
+        f"<https://developers.mattermost.com/api-documentation/#/operations/{operation}>`_\n\n"
     )
 
 
