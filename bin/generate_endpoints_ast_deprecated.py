@@ -250,6 +250,12 @@ def json_to_ast(api):
             call_kwargs = prepare_call_keywords(url_parameters, payload_params, operations[request_type], req_body_type)
 
             for loc in locations:
+                # NOTE tags in the original OpenAPI specification use a combination of
+                # CamelCase, "multi word" and under_score styles.
+                # To keep things consistent and avoid clashes, we force underscore style
+                # This also addesses issues when tags in the OpenAPI specification
+                # are inconsistently used in uppercase and lowercase (e.g. LDAP and ldap)
+                loc = underscore(loc)
                 if loc not in blocks:
                     blocks[loc] = []
 
@@ -413,11 +419,12 @@ def ast_function(method):
 
 
 def make_ast(methods, module):
-    base = ast.parse(ast_template.format(classname=camelize(module)))
+    classname = camelize(module)
+    base = ast.parse(ast_template.format(classname=classname))
     funcs = [ast_function(method) for method in methods[module]]
     base.body.append(
         ast.ClassDef(
-            camelize(module),
+            classname,
             bases=[ast.Name("Base")],
             body=funcs,
             decorator_list=[],
@@ -436,7 +443,7 @@ def main():
 
     for module in methods:
         code = make_ast(methods, module)
-        filename = f"src/mattermostautodriver/endpoints_old/{module.lower()}.py"
+        filename = f"src/mattermostautodriver/endpoints_old/{module}.py"
 
         with open(filename, "w") as fh:
             fh.write(ast.unparse(code))
