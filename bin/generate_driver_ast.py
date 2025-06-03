@@ -64,25 +64,25 @@ class ASTEndpointParser:
 
         return sorted(endpoints)  # Sort for consistent ordering
 
-    def get_existing_endpoint_imports(self, tree: ast.Module) -> set[tuple[str, str]]:
+    def remove_existing_endpoint_imports(self, tree: ast.Module) -> ast.Module:
         """
-        Find existing endpoint imports in the AST.
+        Remove all existing endpoint imports from the AST.
 
         Returns:
-            set of tuples (module_name, class_name)
+            Modified AST with endpoint imports removed
         """
-        existing_imports = set()
-
-        for node in tree.body:
-            if isinstance(node, ast.ImportFrom):
-                if node.module and node.module.startswith(f"{self.endpoints_dir}.") and node.names:
-
-                    module_name = node.module.split(".")[-1]
-                    for alias in node.names:
-                        class_name = alias.name
-                        existing_imports.add((module_name, class_name))
-
-        return existing_imports
+        # Filter out endpoint imports
+        tree.body = [
+            node
+            for node in tree.body
+            if not (
+                isinstance(node, ast.ImportFrom)
+                and node.module
+                and node.module.startswith(f"{self.endpoints_dir}.")
+                and node.names
+            )
+        ]
+        return tree
 
     def create_import_node(self, module_name: str, class_name: str) -> ast.ImportFrom:
         return ast.ImportFrom(
@@ -115,28 +115,27 @@ class ASTEndpointParser:
                 return node
         raise ValueError("__init__ method not found in BaseDriverWithEndpoints class")
 
-    def get_existing_endpoint_assignments(self, init_method: ast.FunctionDef) -> set[str]:
-        """Get existing endpoint assignments from the __init__ method."""
-        existing_assignments = set()
-
-        for node in init_method.body:
-            if isinstance(node, ast.Assign):
-                for target in node.targets:
-                    if (
-                        isinstance(target, ast.Attribute)
-                        and isinstance(target.value, ast.Name)
-                        and target.value.id == "self"
-                    ):
-                        # Check if this looks like an endpoint assignment
-                        if (
-                            isinstance(node.value, ast.Call)
-                            and isinstance(node.value.func, ast.Name)
-                            and len(node.value.args) == 1
-                            and isinstance(node.value.args[0], ast.Attribute)
-                        ):
-                            existing_assignments.add(target.attr)
-
-        return existing_assignments
+    def remove_existing_endpoint_assignments(self, init_method: ast.FunctionDef) -> ast.FunctionDef:
+        """Remove existing endpoint assignments from the __init__ method."""
+        # Filter out endpoint assignments
+        init_method.body = [
+            node
+            for node in init_method.body
+            if not (
+                isinstance(node, ast.Assign)
+                and any(
+                    isinstance(target, ast.Attribute)
+                    and isinstance(target.value, ast.Name)
+                    and target.value.id == "self"
+                    and isinstance(node.value, ast.Call)
+                    and isinstance(node.value.func, ast.Name)
+                    and len(node.value.args) == 1
+                    and isinstance(node.value.args[0], ast.Attribute)
+                    for target in node.targets
+                )
+            )
+        ]
+        return init_method
 
     def find_super_call_index(self, init_method: ast.FunctionDef) -> int:
         """Find the index where super().__init__() is called."""
@@ -154,7 +153,7 @@ class ASTEndpointParser:
 
     def update_ast(self, tree: ast.Module, discovered_endpoints: list[tuple[str, str]]) -> ast.Module:
         """
-        Update the AST with new endpoint imports and assignments.
+        Update the AST by removing all existing endpoint imports/assignments and adding new ones.
 
         Args:
             tree: The original AST
@@ -163,16 +162,15 @@ class ASTEndpointParser:
         Returns:
             Updated AST
         """
-        # Get existing imports
-        existing_imports = self.get_existing_endpoint_imports(tree)
+        # Remove all existing endpoint imports
+        tree = self.remove_existing_endpoint_imports(tree)
 
-        # Find imports to add
-        new_imports = []
-        for module_name, class_name in discovered_endpoints:
-            if (module_name, class_name) not in existing_imports:
-                new_imports.append(self.create_import_node(module_name, class_name))
+        # Create all new imports
+        new_imports = [
+            self.create_import_node(module_name, class_name) for module_name, class_name in discovered_endpoints
+        ]
 
-        # Add new imports after existing imports but before class definitions
+        # Find where to insert imports (after existing imports but before class definitions)
         insert_index = 0
         for i, node in enumerate(tree.body):
             if isinstance(node, (ast.Import, ast.ImportFrom)):
@@ -180,7 +178,7 @@ class ASTEndpointParser:
             elif isinstance(node, ast.ClassDef):
                 break
 
-        # Insert new imports
+        # Insert all new imports
         for import_node in reversed(new_imports):  # Reverse to maintain order
             tree.body.insert(insert_index, import_node)
 
@@ -188,20 +186,18 @@ class ASTEndpointParser:
         class_node = self.find_base_driver_with_endpoints_class(tree)
         init_method = self.find_init_method(class_node)
 
-        # Get existing endpoint assignments
-        existing_assignments = self.get_existing_endpoint_assignments(init_method)
+        # Remove all existing endpoint assignments
+        init_method = self.remove_existing_endpoint_assignments(init_method)
 
         # Find where to insert new assignments (after super().__init__ call)
         insert_index = self.find_super_call_index(init_method)
 
-        # Create new assignment nodes
-        new_assignments = []
-        for module_name, class_name in discovered_endpoints:
-            attr_name = module_name.lower()
-            if attr_name not in existing_assignments:
-                new_assignments.append(self.create_assignment_node(module_name, class_name))
+        # Create all new assignment nodes
+        new_assignments = [
+            self.create_assignment_node(module_name, class_name) for module_name, class_name in discovered_endpoints
+        ]
 
-        # Insert new assignments
+        # Insert all new assignments
         for assignment in reversed(new_assignments):  # Reverse to maintain order
             init_method.body.insert(insert_index, assignment)
 
