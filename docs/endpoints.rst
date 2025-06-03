@@ -217,6 +217,14 @@ Migrate
     :undoc-members:
     :show-inheritance:
 
+O Auth
+------
+
+.. automodule:: mattermostautodriver.endpoints.o_auth
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Oauth
 -----
 
@@ -249,18 +257,18 @@ Permissions
     :undoc-members:
     :show-inheritance:
 
-Playbookautofollows
--------------------
+Playbook Autofollows
+--------------------
 
-.. automodule:: mattermostautodriver.endpoints.playbookautofollows
+.. automodule:: mattermostautodriver.endpoints.playbook_autofollows
     :members:
     :undoc-members:
     :show-inheritance:
 
-Playbookruns
-------------
+Playbook Runs
+-------------
 
-.. automodule:: mattermostautodriver.endpoints.playbookruns
+.. automodule:: mattermostautodriver.endpoints.playbook_runs
     :members:
     :undoc-members:
     :show-inheritance:
