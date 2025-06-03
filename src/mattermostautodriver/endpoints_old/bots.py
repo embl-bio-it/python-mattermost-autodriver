@@ -10,7 +10,7 @@ class Bots(Base):
 
         user_id: User GUID
 
-        `Read in Mattermost API docs (bots - ConvertUserToBot) <https://api.mattermost.com/#tag/bots/operation/ConvertUserToBot>`_
+        `Read in Mattermost API docs (bots - ConvertUserToBot) <https://developers.mattermost.com/api-documentation/#/operations/ConvertUserToBot>`_
 
         """
         return self.client.post(f"/api/v4/users/{user_id}/convert_to_bot")
@@ -22,7 +22,7 @@ class Bots(Base):
         display_name:
         description:
 
-        `Read in Mattermost API docs (bots - CreateBot) <https://api.mattermost.com/#tag/bots/operation/CreateBot>`_
+        `Read in Mattermost API docs (bots - CreateBot) <https://developers.mattermost.com/api-documentation/#/operations/CreateBot>`_
 
         """
         return self.client.post("""/api/v4/bots""", options=options)
@@ -35,7 +35,7 @@ class Bots(Base):
         include_deleted: If deleted bots should be returned.
         only_orphaned: When true, only orphaned bots will be returned. A bot is considered orphaned if its owner has been deactivated.
 
-        `Read in Mattermost API docs (bots - GetBots) <https://api.mattermost.com/#tag/bots/operation/GetBots>`_
+        `Read in Mattermost API docs (bots - GetBots) <https://developers.mattermost.com/api-documentation/#/operations/GetBots>`_
 
         """
         return self.client.get("""/api/v4/bots""", params=params)
@@ -48,7 +48,7 @@ class Bots(Base):
         display_name:
         description:
 
-        `Read in Mattermost API docs (bots - PatchBot) <https://api.mattermost.com/#tag/bots/operation/PatchBot>`_
+        `Read in Mattermost API docs (bots - PatchBot) <https://developers.mattermost.com/api-documentation/#/operations/PatchBot>`_
 
         """
         return self.client.put(f"/api/v4/bots/{bot_user_id}", options=options)
@@ -59,7 +59,7 @@ class Bots(Base):
         bot_user_id: Bot user ID
         include_deleted: If deleted bots should be returned.
 
-        `Read in Mattermost API docs (bots - GetBot) <https://api.mattermost.com/#tag/bots/operation/GetBot>`_
+        `Read in Mattermost API docs (bots - GetBot) <https://developers.mattermost.com/api-documentation/#/operations/GetBot>`_
 
         """
         return self.client.get(f"/api/v4/bots/{bot_user_id}", params=params)
@@ -69,7 +69,7 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
 
-        `Read in Mattermost API docs (bots - DisableBot) <https://api.mattermost.com/#tag/bots/operation/DisableBot>`_
+        `Read in Mattermost API docs (bots - DisableBot) <https://developers.mattermost.com/api-documentation/#/operations/DisableBot>`_
 
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/disable")
@@ -79,7 +79,7 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
 
-        `Read in Mattermost API docs (bots - EnableBot) <https://api.mattermost.com/#tag/bots/operation/EnableBot>`_
+        `Read in Mattermost API docs (bots - EnableBot) <https://developers.mattermost.com/api-documentation/#/operations/EnableBot>`_
 
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/enable")
@@ -90,7 +90,7 @@ class Bots(Base):
         bot_user_id: Bot user ID
         user_id: The user ID to assign the bot to.
 
-        `Read in Mattermost API docs (bots - AssignBot) <https://api.mattermost.com/#tag/bots/operation/AssignBot>`_
+        `Read in Mattermost API docs (bots - AssignBot) <https://developers.mattermost.com/api-documentation/#/operations/AssignBot>`_
 
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/assign/{user_id}")
@@ -100,7 +100,7 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
 
-        `Read in Mattermost API docs (bots - GetBotIconImage) <https://api.mattermost.com/#tag/bots/operation/GetBotIconImage>`_
+        `Read in Mattermost API docs (bots - GetBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/GetBotIconImage>`_
 
         """
         return self.client.get(f"/api/v4/bots/{bot_user_id}/icon")
@@ -111,7 +111,7 @@ class Bots(Base):
         bot_user_id: Bot user ID
         image: SVG icon image to be uploaded
 
-        `Read in Mattermost API docs (bots - SetBotIconImage) <https://api.mattermost.com/#tag/bots/operation/SetBotIconImage>`_
+        `Read in Mattermost API docs (bots - SetBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/SetBotIconImage>`_
 
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/icon", files=files, data=data)
@@ -121,7 +121,7 @@ class Bots(Base):
 
         bot_user_id: Bot user ID
 
-        `Read in Mattermost API docs (bots - DeleteBotIconImage) <https://api.mattermost.com/#tag/bots/operation/DeleteBotIconImage>`_
+        `Read in Mattermost API docs (bots - DeleteBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/DeleteBotIconImage>`_
 
         """
         return self.client.delete(f"/api/v4/bots/{bot_user_id}/icon")
@@ -141,7 +141,7 @@ class Bots(Base):
         props:
         notify_props:
 
-        `Read in Mattermost API docs (bots - ConvertBotToUser) <https://api.mattermost.com/#tag/bots/operation/ConvertBotToUser>`_
+        `Read in Mattermost API docs (bots - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", options=options)

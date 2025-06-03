@@ -13,7 +13,7 @@ class DataRetention(Base):
         page: The page to select.
         per_page: The number of policies per page.
 
-        `Read in Mattermost API docs (data_retention - GetTeamPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamPoliciesForUser>`_
+        `Read in Mattermost API docs (data_retention - GetTeamPoliciesForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamPoliciesForUser>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -26,7 +26,7 @@ class DataRetention(Base):
         page: The page to select.
         per_page: The number of policies per page.
 
-        `Read in Mattermost API docs (data_retention - GetChannelPoliciesForUser) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelPoliciesForUser>`_
+        `Read in Mattermost API docs (data_retention - GetChannelPoliciesForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelPoliciesForUser>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -34,14 +34,14 @@ class DataRetention(Base):
 
     def get_data_retention_policy(self):
         """Get the global data retention policy
-        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/GetDataRetentionPolicy>`_
 
         """
         return self.client.get("""/api/v4/data_retention/policy""")
 
     def get_data_retention_policies_count(self):
         """Get the number of granular data retention policies
-        `Read in Mattermost API docs (data_retention - GetDataRetentionPoliciesCount) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPoliciesCount>`_
+        `Read in Mattermost API docs (data_retention - GetDataRetentionPoliciesCount) <https://developers.mattermost.com/api-documentation/#/operations/GetDataRetentionPoliciesCount>`_
 
         """
         return self.client.get("""/api/v4/data_retention/policies_count""")
@@ -52,7 +52,7 @@ class DataRetention(Base):
         page: The page to select.
         per_page: The number of policies per page.
 
-        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicies) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPolicies>`_
+        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicies) <https://developers.mattermost.com/api-documentation/#/operations/GetDataRetentionPolicies>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -60,7 +60,7 @@ class DataRetention(Base):
 
     def create_data_retention_policy(self, options: Any):
         """Create a new granular data retention policy
-        `Read in Mattermost API docs (data_retention - CreateDataRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/CreateDataRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - CreateDataRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/CreateDataRetentionPolicy>`_
 
         """
         return self.client.post("""/api/v4/data_retention/policies""", options=options)
@@ -70,7 +70,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicyByID) <https://api.mattermost.com/#tag/data_retention/operation/GetDataRetentionPolicyByID>`_
+        `Read in Mattermost API docs (data_retention - GetDataRetentionPolicyByID) <https://developers.mattermost.com/api-documentation/#/operations/GetDataRetentionPolicyByID>`_
 
         """
         return self.client.get(f"/api/v4/data_retention/policies/{policy_id}")
@@ -80,7 +80,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - PatchDataRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/PatchDataRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - PatchDataRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/PatchDataRetentionPolicy>`_
 
         """
         return self.client.patch(f"/api/v4/data_retention/policies/{policy_id}", options=options)
@@ -90,7 +90,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - DeleteDataRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/DeleteDataRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - DeleteDataRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/DeleteDataRetentionPolicy>`_
 
         """
         return self.client.delete(f"/api/v4/data_retention/policies/{policy_id}")
@@ -102,7 +102,7 @@ class DataRetention(Base):
         page: The page to select.
         per_page: The number of teams per page.
 
-        `Read in Mattermost API docs (data_retention - GetTeamsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetTeamsForRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - GetTeamsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsForRetentionPolicy>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -113,7 +113,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - AddTeamsToRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/AddTeamsToRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - AddTeamsToRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamsToRetentionPolicy>`_
 
         """
         return self.client.post(f"/api/v4/data_retention/policies/{policy_id}/teams", options=options)
@@ -123,7 +123,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - RemoveTeamsFromRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/RemoveTeamsFromRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - RemoveTeamsFromRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/RemoveTeamsFromRetentionPolicy>`_
 
         """
         return self.client.delete(f"/api/v4/data_retention/policies/{policy_id}/teams", params=params)
@@ -134,7 +134,7 @@ class DataRetention(Base):
         policy_id: The ID of the granular retention policy.
         term: The search term to match against the name or display name of teams
 
-        `Read in Mattermost API docs (data_retention - SearchTeamsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/SearchTeamsForRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - SearchTeamsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/SearchTeamsForRetentionPolicy>`_
 
         """
         __options = {"term": term}
@@ -147,7 +147,7 @@ class DataRetention(Base):
         page: The page to select.
         per_page: The number of channels per page.
 
-        `Read in Mattermost API docs (data_retention - GetChannelsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/GetChannelsForRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - GetChannelsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForRetentionPolicy>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -158,7 +158,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - AddChannelsToRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/AddChannelsToRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - AddChannelsToRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/AddChannelsToRetentionPolicy>`_
 
         """
         return self.client.post(f"/api/v4/data_retention/policies/{policy_id}/channels", options=options)
@@ -168,7 +168,7 @@ class DataRetention(Base):
 
         policy_id: The ID of the granular retention policy.
 
-        `Read in Mattermost API docs (data_retention - RemoveChannelsFromRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/RemoveChannelsFromRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - RemoveChannelsFromRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/RemoveChannelsFromRetentionPolicy>`_
 
         """
         return self.client.delete(f"/api/v4/data_retention/policies/{policy_id}/channels", params=params)
@@ -195,7 +195,7 @@ class DataRetention(Base):
         deleted: Filters results to only return deleted / archived channels
 
 
-        `Read in Mattermost API docs (data_retention - SearchChannelsForRetentionPolicy) <https://api.mattermost.com/#tag/data_retention/operation/SearchChannelsForRetentionPolicy>`_
+        `Read in Mattermost API docs (data_retention - SearchChannelsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/SearchChannelsForRetentionPolicy>`_
 
         """
         __options = {"term": term, "team_ids": team_ids, "public": public, "private": private, "deleted": deleted}

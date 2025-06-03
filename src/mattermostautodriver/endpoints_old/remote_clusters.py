@@ -18,7 +18,7 @@ class RemoteClusters(Base):
         exclude_plugins: Select only remote clusters that don't belong to a plugin
         include_deleted: Include those remote clusters that have been deleted
 
-        `Read in Mattermost API docs (remote_clusters - GetRemoteClusters) <https://api.mattermost.com/#tag/remote_clusters/operation/GetRemoteClusters>`_
+        `Read in Mattermost API docs (remote_clusters - GetRemoteClusters) <https://developers.mattermost.com/api-documentation/#/operations/GetRemoteClusters>`_
 
         """
         return self.client.get("""/api/v4/remotecluster""", params=params)
@@ -34,7 +34,7 @@ class RemoteClusters(Base):
         of the response
 
 
-        `Read in Mattermost API docs (remote_clusters - CreateRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/CreateRemoteCluster>`_
+        `Read in Mattermost API docs (remote_clusters - CreateRemoteCluster) <https://developers.mattermost.com/api-documentation/#/operations/CreateRemoteCluster>`_
 
         """
         return self.client.post("""/api/v4/remotecluster""", options=options)
@@ -44,7 +44,7 @@ class RemoteClusters(Base):
 
         remote_id: Remote Cluster GUID
 
-        `Read in Mattermost API docs (remote_clusters - GetRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/GetRemoteCluster>`_
+        `Read in Mattermost API docs (remote_clusters - GetRemoteCluster) <https://developers.mattermost.com/api-documentation/#/operations/GetRemoteCluster>`_
 
         """
         return self.client.get(f"/api/v4/remotecluster/{remote_id}")
@@ -56,7 +56,7 @@ class RemoteClusters(Base):
         display_name:
         default_team_id: The team where channels from invites are created
 
-        `Read in Mattermost API docs (remote_clusters - PatchRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/PatchRemoteCluster>`_
+        `Read in Mattermost API docs (remote_clusters - PatchRemoteCluster) <https://developers.mattermost.com/api-documentation/#/operations/PatchRemoteCluster>`_
 
         """
         return self.client.patch(f"/api/v4/remotecluster/{remote_id}", options=options)
@@ -66,7 +66,7 @@ class RemoteClusters(Base):
 
         remote_id: Remote Cluster GUID
 
-        `Read in Mattermost API docs (remote_clusters - DeleteRemoteCluster) <https://api.mattermost.com/#tag/remote_clusters/operation/DeleteRemoteCluster>`_
+        `Read in Mattermost API docs (remote_clusters - DeleteRemoteCluster) <https://developers.mattermost.com/api-documentation/#/operations/DeleteRemoteCluster>`_
 
         """
         return self.client.delete(f"/api/v4/remotecluster/{remote_id}")
@@ -76,7 +76,7 @@ class RemoteClusters(Base):
 
         password: The password to encrypt the invite code with.
 
-        `Read in Mattermost API docs (remote_clusters - GenerateRemoteClusterInvite) <https://api.mattermost.com/#tag/remote_clusters/operation/GenerateRemoteClusterInvite>`_
+        `Read in Mattermost API docs (remote_clusters - GenerateRemoteClusterInvite) <https://developers.mattermost.com/api-documentation/#/operations/GenerateRemoteClusterInvite>`_
 
         """
         return self.client.post(f"/api/v4/remotecluster/{remote_id}/generate_invite", options=options)
@@ -90,7 +90,7 @@ class RemoteClusters(Base):
         default_team_id:
         password: The password to decrypt the invite code.
 
-        `Read in Mattermost API docs (remote_clusters - AcceptRemoteClusterInvite) <https://api.mattermost.com/#tag/remote_clusters/operation/AcceptRemoteClusterInvite>`_
+        `Read in Mattermost API docs (remote_clusters - AcceptRemoteClusterInvite) <https://developers.mattermost.com/api-documentation/#/operations/AcceptRemoteClusterInvite>`_
 
         """
         return self.client.post("""/api/v4/remotecluster/accept_invite""", options=options)

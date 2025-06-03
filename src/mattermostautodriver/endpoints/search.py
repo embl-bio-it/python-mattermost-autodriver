@@ -26,7 +26,7 @@ class Search(Base):
         page: The page to select. (Only works with Elasticsearch)
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
-        `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
+        `Read in Mattermost API docs (search - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 
         """
         __data = {
@@ -57,7 +57,7 @@ class Search(Base):
         page: The page to select. (Only works with Elasticsearch)
         per_page: The number of posts per page. (Only works with Elasticsearch)
 
-        `Read in Mattermost API docs (search - SearchFiles) <https://api.mattermost.com/#tag/search/operation/SearchFiles>`_
+        `Read in Mattermost API docs (search - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 
         """
         __data = {

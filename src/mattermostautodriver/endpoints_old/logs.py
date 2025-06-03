@@ -7,7 +7,7 @@ class Logs(Base):
 
     def download_system_logs(self):
         """Download system logs
-        `Read in Mattermost API docs (logs - DownloadSystemLogs) <https://api.mattermost.com/#tag/logs/operation/DownloadSystemLogs>`_
+        `Read in Mattermost API docs (logs - DownloadSystemLogs) <https://developers.mattermost.com/api-documentation/#/operations/DownloadSystemLogs>`_
 
         """
         return self.client.get("""/api/v4/logs/download""")

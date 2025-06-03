@@ -24,7 +24,7 @@ class ScheduledPost(Base):
         file_ids: A list of file IDs to associate with the post. Note that posts are limited to 5 files maximum. Please use additional posts for more files.
         props: A general JSON property bag to attach to the post
 
-        `Read in Mattermost API docs (scheduled_post - CreateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/CreateScheduledPost>`_
+        `Read in Mattermost API docs (scheduled_post - CreateScheduledPost) <https://developers.mattermost.com/api-documentation/#/operations/CreateScheduledPost>`_
 
         """
         __options = {
@@ -42,7 +42,7 @@ class ScheduledPost(Base):
 
         includeDirectChannels: Whether to include scheduled posts from DMs an GMs or not. Default is false
 
-        `Read in Mattermost API docs (scheduled_post - GetUserScheduledPosts) <https://api.mattermost.com/#tag/scheduled_post/operation/GetUserScheduledPosts>`_
+        `Read in Mattermost API docs (scheduled_post - GetUserScheduledPosts) <https://developers.mattermost.com/api-documentation/#/operations/GetUserScheduledPosts>`_
 
         """
         __params = {"includeDirectChannels": includeDirectChannels}
@@ -60,7 +60,7 @@ class ScheduledPost(Base):
         scheduled_at: UNIX timestamp in milliseconds of the time when the scheduled post should be sent
         message: The message contents, can be formatted with Markdown
 
-        `Read in Mattermost API docs (scheduled_post - UpdateScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/UpdateScheduledPost>`_
+        `Read in Mattermost API docs (scheduled_post - UpdateScheduledPost) <https://developers.mattermost.com/api-documentation/#/operations/UpdateScheduledPost>`_
 
         """
         __options = {
@@ -77,7 +77,7 @@ class ScheduledPost(Base):
 
         scheduled_post_id: ID of the scheduled post to delete
 
-        `Read in Mattermost API docs (scheduled_post - DeleteScheduledPost) <https://api.mattermost.com/#tag/scheduled_post/operation/DeleteScheduledPost>`_
+        `Read in Mattermost API docs (scheduled_post - DeleteScheduledPost) <https://developers.mattermost.com/api-documentation/#/operations/DeleteScheduledPost>`_
 
         """
         return self.client.delete(f"/api/v4/posts/schedule/{scheduled_post_id}")

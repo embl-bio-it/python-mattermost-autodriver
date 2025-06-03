@@ -26,7 +26,7 @@ class Metrics(Base):
         counters: An array of counter metrics to be reported
         histograms: An array of histogram measurements to be reported
 
-        `Read in Mattermost API docs (metrics - SubmitPerformanceReport) <https://api.mattermost.com/#tag/metrics/operation/SubmitPerformanceReport>`_
+        `Read in Mattermost API docs (metrics - SubmitPerformanceReport) <https://developers.mattermost.com/api-documentation/#/operations/SubmitPerformanceReport>`_
 
         """
         __options = {

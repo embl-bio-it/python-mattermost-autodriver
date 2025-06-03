@@ -11,7 +11,7 @@ class Timeline(Base):
         id: ID of the playbook run whose timeline event will be modified.
         event_id: ID of the timeline event to be deleted
 
-        `Read in Mattermost API docs (Timeline - removeTimelineEvent) <https://api.mattermost.com/#tag/Timeline/operation/removeTimelineEvent>`_
+        `Read in Mattermost API docs (timeline - removeTimelineEvent) <https://developers.mattermost.com/api-documentation/#/operations/removeTimelineEvent>`_
 
         """
         return self.client.delete(f"/plugins/playbooks/api/v0/runs/{id}/timeline/{event_id}")

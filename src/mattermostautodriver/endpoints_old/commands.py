@@ -13,7 +13,7 @@ class Commands(Base):
         trigger: Activation word to trigger the command
         url: The URL that the command will make the request
 
-        `Read in Mattermost API docs (commands - CreateCommand) <https://api.mattermost.com/#tag/commands/operation/CreateCommand>`_
+        `Read in Mattermost API docs (commands - CreateCommand) <https://developers.mattermost.com/api-documentation/#/operations/CreateCommand>`_
 
         """
         return self.client.post("""/api/v4/commands""", options=options)
@@ -26,7 +26,7 @@ class Commands(Base):
         if the user have access plus the system commands, otherwise just the system commands.
 
 
-        `Read in Mattermost API docs (commands - ListCommands) <https://api.mattermost.com/#tag/commands/operation/ListCommands>`_
+        `Read in Mattermost API docs (commands - ListCommands) <https://developers.mattermost.com/api-documentation/#/operations/ListCommands>`_
 
         """
         return self.client.get("""/api/v4/commands""", params=params)
@@ -36,7 +36,7 @@ class Commands(Base):
 
         team_id: Team GUID
 
-        `Read in Mattermost API docs (commands - ListAutocompleteCommands) <https://api.mattermost.com/#tag/commands/operation/ListAutocompleteCommands>`_
+        `Read in Mattermost API docs (commands - ListAutocompleteCommands) <https://developers.mattermost.com/api-documentation/#/operations/ListAutocompleteCommands>`_
 
         """
         return self.client.get(f"/api/v4/teams/{team_id}/commands/autocomplete")
@@ -47,7 +47,7 @@ class Commands(Base):
         team_id: Team GUID
         user_input: String inputted by the user.
 
-        `Read in Mattermost API docs (commands - ListCommandAutocompleteSuggestions) <https://api.mattermost.com/#tag/commands/operation/ListCommandAutocompleteSuggestions>`_
+        `Read in Mattermost API docs (commands - ListCommandAutocompleteSuggestions) <https://developers.mattermost.com/api-documentation/#/operations/ListCommandAutocompleteSuggestions>`_
 
         """
         return self.client.get(f"/api/v4/teams/{team_id}/commands/autocomplete_suggestions", params=params)
@@ -57,7 +57,7 @@ class Commands(Base):
 
         command_id: ID of the command to get
 
-        `Read in Mattermost API docs (commands - GetCommandById) <https://api.mattermost.com/#tag/commands/operation/GetCommandById>`_
+        `Read in Mattermost API docs (commands - GetCommandById) <https://developers.mattermost.com/api-documentation/#/operations/GetCommandById>`_
 
         """
         return self.client.get(f"/api/v4/commands/{command_id}")
@@ -67,7 +67,7 @@ class Commands(Base):
 
         command_id: ID of the command to update
 
-        `Read in Mattermost API docs (commands - UpdateCommand) <https://api.mattermost.com/#tag/commands/operation/UpdateCommand>`_
+        `Read in Mattermost API docs (commands - UpdateCommand) <https://developers.mattermost.com/api-documentation/#/operations/UpdateCommand>`_
 
         """
         return self.client.put(f"/api/v4/commands/{command_id}", options=options)
@@ -77,7 +77,7 @@ class Commands(Base):
 
         command_id: ID of the command to delete
 
-        `Read in Mattermost API docs (commands - DeleteCommand) <https://api.mattermost.com/#tag/commands/operation/DeleteCommand>`_
+        `Read in Mattermost API docs (commands - DeleteCommand) <https://developers.mattermost.com/api-documentation/#/operations/DeleteCommand>`_
 
         """
         return self.client.delete(f"/api/v4/commands/{command_id}")
@@ -88,7 +88,7 @@ class Commands(Base):
         command_id: ID of the command to move
         team_id: Destination teamId
 
-        `Read in Mattermost API docs (commands - MoveCommand) <https://api.mattermost.com/#tag/commands/operation/MoveCommand>`_
+        `Read in Mattermost API docs (commands - MoveCommand) <https://developers.mattermost.com/api-documentation/#/operations/MoveCommand>`_
 
         """
         return self.client.put(f"/api/v4/commands/{command_id}/move", options=options)
@@ -98,7 +98,7 @@ class Commands(Base):
 
         command_id: ID of the command to generate the new token
 
-        `Read in Mattermost API docs (commands - RegenCommandToken) <https://api.mattermost.com/#tag/commands/operation/RegenCommandToken>`_
+        `Read in Mattermost API docs (commands - RegenCommandToken) <https://developers.mattermost.com/api-documentation/#/operations/RegenCommandToken>`_
 
         """
         return self.client.put(f"/api/v4/commands/{command_id}/regen_token")
@@ -109,7 +109,7 @@ class Commands(Base):
         channel_id: Channel Id where the command will execute
         command: The slash command to execute, including parameters. Eg, ``'/echo bounces around the room'``
 
-        `Read in Mattermost API docs (commands - ExecuteCommand) <https://api.mattermost.com/#tag/commands/operation/ExecuteCommand>`_
+        `Read in Mattermost API docs (commands - ExecuteCommand) <https://developers.mattermost.com/api-documentation/#/operations/ExecuteCommand>`_
 
         """
         return self.client.post("""/api/v4/commands/execute""", options=options)

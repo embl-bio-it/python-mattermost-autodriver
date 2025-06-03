@@ -15,7 +15,7 @@ class Playbooks(Base):
         direction: Direction (ascending or descending) followed by the sorting of the playbooks.
         with_archived: Includes archived playbooks in the result.
 
-        `Read in Mattermost API docs (Playbooks - getPlaybooks) <https://api.mattermost.com/#tag/Playbooks/operation/getPlaybooks>`_
+        `Read in Mattermost API docs (playbooks - getPlaybooks) <https://developers.mattermost.com/api-documentation/#/operations/getPlaybooks>`_
 
         """
         return self.client.get("""/plugins/playbooks/api/v0/playbooks""", params=params)
@@ -42,7 +42,7 @@ class Playbooks(Base):
         webhook_on_status_update_url: An absolute URL where a POST request will be sent as soon as the playbook run's status is updated. The allowed protocols are HTTP and HTTPS.
         webhook_on_status_update_enabled: Boolean that indicates whether the webhook declared in webhook_on_status_update_url will be automatically sent.
 
-        `Read in Mattermost API docs (Playbooks - createPlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/createPlaybook>`_
+        `Read in Mattermost API docs (playbooks - createPlaybook) <https://developers.mattermost.com/api-documentation/#/operations/createPlaybook>`_
 
         """
         return self.client.post("""/plugins/playbooks/api/v0/playbooks""", options=options)
@@ -52,7 +52,7 @@ class Playbooks(Base):
 
         id: ID of the playbook to retrieve.
 
-        `Read in Mattermost API docs (Playbooks - getPlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/getPlaybook>`_
+        `Read in Mattermost API docs (playbooks - getPlaybook) <https://developers.mattermost.com/api-documentation/#/operations/getPlaybook>`_
 
         """
         return self.client.get(f"/plugins/playbooks/api/v0/playbooks/{id}")
@@ -62,7 +62,7 @@ class Playbooks(Base):
 
         id: ID of the playbook to update.
 
-        `Read in Mattermost API docs (Playbooks - updatePlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/updatePlaybook>`_
+        `Read in Mattermost API docs (playbooks - updatePlaybook) <https://developers.mattermost.com/api-documentation/#/operations/updatePlaybook>`_
 
         """
         return self.client.put(f"/plugins/playbooks/api/v0/playbooks/{id}", options=options)
@@ -72,7 +72,7 @@ class Playbooks(Base):
 
         id: ID of the playbook to delete.
 
-        `Read in Mattermost API docs (Playbooks - deletePlaybook) <https://api.mattermost.com/#tag/Playbooks/operation/deletePlaybook>`_
+        `Read in Mattermost API docs (playbooks - deletePlaybook) <https://developers.mattermost.com/api-documentation/#/operations/deletePlaybook>`_
 
         """
         return self.client.delete(f"/plugins/playbooks/api/v0/playbooks/{id}")

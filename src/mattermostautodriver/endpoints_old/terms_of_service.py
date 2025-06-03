@@ -12,7 +12,7 @@ class TermsOfService(Base):
         serviceTermsId: terms of service ID on which the user is acting on
         accepted: true or false, indicates whether the user accepted or rejected the terms of service.
 
-        `Read in Mattermost API docs (terms_of_service - RegisterTermsOfServiceAction) <https://api.mattermost.com/#tag/terms_of_service/operation/RegisterTermsOfServiceAction>`_
+        `Read in Mattermost API docs (terms_of_service - RegisterTermsOfServiceAction) <https://developers.mattermost.com/api-documentation/#/operations/RegisterTermsOfServiceAction>`_
 
         """
         return self.client.post(f"/api/v4/users/{user_id}/terms_of_service", options=options)
@@ -22,21 +22,21 @@ class TermsOfService(Base):
 
         user_id: User GUID
 
-        `Read in Mattermost API docs (terms_of_service - GetUserTermsOfService) <https://api.mattermost.com/#tag/terms_of_service/operation/GetUserTermsOfService>`_
+        `Read in Mattermost API docs (terms_of_service - GetUserTermsOfService) <https://developers.mattermost.com/api-documentation/#/operations/GetUserTermsOfService>`_
 
         """
         return self.client.get(f"/api/v4/users/{user_id}/terms_of_service")
 
     def get_terms_of_service(self):
         """Get latest terms of service
-        `Read in Mattermost API docs (terms_of_service - GetTermsOfService) <https://api.mattermost.com/#tag/terms_of_service/operation/GetTermsOfService>`_
+        `Read in Mattermost API docs (terms_of_service - GetTermsOfService) <https://developers.mattermost.com/api-documentation/#/operations/GetTermsOfService>`_
 
         """
         return self.client.get("""/api/v4/terms_of_service""")
 
     def create_terms_of_service(self):
         """Creates a new terms of service
-        `Read in Mattermost API docs (terms_of_service - CreateTermsOfService) <https://api.mattermost.com/#tag/terms_of_service/operation/CreateTermsOfService>`_
+        `Read in Mattermost API docs (terms_of_service - CreateTermsOfService) <https://developers.mattermost.com/api-documentation/#/operations/CreateTermsOfService>`_
 
         """
         return self.client.post("""/api/v4/terms_of_service""")

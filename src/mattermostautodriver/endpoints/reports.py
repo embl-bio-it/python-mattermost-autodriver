@@ -38,7 +38,7 @@ class Reports(Base):
         hide_inactive: If true, show only users that are active. Cannot be used at the same time as "hide_active"
         search_term: A filtering search term that allows filtering by Username, FirstName, LastName, Nickname or Email
 
-        `Read in Mattermost API docs (reports - GetUsersForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUsersForReporting>`_
+        `Read in Mattermost API docs (reports - GetUsersForReporting) <https://developers.mattermost.com/api-documentation/#/operations/GetUsersForReporting>`_
 
         """
         __params = {
@@ -76,7 +76,7 @@ class Reports(Base):
         hide_inactive: If true, show only users that are active. Cannot be used at the same time as "hide_active"
         search_term: A filtering search term that allows filtering by Username, FirstName, LastName, Nickname or Email
 
-        `Read in Mattermost API docs (reports - GetUserCountForReporting) <https://api.mattermost.com/#tag/reports/operation/GetUserCountForReporting>`_
+        `Read in Mattermost API docs (reports - GetUserCountForReporting) <https://developers.mattermost.com/api-documentation/#/operations/GetUserCountForReporting>`_
 
         """
         __params = {
@@ -91,7 +91,7 @@ class Reports(Base):
 
     def start_batch_users_export(self):
         """Starts a job to export the users to a report file.
-        `Read in Mattermost API docs (reports - StartBatchUsersExport) <https://api.mattermost.com/#tag/reports/operation/StartBatchUsersExport>`_
+        `Read in Mattermost API docs (reports - StartBatchUsersExport) <https://developers.mattermost.com/api-documentation/#/operations/StartBatchUsersExport>`_
 
         """
         return self.client.post("""/api/v4/reports/users/export""")

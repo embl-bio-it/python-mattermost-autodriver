@@ -13,7 +13,7 @@ class Migrate(Base):
         match_field: Foreign user field name to match.
         force:
 
-        `Read in Mattermost API docs (migrate - MigrateAuthToLdap) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToLdap>`_
+        `Read in Mattermost API docs (migrate - MigrateAuthToLdap) <https://developers.mattermost.com/api-documentation/#/operations/MigrateAuthToLdap>`_
 
         """
         __options = {"from": from_, "match_field": match_field, "force": force}
@@ -26,7 +26,7 @@ class Migrate(Base):
         matches: Users map.
         auto:
 
-        `Read in Mattermost API docs (migrate - MigrateAuthToSaml) <https://api.mattermost.com/#tag/migrate/operation/MigrateAuthToSaml>`_
+        `Read in Mattermost API docs (migrate - MigrateAuthToSaml) <https://developers.mattermost.com/api-documentation/#/operations/MigrateAuthToSaml>`_
 
         """
         __options = {"from": from_, "matches": matches, "auto": auto}

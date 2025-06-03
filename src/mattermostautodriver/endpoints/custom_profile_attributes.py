@@ -8,7 +8,7 @@ class CustomProfileAttributes(Base):
 
     def list_all_cpa_fields(self):
         """List all the Custom Profile Attributes fields
-        `Read in Mattermost API docs (custom_profile_attributes - ListAllCPAFields) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/ListAllCPAFields>`_
+        `Read in Mattermost API docs (custom_profile_attributes - ListAllCPAFields) <https://developers.mattermost.com/api-documentation/#/operations/ListAllCPAFields>`_
 
         """
         return self.client.get("""/api/v4/custom_profile_attributes/fields""")
@@ -20,7 +20,7 @@ class CustomProfileAttributes(Base):
         type:
         attrs:
 
-        `Read in Mattermost API docs (custom_profile_attributes - CreateCPAField) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/CreateCPAField>`_
+        `Read in Mattermost API docs (custom_profile_attributes - CreateCPAField) <https://developers.mattermost.com/api-documentation/#/operations/CreateCPAField>`_
 
         """
         __options = {"name": name, "type": type, "attrs": attrs}
@@ -36,7 +36,7 @@ class CustomProfileAttributes(Base):
         type:
         attrs:
 
-        `Read in Mattermost API docs (custom_profile_attributes - PatchCPAField) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/PatchCPAField>`_
+        `Read in Mattermost API docs (custom_profile_attributes - PatchCPAField) <https://developers.mattermost.com/api-documentation/#/operations/PatchCPAField>`_
 
         """
         __options = {"name": name, "type": type, "attrs": attrs}
@@ -47,21 +47,21 @@ class CustomProfileAttributes(Base):
 
         field_id: Custom Profile Attribute field GUID
 
-        `Read in Mattermost API docs (custom_profile_attributes - DeleteCPAField) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/DeleteCPAField>`_
+        `Read in Mattermost API docs (custom_profile_attributes - DeleteCPAField) <https://developers.mattermost.com/api-documentation/#/operations/DeleteCPAField>`_
 
         """
         return self.client.delete(f"/api/v4/custom_profile_attributes/fields/{field_id}")
 
     def patch_cpa_values(self, options: list[dict[str, Any]]):
         """Patch Custom Profile Attribute values
-        `Read in Mattermost API docs (custom_profile_attributes - PatchCPAValues) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/PatchCPAValues>`_
+        `Read in Mattermost API docs (custom_profile_attributes - PatchCPAValues) <https://developers.mattermost.com/api-documentation/#/operations/PatchCPAValues>`_
 
         """
         return self.client.patch("""/api/v4/custom_profile_attributes/values""", options=options)
 
     def get_cpa_group(self):
         """Get Custom Profile Attribute property group data
-        `Read in Mattermost API docs (custom_profile_attributes - GetCPAGroup) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/GetCPAGroup>`_
+        `Read in Mattermost API docs (custom_profile_attributes - GetCPAGroup) <https://developers.mattermost.com/api-documentation/#/operations/GetCPAGroup>`_
 
         """
         return self.client.get("""/api/v4/custom_profile_attributes/group""")
@@ -71,7 +71,7 @@ class CustomProfileAttributes(Base):
 
         user_id: User GUID
 
-        `Read in Mattermost API docs (custom_profile_attributes - ListCPAValues) <https://api.mattermost.com/#tag/custom_profile_attributes/operation/ListCPAValues>`_
+        `Read in Mattermost API docs (custom_profile_attributes - ListCPAValues) <https://developers.mattermost.com/api-documentation/#/operations/ListCPAValues>`_
 
         """
         return self.client.get(f"/api/v4/users/{user_id}/custom_profile_attributes")

@@ -16,7 +16,7 @@ class Jobs(Base):
         job_type: The type of jobs to fetch.
         status: The status of jobs to fetch.
 
-        `Read in Mattermost API docs (jobs - GetJobs) <https://api.mattermost.com/#tag/jobs/operation/GetJobs>`_
+        `Read in Mattermost API docs (jobs - GetJobs) <https://developers.mattermost.com/api-documentation/#/operations/GetJobs>`_
 
         """
         __params = {"page": page, "per_page": per_page, "job_type": job_type, "status": status}
@@ -28,7 +28,7 @@ class Jobs(Base):
         type: The type of job to create
         data: An object containing any additional data required for this job type
 
-        `Read in Mattermost API docs (jobs - CreateJob) <https://api.mattermost.com/#tag/jobs/operation/CreateJob>`_
+        `Read in Mattermost API docs (jobs - CreateJob) <https://developers.mattermost.com/api-documentation/#/operations/CreateJob>`_
 
         """
         __options = {"type": type, "data": data}
@@ -39,7 +39,7 @@ class Jobs(Base):
 
         job_id: Job GUID
 
-        `Read in Mattermost API docs (jobs - GetJob) <https://api.mattermost.com/#tag/jobs/operation/GetJob>`_
+        `Read in Mattermost API docs (jobs - GetJob) <https://developers.mattermost.com/api-documentation/#/operations/GetJob>`_
 
         """
         return self.client.get(f"/api/v4/jobs/{job_id}")
@@ -49,7 +49,7 @@ class Jobs(Base):
 
         job_id: Job GUID
 
-        `Read in Mattermost API docs (jobs - DownloadJob) <https://api.mattermost.com/#tag/jobs/operation/DownloadJob>`_
+        `Read in Mattermost API docs (jobs - DownloadJob) <https://developers.mattermost.com/api-documentation/#/operations/DownloadJob>`_
 
         """
         return self.client.get(f"/api/v4/jobs/{job_id}/download")
@@ -59,7 +59,7 @@ class Jobs(Base):
 
         job_id: Job GUID
 
-        `Read in Mattermost API docs (jobs - CancelJob) <https://api.mattermost.com/#tag/jobs/operation/CancelJob>`_
+        `Read in Mattermost API docs (jobs - CancelJob) <https://developers.mattermost.com/api-documentation/#/operations/CancelJob>`_
 
         """
         return self.client.post(f"/api/v4/jobs/{job_id}/cancel")
@@ -71,7 +71,7 @@ class Jobs(Base):
         page: The page to select.
         per_page: The number of jobs per page.
 
-        `Read in Mattermost API docs (jobs - GetJobsByType) <https://api.mattermost.com/#tag/jobs/operation/GetJobsByType>`_
+        `Read in Mattermost API docs (jobs - GetJobsByType) <https://developers.mattermost.com/api-documentation/#/operations/GetJobsByType>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -84,7 +84,7 @@ class Jobs(Base):
         status: The status you want to set
         force: Set this to true to bypass status restrictions
 
-        `Read in Mattermost API docs (jobs - UpdateJobStatus) <https://api.mattermost.com/#tag/jobs/operation/UpdateJobStatus>`_
+        `Read in Mattermost API docs (jobs - UpdateJobStatus) <https://developers.mattermost.com/api-documentation/#/operations/UpdateJobStatus>`_
 
         """
         __options = {"status": status, "force": force}

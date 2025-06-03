@@ -7,7 +7,7 @@ class Reactions(Base):
 
     def save_reaction(self, options):
         """Create a reaction
-        `Read in Mattermost API docs (reactions - SaveReaction) <https://api.mattermost.com/#tag/reactions/operation/SaveReaction>`_
+        `Read in Mattermost API docs (reactions - SaveReaction) <https://developers.mattermost.com/api-documentation/#/operations/SaveReaction>`_
 
         """
         return self.client.post("""/api/v4/reactions""", options=options)
@@ -17,7 +17,7 @@ class Reactions(Base):
 
         post_id: ID of a post
 
-        `Read in Mattermost API docs (reactions - GetReactions) <https://api.mattermost.com/#tag/reactions/operation/GetReactions>`_
+        `Read in Mattermost API docs (reactions - GetReactions) <https://developers.mattermost.com/api-documentation/#/operations/GetReactions>`_
 
         """
         return self.client.get(f"/api/v4/posts/{post_id}/reactions")
@@ -29,14 +29,14 @@ class Reactions(Base):
         post_id: ID of the post
         emoji_name: emoji name
 
-        `Read in Mattermost API docs (reactions - DeleteReaction) <https://api.mattermost.com/#tag/reactions/operation/DeleteReaction>`_
+        `Read in Mattermost API docs (reactions - DeleteReaction) <https://developers.mattermost.com/api-documentation/#/operations/DeleteReaction>`_
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
 
     def get_bulk_reactions(self, options):
         """Bulk get the reaction for posts
-        `Read in Mattermost API docs (reactions - GetBulkReactions) <https://api.mattermost.com/#tag/reactions/operation/GetBulkReactions>`_
+        `Read in Mattermost API docs (reactions - GetBulkReactions) <https://developers.mattermost.com/api-documentation/#/operations/GetBulkReactions>`_
 
         """
         return self.client.post("""/api/v4/posts/ids/reactions""", options=options)

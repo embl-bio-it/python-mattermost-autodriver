@@ -11,7 +11,7 @@ class Emoji(Base):
         image: A file to be uploaded
         emoji: A JSON object containing a ``name`` field with the name of the emoji and a ``creator_id`` field with the id of the authenticated user.
 
-        `Read in Mattermost API docs (emoji - CreateEmoji) <https://api.mattermost.com/#tag/emoji/operation/CreateEmoji>`_
+        `Read in Mattermost API docs (emoji - CreateEmoji) <https://developers.mattermost.com/api-documentation/#/operations/CreateEmoji>`_
 
         """
         return self.client.post("""/api/v4/emoji""", files=files, data=data)
@@ -23,7 +23,7 @@ class Emoji(Base):
         per_page: The number of emojis per page.
         sort: Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
 
-        `Read in Mattermost API docs (emoji - GetEmojiList) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiList>`_
+        `Read in Mattermost API docs (emoji - GetEmojiList) <https://developers.mattermost.com/api-documentation/#/operations/GetEmojiList>`_
 
         """
         return self.client.get("""/api/v4/emoji""", params=params)
@@ -33,7 +33,7 @@ class Emoji(Base):
 
         emoji_id: Emoji GUID
 
-        `Read in Mattermost API docs (emoji - GetEmoji) <https://api.mattermost.com/#tag/emoji/operation/GetEmoji>`_
+        `Read in Mattermost API docs (emoji - GetEmoji) <https://developers.mattermost.com/api-documentation/#/operations/GetEmoji>`_
 
         """
         return self.client.get(f"/api/v4/emoji/{emoji_id}")
@@ -43,7 +43,7 @@ class Emoji(Base):
 
         emoji_id: Emoji GUID
 
-        `Read in Mattermost API docs (emoji - DeleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/DeleteEmoji>`_
+        `Read in Mattermost API docs (emoji - DeleteEmoji) <https://developers.mattermost.com/api-documentation/#/operations/DeleteEmoji>`_
 
         """
         return self.client.delete(f"/api/v4/emoji/{emoji_id}")
@@ -53,7 +53,7 @@ class Emoji(Base):
 
         emoji_name: Emoji name
 
-        `Read in Mattermost API docs (emoji - GetEmojiByName) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiByName>`_
+        `Read in Mattermost API docs (emoji - GetEmojiByName) <https://developers.mattermost.com/api-documentation/#/operations/GetEmojiByName>`_
 
         """
         return self.client.get(f"/api/v4/emoji/name/{emoji_name}")
@@ -63,7 +63,7 @@ class Emoji(Base):
 
         emoji_id: Emoji GUID
 
-        `Read in Mattermost API docs (emoji - GetEmojiImage) <https://api.mattermost.com/#tag/emoji/operation/GetEmojiImage>`_
+        `Read in Mattermost API docs (emoji - GetEmojiImage) <https://developers.mattermost.com/api-documentation/#/operations/GetEmojiImage>`_
 
         """
         return self.client.get(f"/api/v4/emoji/{emoji_id}/image")
@@ -74,7 +74,7 @@ class Emoji(Base):
         term: The term to match against the emoji name.
         prefix_only: Set to only search for names starting with the search term.
 
-        `Read in Mattermost API docs (emoji - SearchEmoji) <https://api.mattermost.com/#tag/emoji/operation/SearchEmoji>`_
+        `Read in Mattermost API docs (emoji - SearchEmoji) <https://developers.mattermost.com/api-documentation/#/operations/SearchEmoji>`_
 
         """
         return self.client.post("""/api/v4/emoji/search""", options=options)
@@ -84,14 +84,14 @@ class Emoji(Base):
 
         name: The emoji name to search.
 
-        `Read in Mattermost API docs (emoji - AutocompleteEmoji) <https://api.mattermost.com/#tag/emoji/operation/AutocompleteEmoji>`_
+        `Read in Mattermost API docs (emoji - AutocompleteEmoji) <https://developers.mattermost.com/api-documentation/#/operations/AutocompleteEmoji>`_
 
         """
         return self.client.get("""/api/v4/emoji/autocomplete""", params=params)
 
     def get_emojis_by_names(self, options):
         """Get custom emojis by name
-        `Read in Mattermost API docs (emoji - GetEmojisByNames) <https://api.mattermost.com/#tag/emoji/operation/GetEmojisByNames>`_
+        `Read in Mattermost API docs (emoji - GetEmojisByNames) <https://developers.mattermost.com/api-documentation/#/operations/GetEmojisByNames>`_
 
         """
         return self.client.post("""/api/v4/emoji/names""", options=options)

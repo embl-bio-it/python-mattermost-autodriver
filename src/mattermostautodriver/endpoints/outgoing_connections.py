@@ -11,7 +11,7 @@ class OutgoingConnections(Base):
 
         team_id: Current Team ID in integrations backstage
 
-        `Read in Mattermost API docs (outgoing_connections - ListOutgoingOAuthConnections) <https://api.mattermost.com/#tag/outgoing_connections/operation/ListOutgoingOAuthConnections>`_
+        `Read in Mattermost API docs (outgoing_connections - ListOutgoingOAuthConnections) <https://developers.mattermost.com/api-documentation/#/operations/ListOutgoingOAuthConnections>`_
 
         """
         __params = {"team_id": team_id}
@@ -19,7 +19,7 @@ class OutgoingConnections(Base):
 
     def create_outgoing_o_auth_connection(self, options: Any | None = None):
         """Create a connection
-        `Read in Mattermost API docs (outgoing_connections - CreateOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_connections/operation/CreateOutgoingOAuthConnection>`_
+        `Read in Mattermost API docs (outgoing_connections - CreateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/CreateOutgoingOAuthConnection>`_
 
         """
         return self.client.post("""/api/v4/oauth/outgoing_connections""", options=options)
@@ -29,7 +29,7 @@ class OutgoingConnections(Base):
 
         team_id: Current Team ID in integrations backstage
 
-        `Read in Mattermost API docs (outgoing_connections - GetOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_connections/operation/GetOutgoingOAuthConnection>`_
+        `Read in Mattermost API docs (outgoing_connections - GetOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/GetOutgoingOAuthConnection>`_
 
         """
         __params = {"team_id": team_id}
@@ -37,21 +37,21 @@ class OutgoingConnections(Base):
 
     def update_outgoing_o_auth_connection(self, options: Any | None = None):
         """Update a connection
-        `Read in Mattermost API docs (outgoing_connections - UpdateOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_connections/operation/UpdateOutgoingOAuthConnection>`_
+        `Read in Mattermost API docs (outgoing_connections - UpdateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/UpdateOutgoingOAuthConnection>`_
 
         """
         return self.client.put(f"/api/v4/oauth/outgoing_connections/{connection_id}", options=options)
 
     def delete_outgoing_o_auth_connection(self):
         """Delete a connection
-        `Read in Mattermost API docs (outgoing_connections - DeleteOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_connections/operation/DeleteOutgoingOAuthConnection>`_
+        `Read in Mattermost API docs (outgoing_connections - DeleteOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/DeleteOutgoingOAuthConnection>`_
 
         """
         return self.client.delete(f"/api/v4/oauth/outgoing_connections/{connection_id}")
 
     def validate_outgoing_o_auth_connection(self, options: Any | None = None):
         """Validate a connection configuration
-        `Read in Mattermost API docs (outgoing_connections - ValidateOutgoingOAuthConnection) <https://api.mattermost.com/#tag/outgoing_connections/operation/ValidateOutgoingOAuthConnection>`_
+        `Read in Mattermost API docs (outgoing_connections - ValidateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/ValidateOutgoingOAuthConnection>`_
 
         """
         return self.client.post("""/api/v4/oauth/outgoing_connections/validate""", options=options)

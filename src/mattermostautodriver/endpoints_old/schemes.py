@@ -12,7 +12,7 @@ class Schemes(Base):
         page: The page to select.
         per_page: The number of schemes per page.
 
-        `Read in Mattermost API docs (schemes - GetSchemes) <https://api.mattermost.com/#tag/schemes/operation/GetSchemes>`_
+        `Read in Mattermost API docs (schemes - GetSchemes) <https://developers.mattermost.com/api-documentation/#/operations/GetSchemes>`_
 
         """
         return self.client.get("""/api/v4/schemes""", params=params)
@@ -25,7 +25,7 @@ class Schemes(Base):
         description: The description of the scheme
         scope: The scope of the scheme ("team" or "channel")
 
-        `Read in Mattermost API docs (schemes - CreateScheme) <https://api.mattermost.com/#tag/schemes/operation/CreateScheme>`_
+        `Read in Mattermost API docs (schemes - CreateScheme) <https://developers.mattermost.com/api-documentation/#/operations/CreateScheme>`_
 
         """
         return self.client.post("""/api/v4/schemes""", options=options)
@@ -35,7 +35,7 @@ class Schemes(Base):
 
         scheme_id: Scheme GUID
 
-        `Read in Mattermost API docs (schemes - GetScheme) <https://api.mattermost.com/#tag/schemes/operation/GetScheme>`_
+        `Read in Mattermost API docs (schemes - GetScheme) <https://developers.mattermost.com/api-documentation/#/operations/GetScheme>`_
 
         """
         return self.client.get(f"/api/v4/schemes/{scheme_id}")
@@ -45,7 +45,7 @@ class Schemes(Base):
 
         scheme_id: ID of the scheme to delete
 
-        `Read in Mattermost API docs (schemes - DeleteScheme) <https://api.mattermost.com/#tag/schemes/operation/DeleteScheme>`_
+        `Read in Mattermost API docs (schemes - DeleteScheme) <https://developers.mattermost.com/api-documentation/#/operations/DeleteScheme>`_
 
         """
         return self.client.delete(f"/api/v4/schemes/{scheme_id}")
@@ -57,7 +57,7 @@ class Schemes(Base):
         name: The human readable name of the scheme
         description: The description of the scheme
 
-        `Read in Mattermost API docs (schemes - PatchScheme) <https://api.mattermost.com/#tag/schemes/operation/PatchScheme>`_
+        `Read in Mattermost API docs (schemes - PatchScheme) <https://developers.mattermost.com/api-documentation/#/operations/PatchScheme>`_
 
         """
         return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=options)
@@ -69,7 +69,7 @@ class Schemes(Base):
         page: The page to select.
         per_page: The number of teams per page.
 
-        `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetTeamsForScheme>`_
+        `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsForScheme>`_
 
         """
         return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=params)
@@ -81,7 +81,7 @@ class Schemes(Base):
         page: The page to select.
         per_page: The number of channels per page.
 
-        `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://api.mattermost.com/#tag/schemes/operation/GetChannelsForScheme>`_
+        `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForScheme>`_
 
         """
         return self.client.get(f"/api/v4/schemes/{scheme_id}/channels", params=params)

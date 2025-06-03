@@ -8,7 +8,7 @@ class System(Base):
 
     def get_supported_timezone(self):
         """Retrieve a list of supported timezones
-        `Read in Mattermost API docs (system - GetSupportedTimezone) <https://api.mattermost.com/#tag/system/operation/GetSupportedTimezone>`_
+        `Read in Mattermost API docs (system - GetSupportedTimezone) <https://developers.mattermost.com/api-documentation/#/operations/GetSupportedTimezone>`_
 
         """
         return self.client.get("""/api/v4/system/timezones""")
@@ -25,7 +25,7 @@ class System(Base):
         device_id: Check whether this device id can receive push notifications
         use_rest_semantics: Returns 200 status code even if the server status is unhealthy.
 
-        `Read in Mattermost API docs (system - GetPing) <https://api.mattermost.com/#tag/system/operation/GetPing>`_
+        `Read in Mattermost API docs (system - GetPing) <https://developers.mattermost.com/api-documentation/#/operations/GetPing>`_
 
         """
         __params = {
@@ -43,7 +43,7 @@ class System(Base):
         locale: Client locale
         client: Client type (web/mobile-ios/mobile-android/desktop)
 
-        `Read in Mattermost API docs (system - GetNotices) <https://api.mattermost.com/#tag/system/operation/GetNotices>`_
+        `Read in Mattermost API docs (system - GetNotices) <https://developers.mattermost.com/api-documentation/#/operations/GetNotices>`_
 
         """
         __params = {"clientVersion": clientVersion, "locale": locale, "client": client}
@@ -51,28 +51,28 @@ class System(Base):
 
     def mark_notices_viewed(self, options: list[str]):
         """Update notices as 'viewed'
-        `Read in Mattermost API docs (system - MarkNoticesViewed) <https://api.mattermost.com/#tag/system/operation/MarkNoticesViewed>`_
+        `Read in Mattermost API docs (system - MarkNoticesViewed) <https://developers.mattermost.com/api-documentation/#/operations/MarkNoticesViewed>`_
 
         """
         return self.client.put("""/api/v4/system/notices/view""", options=options)
 
     def database_recycle(self):
         """Recycle database connections
-        `Read in Mattermost API docs (system - DatabaseRecycle) <https://api.mattermost.com/#tag/system/operation/DatabaseRecycle>`_
+        `Read in Mattermost API docs (system - DatabaseRecycle) <https://developers.mattermost.com/api-documentation/#/operations/DatabaseRecycle>`_
 
         """
         return self.client.post("""/api/v4/database/recycle""")
 
     def test_email(self, options: Any):
         """Send a test email
-        `Read in Mattermost API docs (system - TestEmail) <https://api.mattermost.com/#tag/system/operation/TestEmail>`_
+        `Read in Mattermost API docs (system - TestEmail) <https://developers.mattermost.com/api-documentation/#/operations/TestEmail>`_
 
         """
         return self.client.post("""/api/v4/email/test""", options=options)
 
     def test_notification(self):
         """Send a test notification
-        `Read in Mattermost API docs (system - TestNotification) <https://api.mattermost.com/#tag/system/operation/TestNotification>`_
+        `Read in Mattermost API docs (system - TestNotification) <https://developers.mattermost.com/api-documentation/#/operations/TestNotification>`_
 
         """
         return self.client.post("""/api/v4/notifications/test""")
@@ -82,7 +82,7 @@ class System(Base):
 
         site_url: The Site URL to test
 
-        `Read in Mattermost API docs (system - TestSiteURL) <https://api.mattermost.com/#tag/system/operation/TestSiteURL>`_
+        `Read in Mattermost API docs (system - TestSiteURL) <https://developers.mattermost.com/api-documentation/#/operations/TestSiteURL>`_
 
         """
         __options = {"site_url": site_url}
@@ -90,7 +90,7 @@ class System(Base):
 
     def test_s3_connection(self, options: Any):
         """Test AWS S3 connection
-        `Read in Mattermost API docs (system - TestS3Connection) <https://api.mattermost.com/#tag/system/operation/TestS3Connection>`_
+        `Read in Mattermost API docs (system - TestS3Connection) <https://developers.mattermost.com/api-documentation/#/operations/TestS3Connection>`_
 
         """
         return self.client.post("""/api/v4/file/s3_test""", options=options)
@@ -107,7 +107,7 @@ class System(Base):
         *Minimum server version*: 10.4.0
 
 
-        `Read in Mattermost API docs (system - GetConfig) <https://api.mattermost.com/#tag/system/operation/GetConfig>`_
+        `Read in Mattermost API docs (system - GetConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetConfig>`_
 
         """
         __params = {"remove_masked": remove_masked, "remove_defaults": remove_defaults}
@@ -115,14 +115,14 @@ class System(Base):
 
     def update_config(self, options: Any):
         """Update configuration
-        `Read in Mattermost API docs (system - UpdateConfig) <https://api.mattermost.com/#tag/system/operation/UpdateConfig>`_
+        `Read in Mattermost API docs (system - UpdateConfig) <https://developers.mattermost.com/api-documentation/#/operations/UpdateConfig>`_
 
         """
         return self.client.put("""/api/v4/config""", options=options)
 
     def reload_config(self):
         """Reload configuration
-        `Read in Mattermost API docs (system - ReloadConfig) <https://api.mattermost.com/#tag/system/operation/ReloadConfig>`_
+        `Read in Mattermost API docs (system - ReloadConfig) <https://developers.mattermost.com/api-documentation/#/operations/ReloadConfig>`_
 
         """
         return self.client.post("""/api/v4/config/reload""")
@@ -132,7 +132,7 @@ class System(Base):
 
         format: Must be ``old``, other formats not implemented yet
 
-        `Read in Mattermost API docs (system - GetClientConfig) <https://api.mattermost.com/#tag/system/operation/GetClientConfig>`_
+        `Read in Mattermost API docs (system - GetClientConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetClientConfig>`_
 
         """
         __params = {"format": format}
@@ -140,14 +140,14 @@ class System(Base):
 
     def get_environment_config(self):
         """Get configuration made through environment variables
-        `Read in Mattermost API docs (system - GetEnvironmentConfig) <https://api.mattermost.com/#tag/system/operation/GetEnvironmentConfig>`_
+        `Read in Mattermost API docs (system - GetEnvironmentConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetEnvironmentConfig>`_
 
         """
         return self.client.get("""/api/v4/config/environment""")
 
     def patch_config(self, options: Any):
         """Patch configuration
-        `Read in Mattermost API docs (system - PatchConfig) <https://api.mattermost.com/#tag/system/operation/PatchConfig>`_
+        `Read in Mattermost API docs (system - PatchConfig) <https://developers.mattermost.com/api-documentation/#/operations/PatchConfig>`_
 
         """
         return self.client.put("""/api/v4/config/patch""", options=options)
@@ -157,7 +157,7 @@ class System(Base):
 
         license: The license to be uploaded
 
-        `Read in Mattermost API docs (system - UploadLicenseFile) <https://api.mattermost.com/#tag/system/operation/UploadLicenseFile>`_
+        `Read in Mattermost API docs (system - UploadLicenseFile) <https://developers.mattermost.com/api-documentation/#/operations/UploadLicenseFile>`_
 
         """
         __files = {"license": license}
@@ -165,7 +165,7 @@ class System(Base):
 
     def remove_license_file(self):
         """Remove license file
-        `Read in Mattermost API docs (system - RemoveLicenseFile) <https://api.mattermost.com/#tag/system/operation/RemoveLicenseFile>`_
+        `Read in Mattermost API docs (system - RemoveLicenseFile) <https://developers.mattermost.com/api-documentation/#/operations/RemoveLicenseFile>`_
 
         """
         return self.client.delete("""/api/v4/license""")
@@ -175,7 +175,7 @@ class System(Base):
 
         format: Must be ``old``, other formats not implemented yet
 
-        `Read in Mattermost API docs (system - GetClientLicense) <https://api.mattermost.com/#tag/system/operation/GetClientLicense>`_
+        `Read in Mattermost API docs (system - GetClientLicense) <https://developers.mattermost.com/api-documentation/#/operations/GetClientLicense>`_
 
         """
         __params = {"format": format}
@@ -183,7 +183,7 @@ class System(Base):
 
     def request_license_renewal_link(self):
         """Request the license renewal link
-        `Read in Mattermost API docs (system - RequestLicenseRenewalLink) <https://api.mattermost.com/#tag/system/operation/RequestLicenseRenewalLink>`_
+        `Read in Mattermost API docs (system - RequestLicenseRenewalLink) <https://developers.mattermost.com/api-documentation/#/operations/RequestLicenseRenewalLink>`_
 
         """
         return self.client.get("""/api/v4/license/renewal""")
@@ -193,7 +193,7 @@ class System(Base):
 
         users: Number of users requested (20% extra is going to be added)
 
-        `Read in Mattermost API docs (system - RequestTrialLicense) <https://api.mattermost.com/#tag/system/operation/RequestTrialLicense>`_
+        `Read in Mattermost API docs (system - RequestTrialLicense) <https://developers.mattermost.com/api-documentation/#/operations/RequestTrialLicense>`_
 
         """
         __options = {"users": users}
@@ -201,7 +201,7 @@ class System(Base):
 
     def get_prev_trial_license(self):
         """Get last trial license used
-        `Read in Mattermost API docs (system - GetPrevTrialLicense) <https://api.mattermost.com/#tag/system/operation/GetPrevTrialLicense>`_
+        `Read in Mattermost API docs (system - GetPrevTrialLicense) <https://developers.mattermost.com/api-documentation/#/operations/GetPrevTrialLicense>`_
 
         """
         return self.client.get("""/api/v4/trial-license/prev""")
@@ -212,7 +212,7 @@ class System(Base):
         page: The page to select.
         per_page: The number of audits per page.
 
-        `Read in Mattermost API docs (system - GetAudits) <https://api.mattermost.com/#tag/system/operation/GetAudits>`_
+        `Read in Mattermost API docs (system - GetAudits) <https://developers.mattermost.com/api-documentation/#/operations/GetAudits>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -220,7 +220,7 @@ class System(Base):
 
     def invalidate_caches(self):
         """Invalidate all the caches
-        `Read in Mattermost API docs (system - InvalidateCaches) <https://api.mattermost.com/#tag/system/operation/InvalidateCaches>`_
+        `Read in Mattermost API docs (system - InvalidateCaches) <https://developers.mattermost.com/api-documentation/#/operations/InvalidateCaches>`_
 
         """
         return self.client.post("""/api/v4/caches/invalidate""")
@@ -231,7 +231,7 @@ class System(Base):
         page: The page to select.
         logs_per_page: The number of logs per page. There is a maximum limit of 10000 logs per page.
 
-        `Read in Mattermost API docs (system - GetLogs) <https://api.mattermost.com/#tag/system/operation/GetLogs>`_
+        `Read in Mattermost API docs (system - GetLogs) <https://developers.mattermost.com/api-documentation/#/operations/GetLogs>`_
 
         """
         __params = {"page": page, "logs_per_page": logs_per_page}
@@ -243,7 +243,7 @@ class System(Base):
         level: The error level, ERROR or DEBUG
         message: Message to send to the server logs
 
-        `Read in Mattermost API docs (system - PostLog) <https://api.mattermost.com/#tag/system/operation/PostLog>`_
+        `Read in Mattermost API docs (system - PostLog) <https://developers.mattermost.com/api-documentation/#/operations/PostLog>`_
 
         """
         __options = {"level": level, "message": message}
@@ -255,7 +255,7 @@ class System(Base):
         name: Possible values are "standard", "bot_post_counts_day", "post_counts_day", "user_counts_with_posts_day" or "extra_counts"
         team_id: The team ID to filter the data by
 
-        `Read in Mattermost API docs (system - GetAnalyticsOld) <https://api.mattermost.com/#tag/system/operation/GetAnalyticsOld>`_
+        `Read in Mattermost API docs (system - GetAnalyticsOld) <https://developers.mattermost.com/api-documentation/#/operations/GetAnalyticsOld>`_
 
         """
         __params = {"name": name, "team_id": team_id}
@@ -263,21 +263,21 @@ class System(Base):
 
     def set_server_busy(self):
         """Set the server busy (high load) flag
-        `Read in Mattermost API docs (system - SetServerBusy) <https://api.mattermost.com/#tag/system/operation/SetServerBusy>`_
+        `Read in Mattermost API docs (system - SetServerBusy) <https://developers.mattermost.com/api-documentation/#/operations/SetServerBusy>`_
 
         """
         return self.client.post("""/api/v4/server_busy""")
 
     def get_server_busy_expires(self):
         """Get server busy expiry time.
-        `Read in Mattermost API docs (system - GetServerBusyExpires) <https://api.mattermost.com/#tag/system/operation/GetServerBusyExpires>`_
+        `Read in Mattermost API docs (system - GetServerBusyExpires) <https://developers.mattermost.com/api-documentation/#/operations/GetServerBusyExpires>`_
 
         """
         return self.client.get("""/api/v4/server_busy""")
 
     def clear_server_busy(self):
         """Clears the server busy (high load) flag
-        `Read in Mattermost API docs (system - ClearServerBusy) <https://api.mattermost.com/#tag/system/operation/ClearServerBusy>`_
+        `Read in Mattermost API docs (system - ClearServerBusy) <https://developers.mattermost.com/api-documentation/#/operations/ClearServerBusy>`_
 
         """
         return self.client.delete("""/api/v4/server_busy""")
@@ -287,7 +287,7 @@ class System(Base):
 
         url: Url to check
 
-        `Read in Mattermost API docs (system - GetRedirectLocation) <https://api.mattermost.com/#tag/system/operation/GetRedirectLocation>`_
+        `Read in Mattermost API docs (system - GetRedirectLocation) <https://developers.mattermost.com/api-documentation/#/operations/GetRedirectLocation>`_
 
         """
         __params = {"url": url}
@@ -295,35 +295,35 @@ class System(Base):
 
     def get_image_by_url(self):
         """Get an image by url
-        `Read in Mattermost API docs (system - GetImageByUrl) <https://api.mattermost.com/#tag/system/operation/GetImageByUrl>`_
+        `Read in Mattermost API docs (system - GetImageByUrl) <https://developers.mattermost.com/api-documentation/#/operations/GetImageByUrl>`_
 
         """
         return self.client.get("""/api/v4/image""")
 
     def upgrade_to_enterprise(self):
         """Executes an inplace upgrade from Team Edition to Enterprise Edition
-        `Read in Mattermost API docs (system - UpgradeToEnterprise) <https://api.mattermost.com/#tag/system/operation/UpgradeToEnterprise>`_
+        `Read in Mattermost API docs (system - UpgradeToEnterprise) <https://developers.mattermost.com/api-documentation/#/operations/UpgradeToEnterprise>`_
 
         """
         return self.client.post("""/api/v4/upgrade_to_enterprise""")
 
     def upgrade_to_enterprise_status(self):
         """Get the current status for the inplace upgrade from Team Edition to Enterprise Edition
-        `Read in Mattermost API docs (system - UpgradeToEnterpriseStatus) <https://api.mattermost.com/#tag/system/operation/UpgradeToEnterpriseStatus>`_
+        `Read in Mattermost API docs (system - UpgradeToEnterpriseStatus) <https://developers.mattermost.com/api-documentation/#/operations/UpgradeToEnterpriseStatus>`_
 
         """
         return self.client.get("""/api/v4/upgrade_to_enterprise/status""")
 
     def restart_server(self):
         """Restart the system after an upgrade from Team Edition to Enterprise Edition
-        `Read in Mattermost API docs (system - RestartServer) <https://api.mattermost.com/#tag/system/operation/RestartServer>`_
+        `Read in Mattermost API docs (system - RestartServer) <https://developers.mattermost.com/api-documentation/#/operations/RestartServer>`_
 
         """
         return self.client.post("""/api/v4/restart""")
 
     def check_integrity(self):
         """Perform a database integrity check
-        `Read in Mattermost API docs (system - CheckIntegrity) <https://api.mattermost.com/#tag/system/operation/CheckIntegrity>`_
+        `Read in Mattermost API docs (system - CheckIntegrity) <https://developers.mattermost.com/api-documentation/#/operations/CheckIntegrity>`_
 
         """
         return self.client.post("""/api/v4/integrity""")
@@ -340,7 +340,7 @@ class System(Base):
         *Minimum server version*: 9.8.0
 
 
-        `Read in Mattermost API docs (system - GenerateSupportPacket) <https://api.mattermost.com/#tag/system/operation/GenerateSupportPacket>`_
+        `Read in Mattermost API docs (system - GenerateSupportPacket) <https://developers.mattermost.com/api-documentation/#/operations/GenerateSupportPacket>`_
 
         """
         __params = {"basic_server_logs": basic_server_logs, "plugin_packets": plugin_packets}
@@ -348,7 +348,7 @@ class System(Base):
 
     def update_marketplace_visited_by_admin(self, options: Any):
         """Stores that the Plugin Marketplace has been visited by at least an admin.
-        `Read in Mattermost API docs (system - UpdateMarketplaceVisitedByAdmin) <https://api.mattermost.com/#tag/system/operation/UpdateMarketplaceVisitedByAdmin>`_
+        `Read in Mattermost API docs (system - UpdateMarketplaceVisitedByAdmin) <https://developers.mattermost.com/api-documentation/#/operations/UpdateMarketplaceVisitedByAdmin>`_
 
         """
         return self.client.post("""/api/v4/plugins/marketplace/first_admin_visit""", options=options)

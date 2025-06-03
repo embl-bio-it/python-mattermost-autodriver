@@ -12,7 +12,7 @@ class SharedChannels(Base):
         page: The page to select.
         per_page: The number of sharedchannels per page.
 
-        `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://api.mattermost.com/#tag/shared_channels/operation/GetAllSharedChannels>`_
+        `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://developers.mattermost.com/api-documentation/#/operations/GetAllSharedChannels>`_
 
         """
         return self.client.get(f"/api/v4/sharedchannels/{team_id}", params=params)
@@ -29,7 +29,7 @@ class SharedChannels(Base):
         page: The page to select
         per_page: The number of shared channels per page
 
-        `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotesByRemoteCluster) <https://api.mattermost.com/#tag/shared_channels/operation/GetSharedChannelRemotesByRemoteCluster>`_
+        `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotesByRemoteCluster) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotesByRemoteCluster>`_
 
         """
         return self.client.get(f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=params)
@@ -39,7 +39,7 @@ class SharedChannels(Base):
 
         remote_id: Remote Cluster GUID
 
-        `Read in Mattermost API docs (shared_channels - GetRemoteClusterInfo) <https://api.mattermost.com/#tag/shared_channels/operation/GetRemoteClusterInfo>`_
+        `Read in Mattermost API docs (shared_channels - GetRemoteClusterInfo) <https://developers.mattermost.com/api-documentation/#/operations/GetRemoteClusterInfo>`_
 
         """
         return self.client.get(f"/api/v4/sharedchannels/remote_info/{remote_id}")
@@ -50,7 +50,7 @@ class SharedChannels(Base):
         remote_id: The remote cluster GUID
         channel_id: The channel GUID to invite the remote cluster to
 
-        `Read in Mattermost API docs (shared_channels - InviteRemoteClusterToChannel) <https://api.mattermost.com/#tag/shared_channels/operation/InviteRemoteClusterToChannel>`_
+        `Read in Mattermost API docs (shared_channels - InviteRemoteClusterToChannel) <https://developers.mattermost.com/api-documentation/#/operations/InviteRemoteClusterToChannel>`_
 
         """
         return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/invite")
@@ -61,7 +61,7 @@ class SharedChannels(Base):
         remote_id: The remote cluster GUID
         channel_id: The channel GUID to uninvite the remote cluster to
 
-        `Read in Mattermost API docs (shared_channels - UninviteRemoteClusterToChannel) <https://api.mattermost.com/#tag/shared_channels/operation/UninviteRemoteClusterToChannel>`_
+        `Read in Mattermost API docs (shared_channels - UninviteRemoteClusterToChannel) <https://developers.mattermost.com/api-documentation/#/operations/UninviteRemoteClusterToChannel>`_
 
         """
         return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/uninvite")

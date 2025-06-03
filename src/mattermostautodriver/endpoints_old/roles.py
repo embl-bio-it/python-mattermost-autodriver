@@ -7,7 +7,7 @@ class Roles(Base):
 
     def get_all_roles(self):
         """Get a list of all the roles
-        `Read in Mattermost API docs (roles - GetAllRoles) <https://api.mattermost.com/#tag/roles/operation/GetAllRoles>`_
+        `Read in Mattermost API docs (roles - GetAllRoles) <https://developers.mattermost.com/api-documentation/#/operations/GetAllRoles>`_
 
         """
         return self.client.get("""/api/v4/roles""")
@@ -17,7 +17,7 @@ class Roles(Base):
 
         role_id: Role GUID
 
-        `Read in Mattermost API docs (roles - GetRole) <https://api.mattermost.com/#tag/roles/operation/GetRole>`_
+        `Read in Mattermost API docs (roles - GetRole) <https://developers.mattermost.com/api-documentation/#/operations/GetRole>`_
 
         """
         return self.client.get(f"/api/v4/roles/{role_id}")
@@ -27,7 +27,7 @@ class Roles(Base):
 
         role_name: Role Name
 
-        `Read in Mattermost API docs (roles - GetRoleByName) <https://api.mattermost.com/#tag/roles/operation/GetRoleByName>`_
+        `Read in Mattermost API docs (roles - GetRoleByName) <https://developers.mattermost.com/api-documentation/#/operations/GetRoleByName>`_
 
         """
         return self.client.get(f"/api/v4/roles/name/{role_name}")
@@ -38,14 +38,14 @@ class Roles(Base):
         role_id: Role GUID
         permissions: The permissions the role should grant.
 
-        `Read in Mattermost API docs (roles - PatchRole) <https://api.mattermost.com/#tag/roles/operation/PatchRole>`_
+        `Read in Mattermost API docs (roles - PatchRole) <https://developers.mattermost.com/api-documentation/#/operations/PatchRole>`_
 
         """
         return self.client.put(f"/api/v4/roles/{role_id}/patch", options=options)
 
     def get_roles_by_names(self, options):
         """Get a list of roles by name
-        `Read in Mattermost API docs (roles - GetRolesByNames) <https://api.mattermost.com/#tag/roles/operation/GetRolesByNames>`_
+        `Read in Mattermost API docs (roles - GetRolesByNames) <https://developers.mattermost.com/api-documentation/#/operations/GetRolesByNames>`_
 
         """
         return self.client.post("""/api/v4/roles/names""", options=options)

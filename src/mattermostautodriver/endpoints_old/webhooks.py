@@ -15,7 +15,7 @@ class Webhooks(Base):
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
 
-        `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateIncomingWebhook>`_
+        `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/CreateIncomingWebhook>`_
 
         """
         return self.client.post("""/api/v4/hooks/incoming""", options=options)
@@ -28,7 +28,7 @@ class Webhooks(Base):
         team_id: The ID of the team to get hooks for.
         include_total_count: Appends a total count of returned hooks inside the response object - ex: ``{ "incoming_webhooks": [], "total_count": 0 }``.
 
-        `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhooks>`_
+        `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://developers.mattermost.com/api-documentation/#/operations/GetIncomingWebhooks>`_
 
         """
         return self.client.get("""/api/v4/hooks/incoming""", params=params)
@@ -38,7 +38,7 @@ class Webhooks(Base):
 
         hook_id: Incoming Webhook GUID
 
-        `Read in Mattermost API docs (webhooks - GetIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetIncomingWebhook>`_
+        `Read in Mattermost API docs (webhooks - GetIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/GetIncomingWebhook>`_
 
         """
         return self.client.get(f"/api/v4/hooks/incoming/{hook_id}")
@@ -48,7 +48,7 @@ class Webhooks(Base):
 
         hook_id: Incoming webhook GUID
 
-        `Read in Mattermost API docs (webhooks - DeleteIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteIncomingWebhook>`_
+        `Read in Mattermost API docs (webhooks - DeleteIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/DeleteIncomingWebhook>`_
 
         """
         return self.client.delete(f"/api/v4/hooks/incoming/{hook_id}")
@@ -64,7 +64,7 @@ class Webhooks(Base):
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
 
-        `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateIncomingWebhook>`_
+        `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/UpdateIncomingWebhook>`_
 
         """
         return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=options)
@@ -82,7 +82,7 @@ class Webhooks(Base):
         callback_urls: The URLs to POST the payloads to when the webhook is triggered
         content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded``
 
-        `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/CreateOutgoingWebhook>`_
+        `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/CreateOutgoingWebhook>`_
 
         """
         return self.client.post("""/api/v4/hooks/outgoing""", options=options)
@@ -95,7 +95,7 @@ class Webhooks(Base):
         team_id: The ID of the team to get hooks for.
         channel_id: The ID of the channel to get hooks for.
 
-        `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhooks>`_
+        `Read in Mattermost API docs (webhooks - GetOutgoingWebhooks) <https://developers.mattermost.com/api-documentation/#/operations/GetOutgoingWebhooks>`_
 
         """
         return self.client.get("""/api/v4/hooks/outgoing""", params=params)
@@ -105,7 +105,7 @@ class Webhooks(Base):
 
         hook_id: Outgoing webhook GUID
 
-        `Read in Mattermost API docs (webhooks - GetOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/GetOutgoingWebhook>`_
+        `Read in Mattermost API docs (webhooks - GetOutgoingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/GetOutgoingWebhook>`_
 
         """
         return self.client.get(f"/api/v4/hooks/outgoing/{hook_id}")
@@ -115,7 +115,7 @@ class Webhooks(Base):
 
         hook_id: Outgoing webhook GUID
 
-        `Read in Mattermost API docs (webhooks - DeleteOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/DeleteOutgoingWebhook>`_
+        `Read in Mattermost API docs (webhooks - DeleteOutgoingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/DeleteOutgoingWebhook>`_
 
         """
         return self.client.delete(f"/api/v4/hooks/outgoing/{hook_id}")
@@ -129,7 +129,7 @@ class Webhooks(Base):
         display_name: The display name for this incoming webhook
         description: The description for this incoming webhook
 
-        `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://api.mattermost.com/#tag/webhooks/operation/UpdateOutgoingWebhook>`_
+        `Read in Mattermost API docs (webhooks - UpdateOutgoingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/UpdateOutgoingWebhook>`_
 
         """
         return self.client.put(f"/api/v4/hooks/outgoing/{hook_id}", options=options)
@@ -139,7 +139,7 @@ class Webhooks(Base):
 
         hook_id: Outgoing webhook GUID
 
-        `Read in Mattermost API docs (webhooks - RegenOutgoingHookToken) <https://api.mattermost.com/#tag/webhooks/operation/RegenOutgoingHookToken>`_
+        `Read in Mattermost API docs (webhooks - RegenOutgoingHookToken) <https://developers.mattermost.com/api-documentation/#/operations/RegenOutgoingHookToken>`_
 
         """
         return self.client.post(f"/api/v4/hooks/outgoing/{hook_id}/regen_token")

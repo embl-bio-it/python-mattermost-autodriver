@@ -15,7 +15,7 @@ class Bookmarks(Base):
         or deleted since its value
 
 
-        `Read in Mattermost API docs (bookmarks - ListChannelBookmarksForChannel) <https://api.mattermost.com/#tag/bookmarks/operation/ListChannelBookmarksForChannel>`_
+        `Read in Mattermost API docs (bookmarks - ListChannelBookmarksForChannel) <https://developers.mattermost.com/api-documentation/#/operations/ListChannelBookmarksForChannel>`_
 
         """
         __params = {"bookmarks_since": bookmarks_since}
@@ -43,7 +43,7 @@ class Bookmarks(Base):
         * ``file`` for channel bookmarks that reference a file. ``file_id`` is required
 
 
-        `Read in Mattermost API docs (bookmarks - CreateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/CreateChannelBookmark>`_
+        `Read in Mattermost API docs (bookmarks - CreateChannelBookmark) <https://developers.mattermost.com/api-documentation/#/operations/CreateChannelBookmark>`_
 
         """
         __options = {
@@ -82,7 +82,7 @@ class Bookmarks(Base):
         * ``file`` for channel bookmarks that reference a file. ``file_id`` is required
 
 
-        `Read in Mattermost API docs (bookmarks - UpdateChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/UpdateChannelBookmark>`_
+        `Read in Mattermost API docs (bookmarks - UpdateChannelBookmark) <https://developers.mattermost.com/api-documentation/#/operations/UpdateChannelBookmark>`_
 
         """
         __options = {
@@ -102,7 +102,7 @@ class Bookmarks(Base):
         channel_id: Channel GUID
         bookmark_id: Bookmark GUID
 
-        `Read in Mattermost API docs (bookmarks - DeleteChannelBookmark) <https://api.mattermost.com/#tag/bookmarks/operation/DeleteChannelBookmark>`_
+        `Read in Mattermost API docs (bookmarks - DeleteChannelBookmark) <https://developers.mattermost.com/api-documentation/#/operations/DeleteChannelBookmark>`_
 
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}")
@@ -113,7 +113,7 @@ class Bookmarks(Base):
         channel_id: Channel GUID
         bookmark_id: Bookmark GUID
 
-        `Read in Mattermost API docs (bookmarks - UpdateChannelBookmarkSortOrder) <https://api.mattermost.com/#tag/bookmarks/operation/UpdateChannelBookmarkSortOrder>`_
+        `Read in Mattermost API docs (bookmarks - UpdateChannelBookmarkSortOrder) <https://developers.mattermost.com/api-documentation/#/operations/UpdateChannelBookmarkSortOrder>`_
 
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/bookmarks/{bookmark_id}/sort_order", options=options)

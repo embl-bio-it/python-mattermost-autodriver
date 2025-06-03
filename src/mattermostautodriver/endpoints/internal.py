@@ -30,7 +30,7 @@ class Internal(Base):
         submission: Map of the dialog fields to their values
         cancelled: If the dialog was cancelled.
 
-        `Read in Mattermost API docs (Internal - createPlaybookRunFromDialog) <https://api.mattermost.com/#tag/Internal/operation/createPlaybookRunFromDialog>`_
+        `Read in Mattermost API docs (internal - createPlaybookRunFromDialog) <https://developers.mattermost.com/api-documentation/#/operations/createPlaybookRunFromDialog>`_
 
         """
         __options = {
@@ -51,7 +51,7 @@ class Internal(Base):
 
         channel_ID: ID of the channel the user is in.
 
-        `Read in Mattermost API docs (Internal - getChecklistAutocomplete) <https://api.mattermost.com/#tag/Internal/operation/getChecklistAutocomplete>`_
+        `Read in Mattermost API docs (internal - getChecklistAutocomplete) <https://developers.mattermost.com/api-documentation/#/operations/getChecklistAutocomplete>`_
 
         """
         __params = {"channel_ID": channel_ID}
@@ -62,7 +62,7 @@ class Internal(Base):
 
         id: ID of the playbook run to end.
 
-        `Read in Mattermost API docs (Internal - endPlaybookRunDialog) <https://api.mattermost.com/#tag/Internal/operation/endPlaybookRunDialog>`_
+        `Read in Mattermost API docs (internal - endPlaybookRunDialog) <https://developers.mattermost.com/api-documentation/#/operations/endPlaybookRunDialog>`_
 
         """
         return self.client.post(f"/plugins/playbooks/api/v0/runs/{id}/end")
@@ -73,7 +73,7 @@ class Internal(Base):
         id: The PlaybookRun ID
         state: String representation of the zero-based index of the stage to go to.
 
-        `Read in Mattermost API docs (Internal - nextStageDialog) <https://api.mattermost.com/#tag/Internal/operation/nextStageDialog>`_
+        `Read in Mattermost API docs (internal - nextStageDialog) <https://developers.mattermost.com/api-documentation/#/operations/nextStageDialog>`_
 
         """
         __options = {"state": state}
