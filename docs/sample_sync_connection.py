@@ -1,4 +1,4 @@
-from mattermostautodriver import Driver
+from mattermostautodriver import TypedDriver
 from multiprocessing import Process
 import time
 
@@ -9,7 +9,7 @@ async def my_event_handler(message):
 
 class Handler:
     def __init__(self):
-        self.driver = Driver({
+        self.driver = TypedDriver({
             "url": "127.0.0.1",
             "token": "e691u15hajdebcnqpfdceqihcc",
             "scheme": 'http',

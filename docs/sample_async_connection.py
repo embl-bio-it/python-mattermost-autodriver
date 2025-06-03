@@ -1,4 +1,4 @@
-from mattermostautodriver import AsyncDriver
+from mattermostautodriver import AsyncTypedDriver
 import asyncio
 
 
@@ -8,7 +8,7 @@ async def my_event_handler(message):
 
 class Handler:
     def __init__(self):
-        self.driver = AsyncDriver({
+        self.driver = AsyncTypedDriver({
             "url": "127.0.0.1",
             "token": "e691u15hajdebcnqpfdceqihcc",
             "scheme": 'http',

@@ -59,9 +59,9 @@ Usage
 
 .. code:: python
 
-    from mattermostautodriver import Driver
+    from mattermostautodriver import TypedDriver
 
-    foo = Driver({
+    foo = TypedDriver({
         """
         Required options
 
@@ -143,7 +143,7 @@ Usage
 
     """
     Most of the requests need you to be logged in, so calling login()
-    should be the first thing you do after you created your Driver instance.
+    should be the first thing you do after you created your TypedDriver instance.
     login() returns the raw response.
     If using a personal access token, you still need to run login().
     In this case, does not make a login request, but a `get_user('me')`
@@ -152,11 +152,11 @@ Usage
     foo.login()
 
     """
-    You can make api calls by using calling `Driver.endpointofchoice`.
+    You can make api calls by using calling `TypedDriver.endpointofchoice`.
     Using api[''] is deprecated for 5.0.0!
 
-    So, for example, if you used `Driver.api['users'].get_user('me')` before,
-    you now just do `Driver.users.get_user('me')`.
+    So, for example, if you used `TypedDriver.api['users'].get_user('me')` before,
+    you now just do `TypedDriver.users.get_user('me')`.
     The names of the endpoints and requests are almost identical to
     the names on the api.mattermost.com/v4 page.
     API calls always return the json the server send as a response.
