@@ -1,18 +1,18 @@
 
-# A simple example to retrieve all users for a team while using a _token_ 
+# A simple example to retrieve all users for a team while using a _token_
 # from the .netrc file instead of a password (as requests assumes by default)
 
 import logging
 import requests
 import netrc
 
-from mattermostautodriver import Driver
+from mattermostautodriver import TypedDriver
 
 logging.basicConfig( format='%(levelname)s - %(name)s - %(asctime)s - %(message)s' )
 logger = logging.getLogger( 'MattermostManager' )
 logger.setLevel( logging.INFO )
 
-# requests overrides the simple authentication token header if it finds the entry in 
+# requests overrides the simple authentication token header if it finds the entry in
 # the ~/.netrc file. Since we want to use ~/.netrc to retrieve the _token_, we need
 # to provide our own Authenticator class:
 
@@ -38,7 +38,7 @@ class MattermostManager( object ) :
         (login, account, password) = netrc.netrc().authenticators( mmHost )
         logger.debug( "Going to set up driver for connection to %s " % (mmHost,) )
 
-        self.mmDriver = Driver( options={
+        self.mmDriver = TypedDriver( options={
             'url'    : mmHost,
             'scheme' : 'https',
             'port'   : 443,
@@ -77,17 +77,17 @@ class MattermostManager( object ) :
 
         users = [ ]
         pgNo = 0
-        teamUsers = self.mmDriver.users.get_users( params={ 'in_team'  : teamId,
-                                                            'page'     : str( pgNo ),
-                                                            'per_page' : 200,
-                                                            } )
+        teamUsers = self.mmDriver.users.get_users(in_team= teamId,
+                                                            page= pgNo,
+                                                            per_page = 200,
+                                                            )
         while teamUsers :
             users += teamUsers
             pgNo += 1
-            teamUsers = self.mmDriver.users.get_users( params={ 'in_team'  : teamId,
-                                                                'per_page' : 200,
-                                                                'page'     : str( pgNo ),
-                                                                } )
+            teamUsers = self.mmDriver.users.get_users( in_team= teamId,
+                                                                per_page= 200,
+                                                                page = pgNo,
+                                                                )
         return users
 
 if __name__ == '__main__' :

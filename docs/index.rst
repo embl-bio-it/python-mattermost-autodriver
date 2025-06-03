@@ -19,9 +19,9 @@ mattermostautodriver documentation
 
 See https://github.com/embl-bio-it/python-mattermost-autodriver for the github repository.
 
-You interact with this module mainly by using the ``Driver`` class.
+You interact with this module mainly by using the ``TypedDriver`` class.
 If you want to access information about the logged in user, like the user id,
-you can access them by using ``Driver.client.userid``.
+you can access them by using ``TypedDriver.client.userid``.
 
 Installation
 ''''''''''''
@@ -41,7 +41,7 @@ Classes
 '''''''
 
 .. automodule:: mattermostautodriver
-.. autoclass:: Driver
+.. autoclass:: TypedDriver
     :members:
     :undoc-members:
 
