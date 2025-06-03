@@ -41,7 +41,7 @@ class Driver(BaseDriverWithEndpoints):
         This should be run after login(), because the websocket needs to make
         an authentification.
 
-        See https://api.mattermost.com/v4/#tag/WebSocket for which
+        See https://developers.mattermost.com/api-documentation/#/websocket for which
         websocket events mattermost sends.
 
         Example of a really simple event_handler function
@@ -133,7 +133,7 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         This should be run after login(), because the websocket needs to make
         an authentification.
 
-        See https://api.mattermost.com/v4/#tag/WebSocket for which
+        See https://developers.mattermost.com/api-documentation/#/websocket for which
         websocket events mattermost sends.
 
         Example of a really simple event_handler function
@@ -235,7 +235,7 @@ class AsyncDriver(BaseDriverWithEndpoints):
         This should be run after login(), because the websocket needs to make
         an authentification.
 
-        See https://api.mattermost.com/v4/#tag/WebSocket for which
+        See https://developers.mattermost.com/api-documentation/#/websocket for which
         websocket events mattermost sends.
 
         Example of a really simple event_handler function
@@ -339,7 +339,7 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
         This should be run after login(), because the websocket needs to make
         an authentification.
 
-        See https://api.mattermost.com/v4/#tag/WebSocket for which
+        See https://developers.mattermost.com/api-documentation/#/websocket for which
         websocket events mattermost sends.
 
         Example of a really simple event_handler function
