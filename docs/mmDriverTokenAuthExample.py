@@ -84,9 +84,9 @@ class MattermostManager( object ) :
         while teamUsers :
             users += teamUsers
             pgNo += 1
-            teamUsers = self.mmDriver.users.get_users( in_team= teamId,
-                                                                per_page= 200,
-                                                                page = pgNo,
+            teamUsers = self.mmDriver.users.get_users(in_team=teamId,
+                                                                per_page=200,
+                                                                page=pgNo,
                                                                 )
         return users
 
