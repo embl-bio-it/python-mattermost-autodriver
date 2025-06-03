@@ -57,9 +57,129 @@ from endpoints.uploads import Uploads
 from endpoints.usage import Usage
 from endpoints.users import Users
 from endpoints.webhooks import Webhooks
+from endpoints_old.authentication import Authentication as OldAuthentication
+from endpoints_old.bleve import Bleve as OldBleve
+from endpoints_old.bookmarks import Bookmarks as OldBookmarks
+from endpoints_old.bots import Bots as OldBots
+from endpoints_old.brand import Brand as OldBrand
+from endpoints_old.channels import Channels as OldChannels
+from endpoints_old.cloud import Cloud as OldCloud
+from endpoints_old.cluster import Cluster as OldCluster
+from endpoints_old.commands import Commands as OldCommands
+from endpoints_old.compliance import Compliance as OldCompliance
+from endpoints_old.custom_profile_attributes import CustomProfileAttributes as OldCustomProfileAttributes
+from endpoints_old.data_retention import DataRetention as OldDataRetention
+from endpoints_old.elasticsearch import Elasticsearch as OldElasticsearch
+from endpoints_old.emoji import Emoji as OldEmoji
+from endpoints_old.exports import Exports as OldExports
+from endpoints_old.files import Files as OldFiles
+from endpoints_old.filtering import Filtering as OldFiltering
+from endpoints_old.groups import Groups as OldGroups
+from endpoints_old.imports import Imports as OldImports
+from endpoints_old.integration_actions import IntegrationActions as OldIntegrationActions
+from endpoints_old.internal import Internal as OldInternal
+from endpoints_old.ip import Ip as OldIp
+from endpoints_old.jobs import Jobs as OldJobs
+from endpoints_old.ldap import Ldap as OldLdap
+from endpoints_old.logs import Logs as OldLogs
+from endpoints_old.metrics import Metrics as OldMetrics
+from endpoints_old.migrate import Migrate as OldMigrate
+from endpoints_old.oauth import Oauth as OldOauth
+from endpoints_old.outgoing_connections import OutgoingConnections as OldOutgoingConnections
+from endpoints_old.outgoing_oauth_connections import OutgoingOauthConnections as OldOutgoingOauthConnections
+from endpoints_old.permissions import Permissions as OldPermissions
+from endpoints_old.playbookautofollows import PlaybookAutofollows as OldPlaybookAutofollows
+from endpoints_old.playbookruns import PlaybookRuns as OldPlaybookRuns
+from endpoints_old.playbooks import Playbooks as OldPlaybooks
+from endpoints_old.plugins import Plugins as OldPlugins
+from endpoints_old.posts import Posts as OldPosts
+from endpoints_old.preferences import Preferences as OldPreferences
+from endpoints_old.reactions import Reactions as OldReactions
+from endpoints_old.remote_clusters import RemoteClusters as OldRemoteClusters
+from endpoints_old.reports import Reports as OldReports
+from endpoints_old.roles import Roles as OldRoles
+from endpoints_old.root import Root as OldRoot
+from endpoints_old.saml import SAML as OldSAML
+from endpoints_old.scheduled_post import ScheduledPost as OldScheduledPost
+from endpoints_old.schemes import Schemes as OldSchemes
+from endpoints_old.search import Search as OldSearch
+from endpoints_old.shared_channels import SharedChannels as OldSharedChannels
+from endpoints_old.status import Status as OldStatus
+from endpoints_old.system import System as OldSystem
+from endpoints_old.teams import Teams as OldTeams
+from endpoints_old.terms_of_service import TermsOfService as OldTermsOfService
+from endpoints_old.threads import Threads as OldThreads
+from endpoints_old.timeline import Timeline as OldTimeline
+from endpoints_old.uploads import Uploads as OldUploads
+from endpoints_old.usage import Usage as OldUsage
+from endpoints_old.users import Users as OldUsers
+from endpoints_old.webhooks import Webhooks as OldWebhooks
 
 
 class BaseDriverWithEndpoints(BaseDriver):
+
+    def __init__(self, options=None, client_cls=Client, *args, **kwargs):
+        super().__init__(options, client_cls, *args, **kwargs)
+        self.authentication = OldAuthentication(self.client)
+        self.bleve = OldBleve(self.client)
+        self.bookmarks = OldBookmarks(self.client)
+        self.bots = OldBots(self.client)
+        self.brand = OldBrand(self.client)
+        self.channels = OldChannels(self.client)
+        self.cloud = OldCloud(self.client)
+        self.cluster = OldCluster(self.client)
+        self.commands = OldCommands(self.client)
+        self.compliance = OldCompliance(self.client)
+        self.custom_profile_attributes = OldCustomProfileAttributes(self.client)
+        self.data_retention = OldDataRetention(self.client)
+        self.elasticsearch = OldElasticsearch(self.client)
+        self.emoji = OldEmoji(self.client)
+        self.exports = OldExports(self.client)
+        self.files = OldFiles(self.client)
+        self.filtering = OldFiltering(self.client)
+        self.groups = OldGroups(self.client)
+        self.imports = OldImports(self.client)
+        self.integration_actions = OldIntegrationActions(self.client)
+        self.internal = OldInternal(self.client)
+        self.ip = OldIp(self.client)
+        self.jobs = OldJobs(self.client)
+        self.ldap = OldLdap(self.client)
+        self.logs = OldLogs(self.client)
+        self.metrics = OldMetrics(self.client)
+        self.migrate = OldMigrate(self.client)
+        self.oauth = OldOauth(self.client)
+        self.outgoing_connections = OldOutgoingConnections(self.client)
+        self.outgoing_oauth_connections = OldOutgoingOauthConnections(self.client)
+        self.permissions = OldPermissions(self.client)
+        self.playbookautofollows = OldPlaybookAutofollows(self.client)
+        self.playbookruns = OldPlaybookRuns(self.client)
+        self.playbooks = OldPlaybooks(self.client)
+        self.plugins = OldPlugins(self.client)
+        self.posts = OldPosts(self.client)
+        self.preferences = OldPreferences(self.client)
+        self.reactions = OldReactions(self.client)
+        self.remote_clusters = OldRemoteClusters(self.client)
+        self.reports = OldReports(self.client)
+        self.roles = OldRoles(self.client)
+        self.root = OldRoot(self.client)
+        self.saml = OldSAML(self.client)
+        self.scheduled_post = OldScheduledPost(self.client)
+        self.schemes = OldSchemes(self.client)
+        self.search = OldSearch(self.client)
+        self.shared_channels = OldSharedChannels(self.client)
+        self.status = OldStatus(self.client)
+        self.system = OldSystem(self.client)
+        self.teams = OldTeams(self.client)
+        self.terms_of_service = OldTermsOfService(self.client)
+        self.threads = OldThreads(self.client)
+        self.timeline = OldTimeline(self.client)
+        self.uploads = OldUploads(self.client)
+        self.usage = OldUsage(self.client)
+        self.users = OldUsers(self.client)
+        self.webhooks = OldWebhooks(self.client)
+
+
+class TypedBaseDriverWithEndpoints(BaseDriver):
 
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)

@@ -2,11 +2,16 @@ import ast
 import os
 
 from subprocess import run
+from typing import Callable
 
 
 class ASTEndpointParser:
     def __init__(
-        self, driver_file_path: str = os.path.join("driver", "endpoint_base.py"), endpoints_dir: str = "endpoints"
+        self,
+        endpoints_dir: str,
+        base_driver_class_name: str,
+        driver_file_path: str = os.path.join("driver", "endpoint_base.py"),
+        modify_module_class_name: Callable[[str], str] | None = None,
     ):
         module_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -15,9 +20,11 @@ class ASTEndpointParser:
             "mattermostautodriver",
         )
 
+        self.base_driver_class_name = base_driver_class_name
         self.driver_file_path = os.path.join(module_path, driver_file_path)
-        self.endpoints_path = os.path.join(module_path, endpoints_dir)
         self.endpoints_dir = endpoints_dir
+        self.endpoints_path = os.path.join(module_path, endpoints_dir)
+        self.modify_module_class_name = modify_module_class_name
 
     def parse_file(self) -> ast.Module:
         """Parse the Python file and return the AST."""
@@ -86,7 +93,14 @@ class ASTEndpointParser:
 
     def create_import_node(self, module_name: str, class_name: str) -> ast.ImportFrom:
         return ast.ImportFrom(
-            module=f"{self.endpoints_dir}.{module_name}", names=[ast.alias(name=class_name, asname=None)], level=0
+            module=f"{self.endpoints_dir}.{module_name}",
+            names=[
+                ast.alias(
+                    name=class_name,
+                    asname=self.modify_module_class_name(class_name) if self.modify_module_class_name else None,
+                )
+            ],
+            level=0,
         )
 
     def create_assignment_node(self, module_name: str, class_name: str) -> ast.Assign:
@@ -95,25 +109,28 @@ class ASTEndpointParser:
         return ast.Assign(
             targets=[ast.Attribute(value=ast.Name(id="self", ctx=ast.Load()), attr=attr_name, ctx=ast.Store())],
             value=ast.Call(
-                func=ast.Name(id=class_name, ctx=ast.Load()),
+                func=ast.Name(
+                    id=self.modify_module_class_name(class_name) if self.modify_module_class_name else class_name,
+                    ctx=ast.Load(),
+                ),
                 args=[ast.Attribute(value=ast.Name(id="self", ctx=ast.Load()), attr="client", ctx=ast.Load())],
                 keywords=[],
             ),
         )
 
     def find_base_driver_with_endpoints_class(self, tree: ast.Module) -> ast.ClassDef:
-        """Find the BaseDriverWithEndpoints class in the AST."""
+        """Find the base driver class in the AST."""
         for node in ast.walk(tree):
-            if isinstance(node, ast.ClassDef) and node.name == "BaseDriverWithEndpoints":
+            if isinstance(node, ast.ClassDef) and node.name == self.base_driver_class_name:
                 return node
-        raise ValueError("BaseDriverWithEndpoints class not found in the file")
+        raise ValueError(f"{self.base_driver_class_name} class not found in the file")
 
     def find_init_method(self, class_node: ast.ClassDef) -> ast.FunctionDef:
         """Find the __init__ method in a class node."""
         for node in class_node.body:
             if isinstance(node, ast.FunctionDef) and node.name == "__init__":
                 return node
-        raise ValueError("__init__ method not found in BaseDriverWithEndpoints class")
+        raise ValueError(f"__init__ method not found in {self.base_driver_class_name} class")
 
     def remove_existing_endpoint_assignments(self, init_method: ast.FunctionDef) -> ast.FunctionDef:
         """Remove existing endpoint assignments from the __init__ method."""
@@ -182,7 +199,7 @@ class ASTEndpointParser:
         for import_node in reversed(new_imports):  # Reverse to maintain order
             tree.body.insert(insert_index, import_node)
 
-        # Update the BaseDriverWithEndpoints class
+        # Update the base driver class
         class_node = self.find_base_driver_with_endpoints_class(tree)
         init_method = self.find_init_method(class_node)
 
@@ -209,7 +226,7 @@ class ASTEndpointParser:
 
         # Discover all endpoints
         discovered_endpoints = self.discover_all_endpoints()
-        print(f"Discovered {len(discovered_endpoints)} endpoints:")
+        print(f"Discovered {len(discovered_endpoints)} endpoints in {self.endpoints_dir}:")
         for module_name, class_name in discovered_endpoints:
             print(f"  - {module_name} -> {class_name}")
 
@@ -226,8 +243,17 @@ class ASTEndpointParser:
 
 
 def main():
-    parser = ASTEndpointParser()
-    parser.update_file()
+    typed_driver_parser = ASTEndpointParser(
+        endpoints_dir="endpoints", base_driver_class_name="TypedBaseDriverWithEndpoints"
+    )
+    untyped_driver_parser = ASTEndpointParser(
+        endpoints_dir="endpoints_old",
+        base_driver_class_name="BaseDriverWithEndpoints",
+        modify_module_class_name=lambda x: "Old" + x,
+    )
+
+    typed_driver_parser.update_file()
+    untyped_driver_parser.update_file()
 
     run(
         [
