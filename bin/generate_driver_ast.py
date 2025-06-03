@@ -5,8 +5,15 @@ from subprocess import run
 
 
 class ASTEndpointParser:
-    def __init__(self, driver_file_path: str = os.path.join("driver", "endpoint_base.py"), endpoints_dir: str = "endpoints"):
-        module_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, "src","mattermostautodriver", )
+    def __init__(
+        self, driver_file_path: str = os.path.join("driver", "endpoint_base.py"), endpoints_dir: str = "endpoints"
+    ):
+        module_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            os.pardir,
+            "src",
+            "mattermostautodriver",
+        )
 
         self.driver_file_path = os.path.join(module_path, driver_file_path)
         self.endpoints_path = os.path.join(module_path, endpoints_dir)
@@ -54,7 +61,6 @@ class ASTEndpointParser:
                 raise Exception(f"Could not find class definition in {endpoint}")
 
             endpoints.append((module_name, class_name))
-
 
         return sorted(endpoints)  # Sort for consistent ordering
 
@@ -227,8 +233,14 @@ def main():
     parser = ASTEndpointParser()
     parser.update_file()
 
-
-    run(["black", "--config", "pyproject.toml", os.path.join("src","mattermostautodriver","driver","endpoint_base.py")])
+    run(
+        [
+            "black",
+            "--config",
+            "pyproject.toml",
+            os.path.join("src", "mattermostautodriver", "driver", "endpoint_base.py"),
+        ]
+    )
 
 
 if __name__ == "__main__":
