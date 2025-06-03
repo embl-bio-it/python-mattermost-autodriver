@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import warnings
 
 from ..client import AsyncClient, Client
 from ..websocket import Websocket
@@ -12,6 +13,17 @@ log.setLevel(logging.INFO)
 
 
 class Driver(BaseDriverWithEndpoints):
+    def __new__(cls, options=None, client_cls=Client, *args, **kwargs):
+        message = (
+            "The old dictionary based API interface is deprecated and will be removed in the future. "
+            "Please adapt your code by using the TypedDriver class and expand the arguments you would typically pass. "
+            "See https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html "
+            "for additional details."
+        )
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+
+        return super().__new__(cls)
+
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
 
@@ -104,6 +116,17 @@ class Driver(BaseDriverWithEndpoints):
 
 
 class AsyncDriver(BaseDriverWithEndpoints):
+    def __new__(cls, options=None, client_cls=Client, *args, **kwargs):
+        message = (
+            "The old dictionary based API interface is deprecated and will be removed in the future. "
+            "Please adapt your code by using the AsyncTypedDriver class and expand the arguments you would typically pass. "
+            "See https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html "
+            "for additional details."
+        )
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+
+        return super().__new__(cls)
+
     def __init__(self, options=None, client_cls=AsyncClient, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
 

@@ -54,21 +54,6 @@ class BaseDriver:
         - debug (False)
     """
 
-    def __new__(cls, options=None, client_cls=Client, *args, **kwargs):
-        old_api = kwargs.get("old_api", False)
-        if old_api:
-            message = (
-                "The old dictionary based API interface is deprecated and will be removed in the future. "
-                "Please adapt your code to expand the arguments you would typically pass. "
-                "See https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html "
-                "for additional details."
-            )
-            warnings.warn(message, DeprecationWarning, stacklevel=2)
-            cls._endpoints_path = "endpoints_old"
-        else:
-            cls._endpoints_path = "endpoints"
-        return super().__new__(cls)
-
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         """
         :param options: A dict with the values from `default_options`
