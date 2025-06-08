@@ -177,12 +177,14 @@ class Driver(BaseDriver):
             self.client.token = self.options["token"]
             result = self.users.get_user("me")
         else:
-            response = self.users.login(
+            response = self.client.make_request(
+                "post",
+                """/api/v4/users/login""",
                 {
                     "login_id": self.options["login_id"],
                     "password": self.options["password"],
                     "token": self.options["mfa_token"],
-                }
+                },
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
