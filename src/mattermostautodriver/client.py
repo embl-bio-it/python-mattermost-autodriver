@@ -259,6 +259,9 @@ class Client(BaseClient):
     def call_webhook(self, hook_id, options=None):
         return self.make_request("post", "/hooks/" + hook_id, options=options)
 
+    def close(self):
+        self.client.close()
+
 
 class AsyncClient(BaseClient):
     def __init__(self, options):
@@ -314,3 +317,6 @@ class AsyncClient(BaseClient):
     async def call_webhook(self, hook_id, options=None):
         response = await self.make_request("post", "/hooks/" + hook_id, options=options)
         return response.json()
+
+    async def close(self):
+        await self.client.aclose()
