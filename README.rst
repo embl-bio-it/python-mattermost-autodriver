@@ -216,6 +216,11 @@ Usage
     # This method does not exist on the mattermost api AFAIK, I added it for ease of use.
     foo.client.call_webhook('myHookId', options) # Options are optional
 
+    # Finally, logout the user if using login/password authentication.
+    foo.logout()
+
+    # And close the client once done with it.
+    foo.close()
 
 .. inclusion-marker-end-usage
 

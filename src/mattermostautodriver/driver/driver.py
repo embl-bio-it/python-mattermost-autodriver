@@ -114,6 +114,9 @@ class Driver(BaseDriverWithEndpoints):
         self.client.cookies = None
         return result
 
+    def close(self):
+        self.client.close()
+
 
 class TypedDriver(TypedBaseDriverWithEndpoints):
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
@@ -201,6 +204,9 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         self.client.username = ""
         self.client.cookies = None
         return result
+
+    def close(self):
+        self.client.close()
 
 
 class AsyncDriver(BaseDriverWithEndpoints):
@@ -306,6 +312,9 @@ class AsyncDriver(BaseDriverWithEndpoints):
         self.client.cookies = None
         return result
 
+    async def close(self):
+        await self.client.close()
+
 
 class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
     def __init__(self, options=None, client_cls=AsyncClient, *args, **kwargs):
@@ -394,3 +403,6 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
         self.client.username = ""
         self.client.cookies = None
         return result
+
+    async def close(self):
+        await self.client.close()
