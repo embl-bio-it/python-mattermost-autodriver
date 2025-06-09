@@ -100,10 +100,12 @@ class Posts(Base):
         perPage: The number of posts per page
         fromPost: The post_id to return the next page of posts from
         fromCreateAt: The create_at timestamp to return the next page of posts from
+        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down.
         direction: The direction to return the posts. Either up or down.
         skipFetchThreads: Whether to skip fetching threads or not
         collapsedThreads: Whether the client uses CRT or not
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
+        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt.
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostThread>`_
 

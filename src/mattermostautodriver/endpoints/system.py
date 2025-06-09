@@ -181,6 +181,13 @@ class System(Base):
         __params = {"format": format}
         return self.client.get("""/api/v4/license/client""", params=__params)
 
+    def get_license_load_metric(self):
+        """Get license load metric
+        `Read in Mattermost API docs (system - GetLicenseLoadMetric) <https://developers.mattermost.com/api-documentation/#/operations/GetLicenseLoadMetric>`_
+
+        """
+        return self.client.get("""/api/v4/license/load_metric""")
+
     def request_license_renewal_link(self):
         """Request the license renewal link
         `Read in Mattermost API docs (system - RequestLicenseRenewalLink) <https://developers.mattermost.com/api-documentation/#/operations/RequestLicenseRenewalLink>`_

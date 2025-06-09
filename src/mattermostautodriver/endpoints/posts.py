@@ -148,10 +148,12 @@ class Posts(Base):
         perPage: int | None = 0,
         fromPost: str | None = "",
         fromCreateAt: int | None = 0,
+        fromUpdateAt: int | None = 0,
         direction: str | None = "",
         skipFetchThreads: bool | None = False,
         collapsedThreads: bool | None = False,
         collapsedThreadsExtended: bool | None = False,
+        updatesOnly: bool | None = False,
     ):
         """Get a thread
 
@@ -159,10 +161,12 @@ class Posts(Base):
         perPage: The number of posts per page
         fromPost: The post_id to return the next page of posts from
         fromCreateAt: The create_at timestamp to return the next page of posts from
+        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down.
         direction: The direction to return the posts. Either up or down.
         skipFetchThreads: Whether to skip fetching threads or not
         collapsedThreads: Whether the client uses CRT or not
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not
+        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt.
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostThread>`_
 
@@ -171,10 +175,12 @@ class Posts(Base):
             "perPage": perPage,
             "fromPost": fromPost,
             "fromCreateAt": fromCreateAt,
+            "fromUpdateAt": fromUpdateAt,
             "direction": direction,
             "skipFetchThreads": skipFetchThreads,
             "collapsedThreads": collapsedThreads,
             "collapsedThreadsExtended": collapsedThreadsExtended,
+            "updatesOnly": updatesOnly,
         }
         return self.client.get(f"/api/v4/posts/{post_id}/thread", params=__params)
 
