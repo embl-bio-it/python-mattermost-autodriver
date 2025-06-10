@@ -76,12 +76,16 @@ class Driver(BaseDriverWithEndpoints):
             self.client.token = self.options["token"]
             result = self.users.get_user("me")
         else:
-            response = self.users.login(
+            # Note self.user.login() can't be used here as it returns JSON
+            # due to self.client.post() pre-defined behavior
+            response = self.client.make_request(
+                "post",
+                "/api/v4/users/login",
                 {
                     "login_id": self.options["login_id"],
                     "password": self.options["password"],
                     "token": self.options["mfa_token"],
-                }
+                },
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
@@ -171,8 +175,16 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
             self.client.token = self.options["token"]
             result = self.users.get_user("me")
         else:
-            response = self.users.login(
-                login_id=self.options["login_id"], password=self.options["password"], token=self.options["mfa_token"]
+            # Note self.user.login() can't be used here as it returns JSON
+            # due to self.client.post() pre-defined behavior
+            response = self.client.make_request(
+                "post",
+                "/api/v4/users/login",
+                {
+                    "login_id": self.options["login_id"],
+                    "password": self.options["password"],
+                    "token": self.options["mfa_token"],
+                },
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
@@ -274,12 +286,16 @@ class AsyncDriver(BaseDriverWithEndpoints):
             self.client.token = self.options["token"]
             result = await self.users.get_user("me")
         else:
-            response = await self.users.login(
+            # Note self.user.login() can't be used here as it returns JSON
+            # due to self.client.post() pre-defined behavior
+            response = await self.client.make_request(
+                "post",
+                "/api/v4/users/login",
                 {
                     "login_id": self.options["login_id"],
                     "password": self.options["password"],
                     "token": self.options["mfa_token"],
-                }
+                },
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
@@ -370,8 +386,16 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
             self.client.token = self.options["token"]
             result = await self.users.get_user("me")
         else:
-            response = await self.users.login(
-                login_id=self.options["login_id"], password=self.options["password"], token=self.options["mfa_token"]
+            # Note self.user.login() can't be used here as it returns JSON
+            # due to self.client.post() pre-defined behavior
+            response = await self.client.make_request(
+                "post",
+                "/api/v4/users/login",
+                {
+                    "login_id": self.options["login_id"],
+                    "password": self.options["password"],
+                    "token": self.options["mfa_token"],
+                },
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
