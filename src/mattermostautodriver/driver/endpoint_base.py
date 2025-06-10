@@ -1,5 +1,7 @@
 from .base import BaseDriver
 from ..client import Client
+from ..endpoints.access_control import AccessControl
+from ..endpoints.audit_logs import AuditLogs
 from ..endpoints.authentication import Authentication
 from ..endpoints.bleve import Bleve
 from ..endpoints.bookmarks import Bookmarks
@@ -27,12 +29,13 @@ from ..endpoints.ldap import Ldap
 from ..endpoints.logs import Logs
 from ..endpoints.metrics import Metrics
 from ..endpoints.migrate import Migrate
+from ..endpoints.o_auth import OAuth
 from ..endpoints.oauth import Oauth
 from ..endpoints.outgoing_connections import OutgoingConnections
 from ..endpoints.outgoing_oauth_connections import OutgoingOauthConnections
 from ..endpoints.permissions import Permissions
-from ..endpoints.playbookautofollows import PlaybookAutofollows
-from ..endpoints.playbookruns import PlaybookRuns
+from ..endpoints.playbook_autofollows import PlaybookAutofollows
+from ..endpoints.playbook_runs import PlaybookRuns
 from ..endpoints.playbooks import Playbooks
 from ..endpoints.plugins import Plugins
 from ..endpoints.posts import Posts
@@ -42,7 +45,7 @@ from ..endpoints.remote_clusters import RemoteClusters
 from ..endpoints.reports import Reports
 from ..endpoints.roles import Roles
 from ..endpoints.root import Root
-from ..endpoints.saml import SAML
+from ..endpoints.saml import Saml
 from ..endpoints.scheduled_post import ScheduledPost
 from ..endpoints.schemes import Schemes
 from ..endpoints.search import Search
@@ -57,6 +60,8 @@ from ..endpoints.uploads import Uploads
 from ..endpoints.usage import Usage
 from ..endpoints.users import Users
 from ..endpoints.webhooks import Webhooks
+from ..endpoints_old.access_control import AccessControl as OldAccessControl
+from ..endpoints_old.audit_logs import AuditLogs as OldAuditLogs
 from ..endpoints_old.authentication import Authentication as OldAuthentication
 from ..endpoints_old.bleve import Bleve as OldBleve
 from ..endpoints_old.bookmarks import Bookmarks as OldBookmarks
@@ -84,12 +89,13 @@ from ..endpoints_old.ldap import Ldap as OldLdap
 from ..endpoints_old.logs import Logs as OldLogs
 from ..endpoints_old.metrics import Metrics as OldMetrics
 from ..endpoints_old.migrate import Migrate as OldMigrate
+from ..endpoints_old.o_auth import OAuth as OldOAuth
 from ..endpoints_old.oauth import Oauth as OldOauth
 from ..endpoints_old.outgoing_connections import OutgoingConnections as OldOutgoingConnections
 from ..endpoints_old.outgoing_oauth_connections import OutgoingOauthConnections as OldOutgoingOauthConnections
 from ..endpoints_old.permissions import Permissions as OldPermissions
-from ..endpoints_old.playbookautofollows import PlaybookAutofollows as OldPlaybookAutofollows
-from ..endpoints_old.playbookruns import PlaybookRuns as OldPlaybookRuns
+from ..endpoints_old.playbook_autofollows import PlaybookAutofollows as OldPlaybookAutofollows
+from ..endpoints_old.playbook_runs import PlaybookRuns as OldPlaybookRuns
 from ..endpoints_old.playbooks import Playbooks as OldPlaybooks
 from ..endpoints_old.plugins import Plugins as OldPlugins
 from ..endpoints_old.posts import Posts as OldPosts
@@ -99,7 +105,7 @@ from ..endpoints_old.remote_clusters import RemoteClusters as OldRemoteClusters
 from ..endpoints_old.reports import Reports as OldReports
 from ..endpoints_old.roles import Roles as OldRoles
 from ..endpoints_old.root import Root as OldRoot
-from ..endpoints_old.saml import SAML as OldSAML
+from ..endpoints_old.saml import Saml as OldSaml
 from ..endpoints_old.scheduled_post import ScheduledPost as OldScheduledPost
 from ..endpoints_old.schemes import Schemes as OldSchemes
 from ..endpoints_old.search import Search as OldSearch
@@ -120,6 +126,8 @@ class BaseDriverWithEndpoints(BaseDriver):
 
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
+        self.access_control = OldAccessControl(self.client)
+        self.audit_logs = OldAuditLogs(self.client)
         self.authentication = OldAuthentication(self.client)
         self.bleve = OldBleve(self.client)
         self.bookmarks = OldBookmarks(self.client)
@@ -147,12 +155,13 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.logs = OldLogs(self.client)
         self.metrics = OldMetrics(self.client)
         self.migrate = OldMigrate(self.client)
+        self.o_auth = OldOAuth(self.client)
         self.oauth = OldOauth(self.client)
         self.outgoing_connections = OldOutgoingConnections(self.client)
         self.outgoing_oauth_connections = OldOutgoingOauthConnections(self.client)
         self.permissions = OldPermissions(self.client)
-        self.playbookautofollows = OldPlaybookAutofollows(self.client)
-        self.playbookruns = OldPlaybookRuns(self.client)
+        self.playbook_autofollows = OldPlaybookAutofollows(self.client)
+        self.playbook_runs = OldPlaybookRuns(self.client)
         self.playbooks = OldPlaybooks(self.client)
         self.plugins = OldPlugins(self.client)
         self.posts = OldPosts(self.client)
@@ -162,7 +171,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.reports = OldReports(self.client)
         self.roles = OldRoles(self.client)
         self.root = OldRoot(self.client)
-        self.saml = OldSAML(self.client)
+        self.saml = OldSaml(self.client)
         self.scheduled_post = OldScheduledPost(self.client)
         self.schemes = OldSchemes(self.client)
         self.search = OldSearch(self.client)
@@ -183,6 +192,8 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
 
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
+        self.access_control = AccessControl(self.client)
+        self.audit_logs = AuditLogs(self.client)
         self.authentication = Authentication(self.client)
         self.bleve = Bleve(self.client)
         self.bookmarks = Bookmarks(self.client)
@@ -210,12 +221,13 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.logs = Logs(self.client)
         self.metrics = Metrics(self.client)
         self.migrate = Migrate(self.client)
+        self.o_auth = OAuth(self.client)
         self.oauth = Oauth(self.client)
         self.outgoing_connections = OutgoingConnections(self.client)
         self.outgoing_oauth_connections = OutgoingOauthConnections(self.client)
         self.permissions = Permissions(self.client)
-        self.playbookautofollows = PlaybookAutofollows(self.client)
-        self.playbookruns = PlaybookRuns(self.client)
+        self.playbook_autofollows = PlaybookAutofollows(self.client)
+        self.playbook_runs = PlaybookRuns(self.client)
         self.playbooks = Playbooks(self.client)
         self.plugins = Plugins(self.client)
         self.posts = Posts(self.client)
@@ -225,7 +237,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.reports = Reports(self.client)
         self.roles = Roles(self.client)
         self.root = Root(self.client)
-        self.saml = SAML(self.client)
+        self.saml = Saml(self.client)
         self.scheduled_post = ScheduledPost(self.client)
         self.schemes = Schemes(self.client)
         self.search = Search(self.client)
