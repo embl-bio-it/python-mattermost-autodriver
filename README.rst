@@ -19,7 +19,7 @@ Changes in API of ``mattermostautodriver`` will likely be due to a change in the
 
 This project is forked from https://github.com/Vaelor/python-mattermost-driver but uses an automatic approach to generate all Python endpoint files from the mattermost OpenAPI specification.
 
-Python 3.8 or later is required.
+Starting with version 10.8.2, Python 3.10 or greater is required. Previous versions needed Python 3.8+.
 
 Warning
 ^^^^^^^
