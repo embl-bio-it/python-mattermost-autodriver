@@ -27,10 +27,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: ammaraskar/sphinx-action@master
-        with:
-          pre-build-command: "pip install -U pip"
-          docs-folder: "docs/"
+      - name: Install Python 3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip make
+      - name: Build docs
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          cd docs
+          make html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
