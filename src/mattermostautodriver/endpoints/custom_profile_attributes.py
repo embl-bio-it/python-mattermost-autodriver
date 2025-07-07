@@ -13,7 +13,7 @@ class CustomProfileAttributes(Base):
         """
         return self.client.get("""/api/v4/custom_profile_attributes/fields""")
 
-    def create_cpa_field(self, name: str, type: str, attrs: str | None = None):
+    def create_cpa_field(self, name: str, type: str, attrs: dict[str, Any] | None = None):
         """Create a Custom Profile Attribute field
 
         name:
@@ -27,7 +27,7 @@ class CustomProfileAttributes(Base):
         return self.client.post("""/api/v4/custom_profile_attributes/fields""", options=__options)
 
     def patch_cpa_field(
-        self, field_id: str, name: str | None = None, type: str | None = None, attrs: str | None = None
+        self, field_id: str, name: str | None = None, type: str | None = None, attrs: dict[str, Any] | None = None
     ):
         """Patch a Custom Profile Attribute field
 
