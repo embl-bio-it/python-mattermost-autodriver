@@ -17,6 +17,9 @@ class PlaybookRuns(Base):
         owner_user_id: The returned list will contain only the playbook runs commanded by this user. Specify "me" for current user.
         participant_id: The returned list will contain only the playbook runs for which the given user is a participant. Specify "me" for current user.
         search_term: The returned list will contain only the playbook runs whose name contains the search term.
+        channel_id: The returned list will contain only the playbook runs associated with this channel ID.
+        omit_ended: When set to true, only active runs (with EndAt = 0) are returned. When false or omitted, both active and ended runs are returned.
+        since: Return only PlaybookRuns created/modified since the given timestamp (in milliseconds).
 
         `Read in Mattermost API docs (playbook_runs - listPlaybookRuns) <https://developers.mattermost.com/api-documentation/#/operations/listPlaybookRuns>`_
 

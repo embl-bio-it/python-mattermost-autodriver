@@ -17,6 +17,9 @@ class PlaybookRuns(Base):
         owner_user_id: str | None = None,
         participant_id: str | None = None,
         search_term: str | None = None,
+        channel_id: str | None = None,
+        omit_ended: bool | None = False,
+        since: int | None = None,
     ):
         """List all playbook runs
 
@@ -29,6 +32,9 @@ class PlaybookRuns(Base):
         owner_user_id: The returned list will contain only the playbook runs commanded by this user. Specify "me" for current user.
         participant_id: The returned list will contain only the playbook runs for which the given user is a participant. Specify "me" for current user.
         search_term: The returned list will contain only the playbook runs whose name contains the search term.
+        channel_id: The returned list will contain only the playbook runs associated with this channel ID.
+        omit_ended: When set to true, only active runs (with EndAt = 0) are returned. When false or omitted, both active and ended runs are returned.
+        since: Return only PlaybookRuns created/modified since the given timestamp (in milliseconds).
 
         `Read in Mattermost API docs (playbook_runs - listPlaybookRuns) <https://developers.mattermost.com/api-documentation/#/operations/listPlaybookRuns>`_
 
@@ -43,6 +49,9 @@ class PlaybookRuns(Base):
             "owner_user_id": owner_user_id,
             "participant_id": participant_id,
             "search_term": search_term,
+            "channel_id": channel_id,
+            "omit_ended": omit_ended,
+            "since": since,
         }
         return self.client.get("""/plugins/playbooks/api/v0/runs""", params=__params)
 
