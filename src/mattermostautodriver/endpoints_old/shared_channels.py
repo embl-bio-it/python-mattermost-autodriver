@@ -65,3 +65,24 @@ class SharedChannels(Base):
 
         """
         return self.client.post(f"/api/v4/remotecluster/{remote_id}/channels/{channel_id}/uninvite")
+
+    def get_shared_channel_remotes(self, channel_id):
+        """Get remote clusters for a shared channel
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
+
+    def can_user_direct_message(self, user_id, other_user_id):
+        """Check if user can DM another user in shared channels context
+
+        user_id: User GUID
+        other_user_id: Other user GUID
+
+        `Read in Mattermost API docs (shared_channels - CanUserDirectMessage) <https://developers.mattermost.com/api-documentation/#/operations/CanUserDirectMessage>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/users/{user_id}/can_dm/{other_user_id}")

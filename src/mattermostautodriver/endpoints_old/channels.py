@@ -171,6 +171,7 @@ class Channels(Base):
         display_name: The non-unique UI name for the channel
         purpose: A short description of the purpose of the channel
         header: Markdown-formatted text to display in the header of the channel
+        banner_info:
 
         `Read in Mattermost API docs (channels - PatchChannel) <https://developers.mattermost.com/api-documentation/#/operations/PatchChannel>`_
 
@@ -633,16 +634,6 @@ class Channels(Base):
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
-
-    def get_shared_channel_remotes(self, channel_id):
-        """Get remote clusters for a shared channel
-
-        channel_id: Channel GUID
-
-        `Read in Mattermost API docs (channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
-
-        """
-        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
 
     def get_channel_access_control_attributes(self, channel_id):
         """Get access control attributes for a channel
