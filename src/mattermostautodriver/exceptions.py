@@ -24,6 +24,12 @@ class MattermostError(HTTPError):
         self.is_oauth_error = is_oauth_error
 
 
+class UnknownMattermostError(MattermostError):
+    """
+    Raised when mattermost returns a status code that is not known
+    """
+
+
 class InvalidOrMissingParameters(MattermostError):
     """
     Raised when mattermost returns a

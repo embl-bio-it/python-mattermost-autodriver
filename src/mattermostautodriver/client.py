@@ -15,6 +15,7 @@ from .exceptions import (
     MethodNotAllowed,
     ContentTooLarge,
     FeatureDisabled,
+    UnknownMattermostError,
 )
 
 log = logging.getLogger("mattermostautodriver.websocket")
@@ -198,7 +199,7 @@ class BaseClient:
             elif e.response.status_code == 501:
                 raise FeatureDisabled(message, error_id, request_id, is_oauth_error) from None
             else:
-                raise
+                raise UnknownMattermostError(message, e.response.status_code, error_id, request_id, is_oauth_error) from e
 
         log.debug(response)
 
