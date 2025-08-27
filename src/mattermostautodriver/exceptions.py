@@ -43,9 +43,7 @@ class InvalidOrMissingParameters(MattermostError):
     400 Invalid or missing parameters in URL or request body
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=400,
@@ -61,9 +59,7 @@ class NoAccessTokenProvided(MattermostError):
     401 No access token provided
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=401,
@@ -79,9 +75,7 @@ class NotEnoughPermissions(MattermostError):
     403 Do not have appropriate permissions
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=403,
@@ -97,9 +91,7 @@ class ResourceNotFound(MattermostError):
     404 Resource not found
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=404,
@@ -115,9 +107,7 @@ class MethodNotAllowed(MattermostError):
     405 Method Not Allowed
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=405,
@@ -133,9 +123,7 @@ class ContentTooLarge(MattermostError):
     413 Content too large
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=413,
@@ -151,9 +139,7 @@ class FeatureDisabled(MattermostError):
     501 Feature is disabled
     """
 
-    def __init__(
-        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
-    ):
+    def __init__(self, message: str, error_id: str, request_id: str, is_oauth_error: bool):
         super().__init__(
             message=message,
             status_code=501,
