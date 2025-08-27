@@ -1,14 +1,27 @@
 from httpx import HTTPError
 
 
-class MattermostError(HTTPError):
+class InvalidMattermostError(Exception):
     """
-    Base class for all mattermost errors
+    Raised when mattermost returns an invalid error
     """
 
     def __init__(self, message, status_code):
         super().__init__(message)
         self.status_code = status_code
+
+
+class MattermostError(HTTPError):
+    """
+    Base class for all known mattermost errors
+    """
+
+    def __init__(self, message, status_code, error_id, request_id, is_oauth_error):
+        super().__init__(message)
+        self.status_code = status_code
+        self.error_id = error_id
+        self.request_id = request_id
+        self.is_oauth_error = is_oauth_error
 
 
 class InvalidOrMissingParameters(MattermostError):
@@ -17,8 +30,14 @@ class InvalidOrMissingParameters(MattermostError):
     400 Invalid or missing parameters in URL or request body
     """
 
-    def __init__(self, message):
-        super().__init__(message, 400)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=400,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class NoAccessTokenProvided(MattermostError):
@@ -27,8 +46,14 @@ class NoAccessTokenProvided(MattermostError):
     401 No access token provided
     """
 
-    def __init__(self, message):
-        super().__init__(message, 401)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=401,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class NotEnoughPermissions(MattermostError):
@@ -37,8 +62,14 @@ class NotEnoughPermissions(MattermostError):
     403 Do not have appropriate permissions
     """
 
-    def __init__(self, message):
-        super().__init__(message, 403)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=403,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class ResourceNotFound(MattermostError):
@@ -47,8 +78,14 @@ class ResourceNotFound(MattermostError):
     404 Resource not found
     """
 
-    def __init__(self, message):
-        super().__init__(message, 404)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=404,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class MethodNotAllowed(MattermostError):
@@ -57,8 +94,14 @@ class MethodNotAllowed(MattermostError):
     405 Method Not Allowed
     """
 
-    def __init__(self, message):
-        super().__init__(message, 405)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=405,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class ContentTooLarge(MattermostError):
@@ -67,8 +110,14 @@ class ContentTooLarge(MattermostError):
     413 Content too large
     """
 
-    def __init__(self, message):
-        super().__init__(message, 413)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=413,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
 
 
 class FeatureDisabled(MattermostError):
@@ -77,5 +126,11 @@ class FeatureDisabled(MattermostError):
     501 Feature is disabled
     """
 
-    def __init__(self, message):
-        super().__init__(message, 501)
+    def __init__(self, message, error_id, request_id, is_oauth_error):
+        super().__init__(
+            message=message,
+            status_code=501,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )

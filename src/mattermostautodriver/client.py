@@ -7,6 +7,7 @@ import logging
 import httpx
 
 from .exceptions import (
+    InvalidMattermostError,
     InvalidOrMissingParameters,
     NoAccessTokenProvided,
     NotEnoughPermissions,
@@ -170,26 +171,32 @@ class BaseClient:
         except httpx.HTTPStatusError as e:
             try:
                 data = e.response.json()
-                message = data.get("message", data)
-            except ValueError:
-                log.debug("Could not convert response to json")
-                message = response.text
+
+                message = data["message"]
+                error_id = data["id"]
+                request_id = data["request_id"]
+                is_oauth_error = data["is_oauth"]
+
+            except (ValueError, KeyError):
+                raise InvalidMattermostError(e.response.text, e.response.status_code) from None
             log.error(message)
 
+
+
             if e.response.status_code == 400:
-                raise InvalidOrMissingParameters(message) from None
+                raise InvalidOrMissingParameters(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 401:
-                raise NoAccessTokenProvided(message) from None
+                raise NoAccessTokenProvided(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 403:
-                raise NotEnoughPermissions(message) from None
+                raise NotEnoughPermissions(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 404:
-                raise ResourceNotFound(message) from None
+                raise ResourceNotFound(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 405:
-                raise MethodNotAllowed(message) from None
+                raise MethodNotAllowed(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 413:
-                raise ContentTooLarge(message) from None
+                raise ContentTooLarge(message, error_id, request_id, is_oauth_error) from None
             elif e.response.status_code == 501:
-                raise FeatureDisabled(message) from None
+                raise FeatureDisabled(message, error_id, request_id, is_oauth_error) from None
             else:
                 raise
 
