@@ -178,8 +178,8 @@ class BaseClient:
                 request_id = data["request_id"]
                 is_oauth_error = data.get("is_oauth", False) # is_oauth is not always present
 
-            except (ValueError, KeyError):
-                raise InvalidMattermostError(e.response.text, e.response.status_code) from None
+            except (ValueError, KeyError) as val_err:
+                raise InvalidMattermostError(e.response.text, e.response.status_code) from val_err
             log.error(message)
 
 
