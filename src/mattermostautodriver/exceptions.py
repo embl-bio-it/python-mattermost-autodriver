@@ -6,9 +6,9 @@ class InvalidMattermostError(Exception):
     Raised when mattermost returns an invalid error
     """
 
-    def __init__(self, message, status_code):
+    def __init__(self, message: str, status_code: int):
         super().__init__(message)
-        self.status_code = status_code
+        self.status_code: int = status_code
 
 
 class MattermostError(HTTPError):
@@ -16,12 +16,19 @@ class MattermostError(HTTPError):
     Base class for all known mattermost errors
     """
 
-    def __init__(self, message, status_code, error_id, request_id, is_oauth_error):
+    def __init__(
+        self,
+        message: str,
+        status_code: int,
+        error_id: str,
+        request_id: str,
+        is_oauth_error: bool,
+    ):
         super().__init__(message)
-        self.status_code = status_code
-        self.error_id = error_id
-        self.request_id = request_id
-        self.is_oauth_error = is_oauth_error
+        self.status_code: int = status_code
+        self.error_id: str = error_id
+        self.request_id: str = request_id
+        self.is_oauth_error: bool = is_oauth_error
 
 
 class UnknownMattermostError(MattermostError):
@@ -36,7 +43,9 @@ class InvalidOrMissingParameters(MattermostError):
     400 Invalid or missing parameters in URL or request body
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=400,
@@ -52,7 +61,9 @@ class NoAccessTokenProvided(MattermostError):
     401 No access token provided
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=401,
@@ -68,7 +79,9 @@ class NotEnoughPermissions(MattermostError):
     403 Do not have appropriate permissions
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=403,
@@ -84,7 +97,9 @@ class ResourceNotFound(MattermostError):
     404 Resource not found
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=404,
@@ -100,7 +115,9 @@ class MethodNotAllowed(MattermostError):
     405 Method Not Allowed
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=405,
@@ -116,7 +133,9 @@ class ContentTooLarge(MattermostError):
     413 Content too large
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=413,
@@ -132,7 +151,9 @@ class FeatureDisabled(MattermostError):
     501 Feature is disabled
     """
 
-    def __init__(self, message, error_id, request_id, is_oauth_error):
+    def __init__(
+        self, message: str, error_id: str, request_id: str, is_oauth_error: bool
+    ):
         super().__init__(
             message=message,
             status_code=501,

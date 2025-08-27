@@ -173,6 +173,7 @@ class BaseClient:
             try:
                 data = e.response.json()
 
+                # TODO: Validate type of incoming data
                 message = data["message"]
                 error_id = data["id"]
                 request_id = data["request_id"]
