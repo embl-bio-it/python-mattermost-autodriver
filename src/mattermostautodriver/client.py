@@ -176,7 +176,7 @@ class BaseClient:
                 message = data["message"]
                 error_id = data["id"]
                 request_id = data["request_id"]
-                is_oauth_error = data["is_oauth"]
+                is_oauth_error = data.get("is_oauth", False) # is_oauth is not always present
 
             except (ValueError, KeyError):
                 raise InvalidMattermostError(e.response.text, e.response.status_code) from None
