@@ -91,6 +91,11 @@ jobs:
           pip install -r requirements.txt
           ./scripts/generate_endpoints.sh
 
+      - name: "Update our version file: src/mattermostautodriver/version.py"
+        if: steps.version_check.outputs.version != ''
+        run: |
+          sed -i 's/full_version =.*/full_version = "${{ steps.version_check.outputs.tag }}"/' src/mattermostautodriver/version.py
+
       - name: Commit endpoint changes and tag new version
         if: steps.version_check.outputs.version != ''
         run: |
