@@ -12,6 +12,16 @@ Documentation
 Maintenance
 '''''''''''
 
+10.12.0
+""""""
+
+Code
+''''
+- Add ``MattermostError`` base exception class
+- Add ``ÌnvalidMattermostError`` for mattermost errors returning invalid error format
+- Add ``UnknownMattermostError`` for unknown status codes
+- Add ``status_code``, ``request_id``, ``error_id`` and ``is_oauth_error`` parameters to all exceptions (except for InvalidMattermostError)
+
 
 10.8.2
 """"""
