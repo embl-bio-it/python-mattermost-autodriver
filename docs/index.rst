@@ -53,6 +53,10 @@ Exceptions that api requests can throw
 
 .. automodule:: mattermostautodriver.exceptions
 
+.. autoclass:: InvalidMattermostError
+
+.. autoclass:: UnknownMattermostError
+
 .. autoclass:: InvalidOrMissingParameters
 
 .. autoclass:: NoAccessTokenProvided
