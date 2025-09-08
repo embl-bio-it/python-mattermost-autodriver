@@ -298,6 +298,13 @@ class System(Base):
         """
         return self.client.get("""/api/v4/upgrade_to_enterprise/status""")
 
+    def is_allowed_to_upgrade_to_enterprise(self):
+        """Check if the user is allowed to upgrade to Enterprise Edition
+        `Read in Mattermost API docs (system - IsAllowedToUpgradeToEnterprise) <https://developers.mattermost.com/api-documentation/#/operations/IsAllowedToUpgradeToEnterprise>`_
+
+        """
+        return self.client.get("""/api/v4/upgrade_to_enterprise/allowed""")
+
     def restart_server(self):
         """Restart the system after an upgrade from Team Edition to Enterprise Edition
         `Read in Mattermost API docs (system - RestartServer) <https://developers.mattermost.com/api-documentation/#/operations/RestartServer>`_
