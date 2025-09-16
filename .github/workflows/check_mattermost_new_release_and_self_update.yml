@@ -100,7 +100,7 @@ jobs:
         if: steps.version_check.outputs.version != ''
         run: |
           git config user.name "Github-Actions"
-          git config user.email "github-actions@github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           if ! git commit -m "Prepare release ${{ steps.version_check.outputs.version }}"; then
             echo "No changes done, we are likely up-to-date so nothing to release. Stopping gracefuly"
