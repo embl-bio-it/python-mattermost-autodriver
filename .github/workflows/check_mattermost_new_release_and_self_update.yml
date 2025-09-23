@@ -28,7 +28,7 @@ jobs:
             exit 1
           fi
 
-          LATEST_TAG="$(echo "$TAGS_JSON" | jq -r '.[].name' | grep '^v' | grep -v -- '-rc' | sort -V | tail -n 1)"
+          LATEST_TAG="$(echo "$TAGS_JSON" | jq -r '.[].name' | grep -Eo '^v[0-9]+\.[0-9]+\.[0-9]+$'| sort -V | tail -n 1)"
           if [ -z "$LATEST_TAG" ]; then
             echo "No tags found"
             exit 1

@@ -9,14 +9,13 @@ if ! TAGS_JSON="$(curl -s -f https://api.github.com/repos/${MM}/${MM}/tags)"; th
 fi
 
 # Extract and sort version tags
-LATEST_TAG="$(echo "$TAGS_JSON" | jq -r '.[].name' | grep '^v' | grep -v -- '-rc' | sort -V | tail -n 1)"
+LATEST_TAG="$(echo "$TAGS_JSON" | jq -r '.[].name' | grep -Eo '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)"
 
 if [ -z "$LATEST_TAG" ]; then
   echo "No version tags found"
   exit 1
 fi
 
-LATEST_TAG="v10.8.2"
 echo "Latest Mattermost Server GitHub tag: $LATEST_TAG"
 
 # Check if the version exists on PyPI - strip 'v' as Mattermost has it in the tag but we don't on PyPI
