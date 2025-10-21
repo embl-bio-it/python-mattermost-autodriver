@@ -213,6 +213,7 @@ def json_to_ast(api):
     blocks = {}
 
     for endpoint in api["paths"]:
+        functions_seen = set()
         for request_type, rdata in api["paths"][endpoint].items():
             try:
                 locations = get_locations(rdata["tags"])
@@ -231,6 +232,11 @@ def json_to_ast(api):
 
             # Function name = underscore conversion of operation_id CamelCase
             function_name = underscore(operation_id)
+
+            if function_name not in functions_seen:
+                functions_seen.add(function_name)
+            else:
+                raise ValueError(f">>> 'operationId' {operation_id} generated non-unique function {function_name}")
 
             # In GET requests we have *query* parameters stored in the parameters object
             # For other types of request we have *properties* in the requestBody
