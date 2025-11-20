@@ -219,7 +219,11 @@ def json_to_ast(api):
                 operation_id = rdata["operationId"]
             except KeyError:
                 # We can't add API entries that don't have a function name
-                raise ValueError(f">>> Couldn't create method for {endpoint} due to missing 'operationId'")
+                print(
+                    f">>> Couldn't create method for {endpoint} due to missing 'operationId'. "
+                    "This should be reported upstream. Skipped for now."
+                )
+                continue
 
             # Function name = underscore conversion of operation_id CamelCase
             function_name = underscore(operation_id)
