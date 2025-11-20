@@ -49,6 +49,19 @@ class Users(Base):
         __options = {"login_id": login_id, "cws_token": cws_token}
         return self.client.post("""/api/v4/users/login/cws""", options=__options)
 
+    def login_sso_code_exchange(self, login_code: str, code_verifier: str, state: str):
+        """Exchange SSO login code for session tokens
+
+        login_code: Short-lived one-time code from SSO callback
+        code_verifier: SAML verifier to prove code possession
+        state: State parameter to prevent CSRF attacks
+
+        `Read in Mattermost API docs (users - LoginSSOCodeExchange) <https://developers.mattermost.com/api-documentation/#/operations/LoginSSOCodeExchange>`_
+
+        """
+        __options = {"login_code": login_code, "code_verifier": code_verifier, "state": state}
+        return self.client.post("""/api/v4/users/login/sso/code-exchange""", options=__options)
+
     def logout(self):
         """Logout from the Mattermost server
         `Read in Mattermost API docs (users - Logout) <https://developers.mattermost.com/api-documentation/#/operations/Logout>`_

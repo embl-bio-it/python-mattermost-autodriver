@@ -300,3 +300,10 @@ class Groups(Base):
 
         """
         return self.client.get(f"/api/v4/users/{user_id}/groups")
+
+    def get_groups_by_names(self, options):
+        """Get groups by name
+        `Read in Mattermost API docs (groups - GetGroupsByNames) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupsByNames>`_
+
+        """
+        return self.client.post("""/api/v4/groups/names""", options=options)

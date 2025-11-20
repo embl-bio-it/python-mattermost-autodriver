@@ -76,3 +76,58 @@ class Playbooks(Base):
 
         """
         return self.client.delete(f"/plugins/playbooks/api/v0/playbooks/{id}")
+
+    def get_playbook_property_fields(self, id, params=None):
+        """Get property fields for a playbook
+
+        id: ID of the playbook to retrieve property fields from.
+        updated_since: Filter results to only include property fields updated after this timestamp (Unix time in milliseconds).
+
+        `Read in Mattermost API docs (playbooks - getPlaybookPropertyFields) <https://developers.mattermost.com/api-documentation/#/operations/getPlaybookPropertyFields>`_
+
+        """
+        return self.client.get(f"/plugins/playbooks/api/v0/playbooks/{id}/property_fields", params=params)
+
+    def create_playbook_property_field(self, id, options=None):
+        """Create a property field for a playbook
+
+        id: ID of the playbook to create a property field for.
+
+        `Read in Mattermost API docs (playbooks - createPlaybookPropertyField) <https://developers.mattermost.com/api-documentation/#/operations/createPlaybookPropertyField>`_
+
+        """
+        return self.client.post(f"/plugins/playbooks/api/v0/playbooks/{id}/property_fields", options=options)
+
+    def update_playbook_property_field(self, id, field_id, options=None):
+        """Update a property field for a playbook
+
+        id: ID of the playbook containing the property field.
+        field_id: ID of the property field to update.
+
+        `Read in Mattermost API docs (playbooks - updatePlaybookPropertyField) <https://developers.mattermost.com/api-documentation/#/operations/updatePlaybookPropertyField>`_
+
+        """
+        return self.client.put(f"/plugins/playbooks/api/v0/playbooks/{id}/property_fields/{field_id}", options=options)
+
+    def delete_playbook_property_field(self, id, field_id):
+        """Delete a property field for a playbook
+
+        id: ID of the playbook containing the property field.
+        field_id: ID of the property field to delete.
+
+        `Read in Mattermost API docs (playbooks - deletePlaybookPropertyField) <https://developers.mattermost.com/api-documentation/#/operations/deletePlaybookPropertyField>`_
+
+        """
+        return self.client.delete(f"/plugins/playbooks/api/v0/playbooks/{id}/property_fields/{field_id}")
+
+    def reorder_playbook_property_fields(self, id, options):
+        """Reorder property fields for a playbook
+
+        id: ID of the playbook.
+        field_id: ID of the property field to move.
+        target_position: Target position index (zero-based) where the field should be moved.
+
+        `Read in Mattermost API docs (playbooks - reorderPlaybookPropertyFields) <https://developers.mattermost.com/api-documentation/#/operations/reorderPlaybookPropertyFields>`_
+
+        """
+        return self.client.post(f"/plugins/playbooks/api/v0/playbooks/{id}/property_fields/reorder", options=options)

@@ -12,6 +12,7 @@ from ..endpoints.cloud import Cloud
 from ..endpoints.cluster import Cluster
 from ..endpoints.commands import Commands
 from ..endpoints.compliance import Compliance
+from ..endpoints.conditions import Conditions
 from ..endpoints.custom_profile_attributes import CustomProfileAttributes
 from ..endpoints.data_retention import DataRetention
 from ..endpoints.elasticsearch import Elasticsearch
@@ -19,6 +20,7 @@ from ..endpoints.emoji import Emoji
 from ..endpoints.exports import Exports
 from ..endpoints.files import Files
 from ..endpoints.filtering import Filtering
+from ..endpoints.group_message import GroupMessage
 from ..endpoints.groups import Groups
 from ..endpoints.imports import Imports
 from ..endpoints.integration_actions import IntegrationActions
@@ -72,6 +74,7 @@ from ..endpoints_old.cloud import Cloud as OldCloud
 from ..endpoints_old.cluster import Cluster as OldCluster
 from ..endpoints_old.commands import Commands as OldCommands
 from ..endpoints_old.compliance import Compliance as OldCompliance
+from ..endpoints_old.conditions import Conditions as OldConditions
 from ..endpoints_old.custom_profile_attributes import CustomProfileAttributes as OldCustomProfileAttributes
 from ..endpoints_old.data_retention import DataRetention as OldDataRetention
 from ..endpoints_old.elasticsearch import Elasticsearch as OldElasticsearch
@@ -79,6 +82,7 @@ from ..endpoints_old.emoji import Emoji as OldEmoji
 from ..endpoints_old.exports import Exports as OldExports
 from ..endpoints_old.files import Files as OldFiles
 from ..endpoints_old.filtering import Filtering as OldFiltering
+from ..endpoints_old.group_message import GroupMessage as OldGroupMessage
 from ..endpoints_old.groups import Groups as OldGroups
 from ..endpoints_old.imports import Imports as OldImports
 from ..endpoints_old.integration_actions import IntegrationActions as OldIntegrationActions
@@ -138,6 +142,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.cluster = OldCluster(self.client)
         self.commands = OldCommands(self.client)
         self.compliance = OldCompliance(self.client)
+        self.conditions = OldConditions(self.client)
         self.custom_profile_attributes = OldCustomProfileAttributes(self.client)
         self.data_retention = OldDataRetention(self.client)
         self.elasticsearch = OldElasticsearch(self.client)
@@ -145,6 +150,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.exports = OldExports(self.client)
         self.files = OldFiles(self.client)
         self.filtering = OldFiltering(self.client)
+        self.group_message = OldGroupMessage(self.client)
         self.groups = OldGroups(self.client)
         self.imports = OldImports(self.client)
         self.integration_actions = OldIntegrationActions(self.client)
@@ -204,6 +210,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.cluster = Cluster(self.client)
         self.commands = Commands(self.client)
         self.compliance = Compliance(self.client)
+        self.conditions = Conditions(self.client)
         self.custom_profile_attributes = CustomProfileAttributes(self.client)
         self.data_retention = DataRetention(self.client)
         self.elasticsearch = Elasticsearch(self.client)
@@ -211,6 +218,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.exports = Exports(self.client)
         self.files = Files(self.client)
         self.filtering = Filtering(self.client)
+        self.group_message = GroupMessage(self.client)
         self.groups = Groups(self.client)
         self.imports = Imports(self.client)
         self.integration_actions = IntegrationActions(self.client)

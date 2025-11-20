@@ -355,3 +355,38 @@ class PlaybookRuns(Base):
 
         """
         return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/run")
+
+    def get_run_property_fields(self, id: str, updated_since: int | None = None):
+        """Get property fields for a playbook run
+
+        id: ID of the playbook run to retrieve property fields from.
+        updated_since: Filter results to only include property fields updated after this timestamp (Unix time in milliseconds).
+
+        `Read in Mattermost API docs (playbook_runs - getRunPropertyFields) <https://developers.mattermost.com/api-documentation/#/operations/getRunPropertyFields>`_
+
+        """
+        __params = {"updated_since": updated_since}
+        return self.client.get(f"/plugins/playbooks/api/v0/runs/{id}/property_fields", params=__params)
+
+    def get_run_property_values(self, id: str, updated_since: int | None = None):
+        """Get property values for a playbook run
+
+        id: ID of the playbook run to retrieve property values from.
+        updated_since: Filter results to only include property values updated after this timestamp (Unix time in milliseconds).
+
+        `Read in Mattermost API docs (playbook_runs - getRunPropertyValues) <https://developers.mattermost.com/api-documentation/#/operations/getRunPropertyValues>`_
+
+        """
+        __params = {"updated_since": updated_since}
+        return self.client.get(f"/plugins/playbooks/api/v0/runs/{id}/property_values", params=__params)
+
+    def set_run_property_value(self, id: str, field_id: str, options: Any | None = None):
+        """Set a property value for a playbook run
+
+        id: ID of the playbook run to set property value for.
+        field_id: ID of the property field to set value for.
+
+        `Read in Mattermost API docs (playbook_runs - setRunPropertyValue) <https://developers.mattermost.com/api-documentation/#/operations/setRunPropertyValue>`_
+
+        """
+        return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/property_fields/{field_id}/value", options=options)

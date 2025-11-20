@@ -24,6 +24,18 @@ class AccessControl(Base):
         __options = {"expression": expression}
         return self.client.post("""/api/v4/access_control_policies/cel/check""", options=__options)
 
+    def validate_expression_against_requester(self, expression: str, channelId: str | None = None):
+        """Validate if the current user matches a CEL expression
+
+        expression: The CEL expression to validate against the current user.
+        channelId: The channel ID for channel-specific permission checks (required for channel admins).
+
+        `Read in Mattermost API docs (access_control - ValidateExpressionAgainstRequester) <https://developers.mattermost.com/api-documentation/#/operations/ValidateExpressionAgainstRequester>`_
+
+        """
+        __options = {"expression": expression, "channelId": channelId}
+        return self.client.post("""/api/v4/access_control_policies/cel/validate_requester""", options=__options)
+
     def test_access_control_policy_expression(self, options: Any):
         """Test an access control policy expression
         `Read in Mattermost API docs (access_control - TestAccessControlPolicyExpression) <https://developers.mattermost.com/api-documentation/#/operations/TestAccessControlPolicyExpression>`_

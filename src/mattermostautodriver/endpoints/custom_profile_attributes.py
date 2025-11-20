@@ -75,3 +75,13 @@ class CustomProfileAttributes(Base):
 
         """
         return self.client.get(f"/api/v4/users/{user_id}/custom_profile_attributes")
+
+    def patch_cpa_values_for_user(self, user_id: str, options: list[dict[str, Any]]):
+        """Update custom profile attribute values for a user
+
+        user_id: User GUID
+
+        `Read in Mattermost API docs (custom_profile_attributes - PatchCPAValuesForUser) <https://developers.mattermost.com/api-documentation/#/operations/PatchCPAValuesForUser>`_
+
+        """
+        return self.client.patch(f"/api/v4/users/{user_id}/custom_profile_attributes", options=options)

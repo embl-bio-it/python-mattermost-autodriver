@@ -101,3 +101,10 @@ class Cloud(Base):
 
         """
         return self.client.post("""/api/v4/cloud/webhook""")
+
+    def get_preview_modal_data(self):
+        """Get cloud preview modal data
+        `Read in Mattermost API docs (cloud - GetPreviewModalData) <https://developers.mattermost.com/api-documentation/#/operations/GetPreviewModalData>`_
+
+        """
+        return self.client.get("""/api/v4/cloud/preview/modal_data""")

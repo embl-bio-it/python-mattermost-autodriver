@@ -97,6 +97,14 @@ Compliance
     :undoc-members:
     :show-inheritance:
 
+Conditions
+----------
+
+.. automodule:: mattermostautodriver.endpoints.conditions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Custom Profile Attributes
 -------------------------
 
@@ -149,6 +157,14 @@ Filtering
 ---------
 
 .. automodule:: mattermostautodriver.endpoints.filtering
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Group Message
+-------------
+
+.. automodule:: mattermostautodriver.endpoints.group_message
     :members:
     :undoc-members:
     :show-inheritance:

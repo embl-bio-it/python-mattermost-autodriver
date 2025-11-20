@@ -113,15 +113,12 @@ class System(Base):
         """
         return self.client.post("""/api/v4/config/reload""")
 
-    def get_client_config(self, params=None):
+    def get_client_config(self):
         """Get client configuration
-
-        format: Must be ``old``, other formats not implemented yet
-
         `Read in Mattermost API docs (system - GetClientConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetClientConfig>`_
 
         """
-        return self.client.get("""/api/v4/config/client""", params=params)
+        return self.client.get("""/api/v4/config/client""")
 
     def get_environment_config(self):
         """Get configuration made through environment variables

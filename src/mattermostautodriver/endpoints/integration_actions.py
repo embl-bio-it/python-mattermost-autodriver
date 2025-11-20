@@ -52,3 +52,34 @@ class IntegrationActions(Base):
             "cancelled": cancelled,
         }
         return self.client.post("""/api/v4/actions/dialogs/submit""", options=__options)
+
+    def lookup_interactive_dialog(
+        self,
+        url: str,
+        channel_id: str,
+        team_id: str,
+        submission: dict[str, Any],
+        callback_id: str | None = None,
+        state: str | None = None,
+    ):
+        """Lookup dialog elements
+
+        url: The URL to send the lookup request to
+        channel_id: Channel ID the user is performing the lookup from
+        team_id: Team ID the user is performing the lookup from
+        submission: String map where keys are element names and values are the element input values
+        callback_id: Callback ID sent when the dialog was opened
+        state: State sent when the dialog was opened
+
+        `Read in Mattermost API docs (integration_actions - LookupInteractiveDialog) <https://developers.mattermost.com/api-documentation/#/operations/LookupInteractiveDialog>`_
+
+        """
+        __options = {
+            "url": url,
+            "channel_id": channel_id,
+            "team_id": team_id,
+            "submission": submission,
+            "callback_id": callback_id,
+            "state": state,
+        }
+        return self.client.post("""/api/v4/actions/dialogs/lookup""", options=__options)

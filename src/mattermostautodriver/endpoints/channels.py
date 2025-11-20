@@ -400,18 +400,6 @@ class Channels(Base):
         __options = {"term": term}
         return self.client.post(f"/api/v4/teams/{team_id}/channels/search", options=__options)
 
-    def search_archived_channels(self, team_id: str, term: str):
-        """Search archived channels
-
-        team_id: Team GUID
-        term: The search term to match against the name or display name of archived channels
-
-        `Read in Mattermost API docs (channels - SearchArchivedChannels) <https://developers.mattermost.com/api-documentation/#/operations/SearchArchivedChannels>`_
-
-        """
-        __options = {"term": term}
-        return self.client.post(f"/api/v4/teams/{team_id}/channels/search_archived", options=__options)
-
     def get_channel_by_name(self, team_id: str, channel_name: str, include_deleted: bool | None = False):
         """Get a channel by name
 
@@ -769,6 +757,16 @@ class Channels(Base):
 
         """
         return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
+
+    def get_group_message_members_common_teams(self, channel_id: str):
+        """Get common teams for members of a Group Message.
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (channels - GetGroupMessageMembersCommonTeams) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupMessageMembersCommonTeams>`_
+
+        """
+        return self.client.get(f"/api/v4/channels/{channel_id}/common_teams")
 
     def get_channel_access_control_attributes(self, channel_id: str):
         """Get access control attributes for a channel
