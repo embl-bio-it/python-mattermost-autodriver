@@ -132,8 +132,9 @@ class BaseClient:
 
     def _build_request(self, method, options=None, params=None, data=None, files=None):
         def filter_dict_or_none(d):
-            if d is None:
-                return None
+            if not isinstance(d, dict):
+                # this method is only meant to filter dicts, return everything else unchanged
+                return d
 
             filtered_d = {k: v for k, v in d.items() if v is not None}
 
