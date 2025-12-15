@@ -15,7 +15,8 @@ class System(Base):
     def get_ping(self, params=None):
         """Check system health
 
-        get_server_status: Check the status of the database and file storage as well
+        get_server_status: Check the status of the database and file storage as well. When true, adds ``database_status`` and ``filestore_status`` to the response. If authenticated with ``manage_system`` permission, also adds ``root_status``.
+
         device_id: Check whether this device id can receive push notifications
         use_rest_semantics: Returns 200 status code even if the server status is unhealthy.
 

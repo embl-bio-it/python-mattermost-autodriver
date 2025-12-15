@@ -278,3 +278,16 @@ class Posts(Base):
 
         """
         return self.client.post(f"/api/v4/posts/{post_id}/restore/{restore_version_id}")
+
+    def rewrite_message(self, options):
+        """Rewrite a message using AI
+
+        agent_id: The ID of the AI agent to use for rewriting
+        message: The message text to rewrite
+        action: The rewrite action to perform
+        custom_prompt: Custom prompt for rewriting. Required when action is "custom", optional otherwise.
+
+        `Read in Mattermost API docs (posts - RewriteMessage) <https://developers.mattermost.com/api-documentation/#/operations/RewriteMessage>`_
+
+        """
+        return self.client.post("""/api/v4/posts/rewrite""", options=options)

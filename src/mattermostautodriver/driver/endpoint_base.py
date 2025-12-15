@@ -1,6 +1,7 @@
 from .base import BaseDriver
 from ..client import Client
 from ..endpoints.access_control import AccessControl
+from ..endpoints.agents import Agents
 from ..endpoints.audit_logs import AuditLogs
 from ..endpoints.authentication import Authentication
 from ..endpoints.bleve import Bleve
@@ -63,6 +64,7 @@ from ..endpoints.usage import Usage
 from ..endpoints.users import Users
 from ..endpoints.webhooks import Webhooks
 from ..endpoints_old.access_control import AccessControl as OldAccessControl
+from ..endpoints_old.agents import Agents as OldAgents
 from ..endpoints_old.audit_logs import AuditLogs as OldAuditLogs
 from ..endpoints_old.authentication import Authentication as OldAuthentication
 from ..endpoints_old.bleve import Bleve as OldBleve
@@ -131,6 +133,7 @@ class BaseDriverWithEndpoints(BaseDriver):
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
         self.access_control = OldAccessControl(self.client)
+        self.agents = OldAgents(self.client)
         self.audit_logs = OldAuditLogs(self.client)
         self.authentication = OldAuthentication(self.client)
         self.bleve = OldBleve(self.client)
@@ -199,6 +202,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):
         super().__init__(options, client_cls, *args, **kwargs)
         self.access_control = AccessControl(self.client)
+        self.agents = Agents(self.client)
         self.audit_logs = AuditLogs(self.client)
         self.authentication = Authentication(self.client)
         self.bleve = Bleve(self.client)

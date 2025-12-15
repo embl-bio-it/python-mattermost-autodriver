@@ -14,6 +14,7 @@ class OAuth(Base):
         callback_urls: A list of callback URLs for the appliation
         homepage: A link to the website of the application
         is_trusted: Set this to ``true`` to skip asking users for permission
+        is_public: Set this to ``true`` to create a public client (no client secret). Public clients must use PKCE for authorization.
 
         `Read in Mattermost API docs (o_auth - CreateOAuthApp) <https://developers.mattermost.com/api-documentation/#/operations/CreateOAuthApp>`_
 
@@ -87,6 +88,20 @@ class OAuth(Base):
 
         """
         return self.client.get(f"/api/v4/oauth/apps/{app_id}/info")
+
+    def get_authorization_server_metadata(self):
+        """Get OAuth 2.0 Authorization Server Metadata
+        `Read in Mattermost API docs (o_auth - GetAuthorizationServerMetadata) <https://developers.mattermost.com/api-documentation/#/operations/GetAuthorizationServerMetadata>`_
+
+        """
+        return self.client.get("""/.well-known/oauth-authorization-server""")
+
+    def register_o_auth_client(self, options):
+        """Register OAuth client using Dynamic Client Registration
+        `Read in Mattermost API docs (o_auth - RegisterOAuthClient) <https://developers.mattermost.com/api-documentation/#/operations/RegisterOAuthClient>`_
+
+        """
+        return self.client.post("""/api/v4/oauth/apps/register""", options=options)
 
     def get_authorized_o_auth_apps_for_user(self, user_id, params=None):
         """Get authorized OAuth apps

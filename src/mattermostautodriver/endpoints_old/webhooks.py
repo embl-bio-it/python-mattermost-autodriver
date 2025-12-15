@@ -14,6 +14,7 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+        channel_locked: Whether the webhook is locked to the channel.
 
         `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/CreateIncomingWebhook>`_
 
@@ -63,6 +64,7 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+        channel_locked: Whether the webhook is locked to the channel.
 
         `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/UpdateIncomingWebhook>`_
 

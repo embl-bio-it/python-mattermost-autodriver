@@ -55,16 +55,25 @@ class Groups(Base):
         }
         return self.client.get("""/api/v4/groups""", params=__params)
 
-    def create_group(self, group: dict[str, Any], user_ids: list[str]):
+    def create_group(self, name: str, display_name: str, source: str, allow_reference: bool, user_ids: list[str]):
         """Create a custom group
 
-        group: Group object to create.
+        name: The unique group name used for at-mentioning.
+        display_name: The display name of the group which can include spaces.
+        source: Must be ``custom``
+        allow_reference: Must be true
         user_ids: The user ids of the group members to add.
 
         `Read in Mattermost API docs (groups - CreateGroup) <https://developers.mattermost.com/api-documentation/#/operations/CreateGroup>`_
 
         """
-        __options = {"group": group, "user_ids": user_ids}
+        __options = {
+            "name": name,
+            "display_name": display_name,
+            "source": source,
+            "allow_reference": allow_reference,
+            "user_ids": user_ids,
+        }
         return self.client.post("""/api/v4/groups""", options=__options)
 
     def get_group(self, group_id: str):

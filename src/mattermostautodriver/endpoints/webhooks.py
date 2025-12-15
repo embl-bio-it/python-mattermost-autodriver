@@ -14,6 +14,7 @@ class Webhooks(Base):
         description: str | None = None,
         username: str | None = None,
         icon_url: str | None = None,
+        channel_locked: bool | None = None,
     ):
         """Create an incoming webhook
 
@@ -23,6 +24,7 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+        channel_locked: Whether the webhook is locked to the channel.
 
         `Read in Mattermost API docs (webhooks - CreateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/CreateIncomingWebhook>`_
 
@@ -34,6 +36,7 @@ class Webhooks(Base):
             "description": description,
             "username": username,
             "icon_url": icon_url,
+            "channel_locked": channel_locked,
         }
         return self.client.post("""/api/v4/hooks/incoming""", options=__options)
 
@@ -86,6 +89,7 @@ class Webhooks(Base):
         description: str,
         username: str | None = None,
         icon_url: str | None = None,
+        channel_locked: bool | None = None,
     ):
         """Update an incoming webhook
 
@@ -96,6 +100,7 @@ class Webhooks(Base):
         description: The description for this incoming webhook
         username: The username this incoming webhook will post as.
         icon_url: The profile picture this incoming webhook will use when posting.
+        channel_locked: Whether the webhook is locked to the channel.
 
         `Read in Mattermost API docs (webhooks - UpdateIncomingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/UpdateIncomingWebhook>`_
 
@@ -107,6 +112,7 @@ class Webhooks(Base):
             "description": description,
             "username": username,
             "icon_url": icon_url,
+            "channel_locked": channel_locked,
         }
         return self.client.put(f"/api/v4/hooks/incoming/{hook_id}", options=__options)
 

@@ -9,6 +9,14 @@ Access Control
     :undoc-members:
     :show-inheritance:
 
+Agents
+------
+
+.. automodule:: mattermostautodriver.endpoints.agents
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Audit Logs
 ----------
 

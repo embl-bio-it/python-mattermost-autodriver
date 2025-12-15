@@ -37,7 +37,10 @@ class Groups(Base):
     def create_group(self, options):
         """Create a custom group
 
-        group: Group object to create.
+        name: The unique group name used for at-mentioning.
+        display_name: The display name of the group which can include spaces.
+        source: Must be ``custom``
+        allow_reference: Must be true
         user_ids: The user ids of the group members to add.
 
         `Read in Mattermost API docs (groups - CreateGroup) <https://developers.mattermost.com/api-documentation/#/operations/CreateGroup>`_
