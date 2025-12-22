@@ -91,7 +91,7 @@ class PlaybookRuns(Base):
         """Update a playbook run
 
         id: ID of the playbook run to retrieve.
-        active_stage: Zero-based index of the stage that will be made active.
+        name: The new name of the playbook run.
 
         `Read in Mattermost API docs (playbook_runs - updatePlaybookRun) <https://developers.mattermost.com/api-documentation/#/operations/updatePlaybookRun>`_
 

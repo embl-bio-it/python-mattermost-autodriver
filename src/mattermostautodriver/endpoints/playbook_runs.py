@@ -151,16 +151,16 @@ class PlaybookRuns(Base):
         """
         return self.client.get(f"/plugins/playbooks/api/v0/runs/{id}")
 
-    def update_playbook_run(self, id: str, active_stage: int | None = None):
+    def update_playbook_run(self, id: str, name: str | None = None):
         """Update a playbook run
 
         id: ID of the playbook run to retrieve.
-        active_stage: Zero-based index of the stage that will be made active.
+        name: The new name of the playbook run.
 
         `Read in Mattermost API docs (playbook_runs - updatePlaybookRun) <https://developers.mattermost.com/api-documentation/#/operations/updatePlaybookRun>`_
 
         """
-        __options = {"active_stage": active_stage}
+        __options = {"name": name}
         return self.client.patch(f"/plugins/playbooks/api/v0/runs/{id}", options=__options)
 
     def get_playbook_run_metadata(self, id: str):
