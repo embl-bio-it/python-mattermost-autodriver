@@ -62,6 +62,13 @@ class Users(Base):
         __options = {"login_code": login_code, "code_verifier": code_verifier, "state": state}
         return self.client.post("""/api/v4/users/login/sso/code-exchange""", options=__options)
 
+    def login_intune(self, options: Any):
+        """Login with Microsoft Intune MAM
+        `Read in Mattermost API docs (users - LoginIntune) <https://developers.mattermost.com/api-documentation/#/operations/LoginIntune>`_
+
+        """
+        return self.client.post("""/oauth/intune""", options=options)
+
     def logout(self):
         """Logout from the Mattermost server
         `Read in Mattermost API docs (users - Logout) <https://developers.mattermost.com/api-documentation/#/operations/Logout>`_
@@ -488,7 +495,7 @@ class Users(Base):
         return self.client.put(f"/api/v4/users/{user_id}/roles", options=__options)
 
     def update_user_active(self, user_id: str, active: bool):
-        """Update user active status
+        """Activate or deactivate a user
 
         user_id: User GUID
         active:
@@ -789,6 +796,19 @@ class Users(Base):
             "ldap_id": ldap_id,
         }
         return self.client.post("""/api/v4/users/login/switch""", options=__options)
+
+    def get_login_type(self, id: str | None = None, login_id: str | None = None, device_id: str | None = None):
+        """Get login authentication type
+
+        id: The user ID (optional, can be used with login_id)
+        login_id: The login ID (email, username, or unique identifier)
+        device_id: The device ID for audit logging purposes
+
+        `Read in Mattermost API docs (users - GetLoginType) <https://developers.mattermost.com/api-documentation/#/operations/GetLoginType>`_
+
+        """
+        __options = {"id": id, "login_id": login_id, "device_id": device_id}
+        return self.client.post("""/api/v4/users/login/type""", options=__options)
 
     def create_user_access_token(self, user_id: str, description: str):
         """Create a user access token

@@ -412,6 +412,26 @@ class Posts(Base):
         """
         return self.client.post(f"/api/v4/posts/{post_id}/restore/{restore_version_id}")
 
+    def reveal_post(self, post_id: str):
+        """Reveal a burn-on-read post
+
+        post_id: The identifier of the post to reveal
+
+        `Read in Mattermost API docs (posts - RevealPost) <https://developers.mattermost.com/api-documentation/#/operations/RevealPost>`_
+
+        """
+        return self.client.get(f"/api/v4/posts/{post_id}/reveal")
+
+    def burn_post(self, post_id: str):
+        """Burn a burn-on-read post
+
+        post_id: The identifier of the post to burn
+
+        `Read in Mattermost API docs (posts - BurnPost) <https://developers.mattermost.com/api-documentation/#/operations/BurnPost>`_
+
+        """
+        return self.client.delete(f"/api/v4/posts/{post_id}/burn")
+
     def rewrite_message(self, agent_id: str, message: str, action: str, custom_prompt: str | None = None):
         """Rewrite a message using AI
 

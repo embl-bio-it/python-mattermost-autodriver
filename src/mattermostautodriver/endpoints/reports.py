@@ -95,3 +95,50 @@ class Reports(Base):
 
         """
         return self.client.post("""/api/v4/reports/users/export""")
+
+    def get_posts_for_reporting(
+        self,
+        channel_id: str,
+        cursor: str | None = "",
+        start_time: int | None = None,
+        time_field: str | None = "create_at",
+        sort_direction: str | None = "asc",
+        per_page: int | None = 100,
+        include_deleted: bool | None = False,
+        exclude_system_posts: bool | None = False,
+        include_metadata: bool | None = False,
+    ):
+        """Get posts for reporting and compliance purposes using cursor-based pagination
+
+        channel_id: The ID of the channel to retrieve posts from
+        cursor: Opaque cursor string for pagination. Omit or use empty string for the first request. For subsequent requests, use the exact cursor value from the previous response's next_cursor. The cursor is base64-encoded and contains all pagination state including time, post ID, and query parameters. Do not attempt to parse or modify the cursor value.
+
+        start_time: Optional start time for query range in Unix milliseconds. Only used for the first request (ignored when cursor is provided). - For "asc" (ascending): starts retrieving from this time going forward - For "desc" (descending): starts retrieving from this time going backward If omitted, defaults to 0 for ascending or MaxInt64 for descending.
+
+        time_field: Which timestamp field to use for sorting and filtering. Use "create_at" to retrieve posts by creation time, or "update_at" to retrieve posts by last modification time.
+
+        sort_direction: Sort direction for pagination. Use "asc" to retrieve posts from oldest to newest, or "desc" to retrieve from newest to oldest.
+
+        per_page: Number of posts to return per page. Maximum 1000.
+        include_deleted: If true, include posts that have been deleted (DeleteAt > 0). By default, only non-deleted posts are returned.
+
+        exclude_system_posts: If true, exclude all system posts.
+
+        include_metadata: If true, enrich posts with additional metadata including file information, reactions, custom emojis, priority, and acknowledgements. Note that this may increase response time for large result sets.
+
+
+        `Read in Mattermost API docs (reports - GetPostsForReporting) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForReporting>`_
+
+        """
+        __options = {
+            "channel_id": channel_id,
+            "cursor": cursor,
+            "start_time": start_time,
+            "time_field": time_field,
+            "sort_direction": sort_direction,
+            "per_page": per_page,
+            "include_deleted": include_deleted,
+            "exclude_system_posts": exclude_system_posts,
+            "include_metadata": include_metadata,
+        }
+        return self.client.post("""/api/v4/reports/posts""", options=__options)

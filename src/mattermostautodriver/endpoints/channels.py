@@ -748,6 +748,16 @@ class Channels(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
 
+    def get_shared_channel_remotes(self, channel_id: str):
+        """Get remote clusters for a shared channel
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
+
     def get_group_message_members_common_teams(self, channel_id: str):
         """Get common teams for members of a Group Message.
 

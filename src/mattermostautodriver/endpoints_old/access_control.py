@@ -151,3 +151,10 @@ class AccessControl(Base):
 
         """
         return self.client.post("""/api/v4/access_control_policies/cel/visual_ast""", options=options)
+
+    def update_access_control_policies_active(self, options):
+        """Activate or deactivate access control policies
+        `Read in Mattermost API docs (access_control - UpdateAccessControlPoliciesActive) <https://developers.mattermost.com/api-documentation/#/operations/UpdateAccessControlPoliciesActive>`_
+
+        """
+        return self.client.put("""/api/v4/access_control_policies/activate""", options=options)
