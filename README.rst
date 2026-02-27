@@ -31,6 +31,7 @@ Versions and Releases
 ---------------------
 
 .. warning::
+
     Starting with version 10.8.2 this project now follows releases of
     `the official Mattermost server <https://docs.mattermost.com/about/mattermost-server-releases.html>`_.
 
