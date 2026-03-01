@@ -11,11 +11,13 @@
 Python Mattermost Auto Driver (APIv4)
 =====================================
 
+This project maintains an auto-generated Python-based interface to `the Mattermost API <https://developers.mattermost.com/api-documentation/>`_ that follows official Mattermost releases.
+
 Info
 ----
 
-The repository will try to keep up with the ``api`` specification in https://github.com/mattermost/mattermost/ (subfolder ``api``)
-Changes in API of ``mattermostautodriver`` will likely be due to a change in the reference mattermost API documentation.
+The endpoint code in this repository follows the ``api`` specification from https://github.com/mattermost/mattermost/ (subfolder ``api``).
+API changes of ``mattermostautodriver`` follow the reference mattermost API documentation.
 
 This project is forked from https://github.com/Vaelor/python-mattermost-driver but uses an automatic approach to generate all Python endpoint files from the mattermost OpenAPI specification.
 
@@ -38,6 +40,9 @@ Versions and Releases
 See `pull request #21 <https://github.com/embl-bio-it/python-mattermost-autodriver/issues/21>`_ for additional context.
 
 In production environments you are advised to keep this package in sync with Mattermost server updates.
+
+Note that we only release with the latest Mattermost minor (MAJOR.MINOR.PATCH) version.
+As an example, if Mattermost  ``1.3.1`` is released after we already have ``mattermostautodriver`` ``1.4.0`` out, we will only see a new driver release when Mattermost ``1.4.1`` or ``1.5.0`` is out.
 
 Installation
 ------------
