@@ -247,15 +247,19 @@ class Channels(Base):
         display_name: str | None = None,
         purpose: str | None = None,
         header: str | None = None,
+        group_constrained: bool | None = None,
+        autotranslation: bool | None = None,
         banner_info: Any | None = None,
     ):
         """Patch a channel
 
-        channel_id: Channel GUID
-        name: The unique handle for the channel, will be present in the channel URL
-        display_name: The non-unique UI name for the channel
-        purpose: A short description of the purpose of the channel
+        channel_id: Channel ID
+        name: The unique handle for the channel, will be present in the channel URL. Cannot be updated for direct or group message channels. Cannot be changed for the default channel (e.g. Town Square).
+        display_name: The non-unique UI name for the channel. Cannot be updated for direct or group message channels.
+        purpose: A short description of the purpose of the channel. Cannot be updated for direct or group message channels.
         header: Markdown-formatted text to display in the header of the channel
+        group_constrained: When true, only members of the linked LDAP groups can join the channel. Only applicable to public and private channels.
+        autotranslation: Enable or disable automatic message translation in the channel. Requires the auto-translation feature and appropriate channel permission. May be restricted for direct and group message channels by server configuration.
         banner_info:
 
         `Read in Mattermost API docs (channels - PatchChannel) <https://developers.mattermost.com/api-documentation/#/operations/PatchChannel>`_
@@ -266,6 +270,8 @@ class Channels(Base):
             "display_name": display_name,
             "purpose": purpose,
             "header": header,
+            "group_constrained": group_constrained,
+            "autotranslation": autotranslation,
             "banner_info": banner_info,
         }
         return self.client.put(f"/api/v4/channels/{channel_id}/patch", options=__options)
@@ -531,6 +537,19 @@ class Channels(Base):
         """
         return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/notify_props", options=options)
 
+    def update_channel_member_autotranslation(self, channel_id: str, user_id: str, autotranslation_disabled: bool):
+        """Update channel member autotranslation setting
+
+        channel_id: Channel GUID
+        user_id: User GUID
+        autotranslation_disabled: Whether to disable autotranslation for the user in this channel
+
+        `Read in Mattermost API docs (channels - UpdateChannelMemberAutotranslation) <https://developers.mattermost.com/api-documentation/#/operations/UpdateChannelMemberAutotranslation>`_
+
+        """
+        __options = {"autotranslation_disabled": autotranslation_disabled}
+        return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/autotranslation", options=__options)
+
     def view_channel(self, user_id: str, channel_id: str, prev_channel_id: str | None = None):
         """View channel
 
@@ -747,6 +766,16 @@ class Channels(Base):
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
+
+    def get_shared_channel_remotes(self, channel_id: str):
+        """Get remote clusters for a shared channel
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
 
     def get_group_message_members_common_teams(self, channel_id: str):
         """Get common teams for members of a Group Message.

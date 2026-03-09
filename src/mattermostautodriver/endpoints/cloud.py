@@ -111,6 +111,13 @@ class Cloud(Base):
         """
         return self.client.get(f"/api/v4/cloud/subscription/invoices/{invoice_id}/pdf")
 
+    def check_cws_connection(self):
+        """Check CWS connection
+        `Read in Mattermost API docs (cloud - CheckCWSConnection) <https://developers.mattermost.com/api-documentation/#/operations/CheckCWSConnection>`_
+
+        """
+        return self.client.get("""/api/v4/cloud/check-cws-connection""")
+
     def post_endpoint_for_cws_webhooks(self):
         """POST endpoint for CWS Webhooks
         `Read in Mattermost API docs (cloud - PostEndpointForCwsWebhooks) <https://developers.mattermost.com/api-documentation/#/operations/PostEndpointForCwsWebhooks>`_
