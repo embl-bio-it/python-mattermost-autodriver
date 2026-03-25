@@ -79,16 +79,22 @@ class Websocket:
         # TODO: move to create_task when cpython 3.7 is minimum supported python version
         keep_alive = asyncio.create_task(self._do_heartbeats(websocket))
         log.debug("Waiting for messages on websocket")
-        while self._alive:
-            message = await websocket.receive_str()
-            self._last_msg = time.time()
-            await event_handler(message)
-        log.debug("cancelling heartbeat task")
-        keep_alive.cancel()
+
         try:
-            await keep_alive
-        except asyncio.CancelledError:
-            pass
+            while self._alive:
+                message = await websocket.receive_str()
+                self._last_msg = time.time()
+                await event_handler(message)
+        finally:
+            log.debug("cancelling heartbeat task")
+            if not keep_alive.done():
+                keep_alive.cancel()
+            try:
+                await keep_alive
+            except asyncio.CancelledError:
+                pass
+            except Exception:
+                log.debug("heartbeat task finished during websocket shutdown")
 
     async def _do_heartbeats(self, websocket):
         """

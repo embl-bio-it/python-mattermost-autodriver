@@ -12,6 +12,8 @@ Documentation
 Maintenance
 '''''''''''
 
+- Fix websocket heartbeat task leak on reconnect (@lizakoch)
+
 10.12.0
 """"""
 
