@@ -15,6 +15,7 @@ from ..endpoints.cluster import Cluster
 from ..endpoints.commands import Commands
 from ..endpoints.compliance import Compliance
 from ..endpoints.conditions import Conditions
+from ..endpoints.content_flagging import ContentFlagging
 from ..endpoints.custom_profile_attributes import CustomProfileAttributes
 from ..endpoints.data_retention import DataRetention
 from ..endpoints.elasticsearch import Elasticsearch
@@ -80,6 +81,7 @@ from ..endpoints_old.cluster import Cluster as OldCluster
 from ..endpoints_old.commands import Commands as OldCommands
 from ..endpoints_old.compliance import Compliance as OldCompliance
 from ..endpoints_old.conditions import Conditions as OldConditions
+from ..endpoints_old.content_flagging import ContentFlagging as OldContentFlagging
 from ..endpoints_old.custom_profile_attributes import CustomProfileAttributes as OldCustomProfileAttributes
 from ..endpoints_old.data_retention import DataRetention as OldDataRetention
 from ..endpoints_old.elasticsearch import Elasticsearch as OldElasticsearch
@@ -151,6 +153,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.commands = OldCommands(self.client)
         self.compliance = OldCompliance(self.client)
         self.conditions = OldConditions(self.client)
+        self.content_flagging = OldContentFlagging(self.client)
         self.custom_profile_attributes = OldCustomProfileAttributes(self.client)
         self.data_retention = OldDataRetention(self.client)
         self.elasticsearch = OldElasticsearch(self.client)
@@ -222,6 +225,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.commands = Commands(self.client)
         self.compliance = Compliance(self.client)
         self.conditions = Conditions(self.client)
+        self.content_flagging = ContentFlagging(self.client)
         self.custom_profile_attributes = CustomProfileAttributes(self.client)
         self.data_retention = DataRetention(self.client)
         self.elasticsearch = Elasticsearch(self.client)

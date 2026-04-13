@@ -121,6 +121,14 @@ Conditions
     :undoc-members:
     :show-inheritance:
 
+Content Flagging
+----------------
+
+.. automodule:: mattermostautodriver.endpoints.content_flagging
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Custom Profile Attributes
 -------------------------
 
