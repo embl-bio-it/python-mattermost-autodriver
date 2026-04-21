@@ -351,6 +351,18 @@ class Channels(Base):
         """
         return self.client.post(f"/api/v4/channels/{channel_id}/members", options=options)
 
+    def set_channel_members(self, channel_id, options):
+        """Set channel members
+
+        channel_id: Channel GUID
+        members: User IDs for the desired channel membership. The final membership is the union of ``members`` and ``channel_admins``.
+        channel_admins: User IDs that should have the channel admin role. Users listed here are automatically included in the desired membership (they do not need to also appear in ``members``). When null or omitted, existing admin roles are preserved for members who remain in the channel. When present (including empty array), admin roles are set declaratively.
+
+        `Read in Mattermost API docs (channels - SetChannelMembers) <https://developers.mattermost.com/api-documentation/#/operations/SetChannelMembers>`_
+
+        """
+        return self.client.put(f"/api/v4/channels/{channel_id}/members", options=options)
+
     def get_channel_members_by_ids(self, channel_id, options):
         """Get channel members by ids
 
