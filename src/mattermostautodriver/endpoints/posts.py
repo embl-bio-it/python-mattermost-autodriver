@@ -227,6 +227,7 @@ class Posts(Base):
         before: str | None = None,
         after: str | None = None,
         include_deleted: bool | None = False,
+        type: str | None = None,
     ):
         """Get posts for a channel
 
@@ -237,6 +238,7 @@ class Posts(Base):
         before: A post id to select the posts that came before this one
         after: A post id to select the posts that came after this one
         include_deleted: Whether to include deleted posts or not. Must have system admin permissions.
+        type: Filter posts by type.
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForChannel>`_
 
@@ -248,6 +250,7 @@ class Posts(Base):
             "before": before,
             "after": after,
             "include_deleted": include_deleted,
+            "type": type,
         }
         return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=__params)
 

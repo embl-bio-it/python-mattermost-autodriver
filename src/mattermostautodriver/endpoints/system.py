@@ -57,6 +57,27 @@ class System(Base):
         """
         return self.client.put("""/api/v4/system/notices/view""", options=options)
 
+    def set_ai_bridge_test_helper(self, options: Any):
+        """Configure AI bridge E2E test helper
+        `Read in Mattermost API docs (system - SetAIBridgeTestHelper) <https://developers.mattermost.com/api-documentation/#/operations/SetAIBridgeTestHelper>`_
+
+        """
+        return self.client.put("""/api/v4/system/e2e/ai_bridge""", options=options)
+
+    def get_ai_bridge_test_helper(self):
+        """Get AI bridge E2E test helper state
+        `Read in Mattermost API docs (system - GetAIBridgeTestHelper) <https://developers.mattermost.com/api-documentation/#/operations/GetAIBridgeTestHelper>`_
+
+        """
+        return self.client.get("""/api/v4/system/e2e/ai_bridge""")
+
+    def delete_ai_bridge_test_helper(self):
+        """Reset AI bridge E2E test helper
+        `Read in Mattermost API docs (system - DeleteAIBridgeTestHelper) <https://developers.mattermost.com/api-documentation/#/operations/DeleteAIBridgeTestHelper>`_
+
+        """
+        return self.client.delete("""/api/v4/system/e2e/ai_bridge""")
+
     def database_recycle(self):
         """Recycle database connections
         `Read in Mattermost API docs (system - DatabaseRecycle) <https://developers.mattermost.com/api-documentation/#/operations/DatabaseRecycle>`_

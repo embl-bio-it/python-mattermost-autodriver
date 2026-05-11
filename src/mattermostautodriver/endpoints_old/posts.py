@@ -147,6 +147,7 @@ class Posts(Base):
         before: A post id to select the posts that came before this one
         after: A post id to select the posts that came after this one
         include_deleted: Whether to include deleted posts or not. Must have system admin permissions.
+        type: Filter posts by type.
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForChannel>`_
 

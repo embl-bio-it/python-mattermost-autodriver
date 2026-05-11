@@ -45,6 +45,7 @@ from ..endpoints.playbooks import Playbooks
 from ..endpoints.plugins import Plugins
 from ..endpoints.posts import Posts
 from ..endpoints.preferences import Preferences
+from ..endpoints.properties import Properties
 from ..endpoints.reactions import Reactions
 from ..endpoints.recaps import Recaps
 from ..endpoints.remote_clusters import RemoteClusters
@@ -65,6 +66,7 @@ from ..endpoints.timeline import Timeline
 from ..endpoints.uploads import Uploads
 from ..endpoints.usage import Usage
 from ..endpoints.users import Users
+from ..endpoints.views import Views
 from ..endpoints.webhooks import Webhooks
 from ..endpoints_old.access_control import AccessControl as OldAccessControl
 from ..endpoints_old.agents import Agents as OldAgents
@@ -111,6 +113,7 @@ from ..endpoints_old.playbooks import Playbooks as OldPlaybooks
 from ..endpoints_old.plugins import Plugins as OldPlugins
 from ..endpoints_old.posts import Posts as OldPosts
 from ..endpoints_old.preferences import Preferences as OldPreferences
+from ..endpoints_old.properties import Properties as OldProperties
 from ..endpoints_old.reactions import Reactions as OldReactions
 from ..endpoints_old.recaps import Recaps as OldRecaps
 from ..endpoints_old.remote_clusters import RemoteClusters as OldRemoteClusters
@@ -131,6 +134,7 @@ from ..endpoints_old.timeline import Timeline as OldTimeline
 from ..endpoints_old.uploads import Uploads as OldUploads
 from ..endpoints_old.usage import Usage as OldUsage
 from ..endpoints_old.users import Users as OldUsers
+from ..endpoints_old.views import Views as OldViews
 from ..endpoints_old.webhooks import Webhooks as OldWebhooks
 
 
@@ -183,6 +187,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.plugins = OldPlugins(self.client)
         self.posts = OldPosts(self.client)
         self.preferences = OldPreferences(self.client)
+        self.properties = OldProperties(self.client)
         self.reactions = OldReactions(self.client)
         self.recaps = OldRecaps(self.client)
         self.remote_clusters = OldRemoteClusters(self.client)
@@ -203,6 +208,7 @@ class BaseDriverWithEndpoints(BaseDriver):
         self.uploads = OldUploads(self.client)
         self.usage = OldUsage(self.client)
         self.users = OldUsers(self.client)
+        self.views = OldViews(self.client)
         self.webhooks = OldWebhooks(self.client)
 
 
@@ -255,6 +261,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.plugins = Plugins(self.client)
         self.posts = Posts(self.client)
         self.preferences = Preferences(self.client)
+        self.properties = Properties(self.client)
         self.reactions = Reactions(self.client)
         self.recaps = Recaps(self.client)
         self.remote_clusters = RemoteClusters(self.client)
@@ -275,4 +282,5 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.uploads = Uploads(self.client)
         self.usage = Usage(self.client)
         self.users = Users(self.client)
+        self.views = Views(self.client)
         self.webhooks = Webhooks(self.client)

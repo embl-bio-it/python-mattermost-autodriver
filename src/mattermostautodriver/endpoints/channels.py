@@ -49,6 +49,8 @@ class Channels(Base):
         type: str,
         purpose: str | None = None,
         header: str | None = None,
+        managed_category_name: str | None = None,
+        default_category_name: str | None = None,
     ):
         """Create a channel
 
@@ -58,6 +60,8 @@ class Channels(Base):
         purpose: A short description of the purpose of the channel
         header: Markdown-formatted text to display in the header of the channel
         type: 'O' for a public channel, 'P' for a private channel
+        managed_category_name: The name of the managed category to assign this channel to. Requires an Enterprise license and the ``ManagedChannelCategories`` feature flag to be enabled.
+        default_category_name: Default sidebar category name for members when joining this channel. Requires ``EnableChannelCategorySorting`` to be enabled on the server.
 
         `Read in Mattermost API docs (channels - CreateChannel) <https://developers.mattermost.com/api-documentation/#/operations/CreateChannel>`_
 
@@ -69,6 +73,8 @@ class Channels(Base):
             "purpose": purpose,
             "header": header,
             "type": type,
+            "managed_category_name": managed_category_name,
+            "default_category_name": default_category_name,
         }
         return self.client.post("""/api/v4/channels""", options=__options)
 
@@ -250,6 +256,8 @@ class Channels(Base):
         group_constrained: bool | None = None,
         autotranslation: bool | None = None,
         banner_info: Any | None = None,
+        managed_category_name: str | None = None,
+        default_category_name: str | None = None,
     ):
         """Patch a channel
 
@@ -261,6 +269,8 @@ class Channels(Base):
         group_constrained: When true, only members of the linked LDAP groups can join the channel. Only applicable to public and private channels.
         autotranslation: Enable or disable automatic message translation in the channel. Requires the auto-translation feature and appropriate channel permission. May be restricted for direct and group message channels by server configuration.
         banner_info:
+        managed_category_name: The name of the managed category to assign this channel to. Set to an empty string to clear. Requires an Enterprise license and the ``ManagedChannelCategories`` feature flag to be enabled.
+        default_category_name: Default sidebar category name for members when joining this channel. Set to an empty string to clear. Requires ``EnableChannelCategorySorting`` to be enabled on the server.
 
         `Read in Mattermost API docs (channels - PatchChannel) <https://developers.mattermost.com/api-documentation/#/operations/PatchChannel>`_
 
@@ -273,6 +283,8 @@ class Channels(Base):
             "group_constrained": group_constrained,
             "autotranslation": autotranslation,
             "banner_info": banner_info,
+            "managed_category_name": managed_category_name,
+            "default_category_name": default_category_name,
         }
         return self.client.put(f"/api/v4/channels/{channel_id}/patch", options=__options)
 
@@ -393,6 +405,16 @@ class Channels(Base):
         """
         __params = {"name": name}
         return self.client.get(f"/api/v4/teams/{team_id}/channels/search_autocomplete", params=__params)
+
+    def get_managed_categories(self, team_id: str):
+        """Get managed category mappings
+
+        team_id: Team ID
+
+        `Read in Mattermost API docs (channels - GetManagedCategories) <https://developers.mattermost.com/api-documentation/#/operations/GetManagedCategories>`_
+
+        """
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/managed_categories")
 
     def search_channels(self, team_id: str, term: str):
         """Search channels

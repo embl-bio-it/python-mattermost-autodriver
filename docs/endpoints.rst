@@ -361,6 +361,14 @@ Preferences
     :undoc-members:
     :show-inheritance:
 
+Properties
+----------
+
+.. automodule:: mattermostautodriver.endpoints.properties
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Reactions
 ---------
 
@@ -517,6 +525,14 @@ Users
 -----
 
 .. automodule:: mattermostautodriver.endpoints.users
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Views
+-----
+
+.. automodule:: mattermostautodriver.endpoints.views
     :members:
     :undoc-members:
     :show-inheritance:
