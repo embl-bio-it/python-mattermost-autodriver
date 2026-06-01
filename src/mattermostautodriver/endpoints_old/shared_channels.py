@@ -5,6 +5,16 @@ __all__ = ["SharedChannels"]
 
 class SharedChannels(Base):
 
+    def get_shared_channel_remotes(self, channel_id):
+        """Get remote clusters for a shared channel
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (shared_channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
+
     def get_all_shared_channels(self, team_id, params=None):
         """Get all shared channels for team.
 
