@@ -7,7 +7,6 @@ from ..websocket import Websocket
 
 from .endpoint_base import BaseDriverWithEndpoints, TypedBaseDriverWithEndpoints
 
-
 log = logging.getLogger("mattermostautodriver.api")
 log.setLevel(logging.INFO)
 
