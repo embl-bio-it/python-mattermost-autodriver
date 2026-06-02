@@ -48,6 +48,12 @@ Classes
 .. autoclass:: Client
     :members:
 
+Constants
+'''''''''
+
+.. automodule:: mattermostautodriver.constants
+    :members:
+
 Exceptions that api requests can throw
 ''''''''''''''''''''''''''''''''''''''
 
