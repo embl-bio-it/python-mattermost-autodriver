@@ -13,6 +13,10 @@ Python Mattermost Auto Driver (APIv4)
 
 This project maintains an auto-generated Python-based interface to `the Mattermost API <https://developers.mattermost.com/api-documentation/>`_ that follows official Mattermost releases.
 
+.. note::
+
+    2026-06-01 - The lead maintenance of this project changed. Further details at the bottom of this document.
+
 Info
 ----
 
@@ -269,3 +273,10 @@ This script will also update the documentation by running:
 
 The current API conversion code was designed for Python 3.13.
 As it uses Python's AST parser and generator, alongside with `Black <https://github.com/psf/black>`_ different versions of Python may result in some differences in the generated code. Double check with a ``git diff`` once complete.
+
+History of contributions and lead maintenance
+---------------------------------------------
+
+- Bertie (@bertie-sektorcert) - Enhancements and maintenance. Lead maintainer 2026-...
+- Renato Alves (@unode) - `Proof-of-Concept auto-driver <https://github.com/Vaelor/python-mattermost-driver/pull/100>`_, launch of ``python-mattermost-autodriver``, maintenance and enhancements. Lead maintainer 2022-2026.
+- Christian (@Vaelor) and others - Original `python-mattermost-driver <https://github.com/Vaelor/python-mattermost-driver>`_ and `idea for autodriver project <https://github.com/Vaelor/python-mattermost-driver/issues/60>`_.
