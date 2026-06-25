@@ -246,14 +246,8 @@ def main():
     typed_driver_parser = ASTEndpointParser(
         endpoints_dir="endpoints", base_driver_class_name="TypedBaseDriverWithEndpoints"
     )
-    untyped_driver_parser = ASTEndpointParser(
-        endpoints_dir="endpoints_old",
-        base_driver_class_name="BaseDriverWithEndpoints",
-        modify_module_class_name=lambda x: "Old" + x,
-    )
 
     typed_driver_parser.update_file()
-    untyped_driver_parser.update_file()
 
     run(
         [
