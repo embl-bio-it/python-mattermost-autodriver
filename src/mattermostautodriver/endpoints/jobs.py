@@ -64,18 +64,22 @@ class Jobs(Base):
         """
         return self.client.post(f"/api/v4/jobs/{job_id}/cancel")
 
-    def get_jobs_by_type(self, type: str, page: int | None = 0, per_page: int | None = 60):
+    def get_jobs_by_type(
+        self, job_type: str, team_id: str | None = None, page: int | None = 0, per_page: int | None = 60
+    ):
         """Get the jobs of the given type.
 
-        type: Job type
+        job_type: Job type
+        team_id: Optional team GUID. When set, the server returns jobs of the given ``job_type`` whose job data includes this ``team_id`` (see server filtering). For ``access_control_sync``, team admins with ``manage_team_access_rules`` on this team may use this parameter to read team-scoped jobs without ``manage_system``.
+
         page: The page to select.
         per_page: The number of jobs per page.
 
         `Read in Mattermost API docs (jobs - GetJobsByType) <https://developers.mattermost.com/api-documentation/#/operations/GetJobsByType>`_
 
         """
-        __params = {"page": page, "per_page": per_page}
-        return self.client.get(f"/api/v4/jobs/type/{type}", params=__params)
+        __params = {"team_id": team_id, "page": page, "per_page": per_page}
+        return self.client.get(f"/api/v4/jobs/type/{job_type}", params=__params)
 
     def update_job_status(self, job_id: str, status: str, force: bool | None = None):
         """Update the status of a job

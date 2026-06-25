@@ -44,17 +44,6 @@ class Threads(Base):
         }
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads", params=__params)
 
-    def get_thread_mention_counts_by_channel(self, user_id: str, team_id: str):
-        """Get all unread mention counts from followed threads, per-channel
-
-        user_id: The ID of the user. This can also be "me" which will point to the current user.
-        team_id: The ID of the team in which the thread is.
-
-        `Read in Mattermost API docs (threads - GetThreadMentionCountsByChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetThreadMentionCountsByChannel>`_
-
-        """
-        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/threads/mention_counts")
-
     def update_threads_read_for_user(self, user_id: str, team_id: str):
         """Mark all threads that user is following as read
 

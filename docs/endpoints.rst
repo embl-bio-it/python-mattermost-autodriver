@@ -41,10 +41,10 @@ Authentication
     :undoc-members:
     :show-inheritance:
 
-Bleve
------
+Boards
+------
 
-.. automodule:: mattermostautodriver.endpoints.bleve
+.. automodule:: mattermostautodriver.endpoints.boards
     :members:
     :undoc-members:
     :show-inheritance:
@@ -141,6 +141,14 @@ Data Retention
 --------------
 
 .. automodule:: mattermostautodriver.endpoints.data_retention
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Drafts
+------
+
+.. automodule:: mattermostautodriver.endpoints.drafts
     :members:
     :undoc-members:
     :show-inheritance:

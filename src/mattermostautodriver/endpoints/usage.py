@@ -19,3 +19,10 @@ class Usage(Base):
 
         """
         return self.client.get("""/api/v4/usage/storage""")
+
+    def get_teams_usage(self):
+        """Get current usage of teams
+        `Read in Mattermost API docs (usage - GetTeamsUsage) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsUsage>`_
+
+        """
+        return self.client.get("""/api/v4/usage/teams""")

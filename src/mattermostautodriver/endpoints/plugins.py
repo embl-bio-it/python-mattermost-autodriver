@@ -77,17 +77,12 @@ class Plugins(Base):
         """
         return self.client.get("""/api/v4/plugins/statuses""")
 
-    def install_marketplace_plugin(self, id: str, version: str):
+    def install_marketplace_plugin(self, options: Any):
         """Installs a marketplace plugin
-
-        id: The ID of the plugin to install.
-        version: The version of the plugin to install.
-
         `Read in Mattermost API docs (plugins - InstallMarketplacePlugin) <https://developers.mattermost.com/api-documentation/#/operations/InstallMarketplacePlugin>`_
 
         """
-        __options = {"id": id, "version": version}
-        return self.client.post("""/api/v4/plugins/marketplace""", options=__options)
+        return self.client.post("""/api/v4/plugins/marketplace""", options=options)
 
     def get_marketplace_plugins(
         self,
@@ -123,3 +118,20 @@ class Plugins(Base):
 
         """
         return self.client.get("""/api/v4/plugins/marketplace/first_admin_visit""")
+
+    def reattach_plugin(self, options: Any | None = None):
+        """Reattach a plugin process
+        `Read in Mattermost API docs (plugins - ReattachPlugin) <https://developers.mattermost.com/api-documentation/#/operations/ReattachPlugin>`_
+
+        """
+        return self.client.post("""/api/v4/plugins/reattach""", options=options)
+
+    def detach_plugin(self, plugin_id: str):
+        """Detach a reattached plugin process
+
+        plugin_id: The ID of the plugin to detach.
+
+        `Read in Mattermost API docs (plugins - DetachPlugin) <https://developers.mattermost.com/api-documentation/#/operations/DetachPlugin>`_
+
+        """
+        return self.client.post(f"/api/v4/plugins/{plugin_id}/detach")

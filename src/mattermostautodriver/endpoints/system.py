@@ -36,10 +36,49 @@ class System(Base):
         }
         return self.client.get("""/api/v4/system/ping""", params=__params)
 
-    def get_notices(self, teamId: str, clientVersion: str, client: str, locale: str | None = None):
+    def connect_web_socket(
+        self,
+        connection_id: str | None = None,
+        sequence_number: str | None = None,
+        posted_ack: bool | None = None,
+        disconnect_err_code: str | None = None,
+    ):
+        """Open a WebSocket connection
+
+        connection_id: Existing connection identifier for reconnect flows.
+        sequence_number: Last received sequence number for reconnect flows.
+        posted_ack: Whether post acknowledgement events are enabled for this connection.
+        disconnect_err_code: Optional close code used by clients to indicate disconnect reason.
+
+        `Read in Mattermost API docs (system - ConnectWebSocket) <https://developers.mattermost.com/api-documentation/#/operations/ConnectWebSocket>`_
+
+        """
+        __params = {
+            "connection_id": connection_id,
+            "sequence_number": sequence_number,
+            "posted_ack": posted_ack,
+            "disconnect_err_code": disconnect_err_code,
+        }
+        return self.client.get("""/api/v4/websocket""", params=__params)
+
+    def manual_test(self, test: str, uid: str | None = None, username: str | None = None, teamname: str | None = None):
+        """Run manual testing helpers
+
+        test: Name of the manual test to run.
+        uid: Optional unique value used to randomize generated resources.
+        username: Optional username used for helper account creation.
+        teamname: Optional team display name used for helper team creation.
+
+        `Read in Mattermost API docs (system - ManualTest) <https://developers.mattermost.com/api-documentation/#/operations/ManualTest>`_
+
+        """
+        __params = {"test": test, "uid": uid, "username": username, "teamname": teamname}
+        return self.client.get("""/manualtest""", params=__params)
+
+    def get_notices(self, team_id: str, clientVersion: str, client: str, locale: str | None = None):
         """Get notices for logged in user in specified team
 
-        teamId: ID of the team
+        team_id: ID of the team
         clientVersion: Version of the client (desktop/mobile/web) that issues the request
         locale: Client locale
         client: Client type (web/mobile-ios/mobile-android/desktop)
@@ -48,7 +87,7 @@ class System(Base):
 
         """
         __params = {"clientVersion": clientVersion, "locale": locale, "client": client}
-        return self.client.get(f"/api/v4/system/notices/{teamId}", params=__params)
+        return self.client.get(f"/api/v4/system/notices/{team_id}", params=__params)
 
     def mark_notices_viewed(self, options: list[str]):
         """Update notices as 'viewed'
@@ -56,6 +95,25 @@ class System(Base):
 
         """
         return self.client.put("""/api/v4/system/notices/view""", options=options)
+
+    def get_onboarding_complete(self):
+        """Get first admin onboarding completion status
+        `Read in Mattermost API docs (system - GetOnboardingComplete) <https://developers.mattermost.com/api-documentation/#/operations/GetOnboardingComplete>`_
+
+        """
+        return self.client.get("""/api/v4/system/onboarding/complete""")
+
+    def complete_onboarding(self, organization: str | None = None, install_plugins: list[str] | None = None):
+        """Complete first admin onboarding
+
+        organization: Organization name for self-hosted onboarding.
+        install_plugins: Marketplace plugin IDs to install as part of onboarding.
+
+        `Read in Mattermost API docs (system - CompleteOnboarding) <https://developers.mattermost.com/api-documentation/#/operations/CompleteOnboarding>`_
+
+        """
+        __options = {"organization": organization, "install_plugins": install_plugins}
+        return self.client.post("""/api/v4/system/onboarding/complete""", options=__options)
 
     def set_ai_bridge_test_helper(self, options: Any):
         """Configure AI bridge E2E test helper
@@ -149,6 +207,18 @@ class System(Base):
         """
         return self.client.post("""/api/v4/config/reload""")
 
+    def migrate_config(self, from_: str, to: str):
+        """Migrate config storage
+
+        from: Source config store name.
+        to: Destination config store name.
+
+        `Read in Mattermost API docs (system - MigrateConfig) <https://developers.mattermost.com/api-documentation/#/operations/MigrateConfig>`_
+
+        """
+        __options = {"from": from_, "to": to}
+        return self.client.post("""/api/v4/config/migrate""", options=__options)
+
     def get_client_config(self):
         """Get client configuration
         `Read in Mattermost API docs (system - GetClientConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetClientConfig>`_
@@ -205,13 +275,6 @@ class System(Base):
 
         """
         return self.client.get("""/api/v4/license/load_metric""")
-
-    def request_license_renewal_link(self):
-        """Request the license renewal link
-        `Read in Mattermost API docs (system - RequestLicenseRenewalLink) <https://developers.mattermost.com/api-documentation/#/operations/RequestLicenseRenewalLink>`_
-
-        """
-        return self.client.get("""/api/v4/license/renewal""")
 
     def request_trial_license(self, users: int):
         """Request and install a trial license for your server
@@ -274,6 +337,28 @@ class System(Base):
         __options = {"level": level, "message": message}
         return self.client.post("""/api/v4/logs""", options=__options)
 
+    def query_logs(
+        self,
+        server_names: list[str] | None = None,
+        log_levels: list[str] | None = None,
+        date_from: str | None = None,
+        date_to: str | None = None,
+    ):
+        """Query server logs with filters
+
+        server_names:
+        log_levels:
+        date_from: Inclusive start of the time range. The server parses this using the layout ``YYYY-MM-DD HH:MM:SS.mmm ±HH:MM`` (milliseconds optional; timezone offset required), matching Go reference time ``2006-01-02 15:04:05.999 -07:00``.
+
+        date_to: Inclusive end of the time range. Same format as ``date_from`` (``YYYY-MM-DD HH:MM:SS.mmm ±HH:MM``, e.g. ``2006-01-02 15:04:05.999 -07:00``).
+
+
+        `Read in Mattermost API docs (system - QueryLogs) <https://developers.mattermost.com/api-documentation/#/operations/QueryLogs>`_
+
+        """
+        __options = {"server_names": server_names, "log_levels": log_levels, "date_from": date_from, "date_to": date_to}
+        return self.client.post("""/api/v4/logs/query""", options=__options)
+
     def get_analytics_old(self, name: str | None = "standard", team_id: str | None = None):
         """Get analytics
 
@@ -285,6 +370,20 @@ class System(Base):
         """
         __params = {"name": name, "team_id": team_id}
         return self.client.get("""/api/v4/analytics/old""", params=__params)
+
+    def get_latest_version(self):
+        """Get latest public server release information
+        `Read in Mattermost API docs (system - GetLatestVersion) <https://developers.mattermost.com/api-documentation/#/operations/GetLatestVersion>`_
+
+        """
+        return self.client.get("""/api/v4/latest_version""")
+
+    def get_applied_schema_migrations(self):
+        """Get applied database schema migrations
+        `Read in Mattermost API docs (system - GetAppliedSchemaMigrations) <https://developers.mattermost.com/api-documentation/#/operations/GetAppliedSchemaMigrations>`_
+
+        """
+        return self.client.get("""/api/v4/system/schema/version""")
 
     def set_server_busy(self):
         """Set the server busy (high load) flag
