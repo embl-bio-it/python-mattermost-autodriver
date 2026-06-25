@@ -156,7 +156,8 @@ def get_request_body_type(body):
     # We don't support raw octet-stream bodies, so strip it and keep the form.
     content_types = [ct for ct in body["content"] if ct != "application/octet-stream"]
 
-    assert len(content_types) == 1
+    if len(content_types) != 0:
+        raise ValueError(f"Request body has multiple content types: {content_types}")
 
     return content_types[0]
 
