@@ -67,6 +67,7 @@ __all__ = ["{classname}"]
 known_double_arguments = (
     ("update_user_status", "user_id"),
     ("add_team_member", "team_id"),
+    ("convert_group_message_to_channel", "channel_id"),
 )
 
 
