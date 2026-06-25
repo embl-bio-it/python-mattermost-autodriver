@@ -151,9 +151,17 @@ def get_request_body_type(body):
     if not body:
         return None
 
-    assert len(body["content"]) == 1
+    # Some endpoints offer the same payload under multiple content types
+    # (e.g. application/octet-stream *and* multipart/form-data for file uploads).
+    # We don't support raw octet-stream bodies, so strip it and keep the form.
+    content_types = [ct for ct in body["content"] if ct != "application/octet-stream"]
 
-    return next(iter(body["content"]))
+    try:
+        assert len(content_types) == 1
+    except AssertionError:
+        print(body["content"])
+
+    return content_types[0]
 
 
 def get_requestbody_parameters(body, request_type):
