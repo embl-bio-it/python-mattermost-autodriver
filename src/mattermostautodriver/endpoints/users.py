@@ -40,18 +40,6 @@ class Users(Base):
         }
         return self.client.post("""/api/v4/users/login""", options=__options)
 
-    def login_with_desktop_token(self, token: str, device_id: str | None = None):
-        """Login using desktop token
-
-        token:
-        device_id:
-
-        `Read in Mattermost API docs (users - LoginWithDesktopToken) <https://developers.mattermost.com/api-documentation/#/operations/LoginWithDesktopToken>`_
-
-        """
-        __options = {"token": token, "device_id": device_id}
-        return self.client.post("""/api/v4/users/login/desktop_token""", options=__options)
-
     def login_by_cws_token(self, login_id: str | None = None, cws_token: str | None = None):
         """Auto-Login to Mattermost server using CWS token
 
@@ -90,20 +78,6 @@ class Users(Base):
 
         """
         return self.client.post("""/api/v4/users/logout""")
-
-    def notify_admin(self, options: Any):
-        """Save notify-admin intent
-        `Read in Mattermost API docs (users - NotifyAdmin) <https://developers.mattermost.com/api-documentation/#/operations/NotifyAdmin>`_
-
-        """
-        return self.client.post("""/api/v4/users/notify-admin""", options=options)
-
-    def trigger_notify_admin_posts(self, options: Any):
-        """Trigger notify-admin posts
-        `Read in Mattermost API docs (users - TriggerNotifyAdminPosts) <https://developers.mattermost.com/api-documentation/#/operations/TriggerNotifyAdminPosts>`_
-
-        """
-        return self.client.post("""/api/v4/users/trigger-notify-admin-posts""", options=options)
 
     def create_user(
         self,
@@ -167,7 +141,6 @@ class Users(Base):
         not_in_channel: str | None = None,
         in_group: str | None = None,
         group_constrained: bool | None = None,
-        abac_match_only: bool | None = None,
         without_team: bool | None = None,
         active: bool | None = None,
         inactive: bool | None = None,
@@ -187,12 +160,6 @@ class Users(Base):
         not_in_channel: The ID of the channel to exclude users for. Must be used with "in_channel" query parameter.
         in_group: The ID of the group to get users for. Must have ``manage_system`` permission.
         group_constrained: When used with ``not_in_channel`` or ``not_in_team``, returns only the users that are allowed to join the channel or team based on its group constrains.
-        abac_match_only: When used with ``not_in_channel``, restricts the result to users whose attributes satisfy the channel's Attribute-Based Access Control (ABAC) membership policy.
-
-        On private channels with an ABAC policy this filter is always applied regardless of this parameter (hard gate). On public channels with an advisory ABAC policy the full not_in_channel candidate list is returned by default; set this to ``true`` to fetch only the matching subset of candidates (for example to annotate recommended members in the invite UI).
-
-        *Minimum server version*: 11.8
-
         without_team: Whether or not to list users that are not on any team. This option takes precendence over ``in_team``, ``in_channel``, and ``not_in_channel``.
         active: Whether or not to list only users that are active. This option cannot be used along with the ``inactive`` option.
         inactive: Whether or not to list only users that are deactivated. This option cannot be used along with the ``active`` option.
@@ -244,7 +211,6 @@ class Users(Base):
             "not_in_channel": not_in_channel,
             "in_group": in_group,
             "group_constrained": group_constrained,
-            "abac_match_only": abac_match_only,
             "without_team": without_team,
             "active": active,
             "inactive": inactive,
@@ -597,18 +563,6 @@ class Users(Base):
         """
         return self.client.get(f"/api/v4/users/username/{username}")
 
-    def get_user_by_auth_data(self, value: str):
-        """Get a user by auth data
-
-        value: The user's AuthData as stored in ``Users.AuthData``. Must be URL-encoded; in particular, Base64 ``+`` characters must be sent as ``%2B`` so they are not decoded as spaces.
-
-
-        `Read in Mattermost API docs (users - GetUserByAuthData) <https://developers.mattermost.com/api-documentation/#/operations/GetUserByAuthData>`_
-
-        """
-        __params = {"value": value}
-        return self.client.get("""/api/v4/users/auth_data""", params=__params)
-
     def reset_password(self, code: str, new_password: str):
         """Reset password
 
@@ -673,6 +627,17 @@ class Users(Base):
 
         """
         return self.client.post(f"/api/v4/users/{user_id}/convert_to_bot")
+
+    def check_user_mfa(self, login_id: str):
+        """Check MFA
+
+        login_id: The email or username used to login
+
+        `Read in Mattermost API docs (users - CheckUserMfa) <https://developers.mattermost.com/api-documentation/#/operations/CheckUserMfa>`_
+
+        """
+        __options = {"login_id": login_id}
+        return self.client.post("""/api/v4/users/mfa""", options=__options)
 
     def update_user_password(self, user_id: str, new_password: str, current_password: str | None = None):
         """Update a user's password
@@ -1042,47 +1007,6 @@ class Users(Base):
         """
         __options = {"from": from_, "matches": matches, "auto": auto}
         return self.client.post("""/api/v4/users/migrate_auth/saml""", options=__options)
-
-    def upsert_draft(self, options: Any):
-        """Upsert synced draft
-        `Read in Mattermost API docs (users - UpsertDraft) <https://developers.mattermost.com/api-documentation/#/operations/UpsertDraft>`_
-
-        """
-        return self.client.post("""/api/v4/drafts""", options=options)
-
-    def get_drafts(self, user_id: str, team_id: str):
-        """Get synced drafts for a team
-
-        user_id: User ID
-        team_id: Team ID
-
-        `Read in Mattermost API docs (users - GetDrafts) <https://developers.mattermost.com/api-documentation/#/operations/GetDrafts>`_
-
-        """
-        return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/drafts")
-
-    def delete_draft(self, user_id: str, channel_id: str):
-        """Delete synced draft
-
-        user_id: User ID
-        channel_id: Channel ID
-
-        `Read in Mattermost API docs (users - DeleteDraft) <https://developers.mattermost.com/api-documentation/#/operations/DeleteDraft>`_
-
-        """
-        return self.client.delete(f"/api/v4/users/{user_id}/channels/{channel_id}/drafts")
-
-    def delete_draft_for_thread(self, user_id: str, channel_id: str, thread_id: str):
-        """Delete synced thread draft
-
-        user_id: User ID
-        channel_id: Channel ID
-        thread_id: Root post ID of the thread
-
-        `Read in Mattermost API docs (users - DeleteDraftForThread) <https://developers.mattermost.com/api-documentation/#/operations/DeleteDraftForThread>`_
-
-        """
-        return self.client.delete(f"/api/v4/users/{user_id}/channels/{channel_id}/drafts/{thread_id}")
 
     def get_users_with_invalid_emails(self, page: int | None = 0, per_page: int | None = 60):
         """Get users with invalid emails

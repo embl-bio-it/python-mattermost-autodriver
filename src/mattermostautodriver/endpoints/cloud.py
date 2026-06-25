@@ -20,6 +20,24 @@ class Cloud(Base):
         """
         return self.client.get("""/api/v4/cloud/products""")
 
+    def create_customer_payment(self):
+        """Create a customer setup payment intent
+        `Read in Mattermost API docs (cloud - CreateCustomerPayment) <https://developers.mattermost.com/api-documentation/#/operations/CreateCustomerPayment>`_
+
+        """
+        return self.client.post("""/api/v4/cloud/payment""")
+
+    def confirm_customer_payment(self, stripe_setup_intent_id: str | None = None):
+        """Completes the payment setup intent
+
+        stripe_setup_intent_id:
+
+        `Read in Mattermost API docs (cloud - ConfirmCustomerPayment) <https://developers.mattermost.com/api-documentation/#/operations/ConfirmCustomerPayment>`_
+
+        """
+        __data = {"stripe_setup_intent_id": stripe_setup_intent_id}
+        return self.client.post("""/api/v4/cloud/payment/confirm""", data=__data)
+
     def get_cloud_customer(self):
         """Get cloud customer
         `Read in Mattermost API docs (cloud - GetCloudCustomer) <https://developers.mattermost.com/api-documentation/#/operations/GetCloudCustomer>`_
@@ -62,24 +80,6 @@ class Cloud(Base):
         """
         return self.client.put("""/api/v4/cloud/customer/address""", options=options)
 
-    def validate_business_email(self, email: str):
-        """Validate business email
-
-        email:
-
-        `Read in Mattermost API docs (cloud - ValidateBusinessEmail) <https://developers.mattermost.com/api-documentation/#/operations/ValidateBusinessEmail>`_
-
-        """
-        __options = {"email": email}
-        return self.client.post("""/api/v4/cloud/validate-business-email""", options=__options)
-
-    def validate_workspace_business_email(self):
-        """Validate workspace business email
-        `Read in Mattermost API docs (cloud - ValidateWorkspaceBusinessEmail) <https://developers.mattermost.com/api-documentation/#/operations/ValidateWorkspaceBusinessEmail>`_
-
-        """
-        return self.client.post("""/api/v4/cloud/validate-workspace-business-email""")
-
     def get_subscription(self):
         """Get cloud subscription
         `Read in Mattermost API docs (cloud - GetSubscription) <https://developers.mattermost.com/api-documentation/#/operations/GetSubscription>`_
@@ -110,13 +110,6 @@ class Cloud(Base):
 
         """
         return self.client.get(f"/api/v4/cloud/subscription/invoices/{invoice_id}/pdf")
-
-    def hosted_customer_signup_available(self):
-        """Check hosted signup availability
-        `Read in Mattermost API docs (cloud - HostedCustomerSignupAvailable) <https://developers.mattermost.com/api-documentation/#/operations/HostedCustomerSignupAvailable>`_
-
-        """
-        return self.client.get("""/api/v4/hosted_customer/signup_available""")
 
     def check_cws_connection(self):
         """Check CWS connection

@@ -30,16 +30,6 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}")
 
-    def head_file(self, file_id: str):
-        """Get file metadata headers
-
-        file_id: The ID of the file to get
-
-        `Read in Mattermost API docs (files - HeadFile) <https://developers.mattermost.com/api-documentation/#/operations/HeadFile>`_
-
-        """
-        return self.client.head(f"/api/v4/files/{file_id}")
-
     def get_file_thumbnail(self, file_id: str):
         """Get a file's thumbnail
 
@@ -50,16 +40,6 @@ class Files(Base):
         """
         return self.client.get(f"/api/v4/files/{file_id}/thumbnail")
 
-    def head_file_thumbnail(self, file_id: str):
-        """Get thumbnail metadata headers
-
-        file_id: The ID of the file to get
-
-        `Read in Mattermost API docs (files - HeadFileThumbnail) <https://developers.mattermost.com/api-documentation/#/operations/HeadFileThumbnail>`_
-
-        """
-        return self.client.head(f"/api/v4/files/{file_id}/thumbnail")
-
     def get_file_preview(self, file_id: str):
         """Get a file's preview
 
@@ -69,16 +49,6 @@ class Files(Base):
 
         """
         return self.client.get(f"/api/v4/files/{file_id}/preview")
-
-    def head_file_preview(self, file_id: str):
-        """Get preview metadata headers
-
-        file_id: The ID of the file to get
-
-        `Read in Mattermost API docs (files - HeadFilePreview) <https://developers.mattermost.com/api-documentation/#/operations/HeadFilePreview>`_
-
-        """
-        return self.client.head(f"/api/v4/files/{file_id}/preview")
 
     def get_file_link(self, file_id: str):
         """Get a public file link
@@ -111,18 +81,6 @@ class Files(Base):
         """
         __params = {"h": h}
         return self.client.get(f"/files/{file_id}/public", params=__params)
-
-    def head_file_public(self, file_id: str, h: str):
-        """Get public file metadata headers
-
-        file_id: The ID of the file to get
-        h: File hash
-
-        `Read in Mattermost API docs (files - HeadFilePublic) <https://developers.mattermost.com/api-documentation/#/operations/HeadFilePublic>`_
-
-        """
-        __params = {"h": h}
-        return self.client.head(f"/files/{file_id}/public", params=__params)
 
     def search_files(
         self,

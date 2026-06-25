@@ -5,7 +5,7 @@ from ..endpoints.agents import Agents
 from ..endpoints.ai import Ai
 from ..endpoints.audit_logs import AuditLogs
 from ..endpoints.authentication import Authentication
-from ..endpoints.boards import Boards
+from ..endpoints.bleve import Bleve
 from ..endpoints.bookmarks import Bookmarks
 from ..endpoints.bots import Bots
 from ..endpoints.brand import Brand
@@ -18,7 +18,6 @@ from ..endpoints.conditions import Conditions
 from ..endpoints.content_flagging import ContentFlagging
 from ..endpoints.custom_profile_attributes import CustomProfileAttributes
 from ..endpoints.data_retention import DataRetention
-from ..endpoints.drafts import Drafts
 from ..endpoints.elasticsearch import Elasticsearch
 from ..endpoints.emoji import Emoji
 from ..endpoints.exports import Exports
@@ -80,7 +79,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.ai = Ai(self.client)
         self.audit_logs = AuditLogs(self.client)
         self.authentication = Authentication(self.client)
-        self.boards = Boards(self.client)
+        self.bleve = Bleve(self.client)
         self.bookmarks = Bookmarks(self.client)
         self.bots = Bots(self.client)
         self.brand = Brand(self.client)
@@ -93,7 +92,6 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.content_flagging = ContentFlagging(self.client)
         self.custom_profile_attributes = CustomProfileAttributes(self.client)
         self.data_retention = DataRetention(self.client)
-        self.drafts = Drafts(self.client)
         self.elasticsearch = Elasticsearch(self.client)
         self.emoji = Emoji(self.client)
         self.exports = Exports(self.client)

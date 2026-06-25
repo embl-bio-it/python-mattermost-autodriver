@@ -18,7 +18,6 @@ class Properties(Base):
         permission_field: str | None = "member",
         permission_values: str | None = "member",
         permission_options: str | None = "member",
-        linked_field_id: str | None = None,
     ):
         """Create a property field
 
@@ -35,8 +34,6 @@ class Properties(Base):
 
         permission_options: Permission level for managing options on select/multiselect fields. Only system admins can set this; ignored for non-admin users.
 
-        linked_field_id: The ID of a template field to link to. The source must be a template field in the same group, must not itself be linked, and must not be deleted. When set, the created field inherits the source's type, options, and security attributes; the ``type`` field in the request body is ignored. Can only be set at creation time.
-
 
         `Read in Mattermost API docs (properties - CreatePropertyField) <https://developers.mattermost.com/api-documentation/#/operations/CreatePropertyField>`_
 
@@ -50,7 +47,6 @@ class Properties(Base):
             "permission_field": permission_field,
             "permission_values": permission_values,
             "permission_options": permission_options,
-            "linked_field_id": linked_field_id,
         }
         return self.client.post(f"/api/v4/properties/groups/{group_name}/{object_type}/fields", options=__options)
 
@@ -151,33 +147,3 @@ class Properties(Base):
         return self.client.patch(
             f"/api/v4/properties/groups/{group_name}/{object_type}/values/{target_id}", options=options
         )
-
-    def get_system_property_values(
-        self,
-        group_name: str,
-        cursor_id: str | None = None,
-        cursor_create_at: int | None = None,
-        per_page: int | None = 60,
-    ):
-        """Get property values for the system
-
-        group_name: The name of the property group
-        cursor_id: The ID of the last property value from the previous page, for cursor-based pagination.
-        cursor_create_at: The create_at timestamp of the last property value from the previous page. Must be provided together with cursor_id.
-        per_page: The number of property values per page.
-
-        `Read in Mattermost API docs (properties - GetSystemPropertyValues) <https://developers.mattermost.com/api-documentation/#/operations/GetSystemPropertyValues>`_
-
-        """
-        __params = {"cursor_id": cursor_id, "cursor_create_at": cursor_create_at, "per_page": per_page}
-        return self.client.get(f"/api/v4/properties/groups/{group_name}/system/values", params=__params)
-
-    def update_system_property_values(self, group_name: str, options: list[dict[str, Any]]):
-        """Update property values for the system
-
-        group_name: The name of the property group
-
-        `Read in Mattermost API docs (properties - UpdateSystemPropertyValues) <https://developers.mattermost.com/api-documentation/#/operations/UpdateSystemPropertyValues>`_
-
-        """
-        return self.client.patch(f"/api/v4/properties/groups/{group_name}/system/values", options=options)

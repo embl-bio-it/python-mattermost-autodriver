@@ -29,14 +29,12 @@ class Uploads(Base):
         """
         return self.client.get(f"/api/v4/uploads/{upload_id}")
 
-    def upload_data(self, upload_id: str, file: BinaryIO | None = None):
+    def upload_data(self, upload_id: str, data: dict[str, Any] | None = None):
         """Perform a file upload
 
         upload_id: The ID of the upload session the data belongs to.
-        file:
 
         `Read in Mattermost API docs (uploads - UploadData) <https://developers.mattermost.com/api-documentation/#/operations/UploadData>`_
 
         """
-        __files = {"file": file}
-        return self.client.post(f"/api/v4/uploads/{upload_id}", files=__files)
+        return self.client.post(f"/api/v4/uploads/{upload_id}", data=data)

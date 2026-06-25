@@ -49,37 +49,6 @@ class Posts(Base):
         __options = {"user_id": user_id, "post": post}
         return self.client.post("""/api/v4/posts/ephemeral""", options=__options)
 
-    def search_posts_in_all_teams(
-        self,
-        terms: str,
-        is_or_search: bool | None = None,
-        time_zone_offset: int | None = None,
-        include_deleted_channels: bool | None = None,
-        page: int | None = None,
-        per_page: int | None = None,
-    ):
-        """Search posts across all teams
-
-        terms:
-        is_or_search:
-        time_zone_offset:
-        include_deleted_channels:
-        page:
-        per_page:
-
-        `Read in Mattermost API docs (posts - SearchPostsInAllTeams) <https://developers.mattermost.com/api-documentation/#/operations/SearchPostsInAllTeams>`_
-
-        """
-        __options = {
-            "terms": terms,
-            "is_or_search": is_or_search,
-            "time_zone_offset": time_zone_offset,
-            "include_deleted_channels": include_deleted_channels,
-            "page": page,
-            "per_page": per_page,
-        }
-        return self.client.post("""/api/v4/posts/search""", options=__options)
-
     def get_post(self, post_id: str, include_deleted: bool | None = False):
         """Get a post
 
@@ -248,26 +217,6 @@ class Posts(Base):
         """
         __params = {"include_deleted": include_deleted}
         return self.client.get(f"/api/v4/posts/{post_id}/files/info", params=__params)
-
-    def get_post_info(self, post_id: str):
-        """Get post info
-
-        post_id: Post ID
-
-        `Read in Mattermost API docs (posts - GetPostInfo) <https://developers.mattermost.com/api-documentation/#/operations/GetPostInfo>`_
-
-        """
-        return self.client.get(f"/api/v4/posts/{post_id}/info")
-
-    def get_edit_history_for_post(self, post_id: str):
-        """Get post edit history
-
-        post_id: Post ID
-
-        `Read in Mattermost API docs (posts - GetEditHistoryForPost) <https://developers.mattermost.com/api-documentation/#/operations/GetEditHistoryForPost>`_
-
-        """
-        return self.client.get(f"/api/v4/posts/{post_id}/edit_history")
 
     def get_posts_for_channel(
         self,

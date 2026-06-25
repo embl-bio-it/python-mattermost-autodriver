@@ -113,6 +113,38 @@ class Bots(Base):
         """
         return self.client.post(f"/api/v4/bots/{bot_user_id}/assign/{user_id}")
 
+    def get_bot_icon_image(self, bot_user_id: str):
+        """Get bot's LHS icon
+
+        bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - GetBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/GetBotIconImage>`_
+
+        """
+        return self.client.get(f"/api/v4/bots/{bot_user_id}/icon")
+
+    def set_bot_icon_image(self, bot_user_id: str, image: BinaryIO):
+        """Set bot's LHS icon image
+
+        bot_user_id: Bot user ID
+        image: SVG icon image to be uploaded
+
+        `Read in Mattermost API docs (bots - SetBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/SetBotIconImage>`_
+
+        """
+        __files = {"image": image}
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/icon", files=__files)
+
+    def delete_bot_icon_image(self, bot_user_id: str):
+        """Delete bot's LHS icon image
+
+        bot_user_id: Bot user ID
+
+        `Read in Mattermost API docs (bots - DeleteBotIconImage) <https://developers.mattermost.com/api-documentation/#/operations/DeleteBotIconImage>`_
+
+        """
+        return self.client.delete(f"/api/v4/bots/{bot_user_id}/icon")
+
     def convert_bot_to_user(
         self,
         bot_user_id: str,

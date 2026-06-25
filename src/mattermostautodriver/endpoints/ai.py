@@ -31,13 +31,6 @@ class Ai(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get("""/api/v4/recaps""", params=__params)
 
-    def mark_recaps_as_viewed(self):
-        """Mark all of the authenticated user's finished recaps as viewed
-        `Read in Mattermost API docs (ai - MarkRecapsAsViewed) <https://developers.mattermost.com/api-documentation/#/operations/MarkRecapsAsViewed>`_
-
-        """
-        return self.client.post("""/api/v4/recaps/mark_viewed""")
-
     def get_recap(self, recap_id: str):
         """Get a specific recap
 
@@ -77,3 +70,17 @@ class Ai(Base):
 
         """
         return self.client.post(f"/api/v4/recaps/{recap_id}/regenerate")
+
+    def get_ai_agents(self):
+        """Get available AI agents
+        `Read in Mattermost API docs (ai - GetAIAgents) <https://developers.mattermost.com/api-documentation/#/operations/GetAIAgents>`_
+
+        """
+        return self.client.get("""/api/v4/ai/agents""")
+
+    def get_ai_services(self):
+        """Get available AI services
+        `Read in Mattermost API docs (ai - GetAIServices) <https://developers.mattermost.com/api-documentation/#/operations/GetAIServices>`_
+
+        """
+        return self.client.get("""/api/v4/ai/services""")

@@ -153,15 +153,15 @@ class Teams(Base):
         """
         return self.client.post(f"/api/v4/teams/{team_id}/restore")
 
-    def get_team_by_name(self, team_name: str):
+    def get_team_by_name(self, name: str):
         """Get a team by name
 
-        team_name: Team Name
+        name: Team Name
 
         `Read in Mattermost API docs (teams - GetTeamByName) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamByName>`_
 
         """
-        return self.client.get(f"/api/v4/teams/name/{team_name}")
+        return self.client.get(f"/api/v4/teams/name/{name}")
 
     def search_teams(
         self,
@@ -202,15 +202,15 @@ class Teams(Base):
         }
         return self.client.post("""/api/v4/teams/search""", options=__options)
 
-    def team_exists(self, team_name: str):
+    def team_exists(self, name: str):
         """Check if team exists
 
-        team_name: Team Name
+        name: Team Name
 
         `Read in Mattermost API docs (teams - TeamExists) <https://developers.mattermost.com/api-documentation/#/operations/TeamExists>`_
 
         """
-        return self.client.get(f"/api/v4/teams/name/{team_name}/exists")
+        return self.client.get(f"/api/v4/teams/name/{name}/exists")
 
     def get_teams_for_user(self, user_id: str):
         """Get a user's teams

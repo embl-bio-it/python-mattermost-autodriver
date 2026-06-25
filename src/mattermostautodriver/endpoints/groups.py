@@ -126,7 +126,7 @@ class Groups(Base):
         """Link a team to a group
 
         group_id: Group GUID
-        team_id: Team GUID.
+        team_id: Team GUID
 
         `Read in Mattermost API docs (groups - LinkGroupSyncableForTeam) <https://developers.mattermost.com/api-documentation/#/operations/LinkGroupSyncableForTeam>`_
 
@@ -134,10 +134,10 @@ class Groups(Base):
         return self.client.post(f"/api/v4/groups/{group_id}/teams/{team_id}/link")
 
     def unlink_group_syncable_for_team(self, group_id: str, team_id: str):
-        """Unlink a team from a group
+        """Delete a link from a team to a group
 
         group_id: Group GUID
-        team_id: Team GUID.
+        team_id: Team GUID
 
         `Read in Mattermost API docs (groups - UnlinkGroupSyncableForTeam) <https://developers.mattermost.com/api-documentation/#/operations/UnlinkGroupSyncableForTeam>`_
 
@@ -148,7 +148,7 @@ class Groups(Base):
         """Link a channel to a group
 
         group_id: Group GUID
-        channel_id: Channel GUID.
+        channel_id: Channel GUID
 
         `Read in Mattermost API docs (groups - LinkGroupSyncableForChannel) <https://developers.mattermost.com/api-documentation/#/operations/LinkGroupSyncableForChannel>`_
 
@@ -156,10 +156,10 @@ class Groups(Base):
         return self.client.post(f"/api/v4/groups/{group_id}/channels/{channel_id}/link")
 
     def unlink_group_syncable_for_channel(self, group_id: str, channel_id: str):
-        """Unlink a channel from a group
+        """Delete a link from a channel to a group
 
         group_id: Group GUID
-        channel_id: Channel GUID.
+        channel_id: Channel GUID
 
         `Read in Mattermost API docs (groups - UnlinkGroupSyncableForChannel) <https://developers.mattermost.com/api-documentation/#/operations/UnlinkGroupSyncableForChannel>`_
 
@@ -167,10 +167,10 @@ class Groups(Base):
         return self.client.delete(f"/api/v4/groups/{group_id}/channels/{channel_id}/link")
 
     def get_group_syncable_for_team_id(self, group_id: str, team_id: str):
-        """Get a team syncable for a group
+        """Get GroupSyncable from Team ID
 
         group_id: Group GUID
-        team_id: Team GUID.
+        team_id: Team GUID
 
         `Read in Mattermost API docs (groups - GetGroupSyncableForTeamId) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupSyncableForTeamId>`_
 
@@ -178,10 +178,10 @@ class Groups(Base):
         return self.client.get(f"/api/v4/groups/{group_id}/teams/{team_id}")
 
     def get_group_syncable_for_channel_id(self, group_id: str, channel_id: str):
-        """Get a channel syncable for a group
+        """Get GroupSyncable from channel ID
 
         group_id: Group GUID
-        channel_id: Channel GUID.
+        channel_id: Channel GUID
 
         `Read in Mattermost API docs (groups - GetGroupSyncableForChannelId) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupSyncableForChannelId>`_
 
@@ -189,7 +189,7 @@ class Groups(Base):
         return self.client.get(f"/api/v4/groups/{group_id}/channels/{channel_id}")
 
     def get_group_syncables_teams(self, group_id: str):
-        """Get team syncables for a group
+        """Get group teams
 
         group_id: Group GUID
 
@@ -199,7 +199,7 @@ class Groups(Base):
         return self.client.get(f"/api/v4/groups/{group_id}/teams")
 
     def get_group_syncables_channels(self, group_id: str):
-        """Get channel syncables for a group
+        """Get group channels
 
         group_id: Group GUID
 
@@ -209,10 +209,10 @@ class Groups(Base):
         return self.client.get(f"/api/v4/groups/{group_id}/channels")
 
     def patch_group_syncable_for_team(self, group_id: str, team_id: str, auto_add: bool | None = None):
-        """Patch a team syncable for a group
+        """Patch a GroupSyncable associated to Team
 
         group_id: Group GUID
-        team_id: Team GUID.
+        team_id: Team GUID
         auto_add:
 
         `Read in Mattermost API docs (groups - PatchGroupSyncableForTeam) <https://developers.mattermost.com/api-documentation/#/operations/PatchGroupSyncableForTeam>`_
@@ -222,10 +222,10 @@ class Groups(Base):
         return self.client.put(f"/api/v4/groups/{group_id}/teams/{team_id}/patch", options=__options)
 
     def patch_group_syncable_for_channel(self, group_id: str, channel_id: str, auto_add: bool | None = None):
-        """Patch a channel syncable for a group
+        """Patch a GroupSyncable associated to Channel
 
         group_id: Group GUID
-        channel_id: Channel GUID.
+        channel_id: Channel GUID
         auto_add:
 
         `Read in Mattermost API docs (groups - PatchGroupSyncableForChannel) <https://developers.mattermost.com/api-documentation/#/operations/PatchGroupSyncableForChannel>`_

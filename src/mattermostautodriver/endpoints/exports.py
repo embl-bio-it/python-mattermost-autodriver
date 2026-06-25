@@ -32,13 +32,3 @@ class Exports(Base):
 
         """
         return self.client.delete(f"/api/v4/exports/{export_name}")
-
-    def presign_export(self, export_name: str):
-        """Create a presigned URL for export download
-
-        export_name: The name of the export file
-
-        `Read in Mattermost API docs (exports - PresignExport) <https://developers.mattermost.com/api-documentation/#/operations/PresignExport>`_
-
-        """
-        return self.client.post(f"/api/v4/exports/{export_name}/presign-url")

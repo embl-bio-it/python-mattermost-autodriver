@@ -16,8 +16,7 @@ class CustomProfileAttributes(Base):
     def create_cpa_field(self, name: str, type: str, attrs: dict[str, Any] | None = None):
         """Create a Custom Profile Attribute field
 
-        name: The internal identifier for this attribute. Must match ``^[A-Za-z_][A-Za-z0-9_]*$`` and must not be a CEL reserved word (true, false, null, in, as, break, const, continue, else, for, function, if, import, let, loop, package, namespace, return, var, void, while). This name is used in ABAC policy expressions as ``user.attributes.<name>``.
-
+        name:
         type:
         attrs:
 
@@ -33,8 +32,7 @@ class CustomProfileAttributes(Base):
         """Patch a Custom Profile Attribute field
 
         field_id: Custom Profile Attribute field GUID
-        name: New name for the attribute. When changed, must match ``^[A-Za-z_][A-Za-z0-9_]*$`` and must not be a CEL reserved word. Pre-existing fields with non-conforming names remain patchable on all other attributes; the validation only fires when ``name`` actually changes.
-
+        name:
         type:
         attrs:
 
