@@ -196,7 +196,7 @@ def get_locations(tags):
 
 
 def get_payload_params_or_properties(data, request_type):
-    if request_type == "get":
+    if request_type in ("get", "head"):
         return get_parameters(data.get("parameters", []), "query")
     else:
         req_body = data.get("requestBody", {})
@@ -260,6 +260,7 @@ def json_to_ast(api):
             operations = {
                 "delete": "params",
                 "get": "params",
+                "head": "params",
                 "patch": "options",
                 "post": "options",
                 "put": "options",
