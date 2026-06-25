@@ -156,10 +156,7 @@ def get_request_body_type(body):
     # We don't support raw octet-stream bodies, so strip it and keep the form.
     content_types = [ct for ct in body["content"] if ct != "application/octet-stream"]
 
-    try:
-        assert len(content_types) == 1
-    except AssertionError:
-        print(body["content"])
+    assert len(content_types) == 1
 
     return content_types[0]
 
