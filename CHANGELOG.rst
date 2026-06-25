@@ -14,6 +14,33 @@ Maintenance
 
 - Fix websocket heartbeat task leak on reconnect (@lizakoch)
 
+11.8.1
+""""""
+
+Code
+''''
+
+- **Backwards incompatible:** Remove the deprecated dictionary-based ``Driver`` and
+  ``AsyncDriver`` classes along with the underlying ``endpoints_old`` interface and its
+  generator (``bin/generate_endpoints_ast_deprecated.py``). ``Driver`` and ``AsyncDriver``
+  are no longer importable from ``mattermostautodriver``. Use ``TypedDriver`` /
+  ``AsyncTypedDriver`` with explicit keyword arguments instead. See `the migration docs
+  <https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html>`_.
+
+Documentation
+'''''''''''''
+
+- Rewrite the API migration page to document the removal of the dictionary-based interface
+  (previously the "API Deprecation" page).
+
+.. warning::
+    The dictionary-based ``Driver`` / ``AsyncDriver`` interface, deprecated since 10.8.2,
+    has been removed in version 11.8.1. Because this project follows the Mattermost server
+    version rather than semantic versioning, this backwards-incompatible removal is not
+    signalled by the version number. Code still using ``Driver``, ``AsyncDriver`` or the
+    ``options=`` dictionary argument must switch to ``TypedDriver`` / ``AsyncTypedDriver``
+    with explicit arguments.
+
 10.12.0
 """"""
 
