@@ -48,6 +48,14 @@ In production environments you are advised to keep this package in sync with Mat
 Note that we only release with the latest Mattermost minor (MAJOR.MINOR.PATCH) version.
 As an example, if Mattermost  ``1.3.1`` is released after we already have ``mattermostautodriver`` ``1.4.0`` out, we will only see a new driver release when Mattermost ``1.4.1`` or ``1.5.0`` is out.
 
+.. note::
+
+    Version ``11.8.1`` removes the deprecated dictionary-based ``Driver`` and ``AsyncDriver``
+    classes. Use ``TypedDriver`` / ``AsyncTypedDriver`` with explicit keyword arguments instead.
+    See the `migration guide <https://embl-bio-it.github.io/python-mattermost-autodriver/api_deprecation.html>`_
+    for details. Because this project follows the Mattermost server version, this
+    backwards-incompatible change is not signalled by the version number.
+
 Installation
 ------------
 
@@ -162,37 +170,32 @@ Usage
     foo.login()
 
     """
-    You can make api calls by using calling `TypedDriver.endpointofchoice`.
-    Using api[''] is deprecated for 5.0.0!
+    You can make api calls by calling `TypedDriver.endpointofchoice`.
 
-    So, for example, if you used `TypedDriver.api['users'].get_user('me')` before,
-    you now just do `TypedDriver.users.get_user('me')`.
-    The names of the endpoints and requests are almost identical to
-    the names on the api.mattermost.com/v4 page.
-    API calls always return the json the server send as a response.
+    The endpoints and their arguments closely follow the official Mattermost
+    API documentation at https://developers.mattermost.com/api-documentation/ .
+    API calls return the JSON the server sent as a response.
     """
     foo.users.get_user_by_username('another.name')
 
     """
-    If the api request needs additional parameters
-    you can pass them to the function in the following way:
-    - Path parameters are always simple parameters you pass to the function
+    All request parameters - path parameters, query parameters and request
+    body fields - are passed as explicit keyword arguments, named exactly as
+    in the Mattermost API documentation.
     """
+    # Path parameter
     foo.users.get_user(user_id='me')
 
-    # - Query parameters are always passed by passing a `params` dict to the function
-    foo.teams.get_teams(params={...})
+    # Query parameters
+    foo.users.get_users(page=0, per_page=60)
 
-    # - Request Bodies are always passed by passing an `options` dict or array to the function
-    foo.channels.create_channel(options={...})
-
-    # See the mattermost api documentation to see which parameters you need to pass.
-    foo.channels.create_channel(options={
-        'team_id': 'some_team_id',
-        'name': 'awesome-channel',
-        'display_name': 'awesome channel',
-        'type': 'O'
-    })
+    # Request body fields
+    foo.channels.create_channel(
+        team_id='some_team_id',
+        name='awesome-channel',
+        display_name='Awesome Channel',
+        type='O',
+    )
 
     """
     If you want to make a websocket connection to the mattermost server
@@ -205,19 +208,19 @@ Usage
     # Use `disconnect()` to disconnect the websocket
     foo.disconnect()
 
-    # To upload a file you will need to pass a `files` dictionary
-    channel_id = foo.channels.get_channel_by_name_and_team_name('team', 'channel')['id']
+    # To upload a file, pass the opened file object as the `files` argument
+    channel_id = foo.channels.get_channel_by_name_for_team_name('team', 'channel')['id']
     file_id = foo.files.upload_file(
         channel_id=channel_id,
-        files={'files': (filename, open(filename, 'rb'))}
+        files=open(filename, 'rb'),
     )['file_infos'][0]['id']
 
-
-    # track the file id and pass it in `create_post` options, to attach the file
-    foo.posts.create_post(options={
-        'channel_id': channel_id,
-        'message': 'This is the important file',
-        'file_ids': [file_id]})
+    # Track the file id and pass it to `create_post` to attach the file
+    foo.posts.create_post(
+        channel_id=channel_id,
+        message='This is the important file',
+        file_ids=[file_id],
+    )
 
     # If needed, you can make custom requests by calling `make_request`
     foo.client.make_request('post', '/endpoint', options=None, params=None, data=None, files=None)

@@ -214,6 +214,8 @@ class BaseClient:
             return client.put
         elif method == "delete":
             return client.delete
+        elif method == "head":
+            return client.head
         else:
             return client.get
 
@@ -267,6 +269,10 @@ class Client(BaseClient):
 
     def delete(self, endpoint, options=None, params=None, data=None):
         return self.make_request("delete", endpoint, options=options, params=params, data=data).json()
+
+    def head(self, endpoint, options=None, params=None):
+        # HEAD responses carry no body; return the raw response for headers/status
+        return self.make_request("head", endpoint, options=options, params=params)
 
     def call_webhook(self, hook_id, options=None):
         return self.make_request("post", "/hooks/" + hook_id, options=options)
@@ -327,6 +333,10 @@ class AsyncClient(BaseClient):
     async def delete(self, endpoint, options=None, params=None, data=None):
         response = await self.make_request("delete", endpoint, options=options, params=params, data=data)
         return response.json()
+
+    async def head(self, endpoint, options=None, params=None):
+        # HEAD responses carry no body; return the raw response for headers/status
+        return await self.make_request("head", endpoint, options=options, params=params)
 
     async def call_webhook(self, hook_id, options=None):
         response = await self.make_request("post", "/hooks/" + hook_id, options=options)

@@ -1,26 +1,33 @@
-API Deprecation
-===============
+Migrating from the dictionary-based API
+=======================================
 
 For historical context refer to `pull request #23 <https://github.com/embl-bio-it/python-mattermost-autodriver/pull/23>`_.
 
-The new API exposes all arguments explicitly instead of encapsulated in a dictionary.
-This change affects most endpoints that accept optional arguments including file uploads.
+.. note::
+    The dictionary-based ``Driver`` / ``AsyncDriver`` interface was removed in version
+    ``11.8.1``. This page describes how to migrate existing code to ``TypedDriver`` /
+    ``AsyncTypedDriver``.
 
-You won't need to modify your code for calls such as these:
+The typed API exposes all arguments explicitly instead of encapsulating them in a
+dictionary. This change affects most endpoints that accept optional arguments, including
+file uploads.
+
+Calls that take no options behave the same way; only the driver class name changes:
 
 .. code:: python
 
-    dri = Driver({
+    dri = TypedDriver({
         "scheme": "https",
         "url": "mattermost.server.com",
         "port": 443,
         "token": "YourPersonalAccessToken",
+    })
 
     dri.login()
     team_id = dri.teams.get_team_by_name("default")["id"]
     channel_id = dri.channels.get_channel_by_name(team_id, "town-square")
 
-but for endpoint calls with options the **old syntax**:
+Endpoint calls that previously passed an ``options`` dictionary, the **old syntax**:
 
 .. code:: python
 
@@ -31,7 +38,7 @@ but for endpoint calls with options the **old syntax**:
         "type": "O",
     })
 
-requires an expansion of the options dictionary:
+require an expansion of the options dictionary:
 
 .. code:: python
 
@@ -42,10 +49,10 @@ requires an expansion of the options dictionary:
         "type": "O",
     })
 
-This shortcut works so long as none of the arguments clashes with python keywords.
-Examples from clashes include ``from``
+This shortcut works so long as none of the arguments clashes with a python keyword.
+Examples of clashes include ``from``.
 
-or that arguments are passed explicitly:
+Alternatively, pass the arguments explicitly:
 
 .. code:: python
 
@@ -56,9 +63,11 @@ or that arguments are passed explicitly:
         type="O",
     )
 
-I want to continue using the old API
-------------------------------------
+The old dictionary-based API has been removed
+---------------------------------------------
 
-If you want to continue using the deprecated API you can do so by using ``Driver`` instead of the new ``TypedDriver`` which will allow you to use the old interface but will raise a ``DeprecationWarning``.
-
-Please note that this interface will be removed in the future so we recommend that you update your code as soon as possible.
+Earlier versions allowed continued use of the deprecated interface through ``Driver`` /
+``AsyncDriver``, which raised a ``DeprecationWarning`` on instantiation. These classes,
+and the underlying ``endpoints_old`` interface, were removed in version ``11.8.1`` and are
+no longer importable from ``mattermostautodriver``. Code must use ``TypedDriver`` /
+``AsyncTypedDriver`` instead.

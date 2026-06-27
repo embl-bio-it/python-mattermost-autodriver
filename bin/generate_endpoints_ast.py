@@ -67,6 +67,7 @@ __all__ = ["{classname}"]
 known_double_arguments = (
     ("update_user_status", "user_id"),
     ("add_team_member", "team_id"),
+    ("convert_group_message_to_channel", "channel_id"),
 )
 
 
@@ -150,9 +151,15 @@ def get_request_body_type(body):
     if not body:
         return None
 
-    assert len(body["content"]) == 1
+    # Some endpoints offer the same payload under multiple content types
+    # (e.g. application/octet-stream *and* multipart/form-data for file uploads).
+    # We don't support raw octet-stream bodies, so strip it and keep the form.
+    content_types = [ct for ct in body["content"] if ct != "application/octet-stream"]
 
-    return next(iter(body["content"]))
+    if len(content_types) != 0:
+        raise ValueError(f"Request body has multiple content types: {content_types}")
+
+    return content_types[0]
 
 
 def get_requestbody_parameters(body, request_type):
@@ -195,7 +202,7 @@ def get_locations(tags):
 
 
 def get_payload_params_or_properties(data, request_type):
-    if request_type == "get":
+    if request_type in ("get", "head"):
         return get_parameters(data.get("parameters", []), "query")
     else:
         req_body = data.get("requestBody", {})
@@ -259,6 +266,7 @@ def json_to_ast(api):
             operations = {
                 "delete": "params",
                 "get": "params",
+                "head": "params",
                 "patch": "options",
                 "post": "options",
                 "put": "options",

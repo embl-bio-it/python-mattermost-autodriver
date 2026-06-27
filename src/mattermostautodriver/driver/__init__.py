@@ -1,3 +1,3 @@
-from .driver import Driver, AsyncDriver, TypedDriver, AsyncTypedDriver
+from .driver import TypedDriver, AsyncTypedDriver
 
-__all__ = ["Driver", "AsyncDriver", "TypedDriver", "AsyncTypedDriver"]
+__all__ = ["TypedDriver", "AsyncTypedDriver"]
