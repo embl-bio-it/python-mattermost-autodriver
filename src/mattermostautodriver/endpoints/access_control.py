@@ -43,6 +43,13 @@ class AccessControl(Base):
         """
         return self.client.post("""/api/v4/access_control_policies/cel/test""", options=options)
 
+    def simulate_access_control_policy_for_users(self, options: Any):
+        """Simulate an access control policy decision for an explicit user list
+        `Read in Mattermost API docs (access_control - SimulateAccessControlPolicyForUsers) <https://developers.mattermost.com/api-documentation/#/operations/SimulateAccessControlPolicyForUsers>`_
+
+        """
+        return self.client.post("""/api/v4/access_control_policies/cel/simulate_users""", options=options)
+
     def search_access_control_policies(self, options: Any):
         """Search access control policies
         `Read in Mattermost API docs (access_control - SearchAccessControlPolicies) <https://developers.mattermost.com/api-documentation/#/operations/SearchAccessControlPolicies>`_

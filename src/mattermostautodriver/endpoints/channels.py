@@ -6,6 +6,17 @@ __all__ = ["Channels"]
 
 class Channels(Base):
 
+    def mark_all_team_channels_read(self, user_id: str, team_id: str):
+        """Mark all channels and threads in a team as read
+
+        user_id: User ID to mark channels as read for
+        team_id: Team ID to mark all channels as read in
+
+        `Read in Mattermost API docs (channels - MarkAllTeamChannelsRead) <https://developers.mattermost.com/api-documentation/#/operations/MarkAllTeamChannelsRead>`_
+
+        """
+        return self.client.put(f"/api/v4/users/{user_id}/teams/{team_id}/read")
+
     def get_all_channels(
         self,
         not_associated_to_group: str | None = None,
@@ -369,6 +380,16 @@ class Channels(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/teams/{team_id}/channels/private", params=__params)
 
+    def get_recommended_channels_for_team(self, team_id: str):
+        """Get recommended public channels for the current user
+
+        team_id: Team GUID
+
+        `Read in Mattermost API docs (channels - GetRecommendedChannelsForTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetRecommendedChannelsForTeam>`_
+
+        """
+        return self.client.get(f"/api/v4/teams/{team_id}/channels/recommended")
+
     def get_deleted_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
         """Get deleted channels
 
@@ -585,6 +606,23 @@ class Channels(Base):
         __options = {"autotranslation_disabled": autotranslation_disabled}
         return self.client.put(f"/api/v4/channels/{channel_id}/members/{user_id}/autotranslation", options=__options)
 
+    def mark_channels_read_for_user(self, user_id: str, options: list[str]):
+        """Mark multiple channels as read
+
+        user_id: User ID to mark channels read for
+
+        `Read in Mattermost API docs (channels - MarkChannelsReadForUser) <https://developers.mattermost.com/api-documentation/#/operations/MarkChannelsReadForUser>`_
+
+        """
+        return self.client.post(f"/api/v4/channels/members/{user_id}/mark_read", options=options)
+
+    def get_channels_member_count(self, options: list[str]):
+        """Get member counts for multiple channels
+        `Read in Mattermost API docs (channels - GetChannelsMemberCount) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsMemberCount>`_
+
+        """
+        return self.client.post("""/api/v4/channels/stats/member_count""", options=options)
+
     def view_channel(self, user_id: str, channel_id: str, prev_channel_id: str | None = None):
         """View channel
 
@@ -597,6 +635,16 @@ class Channels(Base):
         """
         __options = {"channel_id": channel_id, "prev_channel_id": prev_channel_id}
         return self.client.post(f"/api/v4/channels/members/{user_id}/view", options=__options)
+
+    def mark_all_direct_messages_read(self, user_id: str):
+        """Mark all direct and group messages as read
+
+        user_id: User ID to mark messages as read for
+
+        `Read in Mattermost API docs (channels - MarkAllDirectMessagesRead) <https://developers.mattermost.com/api-documentation/#/operations/MarkAllDirectMessagesRead>`_
+
+        """
+        return self.client.put(f"/api/v4/channels/members/{user_id}/direct/read")
 
     def get_channel_members_for_user(self, user_id: str, team_id: str):
         """Get channel memberships and roles for a user
@@ -802,6 +850,16 @@ class Channels(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/teams/{team_id}/channels/categories/{category_id}")
 
+    def get_shared_channel_remotes(self, channel_id: str):
+        """Get remote clusters for a shared channel
+
+        channel_id: Channel GUID
+
+        `Read in Mattermost API docs (channels - GetSharedChannelRemotes) <https://developers.mattermost.com/api-documentation/#/operations/GetSharedChannelRemotes>`_
+
+        """
+        return self.client.get(f"/api/v4/sharedchannels/{channel_id}/remotes")
+
     def get_group_message_members_common_teams(self, channel_id: str):
         """Get common teams for members of a Group Message.
 
@@ -811,6 +869,19 @@ class Channels(Base):
 
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/common_teams")
+
+    def convert_group_message_to_channel(self, channel_id: str, team_id: str):
+        """Convert group message to private channel
+
+        channel_id: Group message channel ID
+        channel_id:
+        team_id:
+
+        `Read in Mattermost API docs (channels - ConvertGroupMessageToChannel) <https://developers.mattermost.com/api-documentation/#/operations/ConvertGroupMessageToChannel>`_
+
+        """
+        __options = {"channel_id": channel_id, "team_id": team_id}
+        return self.client.post(f"/api/v4/channels/{channel_id}/convert_to_channel", options=__options)
 
     def get_channel_access_control_attributes(self, channel_id: str):
         """Get access control attributes for a channel

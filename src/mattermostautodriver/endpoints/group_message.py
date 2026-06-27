@@ -15,3 +15,16 @@ class GroupMessage(Base):
 
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/common_teams")
+
+    def convert_group_message_to_channel(self, channel_id: str, team_id: str):
+        """Convert group message to private channel
+
+        channel_id: Group message channel ID
+        channel_id:
+        team_id:
+
+        `Read in Mattermost API docs (group_message - ConvertGroupMessageToChannel) <https://developers.mattermost.com/api-documentation/#/operations/ConvertGroupMessageToChannel>`_
+
+        """
+        __options = {"channel_id": channel_id, "team_id": team_id}
+        return self.client.post(f"/api/v4/channels/{channel_id}/convert_to_channel", options=__options)

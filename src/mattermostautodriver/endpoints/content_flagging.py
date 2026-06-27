@@ -119,3 +119,15 @@ class ContentFlagging(Base):
 
         """
         return self.client.post(f"/api/v4/content_flagging/post/{post_id}/assign/{content_reviewer_id}")
+
+    def generate_cf_post_report(self, post_id: str, comment: str | None = None):
+        """Generate and download a flagged post report
+
+        post_id: The ID of the flagged post to generate the report for
+        comment: Optional comment from the reviewer to be included in the generated report.
+
+        `Read in Mattermost API docs (content_flagging - GenerateCFPostReport) <https://developers.mattermost.com/api-documentation/#/operations/GenerateCFPostReport>`_
+
+        """
+        __options = {"comment": comment}
+        return self.client.post(f"/api/v4/content_flagging/post/{post_id}/report", options=__options)
