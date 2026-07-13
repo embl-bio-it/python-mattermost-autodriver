@@ -39,7 +39,7 @@ class Bookmarks(Base):
         link_url: The URL associated with the channel bookmark. Required for bookmarks of type 'link'
         image_url: The URL of the image associated with the channel bookmark. Optional, only applies for bookmarks of type 'link'
         emoji: The emoji of the channel bookmark
-        type: * ``link`` for channel bookmarks that reference a link. ``link_url`` is requied
+        type: * ``link`` for channel bookmarks that reference a link. ``link_url`` is required
         * ``file`` for channel bookmarks that reference a file. ``file_id`` is required
 
 
@@ -78,7 +78,7 @@ class Bookmarks(Base):
         link_url: The URL associated with the channel bookmark. Required for type bookmarks of type 'link'
         image_url: The URL of the image associated with the channel bookmark
         emoji: The emoji of the channel bookmark
-        type: * ``link`` for channel bookmarks that reference a link. ``link_url`` is requied
+        type: * ``link`` for channel bookmarks that reference a link. ``link_url`` is required
         * ``file`` for channel bookmarks that reference a file. ``file_id`` is required
 
 

@@ -12,6 +12,7 @@ class Users(Base):
         login_id: str | None = None,
         token: str | None = None,
         device_id: str | None = None,
+        voip_device_id: str | None = None,
         ldap_only: bool | None = None,
         password: str | None = None,
         magic_link_token: str | None = None,
@@ -22,6 +23,7 @@ class Users(Base):
         login_id:
         token:
         device_id:
+        voip_device_id: VoIP push token. Same prefix shape as device_id. Optional; when provided, enables ring-style call push notifications.
         ldap_only:
         password: The password used for email authentication.
         magic_link_token: Magic link token for passwordless guest authentication. When provided, authenticates the user using the magic link token instead of password. Requires guest magic link feature to be enabled.
@@ -34,6 +36,7 @@ class Users(Base):
             "login_id": login_id,
             "token": token,
             "device_id": device_id,
+            "voip_device_id": voip_device_id,
             "ldap_only": ldap_only,
             "password": password,
             "magic_link_token": magic_link_token,
@@ -743,12 +746,14 @@ class Users(Base):
     def attach_device_extra_props(
         self,
         device_id: str | None = None,
+        voip_device_id: str | None = None,
         deviceNotificationDisabled: str | None = None,
         mobileVersion: str | None = None,
     ):
         """Attach mobile device and extra props to the session object
 
         device_id: Mobile device id. For Android prefix the id with ``android:`` and Apple with ``apple:``
+        voip_device_id: VoIP push token. Same prefix shape as device_id. Optional; when provided, enables ring-style call push notifications.
         deviceNotificationDisabled: Whether the mobile device has notifications disabled. Accepted values are "true" or "false".
         mobileVersion: Mobile app version. The version must be parseable as a semver.
 
@@ -757,10 +762,18 @@ class Users(Base):
         """
         __options = {
             "device_id": device_id,
+            "voip_device_id": voip_device_id,
             "deviceNotificationDisabled": deviceNotificationDisabled,
             "mobileVersion": mobileVersion,
         }
         return self.client.put("""/api/v4/users/sessions/device""", options=__options)
+
+    def get_session_attributes_manifest(self):
+        """Get the session attributes manifest
+        `Read in Mattermost API docs (users - GetSessionAttributesManifest) <https://developers.mattermost.com/api-documentation/#/operations/GetSessionAttributesManifest>`_
+
+        """
+        return self.client.get("""/api/v4/users/sessions/attributes/manifest""")
 
     def get_user_audits(self, user_id: str):
         """Get user's audits

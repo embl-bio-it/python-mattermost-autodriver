@@ -194,14 +194,14 @@ class PlaybookRuns(Base):
         """
         return self.client.put(f"/plugins/playbooks/api/v0/runs/{id}/restart")
 
-    def status(self, id: str, message: str, reminder: float | None = None):
+    def update_playbook_run_status(self, id: str, message: str, reminder: float | None = None):
         """Update a playbook run's status
 
         id: ID of the playbook run to update.
         message: The status update message.
         reminder: The number of seconds until the system will send a reminder to the owner to update the status. No reminder will be scheduled if reminder is 0 or omitted.
 
-        `Read in Mattermost API docs (playbook_runs - status) <https://developers.mattermost.com/api-documentation/#/operations/status>`_
+        `Read in Mattermost API docs (playbook_runs - updatePlaybookRunStatus) <https://developers.mattermost.com/api-documentation/#/operations/updatePlaybookRunStatus>`_
 
         """
         __options = {"message": message, "reminder": reminder}

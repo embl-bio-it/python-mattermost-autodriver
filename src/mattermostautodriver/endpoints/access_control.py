@@ -101,28 +101,36 @@ class AccessControl(Base):
         __params = {"active": active}
         return self.client.get(f"/api/v4/access_control_policies/{policy_id}/activate", params=__params)
 
-    def assign_access_control_policy_to_channels(self, policy_id: str, channel_ids: list[str] | None = None):
-        """Assign an access control policy to channels
+    def assign_access_control_policy_to_channels(
+        self, policy_id: str, channel_ids: list[str] | None = None, team_ids: list[str] | None = None
+    ):
+        """Assign an access control policy to channels or teams
 
         policy_id: The ID of the access control policy.
         channel_ids: The IDs of the channels to assign the policy to.
+        team_ids: The IDs of the teams to assign the policy to. Requires the ``manage_system`` permission. Any unknown team ID is rejected with a 400.
+
 
         `Read in Mattermost API docs (access_control - AssignAccessControlPolicyToChannels) <https://developers.mattermost.com/api-documentation/#/operations/AssignAccessControlPolicyToChannels>`_
 
         """
-        __options = {"channel_ids": channel_ids}
+        __options = {"channel_ids": channel_ids, "team_ids": team_ids}
         return self.client.post(f"/api/v4/access_control_policies/{policy_id}/assign", options=__options)
 
-    def unassign_access_control_policy_from_channels(self, policy_id: str, channel_ids: list[str] | None = None):
-        """Unassign an access control policy from channels
+    def unassign_access_control_policy_from_channels(
+        self, policy_id: str, channel_ids: list[str] | None = None, team_ids: list[str] | None = None
+    ):
+        """Unassign an access control policy from channels or teams
 
         policy_id: The ID of the access control policy.
         channel_ids: The IDs of the channels to unassign the policy from.
+        team_ids: The IDs of the teams to unassign the policy from. Requires the ``manage_system`` permission. Any unknown team ID is rejected with a 400.
+
 
         `Read in Mattermost API docs (access_control - UnassignAccessControlPolicyFromChannels) <https://developers.mattermost.com/api-documentation/#/operations/UnassignAccessControlPolicyFromChannels>`_
 
         """
-        __params = {"channel_ids": channel_ids}
+        __params = {"channel_ids": channel_ids, "team_ids": team_ids}
         return self.client.delete(f"/api/v4/access_control_policies/{policy_id}/unassign", params=__params)
 
     def get_channels_for_access_control_policy(self, policy_id: str, after: str | None = None, limit: int = 60):

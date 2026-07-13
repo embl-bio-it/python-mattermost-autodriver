@@ -1,2 +1,2 @@
-full_version = "11.8.2"
+full_version = "11.9.0"
 short_version = ".".join(full_version.split(".", 2)[:2])

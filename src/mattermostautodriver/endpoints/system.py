@@ -168,6 +168,13 @@ class System(Base):
         __options = {"site_url": site_url}
         return self.client.post("""/api/v4/site_url/test""", options=__options)
 
+    def test_file_store_connection(self, options: Any | None = None):
+        """Test the configured file storage backend
+        `Read in Mattermost API docs (system - TestFileStoreConnection) <https://developers.mattermost.com/api-documentation/#/operations/TestFileStoreConnection>`_
+
+        """
+        return self.client.post("""/api/v4/file/test""", options=options)
+
     def test_s3_connection(self, options: Any):
         """Test AWS S3 connection
         `Read in Mattermost API docs (system - TestS3Connection) <https://developers.mattermost.com/api-documentation/#/operations/TestS3Connection>`_
@@ -257,6 +264,17 @@ class System(Base):
 
         """
         return self.client.delete("""/api/v4/license""")
+
+    def preview_license_file(self, license: BinaryIO):
+        """Preview license file
+
+        license: The license to be previewed
+
+        `Read in Mattermost API docs (system - PreviewLicenseFile) <https://developers.mattermost.com/api-documentation/#/operations/PreviewLicenseFile>`_
+
+        """
+        __files = {"license": license}
+        return self.client.post("""/api/v4/license/preview""", files=__files)
 
     def get_client_license(self, format: str):
         """Get client license
