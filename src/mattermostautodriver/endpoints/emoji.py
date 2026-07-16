@@ -1,12 +1,12 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Emoji"]
 
 
 class Emoji(Base):
 
-    def create_emoji(self, image: BinaryIO, emoji: str):
+    def create_emoji(self, image: FileType, emoji: str):
         """Create a custom emoji
 
         image: A file to be uploaded

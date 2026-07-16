@@ -1,12 +1,12 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Files"]
 
 
 class Files(Base):
 
-    def upload_file(self, files: BinaryIO | None = None, channel_id: str | None = None, client_ids: str | None = None):
+    def upload_file(self, files: FileType | None = None, channel_id: str | None = None, client_ids: str | None = None):
         """Upload a file
 
         files: A file to be uploaded

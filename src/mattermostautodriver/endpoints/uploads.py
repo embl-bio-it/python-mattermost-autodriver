@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Uploads"]
 
@@ -29,7 +29,7 @@ class Uploads(Base):
         """
         return self.client.get(f"/api/v4/uploads/{upload_id}")
 
-    def upload_data(self, upload_id: str, file: BinaryIO | None = None):
+    def upload_data(self, upload_id: str, file: FileType | None = None):
         """Perform a file upload
 
         upload_id: The ID of the upload session the data belongs to.

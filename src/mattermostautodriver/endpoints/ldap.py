@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Ldap"]
 
@@ -81,7 +81,7 @@ class Ldap(Base):
         __options = {"toAttribute": toAttribute}
         return self.client.post("""/api/v4/ldap/migrateid""", options=__options)
 
-    def upload_ldap_public_certificate(self, certificate: BinaryIO):
+    def upload_ldap_public_certificate(self, certificate: FileType):
         """Upload public certificate
 
         certificate: The public certificate file
@@ -99,7 +99,7 @@ class Ldap(Base):
         """
         return self.client.delete("""/api/v4/ldap/certificate/public""")
 
-    def upload_ldap_private_certificate(self, certificate: BinaryIO):
+    def upload_ldap_private_certificate(self, certificate: FileType):
         """Upload private key
 
         certificate: The private key file

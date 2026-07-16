@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Users"]
 
@@ -558,7 +558,7 @@ class Users(Base):
         __params = {"_": _}
         return self.client.get(f"/api/v4/users/{user_id}/image", params=__params)
 
-    def set_profile_image(self, user_id: str, image: BinaryIO):
+    def set_profile_image(self, user_id: str, image: FileType):
         """Set user's profile image
 
         user_id: User GUID

@@ -1,12 +1,12 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Plugins"]
 
 
 class Plugins(Base):
 
-    def upload_plugin(self, plugin: BinaryIO, force: str | None = None):
+    def upload_plugin(self, plugin: FileType, force: str | None = None):
         """Upload plugin
 
         plugin: The plugin image to be uploaded

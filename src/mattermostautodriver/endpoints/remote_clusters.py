@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["RemoteClusters"]
 
@@ -158,7 +158,7 @@ class RemoteClusters(Base):
         """
         return self.client.post("""/api/v4/remotecluster/confirm_invite""", options=options)
 
-    def upload_remote_cluster_data(self, upload_id: str, file: BinaryIO | None = None):
+    def upload_remote_cluster_data(self, upload_id: str, file: FileType | None = None):
         """Upload file data for a remote upload session.
 
         upload_id: The upload session ID.
@@ -170,7 +170,7 @@ class RemoteClusters(Base):
         __files = {"file": file}
         return self.client.post(f"/api/v4/remotecluster/upload/{upload_id}", files=__files)
 
-    def remote_set_profile_image(self, user_id: str, image: BinaryIO | None = None):
+    def remote_set_profile_image(self, user_id: str, image: FileType | None = None):
         """Set profile image for a remote user.
 
         user_id: The remote user ID.

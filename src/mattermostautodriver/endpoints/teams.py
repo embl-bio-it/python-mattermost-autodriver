@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["Teams"]
 
@@ -356,7 +356,7 @@ class Teams(Base):
         """
         return self.client.get(f"/api/v4/teams/{team_id}/image")
 
-    def set_team_icon(self, team_id: str, image: BinaryIO):
+    def set_team_icon(self, team_id: str, image: FileType):
         """Sets the team icon
 
         team_id: Team GUID
@@ -462,7 +462,7 @@ class Teams(Base):
         """
         return self.client.delete("""/api/v4/teams/invites/email""")
 
-    def import_team(self, team_id: str, file: BinaryIO, filesize: int, importFrom: str):
+    def import_team(self, team_id: str, file: FileType, filesize: int, importFrom: str):
         """Import a Team from other application
 
         team_id: Team GUID

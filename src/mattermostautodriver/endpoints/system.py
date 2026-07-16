@@ -1,5 +1,5 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["System"]
 
@@ -247,7 +247,7 @@ class System(Base):
         """
         return self.client.put("""/api/v4/config/patch""", options=options)
 
-    def upload_license_file(self, license: BinaryIO):
+    def upload_license_file(self, license: FileType):
         """Upload license file
 
         license: The license to be uploaded
@@ -265,7 +265,7 @@ class System(Base):
         """
         return self.client.delete("""/api/v4/license""")
 
-    def preview_license_file(self, license: BinaryIO):
+    def preview_license_file(self, license: FileType):
         """Preview license file
 
         license: The license to be previewed

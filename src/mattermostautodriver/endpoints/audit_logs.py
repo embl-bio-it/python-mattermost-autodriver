@@ -1,12 +1,12 @@
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["AuditLogs"]
 
 
 class AuditLogs(Base):
 
-    def add_audit_log_certificate(self, certificate: BinaryIO):
+    def add_audit_log_certificate(self, certificate: FileType):
         """Upload audit log certificate
 
         certificate: The certificate file
