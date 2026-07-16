@@ -58,8 +58,8 @@ Parameter = namedtuple(
 
 
 ast_template = """
-from ._base import Base
-from typing import Any, BinaryIO
+from ._base import Base, FileType
+from typing import Any
 
 __all__ = ["{classname}"]
 """
@@ -318,7 +318,7 @@ def generate_type_annotation(schema, required, binary):
             "object": "dict",
         }
         if binary:
-            return ast.Name(id="BinaryIO", ctx=ast.Load())
+            return ast.Name(id="FileType", ctx=ast.Load())
 
         schema_type = schema.get("type", None)
 
