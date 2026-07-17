@@ -45,7 +45,8 @@ automatically, honoring the ``Retry-After`` / ``X-RateLimit-Reset`` response
 headers. Connection errors and 502/503/504 responses are also retried, but
 only for idempotent requests (``GET``, ``PUT``, ``DELETE`` and ``HEAD``),
 since a ``POST`` may already have been processed by the server. Requests
-uploading files are never retried automatically.
+carrying files or a streaming request body are never retried automatically,
+as their content is consumed when the request is first sent.
 
 Two driver options control this behavior:
 

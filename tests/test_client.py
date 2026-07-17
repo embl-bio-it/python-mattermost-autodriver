@@ -1,3 +1,5 @@
+import io
+
 import httpx
 import pytest
 
@@ -262,3 +264,31 @@ def test_requests_with_files_are_not_retried(sleeps):
         client.post("/files", files={"files": b"content"})
 
     assert len(calls) == 1
+
+
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")  # httpx warns about stream bodies via data=
+def test_put_with_stream_data_is_not_retried(sleeps):
+    handler, calls = sequence_handler([error_response(503)])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(UnknownMattermostError):
+        client.put("/imports", data=io.BytesIO(b"payload"))
+
+    assert len(calls) == 1
+
+
+def test_put_with_dict_data_is_retried(sleeps):
+    handler, calls = sequence_handler([error_response(503), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.put("/users/me/patch", data={"nickname": "x"}) == {"ok": 1}
+    assert len(calls) == 2
+
+
+def test_negative_retry_after_is_clamped_to_zero(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "-5"}), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.get("/users/me") == {"ok": 1}
+    assert len(calls) == 2
+    assert sleeps == [0.0]

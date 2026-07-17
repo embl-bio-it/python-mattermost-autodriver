@@ -11,8 +11,9 @@ Code
   ``PUT``, ``DELETE``, ``HEAD``) to avoid e.g. duplicating posted messages.
   Behavior is controlled by the new driver options ``max_retries`` (default 3,
   0 disables retrying) and ``retry_max_sleep`` (default 30 seconds, caps a
-  single wait between retries). Requests uploading files are never retried
-  automatically.
+  single wait between retries). Requests carrying files or a streaming
+  request body are never retried automatically, as their content is consumed
+  when the request is first sent.
 - **Backwards incompatible:** HTTP 429 responses now raise the new
   ``TooManyRequests`` exception, which exposes the server provided wait time
   as its ``retry_after`` attribute. Previously a 429 raised

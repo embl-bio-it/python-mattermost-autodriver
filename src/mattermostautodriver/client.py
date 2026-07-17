@@ -210,32 +210,48 @@ class BaseClient:
 
         return TooManyRequests(message, retry_after, error_id, request_id, is_oauth_error)
 
-    def _retry_delay(self, method, attempt, response=None, exception=None):
+    @staticmethod
+    def _body_is_replayable(data, files):
+        """Whether the request body can safely be sent a second time.
+
+        Files and non-dict ``data`` bodies (e.g. a file object or generator)
+        are consumed when the request is first sent, so resending them would
+        transmit an empty body.
+        """
+        return files is None and (data is None or isinstance(data, dict))
+
+    def _retry_delay(self, method, attempt, data=None, files=None, response=None):
         """Seconds to wait before retrying the request, or None if it must not be retried.
 
         A 429 is retried for any method since the server rejected the request
-        outright. Connection errors and 502/503/504 responses are only retried
-        for idempotent methods, as a POST may already have been processed.
+        outright. Connection errors (``response is None``) and 502/503/504
+        responses are only retried for idempotent methods, as a POST may
+        already have been processed. Requests whose body is not replayable
+        are never retried.
         """
+        if not self._body_is_replayable(data, files):
+            return None
+
         if attempt >= self._max_retries:
             return None
 
         method = method.lower()
         backoff = min(0.5 * 2**attempt * (1 + random.random()), self._retry_max_sleep)
 
-        if response is not None:
-            if response.status_code == 429:
-                retry_after = self._parse_retry_after(response)
-                if retry_after is None:
-                    return backoff
-                if retry_after > self._retry_max_sleep:
-                    return None
-                return retry_after
-            if response.status_code in self._RETRY_STATUS_CODES and method in self._IDEMPOTENT_METHODS:
+        if response is None:
+            if method in self._IDEMPOTENT_METHODS:
                 return backoff
             return None
 
-        if exception is not None and method in self._IDEMPOTENT_METHODS:
+        if response.status_code == 429:
+            retry_after = self._parse_retry_after(response)
+            if retry_after is None:
+                return backoff
+            if retry_after > self._retry_max_sleep:
+                return None
+            return max(0.0, retry_after)
+
+        if response.status_code in self._RETRY_STATUS_CODES and method in self._IDEMPOTENT_METHODS:
             return backoff
 
         return None
@@ -314,20 +330,17 @@ class Client(BaseClient):
             )
         request, url, request_params = self._build_request(method, options, params, data, files)
 
-        # File objects are consumed when the request is sent and cannot be
-        # replayed, so requests carrying files are never retried automatically
-        allow_retry = files is None
         attempt = 0
         while True:
             try:
                 response = request(url + endpoint, **request_params)
             except httpx.TransportError as e:
-                delay = self._retry_delay(method, attempt, exception=e) if allow_retry else None
+                delay = self._retry_delay(method, attempt, data=data, files=files)
                 if delay is None:
                     raise
                 log.warning("Received %r - retrying in %.1f seconds", e, delay)
             else:
-                delay = self._retry_delay(method, attempt, response=response) if allow_retry else None
+                delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
                 if delay is None:
                     self._check_response(response)
                     return response
@@ -400,20 +413,17 @@ class AsyncClient(BaseClient):
             )
         request, url, request_params = self._build_request(method, options, params, data, files)
 
-        # File objects are consumed when the request is sent and cannot be
-        # replayed, so requests carrying files are never retried automatically
-        allow_retry = files is None
         attempt = 0
         while True:
             try:
                 response = await request(url + endpoint, **request_params)
             except httpx.TransportError as e:
-                delay = self._retry_delay(method, attempt, exception=e) if allow_retry else None
+                delay = self._retry_delay(method, attempt, data=data, files=files)
                 if delay is None:
                     raise
                 log.warning("Received %r - retrying in %.1f seconds", e, delay)
             else:
-                delay = self._retry_delay(method, attempt, response=response) if allow_retry else None
+                delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
                 if delay is None:
                     self._check_response(response)
                     return response
