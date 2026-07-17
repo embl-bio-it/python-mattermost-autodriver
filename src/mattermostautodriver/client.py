@@ -227,6 +227,7 @@ class Client(BaseClient):
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),
+            transport=options.get("transport"),
         )
 
     def make_request(self, method, endpoint, options=None, params=None, data=None, files=None, basepath=None):
@@ -288,6 +289,7 @@ class AsyncClient(BaseClient):
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),
+            transport=options.get("transport"),
         )
 
     async def __aenter__(self):
