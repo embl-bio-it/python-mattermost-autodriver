@@ -6,7 +6,8 @@ Code
 
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
-  ``Retry-After`` / ``X-RateLimit-Reset`` headers. Connection errors and
+  ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
+  HTTP-date and unix timestamp forms. Connection errors and
   502/503/504 responses are only retried for idempotent requests (``GET``,
   ``PUT``, ``DELETE``, ``HEAD``) to avoid e.g. duplicating posted messages.
   Behavior is controlled by the new driver options ``max_retries`` (default 3,

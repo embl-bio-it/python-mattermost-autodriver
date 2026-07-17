@@ -7,6 +7,8 @@ import asyncio
 import logging
 import random
 import time
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 import httpx
 
@@ -177,15 +179,48 @@ class BaseClient:
 
         return self._get_request_method(method, self.client), self.url, request_params
 
+    # Numeric header values above this are far too large to be a wait time
+    # in seconds and are interpreted as an absolute unix timestamp instead
+    _EPOCH_THRESHOLD = 1e8
+
+    @staticmethod
+    def _parse_wait_time(value):
+        """Parse a rate limit header value into seconds to wait from now.
+
+        Handles the conventions used in the wild:
+
+        - delay in seconds ("120") - RFC 7231 ``Retry-After`` and Mattermost's
+          relative ``X-RateLimit-Reset``
+        - HTTP-date ("Wed, 21 Oct 2015 07:28:00 GMT") - the alternative
+          ``Retry-After`` form, sent by some proxies and CDNs
+        - absolute unix timestamp ("1794000000") - the ``X-RateLimit-Reset``
+          convention of many API gateways
+
+        Returns non-negative seconds, or None if the value is unparseable.
+        """
+        try:
+            seconds = float(value)
+        except ValueError:
+            try:
+                when = parsedate_to_datetime(value)
+            except (TypeError, ValueError):
+                return None
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=timezone.utc)
+            seconds = (when - datetime.now(timezone.utc)).total_seconds()
+        else:
+            if seconds > BaseClient._EPOCH_THRESHOLD:
+                seconds -= time.time()
+        return max(0.0, seconds)
+
     @staticmethod
     def _parse_retry_after(response):
         for header in ("Retry-After", "X-RateLimit-Reset"):
             value = response.headers.get(header)
             if value is not None:
-                try:
-                    return float(value)
-                except ValueError:
-                    continue
+                wait = BaseClient._parse_wait_time(value)
+                if wait is not None:
+                    return wait
         return None
 
     @staticmethod
@@ -249,7 +284,7 @@ class BaseClient:
                 return backoff
             if retry_after > self._retry_max_sleep:
                 return None
-            return max(0.0, retry_after)
+            return retry_after
 
         if response.status_code in self._RETRY_STATUS_CODES and method in self._IDEMPOTENT_METHODS:
             return backoff
