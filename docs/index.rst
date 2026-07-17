@@ -37,6 +37,25 @@ Usage
 
 .. include:: auth.rst
 
+Retries
+'''''''
+
+Requests that fail due to server side rate limiting (HTTP 429) are retried
+automatically, honoring the ``Retry-After`` / ``X-RateLimit-Reset`` response
+headers. Connection errors and 502/503/504 responses are also retried, but
+only for idempotent requests (``GET``, ``PUT``, ``DELETE`` and ``HEAD``),
+since a ``POST`` may already have been processed by the server. Requests
+uploading files are never retried automatically.
+
+Two driver options control this behavior:
+
+- ``max_retries`` (default ``3``) - maximum number of automatic retries per
+  request. Set to ``0`` to disable retrying entirely.
+- ``retry_max_sleep`` (default ``30``) - upper bound in seconds for a single
+  wait between retries. If the server requests a longer wait, the request
+  fails immediately with ``TooManyRequests`` and the requested wait time is
+  available in its ``retry_after`` attribute.
+
 Classes
 '''''''
 
@@ -72,6 +91,8 @@ Exceptions that api requests can throw
 .. autoclass:: ResourceNotFound
 
 .. autoclass:: ContentTooLarge
+
+.. autoclass:: TooManyRequests
 
 .. autoclass:: FeatureDisabled
 
