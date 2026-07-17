@@ -31,6 +31,8 @@ class BaseDriver:
         "debug": False,
         "http2": False,
         "proxy": None,
+        "max_retries": 3,
+        "retry_max_sleep": 30,
     }
     """
     Required options
@@ -52,6 +54,11 @@ class BaseDriver:
         - mfa_token (None)
         - auth (None)
         - debug (False)
+        - max_retries (3) - number of automatic retries for rate limited or
+          transiently failed requests. 0 disables retrying.
+        - retry_max_sleep (30) - upper bound in seconds for a single wait
+          between retries. If the server requests a longer wait the request
+          fails immediately with ``TooManyRequests``.
     """
 
     def __init__(self, options=None, client_cls=Client, *args, **kwargs):

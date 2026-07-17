@@ -25,6 +25,7 @@ def make_client(handler, **extra_options):
         "debug": False,
         "proxy": None,
         "request_timeout": None,
+        "max_retries": 0,  # retry tests opt in explicitly
         "transport": httpx.MockTransport(handler),
     }
     options.update(extra_options)
@@ -144,3 +145,120 @@ def test_post_sends_json_options():
     client.post("/posts", options={"channel_id": "abc", "message": "hi"})
 
     assert b'"channel_id"' in seen["json"]
+
+
+def sequence_handler(responses):
+    """Handler returning (or raising) each item in turn, repeating the last one."""
+    calls = []
+
+    def handler(request):
+        item = responses[min(len(calls), len(responses) - 1)]
+        calls.append(request)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+    return handler, calls
+
+
+@pytest.fixture
+def sleeps(monkeypatch):
+    slept = []
+    monkeypatch.setattr("mattermostautodriver.client.time.sleep", slept.append)
+    return slept
+
+
+def test_429_is_retried_and_honors_retry_after(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "2"}), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.get("/users/me") == {"ok": 1}
+    assert len(calls) == 2
+    assert sleeps == [2.0]
+
+
+def test_429_is_retried_for_post(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"}), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.post("/posts", options={"message": "hi"}) == {"ok": 1}
+    assert len(calls) == 2
+
+
+def test_429_raises_after_retries_are_exhausted(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"})])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(TooManyRequests):
+        client.get("/users/me")
+
+    assert len(calls) == 4  # initial request + 3 retries
+
+
+def test_max_retries_zero_disables_retrying(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"})])
+    client = make_client(handler, max_retries=0)
+
+    with pytest.raises(TooManyRequests):
+        client.get("/users/me")
+
+    assert len(calls) == 1
+
+
+def test_retry_after_above_cap_raises_immediately(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "900"})])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert len(calls) == 1
+    assert sleeps == []
+    assert excinfo.value.retry_after == 900.0
+
+
+def test_get_is_retried_on_503(sleeps):
+    handler, calls = sequence_handler([error_response(503), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.get("/users/me") == {"ok": 1}
+    assert len(calls) == 2
+    assert 0 < sleeps[0] <= 30
+
+
+def test_post_is_not_retried_on_503(sleeps):
+    handler, calls = sequence_handler([error_response(503)])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(UnknownMattermostError):
+        client.post("/posts", options={"message": "hi"})
+
+    assert len(calls) == 1
+
+
+def test_get_is_retried_on_connection_error(sleeps):
+    handler, calls = sequence_handler([httpx.ConnectError("connection refused"), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.get("/users/me") == {"ok": 1}
+    assert len(calls) == 2
+
+
+def test_post_is_not_retried_on_connection_error(sleeps):
+    handler, calls = sequence_handler([httpx.ConnectError("connection refused")])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(httpx.ConnectError):
+        client.post("/posts", options={"message": "hi"})
+
+    assert len(calls) == 1
+
+
+def test_requests_with_files_are_not_retried(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"})])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(TooManyRequests):
+        client.post("/files", files={"files": b"content"})
+
+    assert len(calls) == 1
