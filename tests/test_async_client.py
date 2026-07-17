@@ -1,37 +1,8 @@
 import httpx
 import pytest
 
-from mattermostautodriver.client import AsyncClient
+from conftest import error_response, make_async_client, rate_limit_response, sequence_handler
 from mattermostautodriver.exceptions import TooManyRequests, UnknownMattermostError
-
-from .test_client import error_response, rate_limit_response, sequence_handler
-
-
-def make_async_client(handler, **extra_options):
-    options = {
-        "scheme": "http",
-        "url": "localhost",
-        "port": 8065,
-        "auth": None,
-        "debug": False,
-        "proxy": None,
-        "request_timeout": None,
-        "max_retries": 0,  # retry tests opt in explicitly
-        "transport": httpx.MockTransport(handler),
-    }
-    options.update(extra_options)
-    return AsyncClient(options)
-
-
-@pytest.fixture
-def sleeps(monkeypatch):
-    slept = []
-
-    async def fake_sleep(seconds):
-        slept.append(seconds)
-
-    monkeypatch.setattr("mattermostautodriver.client.asyncio.sleep", fake_sleep)
-    return slept
 
 
 async def test_successful_json_response_is_returned():

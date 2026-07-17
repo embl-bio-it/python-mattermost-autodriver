@@ -1,9 +1,13 @@
 import io
+import time
+from datetime import datetime, timedelta, timezone
+from email.utils import format_datetime
 
 import httpx
 import pytest
 
-from mattermostautodriver.client import Client
+from conftest import error_response, make_client, rate_limit_response, sequence_handler
+from mattermostautodriver.client import BaseClient
 from mattermostautodriver.exceptions import (
     ContentTooLarge,
     FeatureDisabled,
@@ -16,26 +20,6 @@ from mattermostautodriver.exceptions import (
     TooManyRequests,
     UnknownMattermostError,
 )
-
-
-def make_client(handler, **extra_options):
-    options = {
-        "scheme": "http",
-        "url": "localhost",
-        "port": 8065,
-        "auth": None,
-        "debug": False,
-        "proxy": None,
-        "request_timeout": None,
-        "max_retries": 0,  # retry tests opt in explicitly
-        "transport": httpx.MockTransport(handler),
-    }
-    options.update(extra_options)
-    return Client(options)
-
-
-def error_response(status, message="something failed", error_id="api.some.error", request_id="req1234"):
-    return httpx.Response(status, json={"message": message, "id": error_id, "request_id": request_id})
 
 
 @pytest.mark.parametrize(
@@ -82,12 +66,6 @@ def test_successful_json_response_is_returned():
     assert client.get("/users/me") == {"id": "me"}
 
 
-def rate_limit_response(headers=None):
-    # Mattermost replies to rate limited requests with a plain text body,
-    # see server/channels/app/ratelimit.go
-    return httpx.Response(429, text="limit exceeded", headers=headers)
-
-
 def test_429_with_plain_text_body_raises_too_many_requests():
     client = make_client(lambda request: rate_limit_response({"Retry-After": "7"}))
 
@@ -126,6 +104,53 @@ def test_429_prefers_retry_after_over_ratelimit_reset():
     assert excinfo.value.retry_after == 2.0
 
 
+def test_parse_wait_time_seconds():
+    assert BaseClient._parse_wait_time("120") == 120.0
+
+
+def test_parse_wait_time_clamps_negative_to_zero():
+    assert BaseClient._parse_wait_time("-5") == 0.0
+
+
+def test_parse_wait_time_http_date():
+    value = format_datetime(datetime.now(timezone.utc) + timedelta(seconds=60))
+    assert 55 < BaseClient._parse_wait_time(value) <= 60
+
+
+def test_parse_wait_time_http_date_in_the_past():
+    value = format_datetime(datetime.now(timezone.utc) - timedelta(seconds=60))
+    assert BaseClient._parse_wait_time(value) == 0.0
+
+
+def test_parse_wait_time_epoch_timestamp():
+    value = str(int(time.time()) + 60)
+    assert 55 < BaseClient._parse_wait_time(value) <= 61
+
+
+def test_parse_wait_time_garbage_returns_none():
+    assert BaseClient._parse_wait_time("soon") is None
+
+
+def test_429_with_http_date_retry_after():
+    value = format_datetime(datetime.now(timezone.utc) + timedelta(seconds=60))
+    client = make_client(lambda request: rate_limit_response({"Retry-After": value}))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert 55 < excinfo.value.retry_after <= 60
+
+
+def test_429_with_epoch_ratelimit_reset_is_retried(sleeps):
+    headers = {"X-RateLimit-Reset": str(int(time.time()) + 5)}
+    handler, calls = sequence_handler([rate_limit_response(headers), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    assert client.get("/users/me") == {"ok": 1}
+    assert len(calls) == 2
+    assert 0 < sleeps[0] <= 6
+
+
 def test_429_with_json_body_exposes_error_fields():
     client = make_client(lambda request: error_response(429))
 
@@ -147,27 +172,6 @@ def test_post_sends_json_options():
     client.post("/posts", options={"channel_id": "abc", "message": "hi"})
 
     assert b'"channel_id"' in seen["json"]
-
-
-def sequence_handler(responses):
-    """Handler returning (or raising) each item in turn, repeating the last one."""
-    calls = []
-
-    def handler(request):
-        item = responses[min(len(calls), len(responses) - 1)]
-        calls.append(request)
-        if isinstance(item, Exception):
-            raise item
-        return item
-
-    return handler, calls
-
-
-@pytest.fixture
-def sleeps(monkeypatch):
-    slept = []
-    monkeypatch.setattr("mattermostautodriver.client.time.sleep", slept.append)
-    return slept
 
 
 def test_429_is_retried_and_honors_retry_after(sleeps):
