@@ -11,6 +11,7 @@ from mattermostautodriver.exceptions import (
     NoAccessTokenProvided,
     NotEnoughPermissions,
     ResourceNotFound,
+    TooManyRequests,
     UnknownMattermostError,
 )
 
@@ -76,6 +77,60 @@ def test_successful_json_response_is_returned():
     client = make_client(lambda request: httpx.Response(200, json={"id": "me"}))
 
     assert client.get("/users/me") == {"id": "me"}
+
+
+def rate_limit_response(headers=None):
+    # Mattermost replies to rate limited requests with a plain text body,
+    # see server/channels/app/ratelimit.go
+    return httpx.Response(429, text="limit exceeded", headers=headers)
+
+
+def test_429_with_plain_text_body_raises_too_many_requests():
+    client = make_client(lambda request: rate_limit_response({"Retry-After": "7"}))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.retry_after == 7.0
+    assert excinfo.value.status_code == 429
+    assert excinfo.value.error_id is None
+
+
+def test_429_without_headers_has_no_retry_after():
+    client = make_client(lambda request: rate_limit_response())
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.retry_after is None
+
+
+def test_429_falls_back_to_ratelimit_reset_header():
+    client = make_client(lambda request: rate_limit_response({"X-RateLimit-Reset": "3"}))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.retry_after == 3.0
+
+
+def test_429_prefers_retry_after_over_ratelimit_reset():
+    client = make_client(lambda request: rate_limit_response({"Retry-After": "2", "X-RateLimit-Reset": "9"}))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.retry_after == 2.0
+
+
+def test_429_with_json_body_exposes_error_fields():
+    client = make_client(lambda request: error_response(429))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.error_id == "api.some.error"
+    assert excinfo.value.request_id == "req1234"
 
 
 def test_post_sends_json_options():

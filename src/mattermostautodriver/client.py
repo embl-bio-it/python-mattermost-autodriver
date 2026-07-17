@@ -15,6 +15,7 @@ from .exceptions import (
     MethodNotAllowed,
     ContentTooLarge,
     FeatureDisabled,
+    TooManyRequests,
     UnknownMattermostError,
 )
 
@@ -167,10 +168,42 @@ class BaseClient:
         return self._get_request_method(method, self.client), self.url, request_params
 
     @staticmethod
+    def _make_rate_limit_error(response):
+        # Mattermost's rate limiter replies with a plain text body ("limit exceeded")
+        # rather than the standard JSON error, so both the wait time and the error
+        # details are parsed on a best effort basis.
+        retry_after = None
+        for header in ("Retry-After", "X-RateLimit-Reset"):
+            value = response.headers.get(header)
+            if value is not None:
+                try:
+                    retry_after = float(value)
+                except ValueError:
+                    continue
+                break
+
+        message = response.text
+        error_id = None
+        request_id = None
+        is_oauth_error = False
+        try:
+            data = response.json()
+            message = data["message"]
+            error_id = data["id"]
+            request_id = data["request_id"]
+            is_oauth_error = data.get("is_oauth", False)
+        except (ValueError, KeyError, TypeError):
+            pass
+
+        return TooManyRequests(message, retry_after, error_id, request_id, is_oauth_error)
+
+    @staticmethod
     def _check_response(response):
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as e:
+            if e.response.status_code == 429:
+                raise BaseClient._make_rate_limit_error(e.response) from None
             try:
                 data = e.response.json()
 
