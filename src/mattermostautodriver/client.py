@@ -3,6 +3,7 @@ Client for the driver, which holds information about the logged in user
 and actually makes the requests to the mattermost server
 """
 
+import asyncio
 import logging
 import random
 import time
@@ -398,10 +399,27 @@ class AsyncClient(BaseClient):
                 "Please remove it from your code."
             )
         request, url, request_params = self._build_request(method, options, params, data, files)
-        response = await request(url + endpoint, **request_params)
 
-        self._check_response(response)
-        return response
+        # File objects are consumed when the request is sent and cannot be
+        # replayed, so requests carrying files are never retried automatically
+        allow_retry = files is None
+        attempt = 0
+        while True:
+            try:
+                response = await request(url + endpoint, **request_params)
+            except httpx.TransportError as e:
+                delay = self._retry_delay(method, attempt, exception=e) if allow_retry else None
+                if delay is None:
+                    raise
+                log.warning("Received %r - retrying in %.1f seconds", e, delay)
+            else:
+                delay = self._retry_delay(method, attempt, response=response) if allow_retry else None
+                if delay is None:
+                    self._check_response(response)
+                    return response
+                log.warning("Received status %d - retrying in %.1f seconds", response.status_code, delay)
+            await asyncio.sleep(delay)
+            attempt += 1
 
     async def get(self, endpoint, options=None, params=None):
         response = await self.make_request("get", endpoint, options=options, params=params)
