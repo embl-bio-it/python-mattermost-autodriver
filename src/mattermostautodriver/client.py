@@ -224,24 +224,38 @@ class BaseClient:
         return None
 
     @staticmethod
+    def _parse_error_fields(response):
+        """Extract the fields of a standard Mattermost JSON error body.
+
+        Returns (message, error_id, request_id, is_oauth_error). Raises
+        ValueError when the body does not follow the standard error schema,
+        with the original parsing error as its cause.
+        """
+        try:
+            data = response.json()
+            return (
+                data["message"],
+                data["id"],
+                data["request_id"],
+                data.get("is_oauth", False),  # is_oauth is not always present
+            )
+        except (ValueError, KeyError, TypeError) as err:
+            raise ValueError("Response body does not follow the Mattermost error schema") from err
+
+    @staticmethod
     def _make_rate_limit_error(response):
         # Mattermost's rate limiter replies with a plain text body ("limit exceeded")
         # rather than the standard JSON error, so both the wait time and the error
         # details are parsed on a best effort basis.
         retry_after = BaseClient._parse_retry_after(response)
 
-        message = response.text
-        error_id = None
-        request_id = None
-        is_oauth_error = False
         try:
-            data = response.json()
-            message = data["message"]
-            error_id = data["id"]
-            request_id = data["request_id"]
-            is_oauth_error = data.get("is_oauth", False)
-        except (ValueError, KeyError, TypeError):
-            pass
+            message, error_id, request_id, is_oauth_error = BaseClient._parse_error_fields(response)
+        except ValueError:
+            message = response.text
+            error_id = None
+            request_id = None
+            is_oauth_error = False
 
         return TooManyRequests(message, retry_after, error_id, request_id, is_oauth_error)
 
@@ -299,15 +313,8 @@ class BaseClient:
             if e.response.status_code == 429:
                 raise BaseClient._make_rate_limit_error(e.response) from None
             try:
-                data = e.response.json()
-
-                # TODO: Validate type of incoming data
-                message = data["message"]
-                error_id = data["id"]
-                request_id = data["request_id"]
-                is_oauth_error = data.get("is_oauth", False)  # is_oauth is not always present
-
-            except (ValueError, KeyError) as val_err:
+                message, error_id, request_id, is_oauth_error = BaseClient._parse_error_fields(e.response)
+            except ValueError as val_err:
                 raise InvalidMattermostError(e.response.text, e.response.status_code) from val_err
             log.error(message)
 
