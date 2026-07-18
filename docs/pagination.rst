@@ -18,10 +18,13 @@ The same method exists on ``AsyncTypedDriver``, returning an async iterator:
     async for user in driver.paginate(driver.users.get_users, in_team=team_id):
         print(user["username"])
 
-Positional and keyword arguments are passed through to the endpoint method.
-Iteration stops when a page returns fewer items than ``per_page``
-(default 200). ``page=`` may be passed to start at a later page, and
-``max_pages=`` caps the number of requests.
+Positional and keyword arguments are passed through to the endpoint method,
+and ``per_page`` defaults to 200. Iteration stops when a page returns fewer
+items than ``per_page``. Values above 200 — the most the Mattermost server
+serves per page — are silently capped by the server, so with a larger
+``per_page`` a short page is not conclusive and iteration only stops on an
+empty or shrinking page. ``page=`` may be passed to start at a later page,
+and ``max_pages=`` caps the number of requests.
 
 Wrapped responses
 -----------------

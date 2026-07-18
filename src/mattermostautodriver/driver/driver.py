@@ -100,7 +100,9 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         Wraps any endpoint method accepting ``page``/``per_page`` and yields
         the items of each page, fetching the next page only when iteration
         reaches it. Iteration stops when a page returns fewer items than
-        ``per_page``.
+        ``per_page``. As the server silently caps ``per_page`` above 200,
+        larger values make a short page inconclusive and iteration only
+        stops on an empty or shrinking page.
 
         .. code:: python
 

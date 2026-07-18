@@ -71,6 +71,28 @@ def test_page_argument_sets_the_starting_page():
     assert [call["page"] for call in calls] == [2]
 
 
+def test_server_capping_per_page_does_not_end_iteration_early():
+    # per_page above the server maximum (200) is silently capped by the
+    # server, so a page smaller than per_page must not end the iteration
+    server_cap = 2
+    pages = [[1, 2], [3, 4], [5]]
+    calls = []
+
+    def method(page=0, per_page=60):
+        calls.append(per_page)
+        return pages[page][:server_cap] if page < len(pages) else []
+
+    assert list(paginate(method, per_page=300)) == [1, 2, 3, 4, 5]
+    assert calls == [300, 300, 300]
+
+
+def test_untrusted_per_page_confirms_a_short_first_page_with_an_empty_request():
+    method, calls = make_offset_method([[1]])
+
+    assert list(paginate(method, per_page=300)) == [1]
+    assert [call["page"] for call in calls] == [0, 1]
+
+
 def test_max_pages_limits_requests():
     method, calls = make_offset_method([[1, 2], [3, 4], [5, 6], [7, 8]])
 

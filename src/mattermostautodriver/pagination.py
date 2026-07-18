@@ -42,6 +42,7 @@ def apaginate(method, *args, per_page=None, items=None, next_args=None, max_page
 def _paginate_offset(method, args, kwargs, items, per_page, max_pages):
     page, per_page = _offset_start(kwargs, per_page)
     pages_fetched = 0
+    largest_batch = 0
 
     while max_pages is None or pages_fetched < max_pages:
         batch = _extract_items(method(*args, page=page, per_page=per_page, **kwargs), items)
@@ -49,15 +50,21 @@ def _paginate_offset(method, args, kwargs, items, per_page, max_pages):
 
         yield from batch
 
-        if len(batch) < per_page:
+        # Up to the server's cap the requested per_page is honored, so a short
+        # page is the last one. Above the cap a short page is not conclusive
+        # and only an empty or shrinking page ends the iteration.
+        limit = per_page if per_page <= MAX_PER_PAGE else largest_batch
+        if not batch or len(batch) < limit:
             return
 
+        largest_batch = max(largest_batch, len(batch))
         page += 1
 
 
 async def _apaginate_offset(method, args, kwargs, items, per_page, max_pages):
     page, per_page = _offset_start(kwargs, per_page)
     pages_fetched = 0
+    largest_batch = 0
 
     while max_pages is None or pages_fetched < max_pages:
         batch = _extract_items(await method(*args, page=page, per_page=per_page, **kwargs), items)
@@ -66,9 +73,14 @@ async def _apaginate_offset(method, args, kwargs, items, per_page, max_pages):
         for item in batch:
             yield item
 
-        if len(batch) < per_page:
+        # Up to the server's cap the requested per_page is honored, so a short
+        # page is the last one. Above the cap a short page is not conclusive
+        # and only an empty or shrinking page ends the iteration.
+        limit = per_page if per_page <= MAX_PER_PAGE else largest_batch
+        if not batch or len(batch) < limit:
             return
 
+        largest_batch = max(largest_batch, len(batch))
         page += 1
 
 
