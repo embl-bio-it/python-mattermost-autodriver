@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from ..client import AsyncClient, Client
+from ..pagination import apaginate as _apaginate, paginate as _paginate
 from ..websocket import Websocket
 
 from .endpoint_base import TypedBaseDriverWithEndpoints
@@ -91,6 +92,56 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
             self.client.username = result["username"]
 
         return result
+
+    def paginate(self, method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+        """
+        Lazily iterate over every item of a paginated endpoint method.
+
+        Wraps any endpoint method accepting ``page``/``per_page`` and yields
+        the items of each page, fetching the next page only when iteration
+        reaches it. Iteration stops when a page returns fewer items than
+        ``per_page``.
+
+        .. code:: python
+
+                for user in driver.paginate(driver.users.get_users, in_team=team_id):
+                        print(user["username"])
+
+        Endpoints wrapping the items in an object need ``items=`` to say where
+        the items are, e.g. ``items="threads"`` for ``threads.get_user_threads``.
+
+        Cursor based endpoints (no ``page``/``per_page``, or cursor parameters
+        such as ``before``/``after``) are supported by passing ``next_args=``,
+        a callable receiving each response and returning the extra keyword
+        arguments for the next call, or ``None`` to stop:
+
+        .. code:: python
+
+                for post in driver.paginate(
+                        driver.posts.get_posts_for_channel, channel_id,
+                        items=lambda r: [r["posts"][pid] for pid in r["order"]],
+                        next_args=lambda r: {"before": r["order"][-1]} if r["prev_post_id"] else None,
+                ):
+                        print(post["message"])
+
+        Methods that support neither raise ``TypeError`` before any request is made.
+
+        :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
+        :param args: Positional arguments (e.g. path parameters) passed through to ``method``
+        :param per_page: Page size, defaults to 200. In cursor mode it is only
+                forwarded to ``method`` when explicitly given.
+        :param items: Where to find the items when the response is not a plain
+                list: a response key or a callable ``response -> list``
+        :param next_args: Enables cursor mode: callable ``response -> dict | None``
+                returning the keyword arguments for the next call
+        :param max_pages: Optional hard limit on the number of pages fetched
+        :param kwargs: Keyword arguments passed through to ``method``. ``page``
+                may be given as the starting page (defaults to 0).
+        :return: Generator yielding one item at a time
+        """
+        return _paginate(
+            method, *args, per_page=per_page, items=items, next_args=next_args, max_pages=max_pages, **kwargs
+        )
 
     def logout(self):
         """
@@ -191,6 +242,24 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
             self.client.username = result["username"]
 
         return result
+
+    def paginate(self, method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+        """
+        Lazily iterate over every item of a paginated endpoint method.
+
+        Asynchronous variant of :meth:`TypedDriver.paginate` — identical
+        parameters, but returns an async generator:
+
+        .. code:: python
+
+                async for user in driver.paginate(driver.users.get_users, in_team=team_id):
+                        print(user["username"])
+
+        :return: Async generator yielding one item at a time
+        """
+        return _apaginate(
+            method, *args, per_page=per_page, items=items, next_args=next_args, max_pages=max_pages, **kwargs
+        )
 
     async def logout(self):
         """

@@ -189,6 +189,15 @@ Usage
     # Query parameters
     foo.users.get_users(page=0, per_page=60)
 
+    """
+    Endpoints accepting page/per_page can be iterated without manual paging
+    using `paginate`, which lazily fetches pages as iteration progresses.
+    See https://embl-bio-it.github.io/python-mattermost-autodriver/pagination.html
+    for details, including cursor based endpoints and wrapped responses.
+    """
+    for user in foo.paginate(foo.users.get_users, in_team='some_team_id'):
+        print(user['username'])
+
     # Request body fields
     foo.channels.create_channel(
         team_id='some_team_id',

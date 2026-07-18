@@ -1,0 +1,154 @@
+"""
+Helpers to lazily iterate over all items of paginated API endpoints.
+
+These implement :meth:`TypedDriver.paginate <mattermostautodriver.driver.driver.TypedDriver.paginate>`
+and :meth:`AsyncTypedDriver.paginate <mattermostautodriver.driver.driver.AsyncTypedDriver.paginate>`,
+which are the documented entry points.
+"""
+
+import inspect
+
+from .constants import MAX_PER_PAGE
+
+
+def paginate(method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+    """Lazily yield every item of a paginated endpoint method.
+
+    See :meth:`TypedDriver.paginate <mattermostautodriver.driver.driver.TypedDriver.paginate>`
+    for parameter documentation.
+    """
+    _validate(method, items, next_args)
+
+    if next_args is not None:
+        if per_page is not None:
+            kwargs["per_page"] = per_page
+        return _paginate_cursor(method, args, kwargs, items, next_args, max_pages)
+
+    return _paginate_offset(method, args, kwargs, items, per_page, max_pages)
+
+
+def apaginate(method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+    """Asynchronous variant of :func:`paginate` returning an async iterator."""
+    _validate(method, items, next_args)
+
+    if next_args is not None:
+        if per_page is not None:
+            kwargs["per_page"] = per_page
+        return _apaginate_cursor(method, args, kwargs, items, next_args, max_pages)
+
+    return _apaginate_offset(method, args, kwargs, items, per_page, max_pages)
+
+
+def _paginate_offset(method, args, kwargs, items, per_page, max_pages):
+    page, per_page = _offset_start(kwargs, per_page)
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        batch = _extract_items(method(*args, page=page, per_page=per_page, **kwargs), items)
+        pages_fetched += 1
+
+        yield from batch
+
+        if len(batch) < per_page:
+            return
+
+        page += 1
+
+
+async def _apaginate_offset(method, args, kwargs, items, per_page, max_pages):
+    page, per_page = _offset_start(kwargs, per_page)
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        batch = _extract_items(await method(*args, page=page, per_page=per_page, **kwargs), items)
+        pages_fetched += 1
+
+        for item in batch:
+            yield item
+
+        if len(batch) < per_page:
+            return
+
+        page += 1
+
+
+def _paginate_cursor(method, args, kwargs, items, next_args, max_pages):
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        response = method(*args, **kwargs)
+        batch = _extract_items(response, items)
+        pages_fetched += 1
+
+        yield from batch
+
+        next_kwargs = next_args(response) if batch else None
+        if not next_kwargs:
+            return
+
+        kwargs.update(next_kwargs)
+
+
+async def _apaginate_cursor(method, args, kwargs, items, next_args, max_pages):
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        response = await method(*args, **kwargs)
+        batch = _extract_items(response, items)
+        pages_fetched += 1
+
+        for item in batch:
+            yield item
+
+        next_kwargs = next_args(response) if batch else None
+        if not next_kwargs:
+            return
+
+        kwargs.update(next_kwargs)
+
+
+def _validate(method, items, next_args):
+    if next_args is None and not _supports_offset_pagination(method):
+        name = getattr(method, "__name__", repr(method))
+        raise TypeError(
+            f"{name}() does not accept 'page'/'per_page' and cannot be offset paginated. "
+            "Pass next_args= for cursor based endpoints, or call the method directly."
+        )
+
+    if items is not None and not (isinstance(items, str) or callable(items)):
+        raise TypeError("items= must be a response key (str) or a callable extracting a list from the response")
+
+
+def _supports_offset_pagination(method):
+    try:
+        parameters = inspect.signature(method).parameters
+    except (TypeError, ValueError):
+        # Signature cannot be introspected, assume the caller knows what they are doing
+        return True
+
+    if any(parameter.kind is inspect.Parameter.VAR_KEYWORD for parameter in parameters.values()):
+        return True
+
+    return "page" in parameters and "per_page" in parameters
+
+
+def _offset_start(kwargs, per_page):
+    page = kwargs.pop("page", None) or 0
+    # Default to the largest page size the server serves, not its default of 60
+    return page, per_page if per_page is not None else MAX_PER_PAGE
+
+
+def _extract_items(response, items):
+    if callable(items):
+        return list(items(response))
+
+    if isinstance(items, str):
+        return response[items]
+
+    if isinstance(response, list):
+        return response
+
+    raise TypeError(
+        "Response is not a list. Pass items= (a response key or a callable) "
+        "to tell paginate where to find the items in the response."
+    )
