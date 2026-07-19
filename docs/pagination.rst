@@ -66,6 +66,25 @@ In cursor mode the ``page``/``per_page`` requirement does not apply;
 ``per_page`` is only forwarded to the endpoint when explicitly given.
 Iteration also stops when a page contains no items.
 
+Endpoints with a pagination flag
+--------------------------------
+
+A small number of endpoints accept ``page``/``per_page`` but only apply them
+when an additional flag is set — for example
+``groups.get_groups_associated_to_channels_by_team`` requires ``paginate=True``,
+otherwise every page returns the identical full result set. Such flags pass
+through like any other keyword argument; without the flag, iterating these
+endpoints may never terminate:
+
+.. code:: python
+
+    for channel_id, groups in driver.paginate(
+        driver.groups.get_groups_associated_to_channels_by_team, team_id,
+        paginate=True,
+        items=lambda r: list(r["groups"].items()),
+    ):
+        ...
+
 Unsupported methods
 -------------------
 
