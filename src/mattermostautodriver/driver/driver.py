@@ -97,45 +97,14 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         """
         Lazily iterate over every item of a paginated endpoint method.
 
-        Wraps any endpoint method accepting ``page``/``per_page`` and yields
-        the items of each page, fetching the next page only when iteration
-        reaches it. Iteration stops when a page returns fewer items than
-        ``per_page``. As the server silently caps ``per_page`` above 200,
-        larger values make a short page inconclusive and iteration only
-        stops on an empty or shrinking page.
-
         .. code:: python
 
                 for user in driver.paginate(driver.users.get_users, in_team=team_id):
                         print(user["username"])
 
-        Endpoints wrapping the items in an object need ``items=`` to say where
-        the items are, e.g. ``items="threads"`` for ``threads.get_user_threads``.
-
-        Cursor based endpoints (no ``page``/``per_page``, or cursor parameters
-        such as ``before``/``after``) are supported by passing ``next_args=``,
-        a callable receiving each response and returning the extra keyword
-        arguments for the next call, or ``None`` (or an empty dict) to stop.
-        ``next_args`` alone decides when iteration ends — it is consulted even
-        for pages without items. Each returned dict replaces the previous one
-        rather than merging with it:
-
-        .. code:: python
-
-                for post in driver.paginate(
-                        driver.posts.get_posts_for_channel,
-                        channel_id=channel_id,
-                        items=lambda r: [r["posts"][pid] for pid in r["order"]],
-                        next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
-                ):
-                        print(post["message"])
-
-        Methods that support neither raise ``TypeError`` before any request is made.
-
-        All endpoint parameters — including path parameters such as
-        ``channel_id`` — must be passed as keyword arguments; positional
-        arguments raise ``TypeError`` before any request, as they could
-        bind to ``page``/``per_page`` or the wrong query parameter.
+        See :doc:`pagination </pagination>` for the full guide, including the
+        termination rules, wrapped responses, cursor based endpoints and
+        endpoints requiring a pagination flag.
 
         :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
         :param per_page: Page size, defaults to 200. In cursor mode the default
@@ -143,12 +112,13 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         :param items: Where to find the items when the response is not a plain
                 list: a response key or a callable ``response -> list``
         :param next_args: Enables cursor mode: callable ``response -> dict | None``
-                returning the keyword arguments for the next call
+                returning the keyword arguments for the next call. Each dict
+                replaces the previous one; ``None`` (or an empty dict) stops.
         :param max_pages: Optional hard limit on the number of pages fetched
-        :param kwargs: Keyword arguments passed through to ``method``. In offset
-                mode ``page`` may be given as the starting page (defaults to 0);
-                in cursor mode passing ``page`` raises ``TypeError`` — drive the
-                paging via ``next_args`` instead.
+        :param kwargs: Keyword arguments passed through to ``method``. All
+                endpoint parameters, including path parameters, must be
+                keywords. In offset mode ``page`` may be given as the starting
+                page (defaults to 0).
         :return: Generator yielding one item at a time
         """
         return _paginate(
