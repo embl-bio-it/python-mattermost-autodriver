@@ -20,6 +20,7 @@ def paginate(method, *args, per_page=None, items=None, next_args=None, max_pages
     _validate(method, items, next_args)
 
     if next_args is not None:
+        per_page = _cursor_per_page(method, per_page)
         if per_page is not None:
             kwargs["per_page"] = per_page
         return _paginate_cursor(method, args, kwargs, items, next_args, max_pages)
@@ -32,6 +33,7 @@ def apaginate(method, *args, per_page=None, items=None, next_args=None, max_page
     _validate(method, items, next_args)
 
     if next_args is not None:
+        per_page = _cursor_per_page(method, per_page)
         if per_page is not None:
             kwargs["per_page"] = per_page
         return _apaginate_cursor(method, args, kwargs, items, next_args, max_pages)
@@ -148,6 +150,20 @@ def _offset_start(kwargs, per_page):
     page = kwargs.pop("page", None) or 0
     # Default to the largest page size the server serves, not its default of 60
     return page, per_page if per_page is not None else MAX_PER_PAGE
+
+
+def _cursor_per_page(method, per_page):
+    if per_page is not None:
+        return per_page
+
+    # Default to the largest page size here as well, but only for methods
+    # that are known to accept per_page
+    try:
+        parameters = inspect.signature(method).parameters
+    except (TypeError, ValueError):
+        return None
+
+    return MAX_PER_PAGE if "per_page" in parameters else None
 
 
 def _extract_items(response, items):

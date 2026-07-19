@@ -174,6 +174,28 @@ def test_cursor_mode_merges_multiple_parameters():
     assert calls == [(None, None), ("u1", "alice")]
 
 
+def test_cursor_mode_defaults_per_page_when_method_accepts_it():
+    calls = []
+
+    def method(per_page=60, before=None):
+        calls.append(per_page)
+        return []
+
+    list(paginate(method, next_args=lambda r: None))
+    assert calls == [200]
+
+
+def test_cursor_mode_omits_per_page_when_method_does_not_accept_it():
+    calls = []
+
+    def method(before=None):
+        calls.append(before)
+        return []
+
+    list(paginate(method, next_args=lambda r: None))
+    assert calls == [None]
+
+
 def test_cursor_mode_forwards_explicit_per_page():
     calls = []
 

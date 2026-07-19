@@ -130,8 +130,8 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
 
         :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
         :param args: Positional arguments (e.g. path parameters) passed through to ``method``
-        :param per_page: Page size, defaults to 200. In cursor mode it is only
-                forwarded to ``method`` when explicitly given.
+        :param per_page: Page size, defaults to 200. In cursor mode the default
+                is only applied when ``method`` accepts a ``per_page`` parameter.
         :param items: Where to find the items when the response is not a plain
                 list: a response key or a callable ``response -> list``
         :param next_args: Enables cursor mode: callable ``response -> dict | None``
