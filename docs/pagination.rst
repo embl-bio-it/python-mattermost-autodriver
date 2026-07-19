@@ -70,8 +70,13 @@ history:
 In cursor mode the ``page``/``per_page`` requirement does not apply, and
 ``next_args`` alone decides when iteration ends: it is consulted even for
 pages without items, so an ``items=`` callable that filters a whole page
-away does not end the iteration early. ``per_page`` defaults to 200 when
-the endpoint accepts it and is otherwise omitted.
+away does not end the iteration early. Each returned dict *replaces* the
+previous one rather than merging with it, so cursor keys from earlier
+pages never leak into later requests — a ``next_args`` may e.g. switch
+from ``after`` to ``before`` mid-walk, and a cursor passed directly to
+``paginate()`` (such as a starting ``before=``) is overridden once
+``next_args`` takes over. ``per_page`` defaults to 200 when the endpoint
+accepts it and is otherwise omitted.
 
 Endpoints with a pagination flag
 --------------------------------

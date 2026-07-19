@@ -117,7 +117,8 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         a callable receiving each response and returning the extra keyword
         arguments for the next call, or ``None`` (or an empty dict) to stop.
         ``next_args`` alone decides when iteration ends — it is consulted even
-        for pages without items:
+        for pages without items. Each returned dict replaces the previous one
+        rather than merging with it:
 
         .. code:: python
 

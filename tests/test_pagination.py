@@ -219,6 +219,36 @@ def test_cursor_mode_merges_multiple_parameters():
     assert calls == [(None, None), ("u1", "alice")]
 
 
+def test_cursor_arguments_replace_rather_than_merge():
+    calls = []
+    responses = iter([[1], [2], [3]])
+
+    def method(after=None, before=None):
+        calls.append({"after": after, "before": before})
+        return next(responses)
+
+    steps = iter([{"after": "a1"}, {"before": "b1"}, None])
+    assert list(paginate(method, next_args=lambda r: next(steps))) == [1, 2, 3]
+
+    # Switching cursor keys mid-walk must not leak the stale key
+    assert calls == [
+        {"after": None, "before": None},
+        {"after": "a1", "before": None},
+        {"after": None, "before": "b1"},
+    ]
+
+
+def test_cursor_arguments_override_a_starting_cursor():
+    calls = []
+
+    def method(before=None):
+        calls.append(before)
+        return [1] if before == "start" else []
+
+    assert list(paginate(method, before="start", next_args=lambda r: {"before": "b2"} if r else None)) == [1]
+    assert calls == ["start", "b2"]
+
+
 def test_cursor_mode_consults_next_args_even_for_pages_without_items():
     pages = {
         None: {"items": [1], "next": "a"},

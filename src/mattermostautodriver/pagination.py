@@ -90,9 +90,10 @@ async def _apaginate_offset(method, kwargs, items, per_page, max_pages):
 
 def _paginate_cursor(method, kwargs, items, next_args, max_pages):
     pages_fetched = 0
+    cursor_kwargs = {}
 
     while max_pages is None or pages_fetched < max_pages:
-        response = method(**kwargs)
+        response = method(**{**kwargs, **cursor_kwargs})
         batch = _extract_items(response, items)
         pages_fetched += 1
 
@@ -104,14 +105,17 @@ def _paginate_cursor(method, kwargs, items, next_args, max_pages):
         if not next_kwargs:
             return
 
-        kwargs.update(next_kwargs)
+        # The returned dict replaces the previous cursor arguments wholesale,
+        # so cursor keys from earlier pages never leak into later requests
+        cursor_kwargs = next_kwargs
 
 
 async def _apaginate_cursor(method, kwargs, items, next_args, max_pages):
     pages_fetched = 0
+    cursor_kwargs = {}
 
     while max_pages is None or pages_fetched < max_pages:
-        response = await method(**kwargs)
+        response = await method(**{**kwargs, **cursor_kwargs})
         batch = _extract_items(response, items)
         pages_fetched += 1
 
@@ -124,7 +128,9 @@ async def _apaginate_cursor(method, kwargs, items, next_args, max_pages):
         if not next_kwargs:
             return
 
-        kwargs.update(next_kwargs)
+        # The returned dict replaces the previous cursor arguments wholesale,
+        # so cursor keys from earlier pages never leak into later requests
+        cursor_kwargs = next_kwargs
 
 
 def _validate(method, args, items, next_args):
