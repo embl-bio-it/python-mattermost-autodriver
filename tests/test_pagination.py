@@ -57,11 +57,19 @@ def test_extra_arguments_are_passed_through():
     assert calls[0]["in_team"] == "team_id"
 
 
-def test_page_argument_sets_the_starting_page():
+def test_start_page_sets_the_starting_page():
     method, calls = make_offset_method([[1, 2], [3, 4], [5]])
 
-    assert list(paginate(method, page=2, per_page=2)) == [5]
+    assert list(paginate(method, start_page=2, per_page=2)) == [5]
     assert [call["page"] for call in calls] == [2]
+
+
+def test_page_argument_raises_before_any_call():
+    method, calls = make_offset_method([[1, 2]])
+
+    with pytest.raises(TypeError, match="page= is not passed through"):
+        paginate(method, page=2)
+    assert calls == []
 
 
 def test_server_capping_per_page_does_not_end_iteration_early():
@@ -97,14 +105,14 @@ def test_items_as_key_unwraps_dict_responses():
     def method(page=0, per_page=60):
         return {"threads": [1, 2] if page == 0 else [3], "total": 3}
 
-    assert list(paginate(method, per_page=2, items="threads")) == [1, 2, 3]
+    assert list(paginate(method, per_page=2, items_from="threads")) == [1, 2, 3]
 
 
 def test_items_as_callable_unwraps_dict_responses():
     def method(page=0, per_page=60):
         return {"order": ["a"], "posts": {"a": {"id": "a"}}} if page == 0 else {"order": [], "posts": {}}
 
-    result = list(paginate(method, per_page=2, items=lambda r: [r["posts"][pid] for pid in r["order"]]))
+    result = list(paginate(method, per_page=2, items_from=lambda r: [r["posts"][pid] for pid in r["order"]]))
     assert result == [{"id": "a"}]
 
 
@@ -112,7 +120,7 @@ def test_dict_response_without_items_raises():
     def method(page=0, per_page=60):
         return {"threads": []}
 
-    with pytest.raises(TypeError, match="items="):
+    with pytest.raises(TypeError, match="items_from="):
         list(paginate(method))
 
 
@@ -121,7 +129,7 @@ def test_items_key_with_null_value_is_treated_as_an_empty_page():
         # Go servers serialize empty result slices as null
         return {"threads": None, "total": 0}
 
-    assert list(paginate(method, items="threads")) == []
+    assert list(paginate(method, items_from="threads")) == []
 
 
 def test_items_key_missing_from_response_names_the_available_keys():
@@ -129,7 +137,7 @@ def test_items_key_missing_from_response_names_the_available_keys():
         return {"threads": [], "total": 0}
 
     with pytest.raises(KeyError, match="'thread'.*Available keys.*threads"):
-        list(paginate(method, items="thread"))
+        list(paginate(method, items_from="thread"))
 
 
 def test_items_key_pointing_at_a_non_list_raises():
@@ -137,7 +145,7 @@ def test_items_key_pointing_at_a_non_list_raises():
         return {"order": ["a"], "posts": {"a": {"id": "a"}}}
 
     with pytest.raises(TypeError, match="'posts' refers to a dict"):
-        list(paginate(method, items="posts"))
+        list(paginate(method, items_from="posts"))
 
 
 def test_items_key_with_a_list_response_raises():
@@ -145,14 +153,14 @@ def test_items_key_with_a_list_response_raises():
         return [{"id": "u1"}]
 
     with pytest.raises(TypeError, match="response is a list"):
-        list(paginate(method, items="threads"))
+        list(paginate(method, items_from="threads"))
 
 
 def test_invalid_items_raises_before_any_call():
     method, calls = make_offset_method([[1]])
 
-    with pytest.raises(TypeError, match="items="):
-        paginate(method, items=42)
+    with pytest.raises(TypeError, match="items_from="):
+        paginate(method, items_from=42)
     assert calls == []
 
 
@@ -176,11 +184,11 @@ def test_positional_arguments_raise_before_any_call():
     with pytest.raises(TypeError, match="only keyword arguments"):
         paginate(method, "cid")
     with pytest.raises(TypeError, match="only keyword arguments"):
-        paginate(method, "cid", next_args=lambda r: None)
+        paginate(method, "cid", next_params=lambda r: None)
     assert calls == []
 
 
-def test_cursor_mode_follows_next_args():
+def test_cursor_mode_follows_next_params():
     pages = {None: [1, 2], 2: [3, 4], 4: []}
     calls = []
 
@@ -188,16 +196,16 @@ def test_cursor_mode_follows_next_args():
         calls.append(after)
         return pages[after]
 
-    result = list(paginate(method, next_args=lambda r: {"after": r[-1]} if r else None))
+    result = list(paginate(method, next_params=lambda r: {"after": r[-1]} if r else None))
     assert result == [1, 2, 3, 4]
     assert calls == [None, 2, 4]
 
 
-def test_cursor_mode_stops_when_next_args_returns_none():
+def test_cursor_mode_stops_when_next_params_returns_none():
     def method(after=None):
         return [1]
 
-    assert list(paginate(method, next_args=lambda r: None)) == [1]
+    assert list(paginate(method, next_params=lambda r: None)) == [1]
 
 
 def test_cursor_mode_merges_multiple_parameters():
@@ -207,8 +215,8 @@ def test_cursor_mode_merges_multiple_parameters():
         calls.append((from_id, from_column_value))
         return [{"id": "u1", "username": "alice"}] if from_id is None else []
 
-    next_args = lambda r: {"from_id": r[-1]["id"], "from_column_value": r[-1]["username"]} if r else None
-    assert len(list(paginate(method, next_args=next_args))) == 1
+    next_params = lambda r: {"from_id": r[-1]["id"], "from_column_value": r[-1]["username"]} if r else None
+    assert len(list(paginate(method, next_params=next_params))) == 1
     assert calls == [(None, None), ("u1", "alice")]
 
 
@@ -219,8 +227,10 @@ def test_page_argument_in_cursor_mode_raises_before_any_call():
         calls.append(page)
         return []
 
-    with pytest.raises(TypeError, match="page= applies to offset pagination"):
-        paginate(method, page=2, next_args=lambda r: None)
+    with pytest.raises(TypeError, match="page= is not passed through"):
+        paginate(method, page=2, next_params=lambda r: None)
+    with pytest.raises(TypeError, match="start_page= applies to offset pagination"):
+        paginate(method, start_page=2, next_params=lambda r: None)
     assert calls == []
 
 
@@ -233,7 +243,7 @@ def test_cursor_arguments_replace_rather_than_merge():
         return next(responses)
 
     steps = iter([{"after": "a1"}, {"before": "b1"}, None])
-    assert list(paginate(method, next_args=lambda r: next(steps))) == [1, 2, 3]
+    assert list(paginate(method, next_params=lambda r: next(steps))) == [1, 2, 3]
 
     # Switching cursor keys mid-walk must not leak the stale key
     assert calls == [
@@ -250,11 +260,11 @@ def test_cursor_arguments_override_a_starting_cursor():
         calls.append(before)
         return [1] if before == "start" else []
 
-    assert list(paginate(method, before="start", next_args=lambda r: {"before": "b2"} if r else None)) == [1]
+    assert list(paginate(method, before="start", next_params=lambda r: {"before": "b2"} if r else None)) == [1]
     assert calls == ["start", "b2"]
 
 
-def test_cursor_mode_consults_next_args_even_for_pages_without_items():
+def test_cursor_mode_consults_next_params_even_for_pages_without_items():
     pages = {
         None: {"items": [1], "next": "a"},
         "a": {"items": [], "next": "b"},
@@ -266,7 +276,7 @@ def test_cursor_mode_consults_next_args_even_for_pages_without_items():
         calls.append(after)
         return pages[after]
 
-    result = list(paginate(method, items="items", next_args=lambda r: {"after": r["next"]} if r["next"] else None))
+    result = list(paginate(method, items_from="items", next_params=lambda r: {"after": r["next"]} if r["next"] else None))
     assert result == [1, 2]
     assert calls == [None, "a", "b"]
 
@@ -278,7 +288,7 @@ def test_cursor_mode_defaults_per_page_when_method_accepts_it():
         calls.append(per_page)
         return []
 
-    list(paginate(method, next_args=lambda r: None))
+    list(paginate(method, next_params=lambda r: None))
     assert calls == [200]
 
 
@@ -289,7 +299,7 @@ def test_cursor_mode_omits_per_page_when_method_does_not_accept_it():
         calls.append(before)
         return []
 
-    list(paginate(method, next_args=lambda r: None))
+    list(paginate(method, next_params=lambda r: None))
     assert calls == [None]
 
 
@@ -308,7 +318,7 @@ def test_cursor_mode_forwards_explicit_per_page():
         calls.append(per_page)
         return []
 
-    list(paginate(method, per_page=5, next_args=lambda r: None))
+    list(paginate(method, per_page=5, next_params=lambda r: None))
     assert calls == [5]
 
 
@@ -338,7 +348,7 @@ async def test_apaginate_cursor_mode():
     async def method(after=None):
         return pages[after]
 
-    result = [item async for item in apaginate(method, next_args=lambda r: {"after": r[-1]} if r else None)]
+    result = [item async for item in apaginate(method, next_params=lambda r: {"after": r[-1]} if r else None)]
     assert result == [1, 2]
 
 
@@ -408,8 +418,8 @@ async def test_async_driver_paginate_posts_with_cursor():
         async for post in driver.paginate(
             driver.posts.get_posts_for_channel,
             channel_id="channel_id",
-            items=lambda r: [r["posts"][pid] for pid in r["order"]],
-            next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
+            items_from=lambda r: [r["posts"][pid] for pid in r["order"]],
+            next_params=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
         )
     ]
 

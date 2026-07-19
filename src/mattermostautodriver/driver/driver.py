@@ -93,7 +93,9 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
 
         return result
 
-    def paginate(self, method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+    def paginate(
+        self, method, /, *args, per_page=None, items_from=None, next_params=None, max_pages=None, start_page=0, **kwargs
+    ):
         """
         Lazily iterate over every item of a paginated endpoint method.
 
@@ -109,20 +111,28 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
         :param per_page: Page size, defaults to 200. In cursor mode the default
                 is only applied when ``method`` accepts a ``per_page`` parameter.
-        :param items: Where to find the items when the response is not a plain
-                list: a response key or a callable ``response -> list``
-        :param next_args: Enables cursor mode: callable ``response -> dict | None``
-                returning the keyword arguments for the next call. Each dict
-                replaces the previous one; ``None`` (or an empty dict) stops.
+        :param items_from: Where to find the items when the response is not a
+                plain list: a response key or a callable ``response -> list``
+        :param next_params: Enables cursor mode: callable ``response -> dict | None``
+                returning the parameters for the next call. Each dict replaces
+                the previous one; ``None`` (or an empty dict) stops.
         :param max_pages: Optional hard limit on the number of pages fetched
+        :param start_page: Page to start from in offset mode (defaults to 0)
         :param kwargs: Keyword arguments passed through to ``method``. All
                 endpoint parameters, including path parameters, must be
-                keywords. In offset mode ``page`` may be given as the starting
-                page (defaults to 0).
+                keywords. ``page`` is not passed through — use ``start_page``,
+                or call the method directly for a single page.
         :return: Generator yielding one item at a time
         """
         return _paginate(
-            method, *args, per_page=per_page, items=items, next_args=next_args, max_pages=max_pages, **kwargs
+            method,
+            *args,
+            per_page=per_page,
+            items_from=items_from,
+            next_params=next_params,
+            max_pages=max_pages,
+            start_page=start_page,
+            **kwargs,
         )
 
     def logout(self):
@@ -225,7 +235,9 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
 
         return result
 
-    def paginate(self, method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
+    def paginate(
+        self, method, /, *args, per_page=None, items_from=None, next_params=None, max_pages=None, start_page=0, **kwargs
+    ):
         """
         Lazily iterate over every item of a paginated endpoint method.
 
@@ -240,7 +252,14 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
         :return: Async generator yielding one item at a time
         """
         return _apaginate(
-            method, *args, per_page=per_page, items=items, next_args=next_args, max_pages=max_pages, **kwargs
+            method,
+            *args,
+            per_page=per_page,
+            items_from=items_from,
+            next_params=next_params,
+            max_pages=max_pages,
+            start_page=start_page,
+            **kwargs,
         )
 
     async def logout(self):

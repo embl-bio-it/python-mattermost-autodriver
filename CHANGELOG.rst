@@ -23,8 +23,8 @@ Code
 - Add ``TypedDriver.paginate`` and ``AsyncTypedDriver.paginate`` to lazily
   iterate over all items of paginated endpoints without manual page handling.
   Supports ``page``/``per_page`` endpoints out of the box, responses wrapping
-  the items in an object via ``items=``, and cursor based endpoints via
-  ``next_args=``.
+  the items in an object via ``items_from=``, and cursor based endpoints via
+  ``next_params=``.
 
 Documentation
 '''''''''''''

@@ -26,33 +26,35 @@ they could bind to ``page``/``per_page`` or the wrong query parameter.
 items than ``per_page``. Values above 200 — the most the Mattermost server
 serves per page — are silently capped by the server, so with a larger
 ``per_page`` a short page is not conclusive and iteration only stops on an
-empty or shrinking page. ``page=`` may be passed to start at a later page,
-and ``max_pages=`` caps the number of requests.
+empty or shrinking page. ``start_page=`` may be passed to start at a later
+page, and ``max_pages=`` caps the number of requests. ``page=`` itself is
+never passed through and raises ``TypeError`` — call the method directly
+to fetch a single page.
 
 Wrapped responses
 -----------------
 
 Some endpoints do not return a plain list but wrap the items in an object,
 for example ``threads.get_user_threads`` returns
-``{"threads": [...], "total": ...}``. Use ``items=`` to say where the items
+``{"threads": [...], "total": ...}``. Use ``items_from=`` to say where the items
 are — either a response key or a callable receiving the response and
 returning the list:
 
 .. code:: python
 
     for thread in driver.paginate(
-        driver.threads.get_user_threads, user_id=user_id, team_id=team_id, items="threads"
+        driver.threads.get_user_threads, user_id=user_id, team_id=team_id, items_from="threads"
     ):
         print(thread["id"])
 
-Without ``items=``, a non-list response raises ``TypeError``.
+Without ``items_from=``, a non-list response raises ``TypeError``.
 
 Cursor based endpoints
 ----------------------
 
 A few endpoints paginate with cursors instead of page numbers, such as the
 ``before``/``after`` post IDs of ``posts.get_posts_for_channel`` or the
-keyset parameters of the reporting endpoints. Pass ``next_args=``, a callable
+keyset parameters of the reporting endpoints. Pass ``next_params=``, a callable
 that receives each response and returns the keyword arguments for the next
 call — or ``None`` (or an empty dict) to stop. Walking a channel's full post
 history:
@@ -62,23 +64,23 @@ history:
     for post in driver.paginate(
         driver.posts.get_posts_for_channel,
         channel_id=channel_id,
-        items=lambda r: [r["posts"][pid] for pid in r["order"]],
-        next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
+        items_from=lambda r: [r["posts"][pid] for pid in r["order"]],
+        next_params=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
     ):
         print(post["message"])
 
 In cursor mode the ``page``/``per_page`` requirement does not apply, and
-``next_args`` alone decides when iteration ends: it is consulted even for
-pages without items, so an ``items=`` callable that filters a whole page
+``next_params`` alone decides when iteration ends: it is consulted even for
+pages without items, so an ``items_from=`` callable that filters a whole page
 away does not end the iteration early. Each returned dict *replaces* the
 previous one rather than merging with it, so cursor keys from earlier
-pages never leak into later requests — a ``next_args`` may e.g. switch
+pages never leak into later requests — a ``next_params`` may e.g. switch
 from ``after`` to ``before`` mid-walk, and a cursor passed directly to
 ``paginate()`` (such as a starting ``before=``) is overridden once
-``next_args`` takes over. ``per_page`` defaults to 200 when the endpoint
-accepts it and is otherwise omitted. Passing ``page=`` in cursor mode
-raises ``TypeError`` — it would be re-sent verbatim on every request,
-skipping data in each cursor window; drive the paging via ``next_args``.
+``next_params`` takes over. ``per_page`` defaults to 200 when the endpoint
+accepts it and is otherwise omitted. ``start_page=`` applies to offset
+pagination only and raises ``TypeError`` here — ``next_params`` alone
+drives the paging.
 
 Endpoints with a pagination flag
 --------------------------------
@@ -96,13 +98,13 @@ endpoints may never terminate:
         driver.groups.get_groups_associated_to_channels_by_team,
         team_id=team_id,
         paginate=True,
-        items=lambda r: list(r["groups"].items()),
+        items_from=lambda r: list(r["groups"].items()),
     ):
         ...
 
 Unsupported methods
 -------------------
 
-Passing a method that accepts neither ``page``/``per_page`` nor ``next_args=``
+Passing a method that accepts neither ``page``/``per_page`` nor ``next_params=``
 raises ``TypeError`` immediately, before any request is made. Such endpoints
 are not paginated — call them directly.
