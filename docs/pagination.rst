@@ -51,20 +51,23 @@ A few endpoints paginate with cursors instead of page numbers, such as the
 ``before``/``after`` post IDs of ``posts.get_posts_for_channel`` or the
 keyset parameters of the reporting endpoints. Pass ``next_args=``, a callable
 that receives each response and returns the keyword arguments for the next
-call — or ``None`` to stop. Walking a channel's full post history:
+call — or ``None`` (or an empty dict) to stop. Walking a channel's full post
+history:
 
 .. code:: python
 
     for post in driver.paginate(
         driver.posts.get_posts_for_channel, channel_id,
         items=lambda r: [r["posts"][pid] for pid in r["order"]],
-        next_args=lambda r: {"before": r["order"][-1]} if r["prev_post_id"] else None,
+        next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
     ):
         print(post["message"])
 
-In cursor mode the ``page``/``per_page`` requirement does not apply;
-``per_page`` is only forwarded to the endpoint when explicitly given.
-Iteration also stops when a page contains no items.
+In cursor mode the ``page``/``per_page`` requirement does not apply, and
+``next_args`` alone decides when iteration ends: it is consulted even for
+pages without items, so an ``items=`` callable that filters a whole page
+away does not end the iteration early. ``per_page`` defaults to 200 when
+the endpoint accepts it and is otherwise omitted.
 
 Endpoints with a pagination flag
 --------------------------------

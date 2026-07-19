@@ -169,9 +169,26 @@ def test_cursor_mode_merges_multiple_parameters():
         calls.append((from_id, from_column_value))
         return [{"id": "u1", "username": "alice"}] if from_id is None else []
 
-    next_args = lambda r: {"from_id": r[-1]["id"], "from_column_value": r[-1]["username"]}
+    next_args = lambda r: {"from_id": r[-1]["id"], "from_column_value": r[-1]["username"]} if r else None
     assert len(list(paginate(method, next_args=next_args))) == 1
     assert calls == [(None, None), ("u1", "alice")]
+
+
+def test_cursor_mode_consults_next_args_even_for_pages_without_items():
+    pages = {
+        None: {"items": [1], "next": "a"},
+        "a": {"items": [], "next": "b"},
+        "b": {"items": [2], "next": None},
+    }
+    calls = []
+
+    def method(after=None):
+        calls.append(after)
+        return pages[after]
+
+    result = list(paginate(method, items="items", next_args=lambda r: {"after": r["next"]} if r["next"] else None))
+    assert result == [1, 2]
+    assert calls == [None, "a", "b"]
 
 
 def test_cursor_mode_defaults_per_page_when_method_accepts_it():
@@ -312,7 +329,7 @@ async def test_async_driver_paginate_posts_with_cursor():
             driver.posts.get_posts_for_channel,
             "channel_id",
             items=lambda r: [r["posts"][pid] for pid in r["order"]],
-            next_args=lambda r: {"before": r["order"][-1]} if r["prev_post_id"] else None,
+            next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
         )
     ]
 

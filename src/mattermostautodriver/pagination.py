@@ -98,7 +98,9 @@ def _paginate_cursor(method, args, kwargs, items, next_args, max_pages):
 
         yield from batch
 
-        next_kwargs = next_args(response) if batch else None
+        # Termination is delegated to next_args: empty pages keep iterating
+        # for as long as it keeps returning arguments for the next call
+        next_kwargs = next_args(response)
         if not next_kwargs:
             return
 
@@ -116,7 +118,9 @@ async def _apaginate_cursor(method, args, kwargs, items, next_args, max_pages):
         for item in batch:
             yield item
 
-        next_kwargs = next_args(response) if batch else None
+        # Termination is delegated to next_args: empty pages keep iterating
+        # for as long as it keeps returning arguments for the next call
+        next_kwargs = next_args(response)
         if not next_kwargs:
             return
 

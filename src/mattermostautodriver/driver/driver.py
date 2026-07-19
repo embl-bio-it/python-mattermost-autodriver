@@ -115,14 +115,16 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         Cursor based endpoints (no ``page``/``per_page``, or cursor parameters
         such as ``before``/``after``) are supported by passing ``next_args=``,
         a callable receiving each response and returning the extra keyword
-        arguments for the next call, or ``None`` to stop:
+        arguments for the next call, or ``None`` (or an empty dict) to stop.
+        ``next_args`` alone decides when iteration ends — it is consulted even
+        for pages without items:
 
         .. code:: python
 
                 for post in driver.paginate(
                         driver.posts.get_posts_for_channel, channel_id,
                         items=lambda r: [r["posts"][pid] for pid in r["order"]],
-                        next_args=lambda r: {"before": r["order"][-1]} if r["prev_post_id"] else None,
+                        next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
                 ):
                         print(post["message"])
 
