@@ -20,117 +20,106 @@ def paginate(method, *args, per_page=None, items=None, next_args=None, max_pages
     for parameter documentation.
     """
     _validate(method, args, kwargs, items, next_args)
-
-    if next_args is not None:
-        per_page = _cursor_per_page(method, per_page)
-        if per_page is not None:
-            kwargs["per_page"] = per_page
-        return _paginate_cursor(method, kwargs, items, next_args, max_pages)
-
-    return _paginate_offset(method, kwargs, items, per_page, max_pages)
+    return _paginate_sync(method, _make_pager(method, kwargs, per_page, next_args), items, max_pages)
 
 
 def apaginate(method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
     """Asynchronous variant of :func:`paginate` returning an async iterator."""
     _validate(method, args, kwargs, items, next_args)
+    return _paginate_async(method, _make_pager(method, kwargs, per_page, next_args), items, max_pages)
 
+
+def _paginate_sync(method, pager, items, max_pages):
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        response = method(**pager.request_kwargs())
+        batch = _extract_items(response, items)
+        pages_fetched += 1
+
+        yield from batch
+
+        if not pager.advance(response, batch):
+            return
+
+
+async def _paginate_async(method, pager, items, max_pages):
+    pages_fetched = 0
+
+    while max_pages is None or pages_fetched < max_pages:
+        response = await method(**pager.request_kwargs())
+        batch = _extract_items(response, items)
+        pages_fetched += 1
+
+        for item in batch:
+            yield item
+
+        if not pager.advance(response, batch):
+            return
+
+
+def _make_pager(method, kwargs, per_page, next_args):
     if next_args is not None:
-        per_page = _cursor_per_page(method, per_page)
+        return _CursorPager(kwargs, _cursor_per_page(method, per_page), next_args)
+    return _OffsetPager(kwargs, per_page)
+
+
+class _OffsetPager:
+    """Paging decisions for page/per_page based endpoints."""
+
+    def __init__(self, kwargs, per_page):
+        self.kwargs = kwargs
+        self.page = kwargs.pop("page", None) or 0
+        # Default to the largest page size the server serves, not its default of 60
+        self.per_page = per_page if per_page is not None else MAX_PER_PAGE
+        self.largest_batch = 0
+
+    def request_kwargs(self):
+        return {**self.kwargs, "page": self.page, "per_page": self.per_page}
+
+    def advance(self, response, batch):
+        """Advance to the next page, or return False when this was the last one.
+
+        Up to the server's cap the requested per_page is honored, so a short
+        page is the last one. Above the cap a short page is not conclusive
+        and only an empty or shrinking page ends the iteration.
+        """
+        limit = self.per_page if self.per_page <= MAX_PER_PAGE else self.largest_batch
+        if not batch or len(batch) < limit:
+            return False
+
+        self.largest_batch = max(self.largest_batch, len(batch))
+        self.page += 1
+        return True
+
+
+class _CursorPager:
+    """Paging decisions for cursor based endpoints, driven by next_args."""
+
+    def __init__(self, kwargs, per_page, next_args):
+        self.kwargs = kwargs
         if per_page is not None:
-            kwargs["per_page"] = per_page
-        return _apaginate_cursor(method, kwargs, items, next_args, max_pages)
+            self.kwargs["per_page"] = per_page
+        self.cursor_kwargs = {}
+        self.next_args = next_args
 
-    return _apaginate_offset(method, kwargs, items, per_page, max_pages)
+    def request_kwargs(self):
+        return {**self.kwargs, **self.cursor_kwargs}
 
+    def advance(self, response, batch):
+        """Advance to the next cursor, or return False when next_args stops.
 
-def _paginate_offset(method, kwargs, items, per_page, max_pages):
-    page, per_page = _offset_start(kwargs, per_page)
-    pages_fetched = 0
-    largest_batch = 0
-
-    while max_pages is None or pages_fetched < max_pages:
-        batch = _extract_items(method(page=page, per_page=per_page, **kwargs), items)
-        pages_fetched += 1
-
-        yield from batch
-
-        # Up to the server's cap the requested per_page is honored, so a short
-        # page is the last one. Above the cap a short page is not conclusive
-        # and only an empty or shrinking page ends the iteration.
-        limit = per_page if per_page <= MAX_PER_PAGE else largest_batch
-        if not batch or len(batch) < limit:
-            return
-
-        largest_batch = max(largest_batch, len(batch))
-        page += 1
-
-
-async def _apaginate_offset(method, kwargs, items, per_page, max_pages):
-    page, per_page = _offset_start(kwargs, per_page)
-    pages_fetched = 0
-    largest_batch = 0
-
-    while max_pages is None or pages_fetched < max_pages:
-        batch = _extract_items(await method(page=page, per_page=per_page, **kwargs), items)
-        pages_fetched += 1
-
-        for item in batch:
-            yield item
-
-        # Up to the server's cap the requested per_page is honored, so a short
-        # page is the last one. Above the cap a short page is not conclusive
-        # and only an empty or shrinking page ends the iteration.
-        limit = per_page if per_page <= MAX_PER_PAGE else largest_batch
-        if not batch or len(batch) < limit:
-            return
-
-        largest_batch = max(largest_batch, len(batch))
-        page += 1
-
-
-def _paginate_cursor(method, kwargs, items, next_args, max_pages):
-    pages_fetched = 0
-    cursor_kwargs = {}
-
-    while max_pages is None or pages_fetched < max_pages:
-        response = method(**{**kwargs, **cursor_kwargs})
-        batch = _extract_items(response, items)
-        pages_fetched += 1
-
-        yield from batch
-
-        # Termination is delegated to next_args: empty pages keep iterating
-        # for as long as it keeps returning arguments for the next call
-        next_kwargs = next_args(response)
+        Termination is delegated to next_args: empty pages keep iterating
+        for as long as it keeps returning arguments for the next call. The
+        returned dict replaces the previous cursor arguments wholesale, so
+        cursor keys from earlier pages never leak into later requests.
+        """
+        next_kwargs = self.next_args(response)
         if not next_kwargs:
-            return
+            return False
 
-        # The returned dict replaces the previous cursor arguments wholesale,
-        # so cursor keys from earlier pages never leak into later requests
-        cursor_kwargs = next_kwargs
-
-
-async def _apaginate_cursor(method, kwargs, items, next_args, max_pages):
-    pages_fetched = 0
-    cursor_kwargs = {}
-
-    while max_pages is None or pages_fetched < max_pages:
-        response = await method(**{**kwargs, **cursor_kwargs})
-        batch = _extract_items(response, items)
-        pages_fetched += 1
-
-        for item in batch:
-            yield item
-
-        # Termination is delegated to next_args: empty pages keep iterating
-        # for as long as it keeps returning arguments for the next call
-        next_kwargs = next_args(response)
-        if not next_kwargs:
-            return
-
-        # The returned dict replaces the previous cursor arguments wholesale,
-        # so cursor keys from earlier pages never leak into later requests
-        cursor_kwargs = next_kwargs
+        self.cursor_kwargs = next_kwargs
+        return True
 
 
 def _validate(method, args, kwargs, items, next_args):
@@ -169,12 +158,6 @@ def _supports_offset_pagination(method):
         return True
 
     return "page" in parameters and "per_page" in parameters
-
-
-def _offset_start(kwargs, per_page):
-    page = kwargs.pop("page", None) or 0
-    # Default to the largest page size the server serves, not its default of 60
-    return page, per_page if per_page is not None else MAX_PER_PAGE
 
 
 def _cursor_per_page(method, per_page):
