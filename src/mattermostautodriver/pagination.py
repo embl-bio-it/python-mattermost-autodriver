@@ -8,6 +8,8 @@ which are the documented entry points.
 
 import inspect
 
+import httpx
+
 from .constants import MAX_PER_PAGE
 
 
@@ -167,6 +169,13 @@ def _cursor_per_page(method, per_page):
 
 
 def _extract_items(response, items):
+    if isinstance(response, httpx.Response):
+        content_type = response.headers.get("Content-Type", "unset")
+        raise TypeError(
+            f"Server returned a non-JSON response (Content-Type {content_type!r}, "
+            f"status {response.status_code}) that cannot be paginated."
+        )
+
     if callable(items):
         return list(items(response))
 

@@ -196,6 +196,14 @@ def test_cursor_mode_omits_per_page_when_method_does_not_accept_it():
     assert calls == [None]
 
 
+def test_raw_response_gives_a_helpful_error():
+    def method(page=0, per_page=60):
+        return httpx.Response(200, text="<html>maintenance</html>", headers={"Content-Type": "text/html"})
+
+    with pytest.raises(TypeError, match="non-JSON response"):
+        list(paginate(method))
+
+
 def test_cursor_mode_forwards_explicit_per_page():
     calls = []
 
