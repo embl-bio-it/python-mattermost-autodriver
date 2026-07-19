@@ -184,7 +184,25 @@ def _extract_items(response, items):
         return list(items(response))
 
     if isinstance(items, str):
-        return response[items]
+        if not isinstance(response, dict):
+            raise TypeError(f"items={items!r} was given but the response is a {type(response).__name__}, not an object")
+
+        if items not in response:
+            raise KeyError(f"items={items!r} not found in the response. Available keys: {sorted(response)}")
+
+        value = response[items]
+
+        if value is None:
+            # Go servers serialize empty result slices as null
+            return []
+
+        if not isinstance(value, list):
+            raise TypeError(
+                f"items={items!r} refers to a {type(value).__name__}, not a list. "
+                "Pass a callable as items= to extract the items instead."
+            )
+
+        return value
 
     if isinstance(response, list):
         return response

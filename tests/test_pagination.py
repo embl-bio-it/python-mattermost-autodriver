@@ -123,6 +123,38 @@ def test_dict_response_without_items_raises():
         list(paginate(method))
 
 
+def test_items_key_with_null_value_is_treated_as_an_empty_page():
+    def method(page=0, per_page=60):
+        # Go servers serialize empty result slices as null
+        return {"threads": None, "total": 0}
+
+    assert list(paginate(method, items="threads")) == []
+
+
+def test_items_key_missing_from_response_names_the_available_keys():
+    def method(page=0, per_page=60):
+        return {"threads": [], "total": 0}
+
+    with pytest.raises(KeyError, match="'thread'.*Available keys.*threads"):
+        list(paginate(method, items="thread"))
+
+
+def test_items_key_pointing_at_a_non_list_raises():
+    def method(page=0, per_page=60):
+        return {"order": ["a"], "posts": {"a": {"id": "a"}}}
+
+    with pytest.raises(TypeError, match="'posts' refers to a dict"):
+        list(paginate(method, items="posts"))
+
+
+def test_items_key_with_a_list_response_raises():
+    def method(page=0, per_page=60):
+        return [{"id": "u1"}]
+
+    with pytest.raises(TypeError, match="response is a list"):
+        list(paginate(method, items="threads"))
+
+
 def test_invalid_items_raises_before_any_call():
     method, calls = make_offset_method([[1]])
 
