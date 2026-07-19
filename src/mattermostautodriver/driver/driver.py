@@ -145,8 +145,10 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         :param next_args: Enables cursor mode: callable ``response -> dict | None``
                 returning the keyword arguments for the next call
         :param max_pages: Optional hard limit on the number of pages fetched
-        :param kwargs: Keyword arguments passed through to ``method``. ``page``
-                may be given as the starting page (defaults to 0).
+        :param kwargs: Keyword arguments passed through to ``method``. In offset
+                mode ``page`` may be given as the starting page (defaults to 0);
+                in cursor mode passing ``page`` raises ``TypeError`` — drive the
+                paging via ``next_args`` instead.
         :return: Generator yielding one item at a time
         """
         return _paginate(

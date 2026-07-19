@@ -19,7 +19,7 @@ def paginate(method, *args, per_page=None, items=None, next_args=None, max_pages
     See :meth:`TypedDriver.paginate <mattermostautodriver.driver.driver.TypedDriver.paginate>`
     for parameter documentation.
     """
-    _validate(method, args, items, next_args)
+    _validate(method, args, kwargs, items, next_args)
 
     if next_args is not None:
         per_page = _cursor_per_page(method, per_page)
@@ -32,7 +32,7 @@ def paginate(method, *args, per_page=None, items=None, next_args=None, max_pages
 
 def apaginate(method, *args, per_page=None, items=None, next_args=None, max_pages=None, **kwargs):
     """Asynchronous variant of :func:`paginate` returning an async iterator."""
-    _validate(method, args, items, next_args)
+    _validate(method, args, kwargs, items, next_args)
 
     if next_args is not None:
         per_page = _cursor_per_page(method, per_page)
@@ -133,12 +133,18 @@ async def _apaginate_cursor(method, kwargs, items, next_args, max_pages):
         cursor_kwargs = next_kwargs
 
 
-def _validate(method, args, items, next_args):
+def _validate(method, args, kwargs, items, next_args):
     if next_args is None and not _supports_offset_pagination(method):
         name = getattr(method, "__name__", repr(method))
         raise TypeError(
             f"{name}() does not accept 'page'/'per_page' and cannot be offset paginated. "
             "Pass next_args= for cursor based endpoints, or call the method directly."
+        )
+
+    if next_args is not None and "page" in kwargs:
+        raise TypeError(
+            "page= applies to offset pagination only and would be re-sent verbatim on "
+            "every request in cursor mode. Drive the paging via next_args instead."
         )
 
     if args:

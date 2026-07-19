@@ -76,7 +76,9 @@ pages never leak into later requests — a ``next_args`` may e.g. switch
 from ``after`` to ``before`` mid-walk, and a cursor passed directly to
 ``paginate()`` (such as a starting ``before=``) is overridden once
 ``next_args`` takes over. ``per_page`` defaults to 200 when the endpoint
-accepts it and is otherwise omitted.
+accepts it and is otherwise omitted. Passing ``page=`` in cursor mode
+raises ``TypeError`` — it would be re-sent verbatim on every request,
+skipping data in each cursor window; drive the paging via ``next_args``.
 
 Endpoints with a pagination flag
 --------------------------------

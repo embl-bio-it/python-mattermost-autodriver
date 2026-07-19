@@ -219,6 +219,18 @@ def test_cursor_mode_merges_multiple_parameters():
     assert calls == [(None, None), ("u1", "alice")]
 
 
+def test_page_argument_in_cursor_mode_raises_before_any_call():
+    calls = []
+
+    def method(page=0, per_page=60, before=None):
+        calls.append(page)
+        return []
+
+    with pytest.raises(TypeError, match="page= applies to offset pagination"):
+        paginate(method, page=2, next_args=lambda r: None)
+    assert calls == []
+
+
 def test_cursor_arguments_replace_rather_than_merge():
     calls = []
     responses = iter([[1], [2], [3]])
