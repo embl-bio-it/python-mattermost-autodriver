@@ -174,6 +174,19 @@ def test_method_without_page_arguments_raises_before_any_call():
     assert calls == []
 
 
+def test_positional_arguments_raise_before_any_call():
+    calls = []
+
+    def method(channel_id=None, page=0, per_page=60):
+        calls.append(channel_id)
+
+    with pytest.raises(TypeError, match="only keyword arguments"):
+        paginate(method, "cid")
+    with pytest.raises(TypeError, match="only keyword arguments"):
+        paginate(method, "cid", next_args=lambda r: None)
+    assert calls == []
+
+
 def test_cursor_mode_follows_next_args():
     pages = {None: [1, 2], 2: [3, 4], 4: []}
     calls = []
@@ -359,7 +372,7 @@ async def test_async_driver_paginate_posts_with_cursor():
         post
         async for post in driver.paginate(
             driver.posts.get_posts_for_channel,
-            "channel_id",
+            channel_id="channel_id",
             items=lambda r: [r["posts"][pid] for pid in r["order"]],
             next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
         )

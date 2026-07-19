@@ -122,7 +122,8 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         .. code:: python
 
                 for post in driver.paginate(
-                        driver.posts.get_posts_for_channel, channel_id,
+                        driver.posts.get_posts_for_channel,
+                        channel_id=channel_id,
                         items=lambda r: [r["posts"][pid] for pid in r["order"]],
                         next_args=lambda r: {"before": r["order"][-1]} if r["order"] and r["prev_post_id"] else None,
                 ):
@@ -130,8 +131,12 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
 
         Methods that support neither raise ``TypeError`` before any request is made.
 
+        All endpoint parameters — including path parameters such as
+        ``channel_id`` — must be passed as keyword arguments; positional
+        arguments raise ``TypeError`` before any request, as they could
+        bind to ``page``/``per_page`` or the wrong query parameter.
+
         :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
-        :param args: Positional arguments (e.g. path parameters) passed through to ``method``
         :param per_page: Page size, defaults to 200. In cursor mode the default
                 is only applied when ``method`` accepts a ``per_page`` parameter.
         :param items: Where to find the items when the response is not a plain
