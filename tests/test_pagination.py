@@ -3,15 +3,8 @@ import itertools
 import httpx
 import pytest
 
-from mattermostautodriver.driver import AsyncTypedDriver, TypedDriver
+from conftest import make_async_driver, make_driver
 from mattermostautodriver.pagination import apaginate, paginate
-
-_DRIVER_OPTIONS = {
-    "scheme": "http",
-    "url": "localhost",
-    "port": 8065,
-    "max_retries": 0,
-}
 
 
 def make_offset_method(pages):
@@ -368,7 +361,7 @@ def make_users_handler(users):
 def test_driver_paginate_users():
     users = [{"id": f"user{i}"} for i in range(5)]
     handler, requests = make_users_handler(users)
-    driver = TypedDriver({**_DRIVER_OPTIONS, "transport": httpx.MockTransport(handler)})
+    driver = make_driver(handler)
 
     assert list(driver.paginate(driver.users.get_users, per_page=2)) == users
     assert [request.url.params["page"] for request in requests] == ["0", "1", "2"]
@@ -377,7 +370,7 @@ def test_driver_paginate_users():
 def test_driver_paginate_is_lazy():
     users = [{"id": f"user{i}"} for i in range(5)]
     handler, requests = make_users_handler(users)
-    driver = TypedDriver({**_DRIVER_OPTIONS, "transport": httpx.MockTransport(handler)})
+    driver = make_driver(handler)
 
     iterator = driver.paginate(driver.users.get_users, per_page=2)
     assert requests == []
@@ -389,7 +382,7 @@ def test_driver_paginate_is_lazy():
 async def test_async_driver_paginate_users():
     users = [{"id": f"user{i}"} for i in range(3)]
     handler, requests = make_users_handler(users)
-    driver = AsyncTypedDriver({**_DRIVER_OPTIONS, "transport": httpx.MockTransport(handler)})
+    driver = make_async_driver(handler)
 
     result = [user async for user in driver.paginate(driver.users.get_users, per_page=2)]
     assert result == users
@@ -408,7 +401,7 @@ async def test_async_driver_paginate_posts_with_cursor():
         requests.append(request)
         return httpx.Response(200, json=pages[request.url.params.get("before")])
 
-    driver = AsyncTypedDriver({**_DRIVER_OPTIONS, "transport": httpx.MockTransport(handler)})
+    driver = make_async_driver(handler)
 
     posts = [
         post
