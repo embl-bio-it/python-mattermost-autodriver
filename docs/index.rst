@@ -118,6 +118,13 @@ Two driver options control this behavior:
   fails immediately with ``TooManyRequests`` and the requested wait time is
   available in its ``retry_after`` attribute.
 
+Together these bound the total time a single call may spend waiting between
+attempts at ``max_retries * retry_max_sleep`` - 90 seconds with the defaults,
+reached only if the server repeatedly requests near-maximum waits. When no
+usable wait is provided and exponential backoff applies, the default total is
+3.5-7 seconds instead. Set ``max_retries`` to ``0`` if failing fast matters
+more than resilience.
+
 Classes
 '''''''
 
