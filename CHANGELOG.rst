@@ -4,15 +4,34 @@ Unreleased
 Code
 ''''
 
+- Automatically retry requests that fail due to rate limiting or transient
+  errors. HTTP 429 responses are retried for all requests, honoring the
+  ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
+  HTTP-date and unix timestamp forms. Connection errors and
+  502/503/504 responses are only retried for idempotent requests (``GET``,
+  ``PUT``, ``DELETE``, ``HEAD``) to avoid e.g. duplicating posted messages.
+  Behavior is controlled by the new driver options ``max_retries`` (default 3,
+  0 disables retrying) and ``retry_max_sleep`` (default 30 seconds, caps a
+  single wait between retries). Requests carrying files or a streaming
+  request body are never retried automatically, as their content is consumed
+  when the request is first sent.
+- **Backwards incompatible:** HTTP 429 responses now raise the new
+  ``TooManyRequests`` exception, which exposes the server provided wait time
+  as its ``retry_after`` attribute. Previously a 429 raised
+  ``UnknownMattermostError`` or ``InvalidMattermostError`` depending on the
+  response body.
 
 Documentation
 '''''''''''''
 
+- Document the automatic retry behavior and the ``TooManyRequests`` exception.
 
 Maintenance
 '''''''''''
 
 - Fix websocket heartbeat task leak on reconnect (@lizakoch)
+- Add a pytest based test suite for the HTTP client and run it on pull
+  requests in CI.
 
 11.8.1
 """"""

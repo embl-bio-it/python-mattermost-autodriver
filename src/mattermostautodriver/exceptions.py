@@ -133,6 +133,35 @@ class ContentTooLarge(MattermostError):
         )
 
 
+class TooManyRequests(MattermostError):
+    """
+    Raised when the server returns a
+    429 Too Many Requests
+
+    Mattermost's rate limiter responds with a plain text body rather than
+    the standard JSON error, so ``error_id`` and ``request_id`` may be None.
+    ``retry_after`` holds the server-provided wait time in seconds, taken
+    from the ``Retry-After`` or ``X-RateLimit-Reset`` header if present.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        retry_after: float | None,
+        error_id: str | None = None,
+        request_id: str | None = None,
+        is_oauth_error: bool = False,
+    ):
+        super().__init__(
+            message=message,
+            status_code=429,
+            error_id=error_id,
+            request_id=request_id,
+            is_oauth_error=is_oauth_error,
+        )
+        self.retry_after: float | None = retry_after
+
+
 class FeatureDisabled(MattermostError):
     """
     Raised when mattermost returns a

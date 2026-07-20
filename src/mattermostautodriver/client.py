@@ -3,7 +3,13 @@ Client for the driver, which holds information about the logged in user
 and actually makes the requests to the mattermost server
 """
 
+import asyncio
 import logging
+import random
+import time
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
+
 import httpx
 
 from .exceptions import (
@@ -15,6 +21,7 @@ from .exceptions import (
     MethodNotAllowed,
     ContentTooLarge,
     FeatureDisabled,
+    TooManyRequests,
     UnknownMattermostError,
 )
 
@@ -23,6 +30,9 @@ log.setLevel(logging.INFO)
 
 
 class BaseClient:
+    _RETRY_STATUS_CODES = (502, 503, 504)
+    _IDEMPOTENT_METHODS = ("get", "put", "delete", "head")
+
     def __init__(self, options):
         self._url = self._make_url(options["scheme"], options["url"], options["port"])
         self._scheme = options["scheme"]
@@ -39,6 +49,9 @@ class BaseClient:
         self._proxy = None
         if options["proxy"]:
             self._proxy = {"all://": options["proxy"]}
+
+        self._max_retries = options.get("max_retries", 3)
+        self._retry_max_sleep = options.get("retry_max_sleep", 30)
 
     @staticmethod
     def _make_url(scheme, url, port):
@@ -166,21 +179,142 @@ class BaseClient:
 
         return self._get_request_method(method, self.client), self.url, request_params
 
+    # Numeric header values above this are far too large to be a wait time
+    # in seconds and are interpreted as an absolute unix timestamp instead
+    _EPOCH_THRESHOLD = 1e8
+
+    @staticmethod
+    def _parse_wait_time(value):
+        """Parse a rate limit header value into seconds to wait from now.
+
+        Handles the conventions used in the wild:
+
+        - delay in seconds ("120") - RFC 7231 ``Retry-After`` and Mattermost's
+          relative ``X-RateLimit-Reset``
+        - HTTP-date ("Wed, 21 Oct 2015 07:28:00 GMT") - the alternative
+          ``Retry-After`` form, sent by some proxies and CDNs
+        - absolute unix timestamp ("1794000000") - the ``X-RateLimit-Reset``
+          convention of many API gateways
+
+        Returns non-negative seconds, or None if the value is unparseable.
+        """
+        try:
+            seconds = float(value)
+        except ValueError:
+            try:
+                when = parsedate_to_datetime(value)
+            except (TypeError, ValueError):
+                return None
+            if when.tzinfo is None:
+                when = when.replace(tzinfo=timezone.utc)
+            seconds = (when - datetime.now(timezone.utc)).total_seconds()
+        else:
+            if seconds > BaseClient._EPOCH_THRESHOLD:
+                seconds -= time.time()
+        return max(0.0, seconds)
+
+    @staticmethod
+    def _parse_retry_after(response):
+        for header in ("Retry-After", "X-RateLimit-Reset"):
+            value = response.headers.get(header)
+            if value is not None:
+                wait = BaseClient._parse_wait_time(value)
+                if wait is not None:
+                    return wait
+        return None
+
+    @staticmethod
+    def _parse_error_fields(response):
+        """Extract the fields of a standard Mattermost JSON error body.
+
+        Returns (message, error_id, request_id, is_oauth_error). Raises
+        ValueError when the body does not follow the standard error schema,
+        with the original parsing error as its cause.
+        """
+        try:
+            data = response.json()
+            return (
+                data["message"],
+                data["id"],
+                data["request_id"],
+                data.get("is_oauth", False),  # is_oauth is not always present
+            )
+        except (ValueError, KeyError, TypeError) as err:
+            raise ValueError("Response body does not follow the Mattermost error schema") from err
+
+    @staticmethod
+    def _make_rate_limit_error(response):
+        # Mattermost's rate limiter replies with a plain text body ("limit exceeded")
+        # rather than the standard JSON error, so both the wait time and the error
+        # details are parsed on a best effort basis.
+        retry_after = BaseClient._parse_retry_after(response)
+
+        try:
+            message, error_id, request_id, is_oauth_error = BaseClient._parse_error_fields(response)
+        except ValueError:
+            message = response.text
+            error_id = None
+            request_id = None
+            is_oauth_error = False
+
+        return TooManyRequests(message, retry_after, error_id, request_id, is_oauth_error)
+
+    @staticmethod
+    def _body_is_replayable(data, files):
+        """Whether the request body can safely be sent a second time.
+
+        Files and non-dict ``data`` bodies (e.g. a file object or generator)
+        are consumed when the request is first sent, so resending them would
+        transmit an empty body.
+        """
+        return files is None and (data is None or isinstance(data, dict))
+
+    def _retry_delay(self, method, attempt, data=None, files=None, response=None):
+        """Seconds to wait before retrying the request, or None if it must not be retried.
+
+        A 429 is retried for any method since the server rejected the request
+        outright. Connection errors (``response is None``) and 502/503/504
+        responses are only retried for idempotent methods, as a POST may
+        already have been processed. Requests whose body is not replayable
+        are never retried.
+        """
+        if not self._body_is_replayable(data, files):
+            return None
+
+        if attempt >= self._max_retries:
+            return None
+
+        method = method.lower()
+        backoff = min(0.5 * 2**attempt * (1 + random.random()), self._retry_max_sleep)
+
+        if response is None:
+            if method in self._IDEMPOTENT_METHODS:
+                return backoff
+            return None
+
+        if response.status_code == 429:
+            retry_after = self._parse_retry_after(response)
+            if retry_after is None:
+                return backoff
+            if retry_after > self._retry_max_sleep:
+                return None
+            return retry_after
+
+        if response.status_code in self._RETRY_STATUS_CODES and method in self._IDEMPOTENT_METHODS:
+            return backoff
+
+        return None
+
     @staticmethod
     def _check_response(response):
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as e:
+            if e.response.status_code == 429:
+                raise BaseClient._make_rate_limit_error(e.response) from None
             try:
-                data = e.response.json()
-
-                # TODO: Validate type of incoming data
-                message = data["message"]
-                error_id = data["id"]
-                request_id = data["request_id"]
-                is_oauth_error = data.get("is_oauth", False)  # is_oauth is not always present
-
-            except (ValueError, KeyError) as val_err:
+                message, error_id, request_id, is_oauth_error = BaseClient._parse_error_fields(e.response)
+            except ValueError as val_err:
                 raise InvalidMattermostError(e.response.text, e.response.status_code) from val_err
             log.error(message)
 
@@ -227,6 +361,7 @@ class Client(BaseClient):
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),
+            transport=options.get("transport"),
         )
 
     def make_request(self, method, endpoint, options=None, params=None, data=None, files=None, basepath=None):
@@ -236,10 +371,31 @@ class Client(BaseClient):
                 "Please remove it from your code."
             )
         request, url, request_params = self._build_request(method, options, params, data, files)
-        response = request(url + endpoint, **request_params)
 
-        self._check_response(response)
-        return response
+        attempt = 0
+        while True:
+            try:
+                response = request(url + endpoint, **request_params)
+            except httpx.TransportError as e:
+                # No response was received at all: connection failures,
+                # timeouts and protocol errors. Retried for idempotent
+                # methods only, with exponential backoff.
+                delay = self._retry_delay(method, attempt, data=data, files=files)
+                if delay is None:
+                    raise
+                log.warning("Received %r - retrying in %.1f seconds", e, delay)
+            else:
+                # A response was received: _retry_delay decides based on its
+                # status code (429 for all methods, 502/503/504 for idempotent
+                # methods) and takes the wait for a 429 from its
+                # Retry-After / X-RateLimit-Reset headers.
+                delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
+                if delay is None:
+                    self._check_response(response)
+                    return response
+                log.warning("Received status %d - retrying in %.1f seconds", response.status_code, delay)
+            time.sleep(delay)
+            attempt += 1
 
     def __enter__(self):
         self.client.__enter__()
@@ -288,6 +444,7 @@ class AsyncClient(BaseClient):
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),
+            transport=options.get("transport"),
         )
 
     async def __aenter__(self):
@@ -304,10 +461,31 @@ class AsyncClient(BaseClient):
                 "Please remove it from your code."
             )
         request, url, request_params = self._build_request(method, options, params, data, files)
-        response = await request(url + endpoint, **request_params)
 
-        self._check_response(response)
-        return response
+        attempt = 0
+        while True:
+            try:
+                response = await request(url + endpoint, **request_params)
+            except httpx.TransportError as e:
+                # No response was received at all: connection failures,
+                # timeouts and protocol errors. Retried for idempotent
+                # methods only, with exponential backoff.
+                delay = self._retry_delay(method, attempt, data=data, files=files)
+                if delay is None:
+                    raise
+                log.warning("Received %r - retrying in %.1f seconds", e, delay)
+            else:
+                # A response was received: _retry_delay decides based on its
+                # status code (429 for all methods, 502/503/504 for idempotent
+                # methods) and takes the wait for a 429 from its
+                # Retry-After / X-RateLimit-Reset headers.
+                delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
+                if delay is None:
+                    self._check_response(response)
+                    return response
+                log.warning("Received status %d - retrying in %.1f seconds", response.status_code, delay)
+            await asyncio.sleep(delay)
+            attempt += 1
 
     async def get(self, endpoint, options=None, params=None):
         response = await self.make_request("get", endpoint, options=options, params=params)
