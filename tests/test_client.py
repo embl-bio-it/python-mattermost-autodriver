@@ -195,6 +195,18 @@ def test_429_is_retried_for_post(sleeps):
     assert sleeps == [0.0]
 
 
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")  # httpx warns about stream bodies via data=
+def test_429_is_not_retried_for_post_with_stream_data(sleeps):
+    handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"}), httpx.Response(200, json={"ok": 1})])
+    client = make_client(handler, max_retries=3)
+
+    with pytest.raises(TooManyRequests):
+        client.post("/imports", data=io.BytesIO(b"payload"))
+
+    assert len(calls) == 1
+    assert sleeps == []
+
+
 def test_429_raises_after_retries_are_exhausted(sleeps):
     handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"})])
     client = make_client(handler, max_retries=3)
