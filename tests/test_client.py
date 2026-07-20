@@ -121,9 +121,16 @@ def test_parse_wait_time_clamps_negative_to_zero():
     assert BaseClient._parse_wait_time("-5") == 0.0
 
 
+# Wait values are computed against "now" twice: once when a test builds the
+# header value and once when _parse_wait_time subtracts the current time.
+# The HTTP-date and epoch formats truncate to whole seconds, eating up to one
+# second on their own; the rest is slack for test execution on slow CI runners.
+WAIT_SLACK = 5
+
+
 def test_parse_wait_time_http_date():
     value = format_datetime(datetime.now(timezone.utc) + timedelta(seconds=60))
-    assert 55 < BaseClient._parse_wait_time(value) <= 60
+    assert 60 - WAIT_SLACK < BaseClient._parse_wait_time(value) <= 60
 
 
 def test_parse_wait_time_http_date_in_the_past():
@@ -133,7 +140,7 @@ def test_parse_wait_time_http_date_in_the_past():
 
 def test_parse_wait_time_epoch_timestamp():
     value = str(int(time.time()) + 60)
-    assert 55 < BaseClient._parse_wait_time(value) <= 61
+    assert 60 - WAIT_SLACK < BaseClient._parse_wait_time(value) <= 60
 
 
 def test_parse_wait_time_garbage_returns_none():
@@ -147,17 +154,17 @@ def test_429_with_http_date_retry_after():
     with pytest.raises(TooManyRequests) as excinfo:
         client.get("/users/me")
 
-    assert 55 < excinfo.value.retry_after <= 60
+    assert 60 - WAIT_SLACK < excinfo.value.retry_after <= 60
 
 
 def test_429_with_epoch_ratelimit_reset_is_retried(sleeps):
-    headers = {"X-RateLimit-Reset": str(int(time.time()) + 5)}
+    headers = {"X-RateLimit-Reset": str(int(time.time()) + 60)}
     handler, calls = sequence_handler([rate_limit_response(headers), httpx.Response(200, json={"ok": 1})])
-    client = make_client(handler, max_retries=3)
+    client = make_client(handler, max_retries=3, retry_max_sleep=120)
 
     assert client.get("/users/me") == {"ok": 1}
     assert len(calls) == 2
-    assert 0 < sleeps[0] <= 6
+    assert 60 - WAIT_SLACK < sleeps[0] <= 60
 
 
 def test_429_with_json_body_exposes_error_fields():
@@ -198,6 +205,7 @@ def test_429_is_retried_for_post(sleeps):
 
     assert client.post("/posts", options={"message": "hi"}) == {"ok": 1}
     assert len(calls) == 2
+    assert sleeps == [0.0]
 
 
 def test_429_raises_after_retries_are_exhausted(sleeps):
@@ -238,7 +246,8 @@ def test_get_is_retried_on_503(sleeps):
 
     assert client.get("/users/me") == {"ok": 1}
     assert len(calls) == 2
-    assert 0 < sleeps[0] <= 30
+    # First-attempt backoff is 0.5 * 2**0 * (1 + random())
+    assert 0.5 <= sleeps[0] <= 1.0
 
 
 def test_post_is_not_retried_on_503(sleeps):
