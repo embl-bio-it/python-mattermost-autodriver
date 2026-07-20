@@ -41,12 +41,24 @@ Retries
 '''''''
 
 Requests that fail due to server side rate limiting (HTTP 429) are retried
-automatically, honoring the ``Retry-After`` / ``X-RateLimit-Reset`` response
-headers. Connection errors and 502/503/504 responses are also retried, but
-only for idempotent requests (``GET``, ``PUT``, ``DELETE`` and ``HEAD``),
-since a ``POST`` may already have been processed by the server. Requests
-carrying files or a streaming request body are never retried automatically,
-as their content is consumed when the request is first sent.
+automatically, honoring the wait requested by the server. Connection errors
+and 502/503/504 responses are also retried, but only for idempotent requests
+(``GET``, ``PUT``, ``DELETE`` and ``HEAD``), since a ``POST`` may already
+have been processed by the server. Requests carrying files or a streaming
+request body are never retried automatically, as their content is consumed
+when the request is first sent.
+
+The wait is read from the ``Retry-After`` header if present, falling back to
+``X-RateLimit-Reset`` otherwise. ``Retry-After`` takes precedence because it
+is the header standardized by the HTTP specification (RFC 9110), whereas the
+``X-RateLimit-*`` headers - which Mattermost also sends - are an unstandardized
+convention. Values are accepted in the forms found in the wild: a delay in
+seconds (``120``), an HTTP-date (``Wed, 21 Oct 2026 07:28:00 GMT``), and an
+absolute unix timestamp (``1794000000``). An unparseable header is skipped in
+favor of the next one; if no usable value remains, retries use exponential
+backoff instead. The same parsed wait is exposed to callers as the
+``retry_after`` attribute of ``TooManyRequests``, always as non-negative
+seconds from now.
 
 Two driver options control this behavior:
 

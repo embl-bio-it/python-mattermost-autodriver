@@ -104,6 +104,15 @@ def test_429_prefers_retry_after_over_ratelimit_reset():
     assert excinfo.value.retry_after == 2.0
 
 
+def test_429_with_unparseable_retry_after_falls_back_to_ratelimit_reset():
+    client = make_client(lambda request: rate_limit_response({"Retry-After": "soon", "X-RateLimit-Reset": "3"}))
+
+    with pytest.raises(TooManyRequests) as excinfo:
+        client.get("/users/me")
+
+    assert excinfo.value.retry_after == 3.0
+
+
 def test_parse_wait_time_seconds():
     assert BaseClient._parse_wait_time("120") == 120.0
 
