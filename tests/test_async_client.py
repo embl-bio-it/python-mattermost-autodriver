@@ -30,7 +30,9 @@ async def test_429_is_retried_and_honors_retry_after(sleeps):
 
 
 async def test_429_raises_after_retries_are_exhausted(sleeps):
+    # Without an ok response in `sequence_handler`, this test will repeat "Retry-After 0 seconds" for all requests, exhausting the client `max_retries`.
     handler, calls = sequence_handler([rate_limit_response({"Retry-After": "0"})])
+
     client = make_async_client(handler, max_retries=3)
 
     with pytest.raises(TooManyRequests):
