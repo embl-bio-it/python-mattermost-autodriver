@@ -24,7 +24,10 @@ Code
   iterate over all items of paginated endpoints without manual page handling.
   Supports ``page``/``per_page`` endpoints out of the box, responses wrapping
   the items in an object via ``items_from=``, and cursor based endpoints via
-  ``next_params=``.
+  ``next_params=``. When the server ignores ``page``/``per_page`` (endpoints
+  requiring a ``paginate=True`` flag, or ``since=`` on
+  ``posts.get_posts_for_channel``) the repeated page raises ``RuntimeError``
+  instead of iterating forever.
 
 Documentation
 '''''''''''''

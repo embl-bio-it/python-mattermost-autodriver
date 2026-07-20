@@ -82,15 +82,25 @@ accepts it and is otherwise omitted. ``start_page=`` applies to offset
 pagination only and raises ``TypeError`` here — ``next_params`` alone
 drives the paging.
 
-Endpoints with a pagination flag
+Endpoints ignoring page/per_page
 --------------------------------
 
-A small number of endpoints accept ``page``/``per_page`` but only apply them
-when an additional flag is set — for example
-``groups.get_groups_associated_to_channels_by_team`` requires ``paginate=True``,
-otherwise every page returns the identical full result set. Such flags pass
-through like any other keyword argument; without the flag, iterating these
-endpoints may never terminate:
+A small number of endpoints accept ``page``/``per_page`` but ignore them in
+some configurations, serving the identical full result set for every page.
+``paginate()`` detects the repeated page and raises ``RuntimeError`` after the
+second request instead of looping forever. This happens in two situations:
+
+- Endpoints that only paginate when an additional flag is set — for example
+  ``groups.get_groups_associated_to_channels_by_team`` requires
+  ``paginate=True``. Such flags pass through like any other keyword argument.
+- Parameters that disable pagination server side — for example a non-zero
+  ``since=`` makes ``posts.get_posts_for_channel`` return all matching posts
+  in a single response. Call such methods directly instead of paginating.
+  (Other endpoints, such as ``groups.get_groups`` and
+  ``threads.get_user_threads``, treat ``since=`` as a plain filter and
+  paginate normally.)
+
+With the required flag, the flagged endpoints paginate like any other:
 
 .. code:: python
 

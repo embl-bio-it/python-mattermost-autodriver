@@ -94,6 +94,40 @@ def test_untrusted_per_page_confirms_a_short_first_page_with_an_empty_request():
     assert [call["page"] for call in calls] == [0, 1]
 
 
+def test_identical_pages_raise_instead_of_looping_forever():
+    # e.g. groups endpoints without paginate=True, or posts with since=,
+    # serve the identical full result set for every page
+    calls = []
+
+    def method(page=0, per_page=60):
+        calls.append(page)
+        return [1, 2]
+
+    collected = []
+    with pytest.raises(RuntimeError, match=r"method\(\) returned an identical page"):
+        for item in paginate(method, per_page=2):
+            collected.append(item)
+
+    # The repeated page is detected before its duplicate items are yielded
+    assert collected == [1, 2]
+    assert calls == [0, 1]
+
+
+def test_identical_pages_raise_with_an_untrusted_per_page():
+    def method(page=0, per_page=60):
+        return [1, 2]
+
+    with pytest.raises(RuntimeError, match="identical page"):
+        list(paginate(method, per_page=300))
+
+
+def test_identical_short_pages_still_end_the_iteration():
+    method, calls = make_offset_method([[1, 2], [1, 2]])
+
+    assert list(paginate(method, per_page=3)) == [1, 2]
+    assert len(calls) == 1
+
+
 def test_max_pages_limits_requests():
     method, calls = make_offset_method([[1, 2], [3, 4], [5, 6], [7, 8]])
 
@@ -276,7 +310,9 @@ def test_cursor_mode_consults_next_params_even_for_pages_without_items():
         calls.append(after)
         return pages[after]
 
-    result = list(paginate(method, items_from="items", next_params=lambda r: {"after": r["next"]} if r["next"] else None))
+    result = list(
+        paginate(method, items_from="items", next_params=lambda r: {"after": r["next"]} if r["next"] else None)
+    )
     assert result == [1, 2]
     assert calls == [None, "a", "b"]
 
@@ -332,6 +368,14 @@ async def test_apaginate_iterates_across_pages():
 
     assert [item async for item in apaginate(method, per_page=2)] == [1, 2, 3]
     assert calls == [0, 1]
+
+
+async def test_apaginate_identical_pages_raise():
+    async def method(page=0, per_page=60):
+        return [1, 2]
+
+    with pytest.raises(RuntimeError, match="identical page"):
+        [item async for item in apaginate(method, per_page=2)]
 
 
 async def test_apaginate_validates_before_any_call():
