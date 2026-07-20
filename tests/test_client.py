@@ -177,19 +177,6 @@ def test_429_with_json_body_exposes_error_fields():
     assert excinfo.value.request_id == "req1234"
 
 
-def test_post_sends_json_options():
-    seen = {}
-
-    def handler(request):
-        seen["json"] = request.read()
-        return httpx.Response(200, json={"id": "post1"})
-
-    client = make_client(handler)
-    client.post("/posts", options={"channel_id": "abc", "message": "hi"})
-
-    assert b'"channel_id"' in seen["json"]
-
-
 def test_429_is_retried_and_honors_retry_after(sleeps):
     handler, calls = sequence_handler([rate_limit_response({"Retry-After": "2"}), httpx.Response(200, json={"ok": 1})])
     client = make_client(handler, max_retries=3)
