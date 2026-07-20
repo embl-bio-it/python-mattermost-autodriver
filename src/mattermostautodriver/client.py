@@ -377,11 +377,18 @@ class Client(BaseClient):
             try:
                 response = request(url + endpoint, **request_params)
             except httpx.TransportError as e:
+                # No response was received at all: connection failures,
+                # timeouts and protocol errors. Retried for idempotent
+                # methods only, with exponential backoff.
                 delay = self._retry_delay(method, attempt, data=data, files=files)
                 if delay is None:
                     raise
                 log.warning("Received %r - retrying in %.1f seconds", e, delay)
             else:
+                # A response was received: _retry_delay decides based on its
+                # status code (429 for all methods, 502/503/504 for idempotent
+                # methods) and takes the wait for a 429 from its
+                # Retry-After / X-RateLimit-Reset headers.
                 delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
                 if delay is None:
                     self._check_response(response)
@@ -460,11 +467,18 @@ class AsyncClient(BaseClient):
             try:
                 response = await request(url + endpoint, **request_params)
             except httpx.TransportError as e:
+                # No response was received at all: connection failures,
+                # timeouts and protocol errors. Retried for idempotent
+                # methods only, with exponential backoff.
                 delay = self._retry_delay(method, attempt, data=data, files=files)
                 if delay is None:
                     raise
                 log.warning("Received %r - retrying in %.1f seconds", e, delay)
             else:
+                # A response was received: _retry_delay decides based on its
+                # status code (429 for all methods, 502/503/504 for idempotent
+                # methods) and takes the wait for a 429 from its
+                # Retry-After / X-RateLimit-Reset headers.
                 delay = self._retry_delay(method, attempt, data=data, files=files, response=response)
                 if delay is None:
                     self._check_response(response)
