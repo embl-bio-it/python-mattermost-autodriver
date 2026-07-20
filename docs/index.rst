@@ -60,6 +60,55 @@ backoff instead. The same parsed wait is exposed to callers as the
 ``retry_after`` attribute of ``TooManyRequests``, always as non-negative
 seconds from now.
 
+The full mapping of failure modes to exceptions and retry behavior:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 34 44
+
+   * - Failure
+     - Exception
+     - Retry behavior
+   * - HTTP 400
+     - ``InvalidOrMissingParameters``
+     - Not retried
+   * - HTTP 401
+     - ``NoAccessTokenProvided``
+     - Not retried
+   * - HTTP 403
+     - ``NotEnoughPermissions``
+     - Not retried
+   * - HTTP 404
+     - ``ResourceNotFound``
+     - Not retried
+   * - HTTP 405
+     - ``MethodNotAllowed``
+     - Not retried
+   * - HTTP 413
+     - ``ContentTooLarge``
+     - Not retried
+   * - HTTP 429
+     - ``TooManyRequests``
+     - Retried for all methods, waiting as requested by the server
+   * - HTTP 501
+     - ``FeatureDisabled``
+     - Not retried
+   * - HTTP 502 / 503 / 504
+     - ``UnknownMattermostError``
+     - Retried with exponential backoff, idempotent methods only
+   * - Other HTTP error codes
+     - ``UnknownMattermostError``
+     - Not retried
+   * - Connection errors and timeouts
+     - ``httpx.TransportError`` (raised by httpx)
+     - Retried with exponential backoff, idempotent methods only
+
+The listed exception is what a request raises once it fails for good - either
+immediately for non-retried failures, or after retries are exhausted. Error
+responses other than 429 whose body does not follow the standard Mattermost
+JSON error schema raise ``InvalidMattermostError`` instead of the exception
+listed above.
+
 Two driver options control this behavior:
 
 - ``max_retries`` (default ``3``) - maximum number of automatic retries per
@@ -102,6 +151,8 @@ Exceptions that api requests can throw
 .. autoclass:: NotEnoughPermissions
 
 .. autoclass:: ResourceNotFound
+
+.. autoclass:: MethodNotAllowed
 
 .. autoclass:: ContentTooLarge
 
