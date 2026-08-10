@@ -336,6 +336,16 @@ class Teams(Base):
         """
         return self.client.get(f"/api/v4/teams/{team_id}/access_control/policy")
 
+    def get_team_access_control_attributes(self, team_id: str):
+        """Get the access control attributes governing a team
+
+        team_id: Team GUID
+
+        `Read in Mattermost API docs (teams - GetTeamAccessControlAttributes) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamAccessControlAttributes>`_
+
+        """
+        return self.client.get(f"/api/v4/teams/{team_id}/access_control/attributes")
+
     def regenerate_team_invite_id(self, team_id: str):
         """Regenerate the Invite ID from a Team
 
@@ -431,7 +441,7 @@ class Teams(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/unread")
 
-    def invite_users_to_team(self, team_id: str, options: list[str]):
+    def invite_users_to_team(self, team_id: str, options: Any):
         """Invite users to the team by email
 
         team_id: Team GUID

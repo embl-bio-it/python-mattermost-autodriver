@@ -909,6 +909,20 @@ class Users(Base):
         __options = {"token_id": token_id}
         return self.client.post("""/api/v4/users/tokens/revoke""", options=__options)
 
+    def get_non_compliant_user_access_token_count(self):
+        """Count non-compliant personal access tokens
+        `Read in Mattermost API docs (users - GetNonCompliantUserAccessTokenCount) <https://developers.mattermost.com/api-documentation/#/operations/GetNonCompliantUserAccessTokenCount>`_
+
+        """
+        return self.client.get("""/api/v4/users/tokens/non_compliant/count""")
+
+    def revoke_non_compliant_user_access_tokens(self):
+        """Revoke non-compliant personal access tokens
+        `Read in Mattermost API docs (users - RevokeNonCompliantUserAccessTokens) <https://developers.mattermost.com/api-documentation/#/operations/RevokeNonCompliantUserAccessTokens>`_
+
+        """
+        return self.client.post("""/api/v4/users/tokens/non_compliant/revoke""")
+
     def get_user_access_token(self, token_id: str):
         """Get a user access token
 
@@ -940,6 +954,19 @@ class Users(Base):
         """
         __options = {"token_id": token_id}
         return self.client.post("""/api/v4/users/tokens/enable""", options=__options)
+
+    def rotate_user_access_token(self, token_id: str, expires_at: int | None = None):
+        """Rotate a personal access token
+
+        token_id: The personal access token GUID to rotate
+        expires_at: New expiry for the token as a Unix timestamp in milliseconds. Use 0 for no expiry (subject to server policy).
+
+
+        `Read in Mattermost API docs (users - RotateUserAccessToken) <https://developers.mattermost.com/api-documentation/#/operations/RotateUserAccessToken>`_
+
+        """
+        __options = {"token_id": token_id, "expires_at": expires_at}
+        return self.client.post("""/api/v4/users/tokens/rotate""", options=__options)
 
     def search_user_access_tokens(self, term: str):
         """Search tokens
