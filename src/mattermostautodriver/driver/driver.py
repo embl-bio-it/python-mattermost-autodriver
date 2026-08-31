@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from ..client import AsyncClient, Client
+from ..pagination import apaginate as _apaginate, paginate as _paginate
 from ..websocket import Websocket
 
 from .endpoint_base import TypedBaseDriverWithEndpoints
@@ -91,6 +92,48 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
             self.client.username = result["username"]
 
         return result
+
+    def paginate(
+        self, method, /, *args, per_page=None, items_from=None, next_params=None, max_pages=None, start_page=0, **kwargs
+    ):
+        """
+        Lazily iterate over every item of a paginated endpoint method.
+
+        .. code:: python
+
+                for user in driver.paginate(driver.users.get_users, in_team=team_id):
+                        print(user["username"])
+
+        See :doc:`pagination </pagination>` for the full guide, including the
+        termination rules, wrapped responses, cursor based endpoints and
+        endpoints requiring a pagination flag.
+
+        :param method: The endpoint method to paginate, e.g. ``driver.users.get_users``
+        :param per_page: Page size, defaults to 200. In cursor mode the default
+                is only applied when ``method`` accepts a ``per_page`` parameter.
+        :param items_from: Where to find the items when the response is not a
+                plain list: a response key or a callable ``response -> list``
+        :param next_params: Enables cursor mode: callable ``response -> dict | None``
+                returning the parameters for the next call. Each dict replaces
+                the previous one; ``None`` (or an empty dict) stops.
+        :param max_pages: Optional hard limit on the number of pages fetched
+        :param start_page: Page to start from in offset mode (defaults to 0)
+        :param kwargs: Keyword arguments passed through to ``method``. All
+                endpoint parameters, including path parameters, must be
+                keywords. ``page`` is not passed through — use ``start_page``,
+                or call the method directly for a single page.
+        :return: Generator yielding one item at a time
+        """
+        return _paginate(
+            method,
+            *args,
+            per_page=per_page,
+            items_from=items_from,
+            next_params=next_params,
+            max_pages=max_pages,
+            start_page=start_page,
+            **kwargs,
+        )
 
     def logout(self):
         """
@@ -191,6 +234,33 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
             self.client.username = result["username"]
 
         return result
+
+    def paginate(
+        self, method, /, *args, per_page=None, items_from=None, next_params=None, max_pages=None, start_page=0, **kwargs
+    ):
+        """
+        Lazily iterate over every item of a paginated endpoint method.
+
+        Asynchronous variant of :meth:`TypedDriver.paginate` — identical
+        parameters, but returns an async generator:
+
+        .. code:: python
+
+                async for user in driver.paginate(driver.users.get_users, in_team=team_id):
+                        print(user["username"])
+
+        :return: Async generator yielding one item at a time
+        """
+        return _apaginate(
+            method,
+            *args,
+            per_page=per_page,
+            items_from=items_from,
+            next_params=next_params,
+            max_pages=max_pages,
+            start_page=start_page,
+            **kwargs,
+        )
 
     async def logout(self):
         """

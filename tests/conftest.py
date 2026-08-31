@@ -2,6 +2,7 @@ import httpx
 import pytest
 
 from mattermostautodriver.client import AsyncClient, Client
+from mattermostautodriver.driver import AsyncTypedDriver, TypedDriver
 
 _BASE_OPTIONS = {
     "scheme": "http",
@@ -27,6 +28,14 @@ def make_client(handler, **extra_options):
 
 def make_async_client(handler, **extra_options):
     return AsyncClient(_client_options(handler, extra_options))
+
+
+def make_driver(handler, **extra_options):
+    return TypedDriver(_client_options(handler, extra_options))
+
+
+def make_async_driver(handler, **extra_options):
+    return AsyncTypedDriver(_client_options(handler, extra_options))
 
 
 def error_response(status, message="something failed", error_id="api.some.error", request_id="req1234"):
