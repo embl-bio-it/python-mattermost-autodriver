@@ -12,14 +12,10 @@ set -eu
 STORE_DIR="mattermostautodriver"
 
 DEST="endpoints"
-rm -f src/$STORE_DIR/$DEST/*.py
+# Remove all generated modules but keep _base.py which is a regular
+# source file (defines Base and the FileType upload annotations)
+find src/$STORE_DIR/$DEST -name '*.py' ! -name '_base.py' -delete
 touch src/$STORE_DIR/$DEST/__init__.py
-
-cat << EOF > src/$STORE_DIR/$DEST/_base.py
-class Base:
-    def __init__(self, client):
-        self.client = client
-EOF
 
 color "Generating new API endpoints"
 python bin/generate_endpoints_ast.py
