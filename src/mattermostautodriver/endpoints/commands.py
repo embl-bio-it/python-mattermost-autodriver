@@ -20,13 +20,12 @@ class Commands(Base):
         __options = {"team_id": team_id, "method": method, "trigger": trigger, "url": url}
         return self.client.post("""/api/v4/commands""", options=__options)
 
-    def list_commands(self, team_id: str | None = None, custom_only: bool | None = False):
+    def list_commands(self, team_id: str | None = None, custom_only: bool | None = None):
         """List commands for a team
 
         team_id: The team id.
         custom_only: To get only the custom commands. If set to false will get the custom
-        if the user have access plus the system commands, otherwise just the system commands.
-
+        if the user have access plus the system commands, otherwise just the system commands. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (commands - ListCommands) <https://developers.mattermost.com/api-documentation/#/operations/ListCommands>`_
 

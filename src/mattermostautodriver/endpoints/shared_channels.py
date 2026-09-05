@@ -6,12 +6,12 @@ __all__ = ["SharedChannels"]
 
 class SharedChannels(Base):
 
-    def get_all_shared_channels(self, team_id: str, page: int | None = 0, per_page: int | None = 0):
+    def get_all_shared_channels(self, team_id: str, page: int | None = None, per_page: int | None = None):
         """Get all shared channels for team.
 
         team_id: Team Id
-        page: The page to select.
-        per_page: The number of sharedchannels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of sharedchannels per page. Default: ``0`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (shared_channels - GetAllSharedChannels) <https://developers.mattermost.com/api-documentation/#/operations/GetAllSharedChannels>`_
 
@@ -55,11 +55,11 @@ class SharedChannels(Base):
         }
         return self.client.get(f"/api/v4/remotecluster/{remote_id}/sharedchannelremotes", params=__params)
 
-    def get_remote_cluster_info(self, remote_id: str, include_deleted: bool | None = False):
+    def get_remote_cluster_info(self, remote_id: str, include_deleted: bool | None = None):
         """Get remote cluster info by ID for user.
 
         remote_id: Remote Cluster GUID
-        include_deleted: Include deleted remote clusters
+        include_deleted: Include deleted remote clusters Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (shared_channels - GetRemoteClusterInfo) <https://developers.mattermost.com/api-documentation/#/operations/GetRemoteClusterInfo>`_
 

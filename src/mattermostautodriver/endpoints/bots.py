@@ -31,15 +31,15 @@ class Bots(Base):
 
     def get_bots(
         self,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
         include_deleted: bool | None = None,
         only_orphaned: bool | None = None,
     ):
         """Get bots
 
-        page: The page to select.
-        per_page: The number of users per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``60`` (applied server-side when omitted)
         include_deleted: If deleted bots should be returned.
         only_orphaned: When true, only orphaned bots will be returned. A bot is considered orphaned if its owner has been deactivated.
 
@@ -126,7 +126,7 @@ class Bots(Base):
         position: str | None = None,
         props: dict[str, Any] | None = None,
         notify_props: Any | None = None,
-        set_system_admin: bool | None = False,
+        set_system_admin: bool | None = None,
     ):
         """Convert a bot into a user
 
@@ -141,7 +141,7 @@ class Bots(Base):
         position:
         props:
         notify_props:
-        set_system_admin: Whether to give the user the system admin role.
+        set_system_admin: Whether to give the user the system admin role. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (bots - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 

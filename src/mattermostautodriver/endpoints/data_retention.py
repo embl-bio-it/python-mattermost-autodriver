@@ -6,12 +6,12 @@ __all__ = ["DataRetention"]
 
 class DataRetention(Base):
 
-    def get_team_policies_for_user(self, user_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_team_policies_for_user(self, user_id: str, page: int | None = None, per_page: int | None = None):
         """Get the policies which are applied to a user's teams
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
-        page: The page to select.
-        per_page: The number of policies per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of policies per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (data_retention - GetTeamPoliciesForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamPoliciesForUser>`_
 
@@ -19,12 +19,12 @@ class DataRetention(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/users/{user_id}/data_retention/team_policies", params=__params)
 
-    def get_channel_policies_for_user(self, user_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_channel_policies_for_user(self, user_id: str, page: int | None = None, per_page: int | None = None):
         """Get the policies which are applied to a user's channels
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
-        page: The page to select.
-        per_page: The number of policies per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of policies per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (data_retention - GetChannelPoliciesForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelPoliciesForUser>`_
 
@@ -46,11 +46,11 @@ class DataRetention(Base):
         """
         return self.client.get("""/api/v4/data_retention/policies_count""")
 
-    def get_data_retention_policies(self, page: int | None = 0, per_page: int | None = 60):
+    def get_data_retention_policies(self, page: int | None = None, per_page: int | None = None):
         """Get the granular data retention policies
 
-        page: The page to select.
-        per_page: The number of policies per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of policies per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (data_retention - GetDataRetentionPolicies) <https://developers.mattermost.com/api-documentation/#/operations/GetDataRetentionPolicies>`_
 
@@ -95,12 +95,12 @@ class DataRetention(Base):
         """
         return self.client.delete(f"/api/v4/data_retention/policies/{policy_id}")
 
-    def get_teams_for_retention_policy(self, policy_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_teams_for_retention_policy(self, policy_id: str, page: int | None = None, per_page: int | None = None):
         """Get the teams for a granular data retention policy
 
         policy_id: The ID of the granular retention policy.
-        page: The page to select.
-        per_page: The number of teams per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of teams per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (data_retention - GetTeamsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsForRetentionPolicy>`_
 
@@ -140,12 +140,12 @@ class DataRetention(Base):
         __options = {"term": term}
         return self.client.post(f"/api/v4/data_retention/policies/{policy_id}/teams/search", options=__options)
 
-    def get_channels_for_retention_policy(self, policy_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_channels_for_retention_policy(self, policy_id: str, page: int | None = None, per_page: int | None = None):
         """Get the channels for a granular data retention policy
 
         policy_id: The ID of the granular retention policy.
-        page: The page to select.
-        per_page: The number of channels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of channels per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (data_retention - GetChannelsForRetentionPolicy) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForRetentionPolicy>`_
 

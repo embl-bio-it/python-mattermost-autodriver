@@ -40,11 +40,11 @@ class OAuth(Base):
         }
         return self.client.post("""/api/v4/oauth/apps""", options=__options)
 
-    def get_o_auth_apps(self, page: int | None = 0, per_page: int | None = 60):
+    def get_o_auth_apps(self, page: int | None = None, per_page: int | None = None):
         """Get OAuth apps
 
-        page: The page to select.
-        per_page: The number of apps per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of apps per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (o_auth - GetOAuthApps) <https://developers.mattermost.com/api-documentation/#/operations/GetOAuthApps>`_
 
@@ -142,12 +142,12 @@ class OAuth(Base):
         """
         return self.client.post("""/api/v4/oauth/apps/register""", options=options)
 
-    def get_authorized_o_auth_apps_for_user(self, user_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_authorized_o_auth_apps_for_user(self, user_id: str, page: int | None = None, per_page: int | None = None):
         """Get authorized OAuth apps
 
         user_id: User GUID
-        page: The page to select.
-        per_page: The number of apps per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of apps per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (o_auth - GetAuthorizedOAuthAppsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetAuthorizedOAuthAppsForUser>`_
 

@@ -86,11 +86,11 @@ class Posts(Base):
         }
         return self.client.post("""/api/v4/posts/search""", options=__options)
 
-    def get_post(self, post_id: str, include_deleted: bool | None = False):
+    def get_post(self, post_id: str, include_deleted: bool | None = None):
         """Get a post
 
         post_id: ID of the post to get
-        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
+        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - GetPost) <https://developers.mattermost.com/api-documentation/#/operations/GetPost>`_
 
@@ -182,28 +182,28 @@ class Posts(Base):
     def get_post_thread(
         self,
         post_id: str,
-        perPage: int | None = 0,
-        fromPost: str | None = "",
-        fromCreateAt: int | None = 0,
-        fromUpdateAt: int | None = 0,
-        direction: str | None = "",
-        skipFetchThreads: bool | None = False,
-        collapsedThreads: bool | None = False,
-        collapsedThreadsExtended: bool | None = False,
-        updatesOnly: bool | None = False,
+        perPage: int | None = None,
+        fromPost: str | None = None,
+        fromCreateAt: int | None = None,
+        fromUpdateAt: int | None = None,
+        direction: str | None = None,
+        skipFetchThreads: bool | None = None,
+        collapsedThreads: bool | None = None,
+        collapsedThreadsExtended: bool | None = None,
+        updatesOnly: bool | None = None,
     ):
         """Get a thread
 
         post_id: ID of a post in the thread
-        perPage: The number of posts per page
-        fromPost: The post_id to return the next page of posts from
-        fromCreateAt: The create_at timestamp to return the next page of posts from
-        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down.
-        direction: The direction to return the posts. Either up or down.
-        skipFetchThreads: Whether to skip fetching threads or not
-        collapsedThreads: Whether the client uses CRT or not
-        collapsedThreadsExtended: Whether to return the associated users as part of the response or not
-        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt.
+        perPage: The number of posts per page Default: ``0`` (applied server-side when omitted)
+        fromPost: The post_id to return the next page of posts from Default: ``''`` (applied server-side when omitted)
+        fromCreateAt: The create_at timestamp to return the next page of posts from Default: ``0`` (applied server-side when omitted)
+        fromUpdateAt: The update_at timestamp to return the next page of posts from. You cannot set this flag with direction=down. Default: ``0`` (applied server-side when omitted)
+        direction: The direction to return the posts. Either up or down. Default: ``''`` (applied server-side when omitted)
+        skipFetchThreads: Whether to skip fetching threads or not Default: ``False`` (applied server-side when omitted)
+        collapsedThreads: Whether the client uses CRT or not Default: ``False`` (applied server-side when omitted)
+        collapsedThreadsExtended: Whether to return the associated users as part of the response or not Default: ``False`` (applied server-side when omitted)
+        updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostThread>`_
 
@@ -226,16 +226,16 @@ class Posts(Base):
         user_id: str,
         team_id: str | None = None,
         channel_id: str | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Get a list of flagged posts
 
         user_id: ID of the user
         team_id: Team ID
         channel_id: Channel ID
-        page: The page to select
-        per_page: The number of posts per page
+        page: The page to select Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - GetFlaggedPostsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetFlaggedPostsForUser>`_
 
@@ -243,11 +243,11 @@ class Posts(Base):
         __params = {"team_id": team_id, "channel_id": channel_id, "page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/users/{user_id}/posts/flagged", params=__params)
 
-    def get_file_infos_for_post(self, post_id: str, include_deleted: bool | None = False):
+    def get_file_infos_for_post(self, post_id: str, include_deleted: bool | None = None):
         """Get file info for post
 
         post_id: ID of the post
-        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
+        include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - GetFileInfosForPost) <https://developers.mattermost.com/api-documentation/#/operations/GetFileInfosForPost>`_
 
@@ -278,23 +278,23 @@ class Posts(Base):
     def get_posts_for_channel(
         self,
         channel_id: str,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
         since: int | None = None,
         before: str | None = None,
         after: str | None = None,
-        include_deleted: bool | None = False,
+        include_deleted: bool | None = None,
         type: str | None = None,
     ):
         """Get posts for a channel
 
         channel_id: The channel ID to get the posts for
-        page: The page to select
-        per_page: The number of posts per page
+        page: The page to select Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page Default: ``60`` (applied server-side when omitted)
         since: Provide a non-zero value in Unix time milliseconds to select posts modified after that time
         before: A post id to select the posts that came before this one
         after: A post id to select the posts that came after this one
-        include_deleted: Whether to include deleted posts or not. Must have system admin permissions.
+        include_deleted: Whether to include deleted posts or not. Must have system admin permissions. Default: ``False`` (applied server-side when omitted)
         type: Filter posts by type.
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForChannel>`_
@@ -315,21 +315,21 @@ class Posts(Base):
         self,
         user_id: str,
         channel_id: str,
-        limit_before: int | None = 60,
-        limit_after: int | None = 60,
-        skipFetchThreads: bool | None = False,
-        collapsedThreads: bool | None = False,
-        collapsedThreadsExtended: bool | None = False,
+        limit_before: int | None = None,
+        limit_after: int | None = None,
+        skipFetchThreads: bool | None = None,
+        collapsedThreads: bool | None = None,
+        collapsedThreadsExtended: bool | None = None,
     ):
         """Get posts around oldest unread
 
         user_id: ID of the user
         channel_id: The channel ID to get the posts for
-        limit_before: Number of posts before the oldest unread posts. Maximum is 200 posts if limit is set greater than that.
-        limit_after: Number of posts after and including the oldest unread post. Maximum is 200 posts if limit is set greater than that.
-        skipFetchThreads: Whether to skip fetching threads or not
-        collapsedThreads: Whether the client uses CRT or not
-        collapsedThreadsExtended: Whether to return the associated users as part of the response or not
+        limit_before: Number of posts before the oldest unread posts. Maximum is 200 posts if limit is set greater than that. Default: ``60`` (applied server-side when omitted)
+        limit_after: Number of posts after and including the oldest unread post. Maximum is 200 posts if limit is set greater than that. Default: ``60`` (applied server-side when omitted)
+        skipFetchThreads: Whether to skip fetching threads or not Default: ``False`` (applied server-side when omitted)
+        collapsedThreads: Whether the client uses CRT or not Default: ``False`` (applied server-side when omitted)
+        collapsedThreadsExtended: Whether to return the associated users as part of the response or not Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - GetPostsAroundLastUnread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsAroundLastUnread>`_
 
@@ -348,20 +348,20 @@ class Posts(Base):
         team_id: str,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search for team posts
 
         team_id: Team GUID
         terms: The search terms as inputed by the user. To search for posts from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name).
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (posts - SearchPosts) <https://developers.mattermost.com/api-documentation/#/operations/SearchPosts>`_
 

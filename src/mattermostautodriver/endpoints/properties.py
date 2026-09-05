@@ -15,9 +15,9 @@ class Properties(Base):
         target_type: str,
         attrs: dict[str, Any] | None = None,
         target_id: str | None = None,
-        permission_field: str | None = "member",
-        permission_values: str | None = "member",
-        permission_options: str | None = "member",
+        permission_field: str | None = None,
+        permission_values: str | None = None,
+        permission_options: str | None = None,
         linked_field_id: str | None = None,
     ):
         """Create a property field
@@ -29,12 +29,9 @@ class Properties(Base):
         attrs: Additional attributes for the property field
         target_type: The scope level of the property
         target_id: The ID of the target
-        permission_field: Permission level for editing the field definition. Only system admins can set this; ignored for non-admin users.
-
-        permission_values: Permission level for setting values on objects. Only system admins can set this; ignored for non-admin users.
-
-        permission_options: Permission level for managing options on select/multiselect fields. Only system admins can set this; ignored for non-admin users.
-
+        permission_field: Permission level for editing the field definition. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
+        permission_values: Permission level for setting values on objects. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
+        permission_options: Permission level for managing options on select/multiselect fields. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
         linked_field_id: The ID of a template field to link to. The source must be a template field in the same group, must not itself be linked, and must not be deleted. When set, the created field inherits the source's type, options, and security attributes; the ``type`` field in the request body is ignored. Can only be set at creation time.
 
 
@@ -66,7 +63,7 @@ class Properties(Base):
         cursor_id: str | None = None,
         cursor_create_at: int | None = None,
         cursor_update_at: int | None = None,
-        per_page: int | None = 60,
+        per_page: int | None = None,
     ):
         """Get property fields
 
@@ -87,7 +84,7 @@ class Properties(Base):
 
         cursor_update_at: The ``update_at`` timestamp of the last property field from the previous page. Required alongside ``cursor_id`` when ``since`` is present. Mutually exclusive with ``cursor_create_at``.
 
-        per_page: The number of property fields per page.
+        per_page: The number of property fields per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (properties - GetPropertyFields) <https://developers.mattermost.com/api-documentation/#/operations/GetPropertyFields>`_
 
@@ -117,7 +114,7 @@ class Properties(Base):
         cursor_id: str | None = None,
         cursor_create_at: int | None = None,
         cursor_update_at: int | None = None,
-        per_page: int | None = 60,
+        per_page: int | None = None,
     ):
         """Search property fields across multiple object types
 
@@ -139,7 +136,7 @@ class Properties(Base):
 
         cursor_update_at: The ``update_at`` timestamp of the last property field from the previous page. Required alongside ``cursor_id`` when ``since`` is present. Mutually exclusive with ``cursor_create_at``.
 
-        per_page: The number of property fields per page.
+        per_page: The number of property fields per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (properties - SearchPropertyFields) <https://developers.mattermost.com/api-documentation/#/operations/SearchPropertyFields>`_
 
@@ -193,7 +190,7 @@ class Properties(Base):
         cursor_id: str | None = None,
         cursor_create_at: int | None = None,
         cursor_update_at: int | None = None,
-        per_page: int | None = 60,
+        per_page: int | None = None,
     ):
         """Get property values for a target
 
@@ -207,7 +204,7 @@ class Properties(Base):
 
         cursor_update_at: The ``update_at`` timestamp of the last property value from the previous page. Required alongside ``cursor_id`` when ``since`` is present. Mutually exclusive with ``cursor_create_at``.
 
-        per_page: The number of property values per page.
+        per_page: The number of property values per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (properties - GetPropertyValues) <https://developers.mattermost.com/api-documentation/#/operations/GetPropertyValues>`_
 
@@ -244,7 +241,7 @@ class Properties(Base):
         cursor_id: str | None = None,
         cursor_create_at: int | None = None,
         cursor_update_at: int | None = None,
-        per_page: int | None = 60,
+        per_page: int | None = None,
     ):
         """Get property values for the system
 
@@ -256,7 +253,7 @@ class Properties(Base):
 
         cursor_update_at: The ``update_at`` timestamp of the last property value from the previous page. Required alongside ``cursor_id`` when ``since`` is present. Mutually exclusive with ``cursor_create_at``.
 
-        per_page: The number of property values per page.
+        per_page: The number of property values per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (properties - GetSystemPropertyValues) <https://developers.mattermost.com/api-documentation/#/operations/GetSystemPropertyValues>`_
 

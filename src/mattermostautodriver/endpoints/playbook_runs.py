@@ -9,31 +9,31 @@ class PlaybookRuns(Base):
     def list_playbook_runs(
         self,
         team_id: str,
-        page: int | None = 0,
-        per_page: int | None = 1000,
-        sort: str | None = "create_at",
-        direction: str | None = "desc",
-        statuses: list[str] | None = ["InProgress"],
+        page: int | None = None,
+        per_page: int | None = None,
+        sort: str | None = None,
+        direction: str | None = None,
+        statuses: list[str] | None = None,
         owner_user_id: str | None = None,
         participant_id: str | None = None,
         search_term: str | None = None,
         channel_id: str | None = None,
-        omit_ended: bool | None = False,
+        omit_ended: bool | None = None,
         since: int | None = None,
     ):
         """List all playbook runs
 
         team_id: ID of the team to filter by.
-        page: Zero-based index of the page to request.
-        per_page: Number of playbook runs to return per page.
-        sort: Field to sort the returned playbook runs by.
-        direction: Direction (ascending or descending) followed by the sorting of the playbook runs.
-        statuses: The returned list will contain only the playbook runs with the specified statuses.
+        page: Zero-based index of the page to request. Default: ``0`` (applied server-side when omitted)
+        per_page: Number of playbook runs to return per page. Default: ``1000`` (applied server-side when omitted)
+        sort: Field to sort the returned playbook runs by. Default: ``'create_at'`` (applied server-side when omitted)
+        direction: Direction (ascending or descending) followed by the sorting of the playbook runs. Default: ``'desc'`` (applied server-side when omitted)
+        statuses: The returned list will contain only the playbook runs with the specified statuses. Default: ``['InProgress']`` (applied server-side when omitted)
         owner_user_id: The returned list will contain only the playbook runs commanded by this user. Specify "me" for current user.
         participant_id: The returned list will contain only the playbook runs for which the given user is a participant. Specify "me" for current user.
         search_term: The returned list will contain only the playbook runs whose name contains the search term.
         channel_id: The returned list will contain only the playbook runs associated with this channel ID.
-        omit_ended: When set to true, only active runs (with EndAt = 0) are returned. When false or omitted, both active and ended runs are returned.
+        omit_ended: When set to true, only active runs (with EndAt = 0) are returned. When false or omitted, both active and ended runs are returned. Default: ``False`` (applied server-side when omitted)
         since: Return only PlaybookRuns created/modified since the given timestamp (in milliseconds).
 
         `Read in Mattermost API docs (playbook_runs - listPlaybookRuns) <https://developers.mattermost.com/api-documentation/#/operations/listPlaybookRuns>`_
@@ -100,9 +100,9 @@ class PlaybookRuns(Base):
     def get_channels(
         self,
         team_id: str,
-        sort: str | None = "create_at",
-        direction: str | None = "desc",
-        status: str | None = "all",
+        sort: str | None = None,
+        direction: str | None = None,
+        status: str | None = None,
         owner_user_id: str | None = None,
         search_term: str | None = None,
         participant_id: str | None = None,
@@ -110,9 +110,9 @@ class PlaybookRuns(Base):
         """Get playbook run channels
 
         team_id: ID of the team to filter by.
-        sort: Field to sort the returned channels by, according to their playbook run.
-        direction: Direction (ascending or descending) followed by the sorting of the playbook runs associated to the channels.
-        status: The returned list will contain only the channels whose playbook run has this status.
+        sort: Field to sort the returned channels by, according to their playbook run. Default: ``'create_at'`` (applied server-side when omitted)
+        direction: Direction (ascending or descending) followed by the sorting of the playbook runs associated to the channels. Default: ``'desc'`` (applied server-side when omitted)
+        status: The returned list will contain only the channels whose playbook run has this status. Default: ``'all'`` (applied server-side when omitted)
         owner_user_id: The returned list will contain only the channels whose playbook run is commanded by this user.
         search_term: The returned list will contain only the channels associated to a playbook run whose name contains the search term.
         participant_id: The returned list will contain only the channels associated to a playbook run for which the given user is a participant.
@@ -315,7 +315,7 @@ class PlaybookRuns(Base):
         return self.client.delete(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}")
 
     def item_set_state(
-        self, id: str, checklist: int, item: int, new_state: str = "", requirement_values: dict[str, Any] | None = None
+        self, id: str, checklist: int, item: int, new_state: str, requirement_values: dict[str, Any] | None = None
     ):
         """Update the state of an item
 

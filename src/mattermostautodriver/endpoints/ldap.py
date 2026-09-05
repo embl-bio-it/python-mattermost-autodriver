@@ -51,12 +51,12 @@ class Ldap(Base):
         __query_params = {"test": test}
         return self.client.post("""/api/v4/ldap/test_diagnostics""", params=__query_params, options=options)
 
-    def get_ldap_groups(self, q: str | None = None, page: int | None = 0, per_page: int | None = 60):
+    def get_ldap_groups(self, q: str | None = None, page: int | None = None, per_page: int | None = None):
         """Returns a list of LDAP groups
 
         q: Search term
-        page: The page to select.
-        per_page: The number of users per page. per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (ldap - GetLdapGroups) <https://developers.mattermost.com/api-documentation/#/operations/GetLdapGroups>`_
 

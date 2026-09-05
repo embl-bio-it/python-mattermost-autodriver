@@ -6,12 +6,12 @@ __all__ = ["Conditions"]
 
 class Conditions(Base):
 
-    def get_playbook_conditions(self, id: str, page: int | None = 0, per_page: int | None = 20):
+    def get_playbook_conditions(self, id: str, page: int | None = None, per_page: int | None = None):
         """List playbook conditions
 
         id: ID of the playbook to retrieve conditions from.
-        page: Zero-based index of the page to request.
-        per_page: Number of conditions to return per page.
+        page: Zero-based index of the page to request. Default: ``0`` (applied server-side when omitted)
+        per_page: Number of conditions to return per page. Default: ``20`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (conditions - getPlaybookConditions) <https://developers.mattermost.com/api-documentation/#/operations/getPlaybookConditions>`_
 
@@ -51,12 +51,12 @@ class Conditions(Base):
         """
         return self.client.delete(f"/plugins/playbooks/api/v0/playbooks/{id}/conditions/{conditionID}")
 
-    def get_run_conditions(self, id: str, page: int | None = 0, per_page: int | None = 20):
+    def get_run_conditions(self, id: str, page: int | None = None, per_page: int | None = None):
         """List run conditions
 
         id: ID of the run to retrieve conditions from.
-        page: Zero-based index of the page to request.
-        per_page: Number of conditions to return per page.
+        page: Zero-based index of the page to request. Default: ``0`` (applied server-side when omitted)
+        per_page: Number of conditions to return per page. Default: ``20`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (conditions - getRunConditions) <https://developers.mattermost.com/api-documentation/#/operations/getRunConditions>`_
 

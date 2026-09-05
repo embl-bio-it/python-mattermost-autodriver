@@ -11,24 +11,24 @@ class Threads(Base):
         user_id: str,
         team_id: str,
         since: int | None = None,
-        deleted: bool | None = False,
-        extended: bool | None = False,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        totalsOnly: bool | None = False,
-        threadsOnly: bool | None = False,
+        deleted: bool | None = None,
+        extended: bool | None = None,
+        page: int | None = None,
+        per_page: int | None = None,
+        totalsOnly: bool | None = None,
+        threadsOnly: bool | None = None,
     ):
         """Get all threads that user is following
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         team_id: The ID of the team in which the thread is.
         since: Since filters the threads based on their LastUpdateAt timestamp.
-        deleted: Deleted will specify that even deleted threads should be returned (For mobile sync).
-        extended: Extended will enrich the response with participant details.
-        page: Page specifies which part of the results to return, by per_page.
-        per_page: The size of the returned chunk of results.
-        totalsOnly: Setting this to true will only return the total counts.
-        threadsOnly: Setting this to true will only return threads.
+        deleted: Deleted will specify that even deleted threads should be returned (For mobile sync). Default: ``False`` (applied server-side when omitted)
+        extended: Extended will enrich the response with participant details. Default: ``False`` (applied server-side when omitted)
+        page: Page specifies which part of the results to return, by per_page. Default: ``0`` (applied server-side when omitted)
+        per_page: The size of the returned chunk of results. Default: ``60`` (applied server-side when omitted)
+        totalsOnly: Setting this to true will only return the total counts. Default: ``False`` (applied server-side when omitted)
+        threadsOnly: Setting this to true will only return threads. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (threads - GetUserThreads) <https://developers.mattermost.com/api-documentation/#/operations/GetUserThreads>`_
 

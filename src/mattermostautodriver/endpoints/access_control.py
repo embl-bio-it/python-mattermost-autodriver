@@ -57,7 +57,7 @@ class AccessControl(Base):
         """
         return self.client.post("""/api/v4/access_control_policies/search""", options=options)
 
-    def get_access_control_policy_autocomplete_fields(self, after: str | None = None, limit: int = 60):
+    def get_access_control_policy_autocomplete_fields(self, limit: int, after: str | None = None):
         """Get autocomplete fields for access control policies
 
         after: The field ID to start after for pagination.
@@ -133,7 +133,7 @@ class AccessControl(Base):
         __params = {"channel_ids": channel_ids, "team_ids": team_ids}
         return self.client.delete(f"/api/v4/access_control_policies/{policy_id}/unassign", params=__params)
 
-    def get_channels_for_access_control_policy(self, policy_id: str, after: str | None = None, limit: int = 60):
+    def get_channels_for_access_control_policy(self, policy_id: str, limit: int, after: str | None = None):
         """Get channels for an access control policy
 
         policy_id: The ID of the access control policy.

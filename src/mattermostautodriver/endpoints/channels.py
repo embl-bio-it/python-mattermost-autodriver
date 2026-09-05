@@ -20,23 +20,23 @@ class Channels(Base):
     def get_all_channels(
         self,
         not_associated_to_group: str | None = None,
-        page: int | None = 0,
-        per_page: int | None = 0,
-        exclude_default_channels: bool | None = False,
-        include_deleted: bool | None = False,
-        include_total_count: bool | None = False,
-        exclude_policy_constrained: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        exclude_default_channels: bool | None = None,
+        include_deleted: bool | None = None,
+        include_total_count: bool | None = None,
+        exclude_policy_constrained: bool | None = None,
     ):
         """Get a list of all channels
 
         not_associated_to_group: A group id to exclude channels that are associated with that group via GroupChannel records. This can also be left blank with ``not_associated_to_group=``.
-        page: The page to select.
-        per_page: The number of channels per page.
-        exclude_default_channels: Whether to exclude default channels (ex Town Square, Off-Topic) from the results.
-        include_deleted: Include channels that have been archived. This correlates to the ``DeleteAt`` flag being set in the database.
-        include_total_count: Appends a total count of returned channels inside the response object - ex: ``{ "channels": [], "total_count" : 0 }``.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of channels per page. Default: ``0`` (applied server-side when omitted)
+        exclude_default_channels: Whether to exclude default channels (ex Town Square, Off-Topic) from the results. Default: ``False`` (applied server-side when omitted)
+        include_deleted: Include channels that have been archived. This correlates to the ``DeleteAt`` flag being set in the database. Default: ``False`` (applied server-side when omitted)
+        include_total_count: Appends a total count of returned channels inside the response object - ex: ``{ "channels": [], "total_count" : 0 }``. Default: ``False`` (applied server-side when omitted)
         exclude_policy_constrained: If set to true, channels which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
-        *Minimum server version*: 5.35
+        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetAllChannels) <https://developers.mattermost.com/api-documentation/#/operations/GetAllChannels>`_
 
@@ -116,10 +116,10 @@ class Channels(Base):
         deleted: bool | None = None,
         page: str | None = None,
         per_page: str | None = None,
-        exclude_policy_constrained: bool | None = False,
-        include_search_by_id: bool | None = False,
-        exclude_remote: bool | None = False,
-        system_console: bool | None = True,
+        exclude_policy_constrained: bool | None = None,
+        include_search_by_id: bool | None = None,
+        exclude_remote: bool | None = None,
+        system_console: bool | None = None,
     ):
         """Search all private and open type channels across all teams
 
@@ -153,16 +153,12 @@ class Channels(Base):
         page: The page number to return, if paginated. If this parameter is not present with the ``per_page`` parameter then the results will be returned un-paged.
         per_page: The number of entries to return per page, if paginated. If this parameter is not present with the ``page`` parameter then the results will be returned un-paged.
         exclude_policy_constrained: If set to true, only channels which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
-        *Minimum server version*: 5.35
-
+        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
         include_search_by_id: If set to true, returns channels where given search 'term' matches channel ID.
-        *Minimum server version*: 5.35
-
+        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
         exclude_remote: If set to true, only returns channels that are local to this server.
-        *Minimum server version*: 10.2
-
-        system_console: Is the request from system_console. If this is set to true, it filters channels by the logged in user.
-
+        *Minimum server version*: 10.2 Default: ``False`` (applied server-side when omitted)
+        system_console: Is the request from system_console. If this is set to true, it filters channels by the logged in user. Default: ``True`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://developers.mattermost.com/api-documentation/#/operations/SearchAllChannels>`_
 
@@ -358,12 +354,12 @@ class Channels(Base):
         """
         return self.client.get(f"/api/v4/channels/{channel_id}/pinned")
 
-    def get_public_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_public_channels_for_team(self, team_id: str, page: int | None = None, per_page: int | None = None):
         """Get public channels
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of public channels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of public channels per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetPublicChannelsForTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetPublicChannelsForTeam>`_
 
@@ -371,12 +367,12 @@ class Channels(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/teams/{team_id}/channels", params=__params)
 
-    def get_private_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_private_channels_for_team(self, team_id: str, page: int | None = None, per_page: int | None = None):
         """Get private channels
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of private channels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of private channels per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetPrivateChannelsForTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetPrivateChannelsForTeam>`_
 
@@ -394,12 +390,12 @@ class Channels(Base):
         """
         return self.client.get(f"/api/v4/teams/{team_id}/channels/recommended")
 
-    def get_deleted_channels_for_team(self, team_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_deleted_channels_for_team(self, team_id: str, page: int | None = None, per_page: int | None = None):
         """Get deleted channels
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of public channels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of public channels per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetDeletedChannelsForTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetDeletedChannelsForTeam>`_
 
@@ -453,12 +449,12 @@ class Channels(Base):
         __options = {"term": term}
         return self.client.post(f"/api/v4/teams/{team_id}/channels/search", options=__options)
 
-    def get_channel_by_name(self, team_id: str, channel_name: str, include_deleted: bool | None = False):
+    def get_channel_by_name(self, team_id: str, channel_name: str, include_deleted: bool | None = None):
         """Get a channel by name
 
         team_id: Team GUID
         channel_name: Channel Name
-        include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+)
+        include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+) Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelByName) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelByName>`_
 
@@ -466,14 +462,12 @@ class Channels(Base):
         __params = {"include_deleted": include_deleted}
         return self.client.get(f"/api/v4/teams/{team_id}/channels/name/{channel_name}", params=__params)
 
-    def get_channel_by_name_for_team_name(
-        self, team_name: str, channel_name: str, include_deleted: bool | None = False
-    ):
+    def get_channel_by_name_for_team_name(self, team_name: str, channel_name: str, include_deleted: bool | None = None):
         """Get a channel by name and team name
 
         team_name: Team Name
         channel_name: Channel Name
-        include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+)
+        include_deleted: Defines if deleted channels should be returned or not (Mattermost Server 5.26.0+) Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelByNameForTeamName) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelByNameForTeamName>`_
 
@@ -481,12 +475,12 @@ class Channels(Base):
         __params = {"include_deleted": include_deleted}
         return self.client.get(f"/api/v4/teams/name/{team_name}/channels/name/{channel_name}", params=__params)
 
-    def get_channel_members(self, channel_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_channel_members(self, channel_id: str, page: int | None = None, per_page: int | None = None):
         """Get channel members
 
         channel_id: Channel GUID
-        page: The page to select.
-        per_page: The number of members per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of members per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelMembers) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelMembers>`_
 
@@ -519,16 +513,16 @@ class Channels(Base):
         channel_id: str,
         members: list[str],
         channel_admins: list[str] | None = None,
-        batch_size: int | None = 100,
-        batch_delay_ms: int | None = 500,
+        batch_size: int | None = None,
+        batch_delay_ms: int | None = None,
     ):
         """Set channel members
 
         channel_id: Channel GUID
         members: User IDs for the desired channel membership. The final membership is the union of ``members`` and ``channel_admins``.
         channel_admins: User IDs that should have the channel admin role. Users listed here are automatically included in the desired membership (they do not need to also appear in ``members``). When null or omitted, existing admin roles are preserved for members who remain in the channel. When present (including empty array), admin roles are set declaratively.
-        batch_size: Number of add/remove operations per batch.
-        batch_delay_ms: Milliseconds to pause between batches, giving the server time to process websocket events and plugin hooks.
+        batch_size: Number of add/remove operations per batch. Default: ``100`` (applied server-side when omitted)
+        batch_delay_ms: Milliseconds to pause between batches, giving the server time to process websocket events and plugin hooks. Default: ``500`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - SetChannelMembers) <https://developers.mattermost.com/api-documentation/#/operations/SetChannelMembers>`_
 
@@ -672,14 +666,14 @@ class Channels(Base):
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels/members")
 
     def get_channels_for_team_for_user(
-        self, user_id: str, team_id: str, include_deleted: bool | None = False, last_delete_at: int | None = 0
+        self, user_id: str, team_id: str, include_deleted: bool | None = None, last_delete_at: int | None = None
     ):
         """Get channels for user
 
         user_id: User GUID
         team_id: Team GUID
-        include_deleted: Defines if deleted channels should be returned or not
-        last_delete_at: Filters the deleted channels by this time in epoch format. Does not have any effect if include_deleted is set to false.
+        include_deleted: Defines if deleted channels should be returned or not Default: ``False`` (applied server-side when omitted)
+        last_delete_at: Filters the deleted channels by this time in epoch format. Does not have any effect if include_deleted is set to false. Default: ``0`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelsForTeamForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForTeamForUser>`_
 
@@ -687,12 +681,14 @@ class Channels(Base):
         __params = {"include_deleted": include_deleted, "last_delete_at": last_delete_at}
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/channels", params=__params)
 
-    def get_channels_for_user(self, user_id: str, last_delete_at: int | None = 0, include_deleted: bool | None = False):
+    def get_channels_for_user(
+        self, user_id: str, last_delete_at: int | None = None, include_deleted: bool | None = None
+    ):
         """Get all channels from all teams
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
-        last_delete_at: Filters the deleted channels by this time in epoch format. Does not have any effect if include_deleted is set to false.
-        include_deleted: Defines if deleted channels should be returned or not
+        last_delete_at: Filters the deleted channels by this time in epoch format. Does not have any effect if include_deleted is set to false. Default: ``0`` (applied server-side when omitted)
+        include_deleted: Defines if deleted channels should be returned or not Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForUser>`_
 
@@ -724,14 +720,14 @@ class Channels(Base):
         return self.client.put(f"/api/v4/channels/{channel_id}/scheme", options=__options)
 
     def channel_members_minus_group_members(
-        self, channel_id: str, group_ids: str = "", page: int | None = 0, per_page: int | None = 0
+        self, channel_id: str, group_ids: str, page: int | None = None, per_page: int | None = None
     ):
         """Channel members minus group members.
 
         channel_id: Channel GUID
         group_ids: A comma-separated list of group ids.
-        page: The page to select.
-        per_page: The number of users per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``0`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - ChannelMembersMinusGroupMembers) <https://developers.mattermost.com/api-documentation/#/operations/ChannelMembersMinusGroupMembers>`_
 
@@ -739,11 +735,11 @@ class Channels(Base):
         __params = {"group_ids": group_ids, "page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/channels/{channel_id}/members_minus_group_members", params=__params)
 
-    def get_channel_member_counts_by_group(self, channel_id: str, include_timezones: bool | None = False):
+    def get_channel_member_counts_by_group(self, channel_id: str, include_timezones: bool | None = None):
         """Channel members counts for each group that has atleast one member in the channel
 
         channel_id: Channel GUID
-        include_timezones: Defines if member timezone counts should be returned or not
+        include_timezones: Defines if member timezone counts should be returned or not Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetChannelMemberCountsByGroup) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelMemberCountsByGroup>`_
 

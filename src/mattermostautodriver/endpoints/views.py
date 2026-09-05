@@ -7,15 +7,18 @@ __all__ = ["Views"]
 class Views(Base):
 
     def list_channel_views(
-        self, channel_id: str, per_page: int | None = 60, page: int | None = 0, include_total_count: bool | None = False
+        self,
+        channel_id: str,
+        per_page: int | None = None,
+        page: int | None = None,
+        include_total_count: bool | None = None,
     ):
         """List channel views
 
         channel_id: Channel GUID
-        per_page: The number of views per page (default 60, max 200)
-        page: The 0-based page number for pagination (default 0)
-        include_total_count: When true, the response is a ViewsWithCount object containing a views array and a total_count integer. When false or omitted, the response is a plain JSON array of View objects.
-
+        per_page: The number of views per page (default 60, max 200) Default: ``60`` (applied server-side when omitted)
+        page: The 0-based page number for pagination (default 0) Default: ``0`` (applied server-side when omitted)
+        include_total_count: When true, the response is a ViewsWithCount object containing a views array and a total_count integer. When false or omitted, the response is a plain JSON array of View objects. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (views - ListChannelViews) <https://developers.mattermost.com/api-documentation/#/operations/ListChannelViews>`_
 
@@ -82,13 +85,13 @@ class Views(Base):
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}/views/{view_id}")
 
-    def get_posts_for_view(self, channel_id: str, view_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_posts_for_view(self, channel_id: str, view_id: str, page: int | None = None, per_page: int | None = None):
         """Get posts for a view
 
         channel_id: Channel GUID
         view_id: View GUID
-        page: The 0-based page number for pagination (default 0)
-        per_page: The number of posts per page (default 60, max 200)
+        page: The 0-based page number for pagination (default 0) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page (default 60, max 200) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (views - GetPostsForView) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForView>`_
 

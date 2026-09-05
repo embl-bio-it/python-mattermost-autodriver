@@ -182,17 +182,15 @@ class System(Base):
         """
         return self.client.post("""/api/v4/file/s3_test""", options=options)
 
-    def get_config(self, remove_masked: bool | None = False, remove_defaults: str | None = False):
+    def get_config(self, remove_masked: bool | None = None, remove_defaults: str | None = None):
         """Get configuration
 
         remove_masked: Remove masked values from the exported configuration.
 
-        *Minimum server version*: 10.4.0
-
+        *Minimum server version*: 10.4.0 Default: ``False`` (applied server-side when omitted)
         remove_defaults: Remove default values from the exported configuration.
 
-        *Minimum server version*: 10.4.0
-
+        *Minimum server version*: 10.4.0 Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - GetConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetConfig>`_
 
@@ -312,11 +310,11 @@ class System(Base):
         """
         return self.client.get("""/api/v4/trial-license/prev""")
 
-    def get_audits(self, page: int | None = 0, per_page: int | None = 60):
+    def get_audits(self, page: int | None = None, per_page: int | None = None):
         """Get audits
 
-        page: The page to select.
-        per_page: The number of audits per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of audits per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - GetAudits) <https://developers.mattermost.com/api-documentation/#/operations/GetAudits>`_
 
@@ -331,11 +329,11 @@ class System(Base):
         """
         return self.client.post("""/api/v4/caches/invalidate""")
 
-    def get_logs(self, page: int | None = 0, logs_per_page: str | None = "10000"):
+    def get_logs(self, page: int | None = None, logs_per_page: str | None = None):
         """Get logs
 
-        page: The page to select.
-        logs_per_page: The number of logs per page. There is a maximum limit of 10000 logs per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        logs_per_page: The number of logs per page. There is a maximum limit of 10000 logs per page. Default: ``'10000'`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - GetLogs) <https://developers.mattermost.com/api-documentation/#/operations/GetLogs>`_
 
@@ -361,8 +359,8 @@ class System(Base):
         log_levels: list[str] | None = None,
         date_from: str | None = None,
         date_to: str | None = None,
-        page: int | None = 0,
-        logs_per_page: str | None = "10000",
+        page: int | None = None,
+        logs_per_page: str | None = None,
     ):
         """Query server logs with filters
 
@@ -372,8 +370,8 @@ class System(Base):
 
         date_to: Inclusive end of the time range. Same format as ``date_from`` (``YYYY-MM-DD HH:MM:SS.mmm ±HH:MM``, e.g. ``2006-01-02 15:04:05.999 -07:00``).
 
-        page: The page to select.
-        logs_per_page: The number of logs per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        logs_per_page: The number of logs per page. Default: ``'10000'`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - QueryLogs) <https://developers.mattermost.com/api-documentation/#/operations/QueryLogs>`_
 
@@ -382,10 +380,10 @@ class System(Base):
         __options = {"server_names": server_names, "log_levels": log_levels, "date_from": date_from, "date_to": date_to}
         return self.client.post("""/api/v4/logs/query""", params=__query_params, options=__options)
 
-    def get_analytics_old(self, name: str | None = "standard", team_id: str | None = None):
+    def get_analytics_old(self, name: str | None = None, team_id: str | None = None):
         """Get analytics
 
-        name: Possible values are "standard", "bot_post_counts_day", "post_counts_day", "user_counts_with_posts_day" or "extra_counts"
+        name: Possible values are "standard", "bot_post_counts_day", "post_counts_day", "user_counts_with_posts_day" or "extra_counts" Default: ``'standard'`` (applied server-side when omitted)
         team_id: The team ID to filter the data by
 
         `Read in Mattermost API docs (system - GetAnalyticsOld) <https://developers.mattermost.com/api-documentation/#/operations/GetAnalyticsOld>`_
@@ -408,10 +406,10 @@ class System(Base):
         """
         return self.client.get("""/api/v4/system/schema/version""")
 
-    def set_server_busy(self, seconds: str | None = "3600"):
+    def set_server_busy(self, seconds: str | None = None):
         """Set the server busy (high load) flag
 
-        seconds: Number of seconds until server is automatically marked as not busy.
+        seconds: Number of seconds until server is automatically marked as not busy. Default: ``'3600'`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - SetServerBusy) <https://developers.mattermost.com/api-documentation/#/operations/SetServerBusy>`_
 

@@ -19,11 +19,11 @@ class Ai(Base):
         __options = {"title": title, "channel_ids": channel_ids, "agent_id": agent_id}
         return self.client.post("""/api/v4/recaps""", options=__options)
 
-    def get_recaps_for_user(self, page: int | None = 0, per_page: int | None = 60):
+    def get_recaps_for_user(self, page: int | None = None, per_page: int | None = None):
         """Get current user's recaps
 
-        page: The page to select.
-        per_page: The number of recaps per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of recaps per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (ai - GetRecapsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetRecapsForUser>`_
 
@@ -129,11 +129,11 @@ class Ai(Base):
         }
         return self.client.post("""/api/v4/scheduled_recaps""", options=__options)
 
-    def get_scheduled_recaps(self, page: int | None = 0, per_page: int | None = 60):
+    def get_scheduled_recaps(self, page: int | None = None, per_page: int | None = None):
         """Get current user's scheduled recaps
 
-        page: The page to select.
-        per_page: The number of scheduled recaps per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of scheduled recaps per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (ai - GetScheduledRecaps) <https://developers.mattermost.com/api-documentation/#/operations/GetScheduledRecaps>`_
 

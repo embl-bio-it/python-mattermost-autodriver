@@ -18,19 +18,19 @@ class Groups(Base):
 
     def get_groups(
         self,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
         q: str | None = None,
         include_member_count: bool | None = None,
         not_associated_to_team: str | None = None,
         not_associated_to_channel: str | None = None,
         since: int | None = None,
-        filter_allow_reference: bool | None = False,
+        filter_allow_reference: bool | None = None,
     ):
         """Get groups
 
-        page: The page to select.
-        per_page: The number of groups per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of groups per page. Default: ``60`` (applied server-side when omitted)
         q: String to pattern match the ``name`` and ``display_name`` field. Will return all groups whose ``name`` and ``display_name`` field match any of the text.
         include_member_count: Boolean which adds the ``member_count`` attribute to each group JSON object
         not_associated_to_team: Team GUID which is used to return all the groups not associated to this team
@@ -38,7 +38,7 @@ class Groups(Base):
         since: Only return groups that have been modified since the given Unix timestamp (in milliseconds). All modified groups, including deleted and created groups, will be returned.
         *Minimum server version*: 5.24
 
-        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
+        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (groups - GetGroups) <https://developers.mattermost.com/api-documentation/#/operations/GetGroups>`_
 
@@ -234,12 +234,12 @@ class Groups(Base):
         __options = {"auto_add": auto_add}
         return self.client.put(f"/api/v4/groups/{group_id}/channels/{channel_id}/patch", options=__options)
 
-    def get_group_users(self, group_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_group_users(self, group_id: str, page: int | None = None, per_page: int | None = None):
         """Get group users
 
         group_id: Group GUID
-        page: The page to select.
-        per_page: The number of groups per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of groups per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (groups - GetGroupUsers) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupUsers>`_
 
@@ -284,16 +284,16 @@ class Groups(Base):
     def get_groups_by_channel(
         self,
         channel_id: str,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        filter_allow_reference: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        filter_allow_reference: bool | None = None,
     ):
         """Get channel groups
 
         channel_id: Channel GUID
-        page: The page to select.
-        per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of groups per page. Default: ``60`` (applied server-side when omitted)
+        filter_allow_reference: Boolean which filters the group entries with the ``allow_reference`` attribute set. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (groups - GetGroupsByChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupsByChannel>`_
 
@@ -304,34 +304,34 @@ class Groups(Base):
     def get_groups_by_team(
         self,
         team_id: str,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        filter_allow_reference: bool | None = False,
-        include_member_count: bool | None = False,
-        include_timezones: bool | None = False,
-        include_total_count: bool | None = False,
-        include_archived: bool | None = False,
-        filter_archived: bool | None = False,
-        filter_parent_team_permitted: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        filter_allow_reference: bool | None = None,
+        include_member_count: bool | None = None,
+        include_timezones: bool | None = None,
+        include_total_count: bool | None = None,
+        include_archived: bool | None = None,
+        filter_archived: bool | None = None,
+        filter_parent_team_permitted: bool | None = None,
         filter_has_member: str | None = None,
-        include_member_ids: bool | None = False,
-        only_syncable_sources: bool | None = False,
+        include_member_ids: bool | None = None,
+        only_syncable_sources: bool | None = None,
     ):
         """Get team groups
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
-        include_member_count: Boolean which adds a ``member_count`` field to each group object.
-        include_timezones: Boolean which adds timezone information for group members.
-        include_total_count: Boolean which adds total count of groups in the response.
-        include_archived: Boolean which includes archived groups in the response.
-        filter_archived: Boolean which filters out archived groups from the response.
-        filter_parent_team_permitted: Boolean which filters groups based on parent team permissions.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of groups per page. Default: ``60`` (applied server-side when omitted)
+        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set. Default: ``False`` (applied server-side when omitted)
+        include_member_count: Boolean which adds a ``member_count`` field to each group object. Default: ``False`` (applied server-side when omitted)
+        include_timezones: Boolean which adds timezone information for group members. Default: ``False`` (applied server-side when omitted)
+        include_total_count: Boolean which adds total count of groups in the response. Default: ``False`` (applied server-side when omitted)
+        include_archived: Boolean which includes archived groups in the response. Default: ``False`` (applied server-side when omitted)
+        filter_archived: Boolean which filters out archived groups from the response. Default: ``False`` (applied server-side when omitted)
+        filter_parent_team_permitted: Boolean which filters groups based on parent team permissions. Default: ``False`` (applied server-side when omitted)
         filter_has_member: User ID to filter groups that have this member.
-        include_member_ids: Boolean which adds member IDs to the group objects.
-        only_syncable_sources: Boolean which includes groups from syncable sources.
+        include_member_ids: Boolean which adds member IDs to the group objects. Default: ``False`` (applied server-side when omitted)
+        only_syncable_sources: Boolean which includes groups from syncable sources. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (groups - GetGroupsByTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupsByTeam>`_
 
@@ -355,18 +355,18 @@ class Groups(Base):
     def get_groups_associated_to_channels_by_team(
         self,
         team_id: str,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        filter_allow_reference: bool | None = False,
-        paginate: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        filter_allow_reference: bool | None = None,
+        paginate: bool | None = None,
     ):
         """Get team groups by channels
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of groups per page.
-        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set.
-        paginate: Boolean to determine whether the pagination should be applied or not
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of groups per page. Default: ``60`` (applied server-side when omitted)
+        filter_allow_reference: Boolean which filters in the group entries with the ``allow_reference`` attribute set. Default: ``False`` (applied server-side when omitted)
+        paginate: Boolean to determine whether the pagination should be applied or not Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (groups - GetGroupsAssociatedToChannelsByTeam) <https://developers.mattermost.com/api-documentation/#/operations/GetGroupsAssociatedToChannelsByTeam>`_
 

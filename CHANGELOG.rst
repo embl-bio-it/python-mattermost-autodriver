@@ -19,6 +19,26 @@ Code
   ``teams.add_team_member_from_invite`` (``token``) and
   ``plugins.install_plugin_from_url`` (``plugin_download_url``). Update
   positional calls to these methods accordingly.
+- **Backwards incompatible:** Parameter defaults from the API specification
+  are no longer baked into the generated method signatures and transmitted
+  with every request. In OpenAPI a ``default`` documents the value the
+  *server* applies when a parameter is omitted, so optional parameters now
+  default to ``None`` and are left out of the request entirely, letting the
+  server-side default take effect (previously e.g. ``users.get_users()``
+  always sent ``page=0&per_page=60`` explicitly). The documented server-side
+  defaults are noted in the method docstrings instead. Four parameters that
+  the specification marks as required while also carrying a default are now
+  required positional arguments; the server rejects requests without them
+  with HTTP 400, so their previous optional appearance was cosmetic:
+  ``limit`` on the access control policy listings only worked because the
+  driver silently sent the specification's value, and ``group_ids`` on
+  ``teams.team_members_minus_group_members`` /
+  ``channels.channel_members_minus_group_members`` sent an empty string the
+  server always rejected, making the methods unusable without passing it
+  explicitly.
+- Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
+  the ``FileType`` definition, which made all endpoint modules fail to import.
+  This broke the 11.10.0 and 11.10.1 packages originally published to PyPI.
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
   ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,

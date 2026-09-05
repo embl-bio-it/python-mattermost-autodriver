@@ -167,8 +167,8 @@ class Users(Base):
 
     def get_users(
         self,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
         in_team: str | None = None,
         not_in_team: str | None = None,
         in_channel: str | None = None,
@@ -187,8 +187,8 @@ class Users(Base):
     ):
         """Get users
 
-        page: The page to select.
-        per_page: The number of users per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``60`` (applied server-side when omitted)
         in_team: The ID of the team to get users for.
         not_in_team: The ID of the team to exclude users for. Must not be used with "in_team" query parameter.
         in_channel: The ID of the channel to get users for.
@@ -310,7 +310,7 @@ class Users(Base):
         group_constrained: bool | None = None,
         allow_inactive: bool | None = None,
         without_team: bool | None = None,
-        limit: int | None = 100,
+        limit: int | None = None,
     ):
         """Search users
 
@@ -325,8 +325,7 @@ class Users(Base):
         without_team: Set this to ``true`` if you would like to search for users that are not on a team. This option takes precendence over ``team_id``, ``in_channel_id``, and ``not_in_channel_id``.
         limit: The maximum number of users to return in the results
 
-        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.*
-
+        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.* Default: ``100`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - SearchUsers) <https://developers.mattermost.com/api-documentation/#/operations/SearchUsers>`_
 
@@ -346,7 +345,7 @@ class Users(Base):
         return self.client.post("""/api/v4/users/search""", options=__options)
 
     def autocomplete_users(
-        self, name: str, team_id: str | None = None, channel_id: str | None = None, limit: int | None = 100
+        self, name: str, team_id: str | None = None, channel_id: str | None = None, limit: int | None = None
     ):
         """Autocomplete users
 
@@ -355,8 +354,7 @@ class Users(Base):
         name: Username, nickname first name or last name
         limit: The maximum number of users to return in each subresult
 
-        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.*
-
+        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.* Default: ``100`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - AutocompleteUsers) <https://developers.mattermost.com/api-documentation/#/operations/AutocompleteUsers>`_
 
@@ -885,12 +883,12 @@ class Users(Base):
         __options = {"description": description}
         return self.client.post(f"/api/v4/users/{user_id}/tokens", options=__options)
 
-    def get_user_access_tokens_for_user(self, user_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_user_access_tokens_for_user(self, user_id: str, page: int | None = None, per_page: int | None = None):
         """Get user access tokens
 
         user_id: User GUID
-        page: The page to select.
-        per_page: The number of tokens per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of tokens per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - GetUserAccessTokensForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetUserAccessTokensForUser>`_
 
@@ -898,11 +896,11 @@ class Users(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/users/{user_id}/tokens", params=__params)
 
-    def get_user_access_tokens(self, page: int | None = 0, per_page: int | None = 60):
+    def get_user_access_tokens(self, page: int | None = None, per_page: int | None = None):
         """Get user access tokens
 
-        page: The page to select.
-        per_page: The number of tokens per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of tokens per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - GetUserAccessTokens) <https://developers.mattermost.com/api-documentation/#/operations/GetUserAccessTokens>`_
 
@@ -1055,13 +1053,13 @@ class Users(Base):
         return self.client.get(f"/api/v4/users/{user_id}/uploads")
 
     def get_channel_members_with_team_data_for_user(
-        self, user_id: str, page: int | None = None, per_page: int | None = 60
+        self, user_id: str, page: int | None = None, per_page: int | None = None
     ):
         """Get all channel members from all teams for a user
 
         user_id: The ID of the user. This can also be "me" which will point to the current user.
         page: Page specifies which part of the results to return, by perPage.
-        per_page: The size of the returned chunk of results.
+        per_page: The size of the returned chunk of results. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - GetChannelMembersWithTeamDataForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelMembersWithTeamDataForUser>`_
 
@@ -1136,11 +1134,11 @@ class Users(Base):
         """
         return self.client.delete(f"/api/v4/users/{user_id}/channels/{channel_id}/drafts/{thread_id}")
 
-    def get_users_with_invalid_emails(self, page: int | None = 0, per_page: int | None = 60):
+    def get_users_with_invalid_emails(self, page: int | None = None, per_page: int | None = None):
         """Get users with invalid emails
 
-        page: The page to select.
-        per_page: The number of users per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - GetUsersWithInvalidEmails) <https://developers.mattermost.com/api-documentation/#/operations/GetUsersWithInvalidEmails>`_
 
@@ -1168,7 +1166,7 @@ class Users(Base):
         position: str | None = None,
         props: dict[str, Any] | None = None,
         notify_props: Any | None = None,
-        set_system_admin: bool | None = False,
+        set_system_admin: bool | None = None,
     ):
         """Convert a bot into a user
 
@@ -1183,7 +1181,7 @@ class Users(Base):
         position:
         props:
         notify_props:
-        set_system_admin: Whether to give the user the system admin role.
+        set_system_admin: Whether to give the user the system admin role. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 

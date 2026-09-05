@@ -135,9 +135,16 @@ def get_descriptions(params):
             .replace("__", "*")  # Convert emphasis
         )
 
-    return (
-        "\n\n" + "\n".join([f"{doc_pad}{par.name}: {fix_docstr(par.description)}" for par in params]) + f"\n{doc_pad}"
-    )
+    def describe(par):
+        description = fix_docstr(par.description)
+        # Defaults from the API specification document what the server
+        # applies when the parameter is omitted - they are not sent by us
+        if par.default is not None and not par.required:
+            note = f"Default: ``{par.default!r}`` (applied server-side when omitted)"
+            description = f"{description.rstrip()} {note}" if description.strip() else note
+        return f"{doc_pad}{par.name}: {description}"
+
+    return "\n\n" + "\n".join([describe(par) for par in params]) + f"\n{doc_pad}"
 
 
 def parse_req_body(req_body_type, schema):
@@ -419,7 +426,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     e.g. def func(arg1, arg2=...):
     """
 
-    def add_param(name, schema, required, binary, default, args, kwargs):
+    def add_param(name, schema, required, binary, args, kwargs):
         if iskeyword(name):
             name = name + "_"
         else:
@@ -428,12 +435,14 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
         annotation = generate_type_annotation(schema, required, binary)
         args.append(ast.arg(arg=name, annotation=annotation))
 
-        if default is not None:
-            kwargs.append(ast.Constant(default))
-        elif required:
+        # Defaults from the API specification are deliberately NOT used here:
+        # they describe what the server applies when a parameter is omitted.
+        # Optional parameters default to None, which the client filters out
+        # before sending, so the server-side default always takes effect.
+        if required:
             kwargs.append(None)
         else:
-            kwargs.append(ast.Constant(default))
+            kwargs.append(ast.Constant(None))
 
     args = [ast.arg(arg="self")]
     kwargs = []
@@ -455,8 +464,8 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
 
     request_params += query_params["parameters"]
 
-    # Ensure params without default values come first
-    request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
+    # Ensure required params come first
+    request_params.sort(key=lambda param: 0 if param.required else 1)
 
     existing_params = []
     unique_params = []
@@ -471,7 +480,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
         unique_params.append(param)
 
     for param in unique_params:
-        add_param(param.name, param.schema, param.required, param.format == "binary", param.default, args, kwargs)
+        add_param(param.name, param.schema, param.required, param.format == "binary", args, kwargs)
 
     return {"args": args, "defaults": kwargs}
 

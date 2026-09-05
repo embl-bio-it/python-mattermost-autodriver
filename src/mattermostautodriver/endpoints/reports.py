@@ -8,13 +8,13 @@ class Reports(Base):
 
     def get_users_for_reporting(
         self,
-        sort_column: str | None = "Username",
-        direction: str | None = "next",
-        sort_direction: str | None = "asc",
-        page_size: int | None = 50,
+        sort_column: str | None = None,
+        direction: str | None = None,
+        sort_direction: str | None = None,
+        page_size: int | None = None,
         from_column_value: str | None = None,
         from_id: str | None = None,
-        date_range: str | None = "alltime",
+        date_range: str | None = None,
         role_filter: str | None = None,
         team_filter: str | None = None,
         has_no_team: bool | None = None,
@@ -24,13 +24,13 @@ class Reports(Base):
     ):
         """Get a list of paged and sorted users for admin reporting purposes
 
-        sort_column: The column to sort the users by. Must be one of ("CreateAt", "Username", "FirstName", "LastName", "Nickname", "Email") or the API will return an error.
-        direction: The direction to accept paging values from. Will return values ahead of the cursor if "prev", and below the cursor if "next". Default is "next".
-        sort_direction: The sorting direction. Must be one of ("asc", "desc"). Will default to 'asc' if not specified or the input is invalid.
-        page_size: The maximum number of users to return.
+        sort_column: The column to sort the users by. Must be one of ("CreateAt", "Username", "FirstName", "LastName", "Nickname", "Email") or the API will return an error. Default: ``'Username'`` (applied server-side when omitted)
+        direction: The direction to accept paging values from. Will return values ahead of the cursor if "prev", and below the cursor if "next". Default is "next". Default: ``'next'`` (applied server-side when omitted)
+        sort_direction: The sorting direction. Must be one of ("asc", "desc"). Will default to 'asc' if not specified or the input is invalid. Default: ``'asc'`` (applied server-side when omitted)
+        page_size: The maximum number of users to return. Default: ``50`` (applied server-side when omitted)
         from_column_value: The value of the sorted column corresponding to the cursor to read from. Should be blank for the first page asked for.
         from_id: The value of the user id corresponding to the cursor to read from. Should be blank for the first page asked for.
-        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid.
+        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid. Default: ``'alltime'`` (applied server-side when omitted)
         role_filter: Filter users by their role.
         team_filter: Filter users by a specified team ID.
         has_no_team: If true, show only users that have no team. Will ignore provided "team_filter" if true.
@@ -89,10 +89,10 @@ class Reports(Base):
         }
         return self.client.get("""/api/v4/reports/users/count""", params=__params)
 
-    def start_batch_users_export(self, date_range: str | None = "alltime"):
+    def start_batch_users_export(self, date_range: str | None = None):
         """Starts a job to export the users to a report file.
 
-        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid.
+        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid. Default: ``'alltime'`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (reports - StartBatchUsersExport) <https://developers.mattermost.com/api-documentation/#/operations/StartBatchUsersExport>`_
 
@@ -103,33 +103,27 @@ class Reports(Base):
     def get_posts_for_reporting(
         self,
         channel_id: str,
-        cursor: str | None = "",
+        cursor: str | None = None,
         start_time: int | None = None,
-        time_field: str | None = "create_at",
-        sort_direction: str | None = "asc",
-        per_page: int | None = 100,
-        include_deleted: bool | None = False,
-        exclude_system_posts: bool | None = False,
-        include_metadata: bool | None = False,
+        time_field: str | None = None,
+        sort_direction: str | None = None,
+        per_page: int | None = None,
+        include_deleted: bool | None = None,
+        exclude_system_posts: bool | None = None,
+        include_metadata: bool | None = None,
     ):
         """Get posts for reporting and compliance purposes using cursor-based pagination
 
         channel_id: The ID of the channel to retrieve posts from
-        cursor: Opaque cursor string for pagination. Omit or use empty string for the first request. For subsequent requests, use the exact cursor value from the previous response's next_cursor. The cursor is base64-encoded and contains all pagination state including time, post ID, and query parameters. Do not attempt to parse or modify the cursor value.
-
+        cursor: Opaque cursor string for pagination. Omit or use empty string for the first request. For subsequent requests, use the exact cursor value from the previous response's next_cursor. The cursor is base64-encoded and contains all pagination state including time, post ID, and query parameters. Do not attempt to parse or modify the cursor value. Default: ``''`` (applied server-side when omitted)
         start_time: Optional start time for query range in Unix milliseconds. Only used for the first request (ignored when cursor is provided). - For "asc" (ascending): starts retrieving from this time going forward - For "desc" (descending): starts retrieving from this time going backward If omitted, defaults to 0 for ascending or MaxInt64 for descending.
 
-        time_field: Which timestamp field to use for sorting and filtering. Use "create_at" to retrieve posts by creation time, or "update_at" to retrieve posts by last modification time.
-
-        sort_direction: Sort direction for pagination. Use "asc" to retrieve posts from oldest to newest, or "desc" to retrieve from newest to oldest.
-
-        per_page: Number of posts to return per page. Maximum 1000.
-        include_deleted: If true, include posts that have been deleted (DeleteAt > 0). By default, only non-deleted posts are returned.
-
-        exclude_system_posts: If true, exclude all system posts.
-
-        include_metadata: If true, enrich posts with additional metadata including file information, reactions, custom emojis, priority, and acknowledgements. Note that this may increase response time for large result sets.
-
+        time_field: Which timestamp field to use for sorting and filtering. Use "create_at" to retrieve posts by creation time, or "update_at" to retrieve posts by last modification time. Default: ``'create_at'`` (applied server-side when omitted)
+        sort_direction: Sort direction for pagination. Use "asc" to retrieve posts from oldest to newest, or "desc" to retrieve from newest to oldest. Default: ``'asc'`` (applied server-side when omitted)
+        per_page: Number of posts to return per page. Maximum 1000. Default: ``100`` (applied server-side when omitted)
+        include_deleted: If true, include posts that have been deleted (DeleteAt > 0). By default, only non-deleted posts are returned. Default: ``False`` (applied server-side when omitted)
+        exclude_system_posts: If true, exclude all system posts. Default: ``False`` (applied server-side when omitted)
+        include_metadata: If true, enrich posts with additional metadata including file information, reactions, custom emojis, priority, and acknowledgements. Note that this may increase response time for large result sets. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (reports - GetPostsForReporting) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForReporting>`_
 

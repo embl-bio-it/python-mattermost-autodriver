@@ -42,17 +42,17 @@ class Webhooks(Base):
 
     def get_incoming_webhooks(
         self,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
         team_id: str | None = None,
-        include_total_count: bool | None = False,
+        include_total_count: bool | None = None,
     ):
         """List incoming webhooks
 
-        page: The page to select.
-        per_page: The number of hooks per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of hooks per page. Default: ``60`` (applied server-side when omitted)
         team_id: The ID of the team to get hooks for.
-        include_total_count: Appends a total count of returned hooks inside the response object - ex: ``{ "incoming_webhooks": [], "total_count": 0 }``.
+        include_total_count: Appends a total count of returned hooks inside the response object - ex: ``{ "incoming_webhooks": [], "total_count": 0 }``. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (webhooks - GetIncomingWebhooks) <https://developers.mattermost.com/api-documentation/#/operations/GetIncomingWebhooks>`_
 
@@ -126,7 +126,7 @@ class Webhooks(Base):
         creator_id: str | None = None,
         description: str | None = None,
         trigger_when: int | None = None,
-        content_type: str | None = "application/x-www-form-urlencoded",
+        content_type: str | None = None,
     ):
         """Create an outgoing webhook
 
@@ -138,7 +138,7 @@ class Webhooks(Base):
         trigger_words: List of words for the webhook to trigger on
         trigger_when: When to trigger the webhook, ``0`` when a trigger word is present at all and ``1`` if the message starts with a trigger word
         callback_urls: The URLs to POST the payloads to when the webhook is triggered
-        content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded``
+        content_type: The format to POST the data in, either ``application/json`` or ``application/x-www-form-urlencoded`` Default: ``'application/x-www-form-urlencoded'`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (webhooks - CreateOutgoingWebhook) <https://developers.mattermost.com/api-documentation/#/operations/CreateOutgoingWebhook>`_
 
@@ -157,12 +157,16 @@ class Webhooks(Base):
         return self.client.post("""/api/v4/hooks/outgoing""", options=__options)
 
     def get_outgoing_webhooks(
-        self, page: int | None = 0, per_page: int | None = 60, team_id: str | None = None, channel_id: str | None = None
+        self,
+        page: int | None = None,
+        per_page: int | None = None,
+        team_id: str | None = None,
+        channel_id: str | None = None,
     ):
         """List outgoing webhooks
 
-        page: The page to select.
-        per_page: The number of hooks per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of hooks per page. Default: ``60`` (applied server-side when omitted)
         team_id: The ID of the team to get hooks for.
         channel_id: The ID of the channel to get hooks for.
 

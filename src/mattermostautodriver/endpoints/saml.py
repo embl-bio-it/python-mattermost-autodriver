@@ -99,13 +99,13 @@ class Saml(Base):
         return self.client.get("""/api/v4/saml/certificate/status""")
 
     def reset_saml_auth_data_to_email(
-        self, include_deleted: bool | None = False, dry_run: bool | None = False, user_ids: list[str] | None = []
+        self, include_deleted: bool | None = None, dry_run: bool | None = None, user_ids: list[str] | None = None
     ):
         """Reset AuthData to Email
 
-        include_deleted: Whether to include deleted users.
-        dry_run: If set to true, the number of users who would be affected is returned.
-        user_ids: If set to a non-empty array, then users whose IDs are not in the array will be excluded.
+        include_deleted: Whether to include deleted users. Default: ``False`` (applied server-side when omitted)
+        dry_run: If set to true, the number of users who would be affected is returned. Default: ``False`` (applied server-side when omitted)
+        user_ids: If set to a non-empty array, then users whose IDs are not in the array will be excluded. Default: ``[]`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (saml - ResetSamlAuthDataToEmail) <https://developers.mattermost.com/api-documentation/#/operations/ResetSamlAuthDataToEmail>`_
 

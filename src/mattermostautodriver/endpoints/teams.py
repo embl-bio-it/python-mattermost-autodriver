@@ -21,18 +21,18 @@ class Teams(Base):
 
     def get_all_teams(
         self,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        include_total_count: bool | None = False,
-        exclude_policy_constrained: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        include_total_count: bool | None = None,
+        exclude_policy_constrained: bool | None = None,
     ):
         """Get teams
 
-        page: The page to select.
-        per_page: The number of teams per page.
-        include_total_count: Appends a total count of returned teams inside the response object - ex: ``{ "teams": [], "total_count" : 0 }``.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of teams per page. Default: ``60`` (applied server-side when omitted)
+        include_total_count: Appends a total count of returned teams inside the response object - ex: ``{ "teams": [], "total_count" : 0 }``. Default: ``False`` (applied server-side when omitted)
         exclude_policy_constrained: If set to true, teams which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
-        *Minimum server version*: 5.35
+        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - GetAllTeams) <https://developers.mattermost.com/api-documentation/#/operations/GetAllTeams>`_
 
@@ -91,11 +91,11 @@ class Teams(Base):
         }
         return self.client.put(f"/api/v4/teams/{team_id}", options=__options)
 
-    def soft_delete_team(self, team_id: str, permanent: bool | None = False):
+    def soft_delete_team(self, team_id: str, permanent: bool | None = None):
         """Delete a team
 
         team_id: Team GUID
-        permanent: Permanently delete the team, to be used for compliance reasons only. As of server version 5.0, ``ServiceSettings.EnableAPITeamDeletion`` must be set to ``true`` in the server's configuration.
+        permanent: Permanently delete the team, to be used for compliance reasons only. As of server version 5.0, ``ServiceSettings.EnableAPITeamDeletion`` must be set to ``true`` in the server's configuration. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://developers.mattermost.com/api-documentation/#/operations/SoftDeleteTeam>`_
 
@@ -172,7 +172,7 @@ class Teams(Base):
         per_page: str | None = None,
         allow_open_invite: bool | None = None,
         group_constrained: bool | None = None,
-        exclude_policy_constrained: bool | None = False,
+        exclude_policy_constrained: bool | None = None,
     ):
         """Search teams
 
@@ -188,8 +188,7 @@ class Teams(Base):
         *Minimum server version*: 5.28
 
         exclude_policy_constrained: If set to true, only teams which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
-        *Minimum server version*: 5.35
-
+        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - SearchTeams) <https://developers.mattermost.com/api-documentation/#/operations/SearchTeams>`_
 
@@ -227,18 +226,18 @@ class Teams(Base):
     def get_team_members(
         self,
         team_id: str,
-        page: int | None = 0,
-        per_page: int | None = 60,
-        sort: str | None = "",
-        exclude_deleted_users: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        sort: str | None = None,
+        exclude_deleted_users: bool | None = None,
     ):
         """Get team members
 
         team_id: Team GUID
-        page: The page to select.
-        per_page: The number of users per page.
-        sort: To sort by Username, set to 'Username', otherwise sort is by 'UserID'
-        exclude_deleted_users: Excludes deleted users from the results
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``60`` (applied server-side when omitted)
+        sort: To sort by Username, set to 'Username', otherwise sort is by 'UserID' Default: ``''`` (applied server-side when omitted)
+        exclude_deleted_users: Excludes deleted users from the results Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - GetTeamMembers) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamMembers>`_
 
@@ -423,14 +422,12 @@ class Teams(Base):
         __options = {"scheme_admin": scheme_admin, "scheme_user": scheme_user}
         return self.client.put(f"/api/v4/teams/{team_id}/members/{user_id}/schemeRoles", options=__options)
 
-    def get_teams_unread_for_user(
-        self, user_id: str, exclude_team: str, include_collapsed_threads: bool | None = False
-    ):
+    def get_teams_unread_for_user(self, user_id: str, exclude_team: str, include_collapsed_threads: bool | None = None):
         """Get team unreads for a user
 
         user_id: User GUID
         exclude_team: Optional team id to be excluded from the results
-        include_collapsed_threads: Boolean to determine whether the collapsed threads should be included or not
+        include_collapsed_threads: Boolean to determine whether the collapsed threads should be included or not Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - GetTeamsUnreadForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsUnreadForUser>`_
 
@@ -533,14 +530,14 @@ class Teams(Base):
         return self.client.put(f"/api/v4/teams/{team_id}/scheme", options=__options)
 
     def team_members_minus_group_members(
-        self, team_id: str, group_ids: str = "", page: int | None = 0, per_page: int | None = 0
+        self, team_id: str, group_ids: str, page: int | None = None, per_page: int | None = None
     ):
         """Team members minus group members.
 
         team_id: Team GUID
         group_ids: A comma-separated list of group ids.
-        page: The page to select.
-        per_page: The number of users per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of users per page. Default: ``0`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - TeamMembersMinusGroupMembers) <https://developers.mattermost.com/api-documentation/#/operations/TeamMembersMinusGroupMembers>`_
 
@@ -553,20 +550,20 @@ class Teams(Base):
         team_id: str,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search files in a team
 
         team_id: Team GUID
         terms: The search terms as inputed by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 

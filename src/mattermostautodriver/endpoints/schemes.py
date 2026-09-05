@@ -6,12 +6,12 @@ __all__ = ["Schemes"]
 
 class Schemes(Base):
 
-    def get_schemes(self, scope: str | None = "", page: int | None = 0, per_page: int | None = 60):
+    def get_schemes(self, scope: str | None = None, page: int | None = None, per_page: int | None = None):
         """Get the schemes.
 
-        scope: Limit the results returned to the provided scope, either ``team`` or ``channel``.
-        page: The page to select.
-        per_page: The number of schemes per page.
+        scope: Limit the results returned to the provided scope, either ``team`` or ``channel``. Default: ``''`` (applied server-side when omitted)
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of schemes per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (schemes - GetSchemes) <https://developers.mattermost.com/api-documentation/#/operations/GetSchemes>`_
 
@@ -66,12 +66,12 @@ class Schemes(Base):
         __options = {"name": name, "description": description}
         return self.client.put(f"/api/v4/schemes/{scheme_id}/patch", options=__options)
 
-    def get_teams_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_teams_for_scheme(self, scheme_id: str, page: int | None = None, per_page: int | None = None):
         """Get a page of teams which use this scheme.
 
         scheme_id: Scheme GUID
-        page: The page to select.
-        per_page: The number of teams per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of teams per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (schemes - GetTeamsForScheme) <https://developers.mattermost.com/api-documentation/#/operations/GetTeamsForScheme>`_
 
@@ -79,12 +79,12 @@ class Schemes(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get(f"/api/v4/schemes/{scheme_id}/teams", params=__params)
 
-    def get_channels_for_scheme(self, scheme_id: str, page: int | None = 0, per_page: int | None = 60):
+    def get_channels_for_scheme(self, scheme_id: str, page: int | None = None, per_page: int | None = None):
         """Get a page of channels which use this scheme.
 
         scheme_id: Scheme GUID
-        page: The page to select.
-        per_page: The number of channels per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of channels per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (schemes - GetChannelsForScheme) <https://developers.mattermost.com/api-documentation/#/operations/GetChannelsForScheme>`_
 
