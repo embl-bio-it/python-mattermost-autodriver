@@ -119,6 +119,7 @@ class Channels(Base):
         exclude_policy_constrained: bool | None = False,
         include_search_by_id: bool | None = False,
         exclude_remote: bool | None = False,
+        system_console: bool | None = True,
     ):
         """Search all private and open type channels across all teams
 
@@ -160,10 +161,13 @@ class Channels(Base):
         exclude_remote: If set to true, only returns channels that are local to this server.
         *Minimum server version*: 10.2
 
+        system_console: Is the request from system_console. If this is set to true, it filters channels by the logged in user.
+
 
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://developers.mattermost.com/api-documentation/#/operations/SearchAllChannels>`_
 
         """
+        __query_params = {"system_console": system_console}
         __options = {
             "term": term,
             "not_associated_to_group": not_associated_to_group,
@@ -180,7 +184,7 @@ class Channels(Base):
             "include_search_by_id": include_search_by_id,
             "exclude_remote": exclude_remote,
         }
-        return self.client.post("""/api/v4/channels/search""", options=__options)
+        return self.client.post("""/api/v4/channels/search""", params=__query_params, options=__options)
 
     def search_group_channels(self, term: str):
         """Search Group Channels
@@ -510,18 +514,28 @@ class Channels(Base):
         __options = {"user_id": user_id, "user_ids": user_ids, "post_root_id": post_root_id}
         return self.client.post(f"/api/v4/channels/{channel_id}/members", options=__options)
 
-    def set_channel_members(self, channel_id: str, members: list[str], channel_admins: list[str] | None = None):
+    def set_channel_members(
+        self,
+        channel_id: str,
+        members: list[str],
+        channel_admins: list[str] | None = None,
+        batch_size: int | None = 100,
+        batch_delay_ms: int | None = 500,
+    ):
         """Set channel members
 
         channel_id: Channel GUID
         members: User IDs for the desired channel membership. The final membership is the union of ``members`` and ``channel_admins``.
         channel_admins: User IDs that should have the channel admin role. Users listed here are automatically included in the desired membership (they do not need to also appear in ``members``). When null or omitted, existing admin roles are preserved for members who remain in the channel. When present (including empty array), admin roles are set declaratively.
+        batch_size: Number of add/remove operations per batch.
+        batch_delay_ms: Milliseconds to pause between batches, giving the server time to process websocket events and plugin hooks.
 
         `Read in Mattermost API docs (channels - SetChannelMembers) <https://developers.mattermost.com/api-documentation/#/operations/SetChannelMembers>`_
 
         """
+        __query_params = {"batch_size": batch_size, "batch_delay_ms": batch_delay_ms}
         __options = {"members": members, "channel_admins": channel_admins}
-        return self.client.put(f"/api/v4/channels/{channel_id}/members", options=__options)
+        return self.client.put(f"/api/v4/channels/{channel_id}/members", params=__query_params, options=__options)
 
     def get_channel_members_by_ids(self, channel_id: str, options: list[str]):
         """Get channel members by ids

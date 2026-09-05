@@ -14,6 +14,8 @@ class Posts(Base):
         file_ids: list[str] | None = None,
         props: dict[str, Any] | None = None,
         metadata: dict[str, Any] | None = None,
+        set_online: bool | None = None,
+        silent: bool | None = None,
     ):
         """Create a post
 
@@ -23,10 +25,14 @@ class Posts(Base):
         file_ids: A list of file IDs to associate with the post. Note that posts are limited to 5 files maximum. Please use additional posts for more files.
         props: A general JSON property bag to attach to the post
         metadata: A JSON object to add post metadata, e.g the post's priority
+        set_online: Whether to set the user status as online or not.
+        silent: When ``true``, the post is delivered silently: visible in the channel and broadcast over WebSocket, but produces no desktop/push/email notifications, no unread or mention count increments, and no "New Messages" line. Only bot accounts, OAuth apps, incoming webhooks, and plugins may set this; non-integration senders receive HTTP 403. ``force_notification`` overrides ``silent``.
+
 
         `Read in Mattermost API docs (posts - CreatePost) <https://developers.mattermost.com/api-documentation/#/operations/CreatePost>`_
 
         """
+        __query_params = {"set_online": set_online, "silent": silent}
         __options = {
             "channel_id": channel_id,
             "message": message,
@@ -35,7 +41,7 @@ class Posts(Base):
             "props": props,
             "metadata": metadata,
         }
-        return self.client.post("""/api/v4/posts""", options=__options)
+        return self.client.post("""/api/v4/posts""", params=__query_params, options=__options)
 
     def create_post_ephemeral(self, user_id: str, post: dict[str, Any]):
         """Create a ephemeral post

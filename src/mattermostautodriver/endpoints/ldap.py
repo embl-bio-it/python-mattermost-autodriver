@@ -40,12 +40,16 @@ class Ldap(Base):
         """
         return self.client.post("""/api/v4/ldap/test_connection""", options=options)
 
-    def test_ldap_diagnostics(self, options: Any):
+    def test_ldap_diagnostics(self, options: Any, test: str):
         """Test LDAP diagnostics with specific settings
+
+        test: Type of LDAP diagnostic test to run
+
         `Read in Mattermost API docs (ldap - TestLdapDiagnostics) <https://developers.mattermost.com/api-documentation/#/operations/TestLdapDiagnostics>`_
 
         """
-        return self.client.post("""/api/v4/ldap/test_diagnostics""", options=options)
+        __query_params = {"test": test}
+        return self.client.post("""/api/v4/ldap/test_diagnostics""", params=__query_params, options=options)
 
     def get_ldap_groups(self, q: str | None = None, page: int | None = 0, per_page: int | None = 60):
         """Returns a list of LDAP groups

@@ -123,6 +123,8 @@ class Users(Base):
         locale: str | None = None,
         props: dict[str, Any] | None = None,
         notify_props: Any | None = None,
+        t: str | None = None,
+        iid: str | None = None,
     ):
         """Create a user
 
@@ -139,10 +141,13 @@ class Users(Base):
         locale:
         props:
         notify_props:
+        t: Token id from an email invitation
+        iid: Token id from an invitation link
 
         `Read in Mattermost API docs (users - CreateUser) <https://developers.mattermost.com/api-documentation/#/operations/CreateUser>`_
 
         """
+        __query_params = {"t": t, "iid": iid}
         __options = {
             "email": email,
             "username": username,
@@ -158,7 +163,7 @@ class Users(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post("""/api/v4/users""", options=__options)
+        return self.client.post("""/api/v4/users""", params=__query_params, options=__options)
 
     def get_users(
         self,
@@ -266,12 +271,19 @@ class Users(Base):
         """
         return self.client.delete("""/api/v4/users""")
 
-    def get_users_by_ids(self, options: list[str]):
+    def get_users_by_ids(self, options: list[str], since: int | None = None):
         """Get users by ids
+
+        since: Only return users that have been modified since the given Unix timestamp (in milliseconds).
+
+        *Minimum server version*: 5.14
+
+
         `Read in Mattermost API docs (users - GetUsersByIds) <https://developers.mattermost.com/api-documentation/#/operations/GetUsersByIds>`_
 
         """
-        return self.client.post("""/api/v4/users/ids""", options=options)
+        __query_params = {"since": since}
+        return self.client.post("""/api/v4/users/ids""", params=__query_params, options=options)
 
     def get_users_by_group_channel_ids(self, options: list[str]):
         """Get users by group channels ids
@@ -1156,6 +1168,7 @@ class Users(Base):
         position: str | None = None,
         props: dict[str, Any] | None = None,
         notify_props: Any | None = None,
+        set_system_admin: bool | None = False,
     ):
         """Convert a bot into a user
 
@@ -1170,10 +1183,12 @@ class Users(Base):
         position:
         props:
         notify_props:
+        set_system_admin: Whether to give the user the system admin role.
 
         `Read in Mattermost API docs (users - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 
         """
+        __query_params = {"set_system_admin": set_system_admin}
         __options = {
             "email": email,
             "username": username,
@@ -1186,7 +1201,7 @@ class Users(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", options=__options)
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", params=__query_params, options=__options)
 
     def get_server_limits(self):
         """Gets the server limits for the server

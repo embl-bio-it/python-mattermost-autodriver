@@ -361,6 +361,8 @@ class System(Base):
         log_levels: list[str] | None = None,
         date_from: str | None = None,
         date_to: str | None = None,
+        page: int | None = 0,
+        logs_per_page: str | None = "10000",
     ):
         """Query server logs with filters
 
@@ -370,12 +372,15 @@ class System(Base):
 
         date_to: Inclusive end of the time range. Same format as ``date_from`` (``YYYY-MM-DD HH:MM:SS.mmm ±HH:MM``, e.g. ``2006-01-02 15:04:05.999 -07:00``).
 
+        page: The page to select.
+        logs_per_page: The number of logs per page.
 
         `Read in Mattermost API docs (system - QueryLogs) <https://developers.mattermost.com/api-documentation/#/operations/QueryLogs>`_
 
         """
+        __query_params = {"page": page, "logs_per_page": logs_per_page}
         __options = {"server_names": server_names, "log_levels": log_levels, "date_from": date_from, "date_to": date_to}
-        return self.client.post("""/api/v4/logs/query""", options=__options)
+        return self.client.post("""/api/v4/logs/query""", params=__query_params, options=__options)
 
     def get_analytics_old(self, name: str | None = "standard", team_id: str | None = None):
         """Get analytics
@@ -403,12 +408,16 @@ class System(Base):
         """
         return self.client.get("""/api/v4/system/schema/version""")
 
-    def set_server_busy(self):
+    def set_server_busy(self, seconds: str | None = "3600"):
         """Set the server busy (high load) flag
+
+        seconds: Number of seconds until server is automatically marked as not busy.
+
         `Read in Mattermost API docs (system - SetServerBusy) <https://developers.mattermost.com/api-documentation/#/operations/SetServerBusy>`_
 
         """
-        return self.client.post("""/api/v4/server_busy""")
+        __query_params = {"seconds": seconds}
+        return self.client.post("""/api/v4/server_busy""", params=__query_params)
 
     def get_server_busy_expires(self):
         """Get server busy expiry time.

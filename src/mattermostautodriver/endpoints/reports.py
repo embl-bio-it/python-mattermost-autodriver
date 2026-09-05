@@ -89,12 +89,16 @@ class Reports(Base):
         }
         return self.client.get("""/api/v4/reports/users/count""", params=__params)
 
-    def start_batch_users_export(self):
+    def start_batch_users_export(self, date_range: str | None = "alltime"):
         """Starts a job to export the users to a report file.
+
+        date_range: The date range of the post statistics to display. Must be one of ("last30days", "previousmonth", "last6months", "alltime"). Will default to 'alltime' if the input is not valid.
+
         `Read in Mattermost API docs (reports - StartBatchUsersExport) <https://developers.mattermost.com/api-documentation/#/operations/StartBatchUsersExport>`_
 
         """
-        return self.client.post("""/api/v4/reports/users/export""")
+        __query_params = {"date_range": date_range}
+        return self.client.post("""/api/v4/reports/users/export""", params=__query_params)
 
     def get_posts_for_reporting(
         self,

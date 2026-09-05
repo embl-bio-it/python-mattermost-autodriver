@@ -68,6 +68,8 @@ known_double_arguments = (
     ("update_user_status", "user_id"),
     ("add_team_member", "team_id"),
     ("convert_group_message_to_channel", "channel_id"),
+    # channel_id may be sent as a multipart form field and/or a query parameter
+    ("upload_file", "channel_id"),
 )
 
 
@@ -204,14 +206,6 @@ def get_locations(tags):
     return [x.replace(" ", "_") for x in tags]
 
 
-def get_payload_params_or_properties(data, request_type):
-    if request_type in ("get", "head"):
-        return get_parameters(data.get("parameters", []), "query")
-    else:
-        req_body = data.get("requestBody", {})
-        return get_requestbody_parameters(req_body, request_type)
-
-
 def get_link_to_api_docs(tag, operation):
     return (
         f"\n        `Read in Mattermost API docs ({tag} - {operation}) "
@@ -252,14 +246,24 @@ def json_to_ast(api):
             else:
                 raise ValueError(f">>> 'operationId' {operation_id} generated non-unique function {function_name}")
 
-            # In GET requests we have *query* parameters stored in the parameters object
-            # For other types of request we have *properties* in the requestBody
-            payload_params = get_payload_params_or_properties(rdata, request_type)
+            # Query parameters are the payload of GET/HEAD requests and are sent
+            # via params=. Other request types take their payload (*properties*)
+            # from the requestBody, and any query parameters they declare are
+            # sent via params= in addition to that payload.
+            query_parameters = get_parameters(rdata.get("parameters", []), "query")
+            if request_type in ("get", "head"):
+                payload_params = query_parameters
+                query_params = get_parameters([], "query")
+            else:
+                payload_params = get_requestbody_parameters(rdata.get("requestBody", {}), request_type)
+                query_params = query_parameters
 
             url_parameters = get_parameters(rdata.get("parameters", {}), "path")
 
             docstring = rdata["summary"] + get_descriptions(
-                url_parameters.get("parameters", []) + payload_params.get("parameters", [])
+                url_parameters.get("parameters", [])
+                + payload_params.get("parameters", [])
+                + query_params["parameters"]
             )
 
             req_body = rdata.get("requestBody", {})
@@ -275,9 +279,16 @@ def json_to_ast(api):
                 "put": "options",
             }
 
-            def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type, function_name=function_name)
-            call_kwargs = prepare_call_keywords(payload_params, operations[request_type], req_body_type)
-            data_dicts = prepare_data_dictionaries(payload_params, operations[request_type], req_body_type)
+            def_params = prepare_def_keywords(
+                url_parameters,
+                payload_params,
+                operations[request_type],
+                req_body_type,
+                function_name=function_name,
+                query_params=query_params,
+            )
+            call_kwargs = prepare_call_keywords(payload_params, operations[request_type], req_body_type, query_params)
+            data_dicts = prepare_data_dictionaries(payload_params, operations[request_type], req_body_type, query_params)
 
             for loc in locations:
                 # NOTE tags in the original OpenAPI specification use a combination of
@@ -357,7 +368,7 @@ def generate_type_annotation(schema, required, binary):
         return annotation
 
 
-def prepare_call_keywords(payload_params, operation_arg, req_body_type):
+def prepare_call_keywords(payload_params, operation_arg, req_body_type, query_params):
     """Convert url parameters to function call arguments
 
     e.g. func(arg1, arg2=...)
@@ -367,6 +378,15 @@ def prepare_call_keywords(payload_params, operation_arg, req_body_type):
     kwargs = []
 
     params = payload_params.get("parameters", [])
+
+    if query_params["parameters"]:
+        if operation_arg == "params" and req_body_type is not None:
+            # e.g. a DELETE with both a request body (sent as params=) and
+            # query parameters - both would target params= and clash
+            raise NotImplementedError(
+                "Endpoint declares both a request body sent via params= and query parameters"
+            )
+        kwargs.append(ast.keyword(arg="params", value=ast.Name("__query_params")))
 
     if req_body_type == "multipart/form-data" and payload_params["binary"]:
         kwargs.append(ast.keyword(arg="files", value=ast.Name(f"__files")))
@@ -393,7 +413,7 @@ def prepare_call_keywords(payload_params, operation_arg, req_body_type):
     return kwargs
 
 
-def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_type, function_name):
+def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_type, function_name, query_params):
     """Convert url parameters to function arguments
 
     e.g. def func(arg1, arg2=...):
@@ -433,6 +453,8 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
             Parameter(f"data", "", payload_params["required"], None, None, None, payload_params["schema"])
         )
 
+    request_params += query_params["parameters"]
+
     # Ensure params without default values come first
     request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
 
@@ -454,7 +476,7 @@ def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_typ
     return {"args": args, "defaults": kwargs}
 
 
-def prepare_data_dictionaries(payload_params, operation_arg, req_body_type):
+def prepare_data_dictionaries(payload_params, operation_arg, req_body_type, query_params):
     def create_dict(name, params):
         def escape_name(name):
             if iskeyword(name):
@@ -471,6 +493,9 @@ def prepare_data_dictionaries(payload_params, operation_arg, req_body_type):
         )
 
     dicts = []
+
+    if query_params["parameters"]:
+        dicts.append(create_dict("query_params", query_params["parameters"]))
 
     params = payload_params.get("parameters", [])
     binary_params = [param for param in params if param.format == "binary"]

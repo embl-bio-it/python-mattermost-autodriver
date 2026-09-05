@@ -91,15 +91,17 @@ class Teams(Base):
         }
         return self.client.put(f"/api/v4/teams/{team_id}", options=__options)
 
-    def soft_delete_team(self, team_id: str):
+    def soft_delete_team(self, team_id: str, permanent: bool | None = False):
         """Delete a team
 
         team_id: Team GUID
+        permanent: Permanently delete the team, to be used for compliance reasons only. As of server version 5.0, ``ServiceSettings.EnableAPITeamDeletion`` must be set to ``true`` in the server's configuration.
 
         `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://developers.mattermost.com/api-documentation/#/operations/SoftDeleteTeam>`_
 
         """
-        return self.client.delete(f"/api/v4/teams/{team_id}")
+        __query_params = {"permanent": permanent}
+        return self.client.delete(f"/api/v4/teams/{team_id}", params=__query_params)
 
     def patch_team(
         self,
@@ -257,22 +259,28 @@ class Teams(Base):
         __options = {"team_id": team_id, "user_id": user_id}
         return self.client.post(f"/api/v4/teams/{team_id}/members", options=__options)
 
-    def add_team_member_from_invite(self):
+    def add_team_member_from_invite(self, token: str):
         """Add user to team from invite
+
+        token: Token id from the invitation
+
         `Read in Mattermost API docs (teams - AddTeamMemberFromInvite) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamMemberFromInvite>`_
 
         """
-        return self.client.post("""/api/v4/teams/members/invite""")
+        __query_params = {"token": token}
+        return self.client.post("""/api/v4/teams/members/invite""", params=__query_params)
 
-    def add_team_members(self, team_id: str, options: list[Any]):
+    def add_team_members(self, team_id: str, options: list[Any], graceful: bool | None = None):
         """Add multiple users to team
 
         team_id: Team GUID
+        graceful: Instead of aborting the operation if a user cannot be added, return an arrray that will contain both the success and added members and the ones with error, in form of ``[{"member": {...}, "user_id", "...", "error": {...}}]``
 
         `Read in Mattermost API docs (teams - AddTeamMembers) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamMembers>`_
 
         """
-        return self.client.post(f"/api/v4/teams/{team_id}/members/batch", options=options)
+        __query_params = {"graceful": graceful}
+        return self.client.post(f"/api/v4/teams/{team_id}/members/batch", params=__query_params, options=options)
 
     def get_team_members_for_user(self, user_id: str):
         """Get team members for a user
@@ -441,29 +449,44 @@ class Teams(Base):
         """
         return self.client.get(f"/api/v4/users/{user_id}/teams/{team_id}/unread")
 
-    def invite_users_to_team(self, team_id: str, options: Any):
+    def invite_users_to_team(self, team_id: str, options: Any, graceful: bool | None = None):
         """Invite users to the team by email
 
         team_id: Team GUID
+        graceful: When provided with a non-empty value, returns an array with both successful invites and errors instead of aborting on the first error. Required when using ``profiles``.
 
         `Read in Mattermost API docs (teams - InviteUsersToTeam) <https://developers.mattermost.com/api-documentation/#/operations/InviteUsersToTeam>`_
 
         """
-        return self.client.post(f"/api/v4/teams/{team_id}/invite/email", options=options)
+        __query_params = {"graceful": graceful}
+        return self.client.post(f"/api/v4/teams/{team_id}/invite/email", params=__query_params, options=options)
 
-    def invite_guests_to_team(self, team_id: str, emails: list[str], channels: list[str], message: str | None = None):
+    def invite_guests_to_team(
+        self,
+        team_id: str,
+        emails: list[str],
+        channels: list[str],
+        message: str | None = None,
+        graceful: bool | None = None,
+        guest_magic_link: bool | None = None,
+    ):
         """Invite guests to the team by email
 
         team_id: Team GUID
         emails: List of emails
         channels: List of channel ids
         message: Message to include in the invite
+        graceful: If true, returns an array with both successful invites and errors instead of aborting on first error.
+        guest_magic_link: If true, invites guests with magic link (passwordless) authentication. Requires guest magic link feature to be enabled.
 
         `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://developers.mattermost.com/api-documentation/#/operations/InviteGuestsToTeam>`_
 
         """
+        __query_params = {"graceful": graceful, "guest_magic_link": guest_magic_link}
         __options = {"emails": emails, "channels": channels, "message": message}
-        return self.client.post(f"/api/v4/teams/{team_id}/invite-guests/email", options=__options)
+        return self.client.post(
+            f"/api/v4/teams/{team_id}/invite-guests/email", params=__query_params, options=__options
+        )
 
     def invalidate_email_invites(self):
         """Invalidate active email invitations

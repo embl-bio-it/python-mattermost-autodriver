@@ -1,9 +1,24 @@
-Unreleased
-""""""""""
+11.10.0
+"""""""
 
 Code
 ''''
 
+- **Backwards incompatible:** Endpoints using HTTP methods other than
+  ``GET``/``HEAD`` now expose their query parameters too. Previously the
+  endpoint generator only extracted query parameters for ``GET``/``HEAD``
+  requests, silently dropping them for e.g. ``POST`` endpoints, which made it
+  impossible to use the affected parameters at all. 21 operations gain new
+  arguments, such as ``set_online``/``silent`` on ``posts.create_post``,
+  ``permanent`` on ``teams.soft_delete_team`` and ``t``/``iid`` on
+  ``users.create_user``. Query parameters that the API specification marks as
+  required become required positional arguments placed *before* the request
+  payload, changing the signature of the outgoing OAuth connection methods
+  (``create``/``update``/``validate``/``delete_outgoing_o_auth_connection``
+  gain a leading ``team_id``), ``ldap.test_ldap_diagnostics`` (``test``),
+  ``teams.add_team_member_from_invite`` (``token``) and
+  ``plugins.install_plugin_from_url`` (``plugin_download_url``). Update
+  positional calls to these methods accordingly.
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
   ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
