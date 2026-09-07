@@ -314,18 +314,27 @@ class PlaybookRuns(Base):
         """
         return self.client.delete(f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}")
 
-    def item_set_state(self, id: str, checklist: int, item: int, new_state: str = ""):
+    def item_set_state(
+        self, id: str, checklist: int, item: int, new_state: str = "", requirement_values: dict[str, Any] | None = None
+    ):
         """Update the state of an item
 
         id: ID of the playbook run whose checklist will be modified.
         checklist: Zero-based index of the checklist to modify.
         item: Zero-based index of the item to modify.
         new_state: The new state of the item.
+        requirement_values: Optional map of requirement ID to filled value. When the task requirements
+        beta feature is enabled and the item has requirements, closing the item
+        requires every requirement to have a non-empty value (either already stored
+        on the item or supplied here). Clients that cannot collect requirement
+        values (for example mobile, until supported) will receive 400 when trying
+        to close such items.
+
 
         `Read in Mattermost API docs (playbook_runs - itemSetState) <https://developers.mattermost.com/api-documentation/#/operations/itemSetState>`_
 
         """
-        __options = {"new_state": new_state}
+        __options = {"new_state": new_state, "requirement_values": requirement_values}
         return self.client.put(
             f"/plugins/playbooks/api/v0/runs/{id}/checklists/{checklist}/item/{item}/state", options=__options
         )

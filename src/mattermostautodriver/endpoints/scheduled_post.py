@@ -14,6 +14,8 @@ class ScheduledPost(Base):
         root_id: str | None = None,
         file_ids: list[Any] | None = None,
         props: dict[str, Any] | None = None,
+        repeat_type: str | None = None,
+        repeat_timezone: str | None = None,
     ):
         """Creates a scheduled post
 
@@ -23,6 +25,8 @@ class ScheduledPost(Base):
         root_id: The post ID to comment on
         file_ids: A list of file IDs to associate with the post. Note that posts are limited to 5 files maximum. Please use additional posts for more files.
         props: A general JSON property bag to attach to the post
+        repeat_type: Set to ``weekly`` for a recurring weekly schedule, or omit for a one-time schedule
+        repeat_timezone: IANA timezone for weekly recurrence; required when ``repeat_type`` is ``weekly``
 
         `Read in Mattermost API docs (scheduled_post - CreateScheduledPost) <https://developers.mattermost.com/api-documentation/#/operations/CreateScheduledPost>`_
 
@@ -34,6 +38,8 @@ class ScheduledPost(Base):
             "root_id": root_id,
             "file_ids": file_ids,
             "props": props,
+            "repeat_type": repeat_type,
+            "repeat_timezone": repeat_timezone,
         }
         return self.client.post("""/api/v4/posts/schedule""", options=__options)
 
@@ -49,7 +55,15 @@ class ScheduledPost(Base):
         return self.client.get(f"/api/v4/posts/scheduled/team/{team_id}", params=__params)
 
     def update_scheduled_post(
-        self, scheduled_post_id: str, id: str, channel_id: str, user_id: str, scheduled_at: int, message: str
+        self,
+        scheduled_post_id: str,
+        id: str,
+        channel_id: str,
+        user_id: str,
+        scheduled_at: int,
+        message: str,
+        repeat_type: str | None = None,
+        repeat_timezone: str | None = None,
     ):
         """Update a scheduled post
 
@@ -59,6 +73,8 @@ class ScheduledPost(Base):
         user_id: The current user ID
         scheduled_at: UNIX timestamp in milliseconds of the time when the scheduled post should be sent
         message: The message contents, can be formatted with Markdown
+        repeat_type: Set to ``weekly`` for a recurring weekly schedule, or empty for a one-time schedule
+        repeat_timezone: IANA timezone for weekly recurrence; required when ``repeat_type`` is ``weekly``
 
         `Read in Mattermost API docs (scheduled_post - UpdateScheduledPost) <https://developers.mattermost.com/api-documentation/#/operations/UpdateScheduledPost>`_
 
@@ -69,6 +85,8 @@ class ScheduledPost(Base):
             "user_id": user_id,
             "scheduled_at": scheduled_at,
             "message": message,
+            "repeat_type": repeat_type,
+            "repeat_timezone": repeat_timezone,
         }
         return self.client.put(f"/api/v4/posts/schedule/{scheduled_post_id}", options=__options)
 

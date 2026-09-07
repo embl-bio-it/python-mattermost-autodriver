@@ -31,6 +31,13 @@ class Recaps(Base):
         __params = {"page": page, "per_page": per_page}
         return self.client.get("""/api/v4/recaps""", params=__params)
 
+    def get_recap_limit_status(self):
+        """Get recap limit status for the current user
+        `Read in Mattermost API docs (recaps - GetRecapLimitStatus) <https://developers.mattermost.com/api-documentation/#/operations/GetRecapLimitStatus>`_
+
+        """
+        return self.client.get("""/api/v4/recaps/limit_status""")
+
     def mark_recaps_as_viewed(self):
         """Mark all of the authenticated user's finished recaps as viewed
         `Read in Mattermost API docs (recaps - MarkRecapsAsViewed) <https://developers.mattermost.com/api-documentation/#/operations/MarkRecapsAsViewed>`_

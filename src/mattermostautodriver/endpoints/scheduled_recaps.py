@@ -1,89 +1,10 @@
 from ._base import Base, FileType
 from typing import Any
 
-__all__ = ["Ai"]
+__all__ = ["ScheduledRecaps"]
 
 
-class Ai(Base):
-
-    def create_recap(self, title: str, channel_ids: list[str], agent_id: str):
-        """Create a channel recap
-
-        title: Title for the recap
-        channel_ids: List of channel IDs to include in the recap
-        agent_id: ID of the AI agent to use for generating the recap
-
-        `Read in Mattermost API docs (ai - CreateRecap) <https://developers.mattermost.com/api-documentation/#/operations/CreateRecap>`_
-
-        """
-        __options = {"title": title, "channel_ids": channel_ids, "agent_id": agent_id}
-        return self.client.post("""/api/v4/recaps""", options=__options)
-
-    def get_recaps_for_user(self, page: int | None = 0, per_page: int | None = 60):
-        """Get current user's recaps
-
-        page: The page to select.
-        per_page: The number of recaps per page.
-
-        `Read in Mattermost API docs (ai - GetRecapsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetRecapsForUser>`_
-
-        """
-        __params = {"page": page, "per_page": per_page}
-        return self.client.get("""/api/v4/recaps""", params=__params)
-
-    def get_recap_limit_status(self):
-        """Get recap limit status for the current user
-        `Read in Mattermost API docs (ai - GetRecapLimitStatus) <https://developers.mattermost.com/api-documentation/#/operations/GetRecapLimitStatus>`_
-
-        """
-        return self.client.get("""/api/v4/recaps/limit_status""")
-
-    def mark_recaps_as_viewed(self):
-        """Mark all of the authenticated user's finished recaps as viewed
-        `Read in Mattermost API docs (ai - MarkRecapsAsViewed) <https://developers.mattermost.com/api-documentation/#/operations/MarkRecapsAsViewed>`_
-
-        """
-        return self.client.post("""/api/v4/recaps/mark_viewed""")
-
-    def get_recap(self, recap_id: str):
-        """Get a specific recap
-
-        recap_id: Recap GUID
-
-        `Read in Mattermost API docs (ai - GetRecap) <https://developers.mattermost.com/api-documentation/#/operations/GetRecap>`_
-
-        """
-        return self.client.get(f"/api/v4/recaps/{recap_id}")
-
-    def delete_recap(self, recap_id: str):
-        """Delete a recap
-
-        recap_id: Recap GUID
-
-        `Read in Mattermost API docs (ai - DeleteRecap) <https://developers.mattermost.com/api-documentation/#/operations/DeleteRecap>`_
-
-        """
-        return self.client.delete(f"/api/v4/recaps/{recap_id}")
-
-    def mark_recap_as_read(self, recap_id: str):
-        """Mark a recap as read
-
-        recap_id: Recap GUID
-
-        `Read in Mattermost API docs (ai - MarkRecapAsRead) <https://developers.mattermost.com/api-documentation/#/operations/MarkRecapAsRead>`_
-
-        """
-        return self.client.post(f"/api/v4/recaps/{recap_id}/read")
-
-    def regenerate_recap(self, recap_id: str):
-        """Regenerate a recap
-
-        recap_id: Recap GUID
-
-        `Read in Mattermost API docs (ai - RegenerateRecap) <https://developers.mattermost.com/api-documentation/#/operations/RegenerateRecap>`_
-
-        """
-        return self.client.post(f"/api/v4/recaps/{recap_id}/regenerate")
+class ScheduledRecaps(Base):
 
     def create_scheduled_recap(
         self,
@@ -112,7 +33,7 @@ class Ai(Base):
         agent_id: ID of the AI agent to use for generating the recap
         is_recurring: Whether the recap runs on a recurring schedule or just once
 
-        `Read in Mattermost API docs (ai - CreateScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/CreateScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - CreateScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/CreateScheduledRecap>`_
 
         """
         __options = {
@@ -135,7 +56,7 @@ class Ai(Base):
         page: The page to select.
         per_page: The number of scheduled recaps per page.
 
-        `Read in Mattermost API docs (ai - GetScheduledRecaps) <https://developers.mattermost.com/api-documentation/#/operations/GetScheduledRecaps>`_
+        `Read in Mattermost API docs (scheduled_recaps - GetScheduledRecaps) <https://developers.mattermost.com/api-documentation/#/operations/GetScheduledRecaps>`_
 
         """
         __params = {"page": page, "per_page": per_page}
@@ -146,7 +67,7 @@ class Ai(Base):
 
         scheduled_recap_id: Scheduled Recap GUID
 
-        `Read in Mattermost API docs (ai - GetScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/GetScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - GetScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/GetScheduledRecap>`_
 
         """
         return self.client.get(f"/api/v4/scheduled_recaps/{scheduled_recap_id}")
@@ -182,7 +103,7 @@ class Ai(Base):
         is_recurring: Whether the recap runs on a recurring schedule or just once
         enabled: Whether the scheduled recap is active
 
-        `Read in Mattermost API docs (ai - UpdateScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/UpdateScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - UpdateScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/UpdateScheduledRecap>`_
 
         """
         __options = {
@@ -205,7 +126,7 @@ class Ai(Base):
 
         scheduled_recap_id: Scheduled Recap GUID
 
-        `Read in Mattermost API docs (ai - DeleteScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/DeleteScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - DeleteScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/DeleteScheduledRecap>`_
 
         """
         return self.client.delete(f"/api/v4/scheduled_recaps/{scheduled_recap_id}")
@@ -215,7 +136,7 @@ class Ai(Base):
 
         scheduled_recap_id: Scheduled Recap GUID
 
-        `Read in Mattermost API docs (ai - PauseScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/PauseScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - PauseScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/PauseScheduledRecap>`_
 
         """
         return self.client.post(f"/api/v4/scheduled_recaps/{scheduled_recap_id}/pause")
@@ -225,7 +146,7 @@ class Ai(Base):
 
         scheduled_recap_id: Scheduled Recap GUID
 
-        `Read in Mattermost API docs (ai - ResumeScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/ResumeScheduledRecap>`_
+        `Read in Mattermost API docs (scheduled_recaps - ResumeScheduledRecap) <https://developers.mattermost.com/api-documentation/#/operations/ResumeScheduledRecap>`_
 
         """
         return self.client.post(f"/api/v4/scheduled_recaps/{scheduled_recap_id}/resume")

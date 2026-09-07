@@ -34,10 +34,3 @@ class Reactions(Base):
 
         """
         return self.client.delete(f"/api/v4/users/{user_id}/posts/{post_id}/reactions/{emoji_name}")
-
-    def get_bulk_reactions(self, options: list[str]):
-        """Bulk get the reaction for posts
-        `Read in Mattermost API docs (reactions - GetBulkReactions) <https://developers.mattermost.com/api-documentation/#/operations/GetBulkReactions>`_
-
-        """
-        return self.client.post("""/api/v4/posts/ids/reactions""", options=options)

@@ -55,6 +55,7 @@ from ..endpoints.roles import Roles
 from ..endpoints.root import Root
 from ..endpoints.saml import Saml
 from ..endpoints.scheduled_post import ScheduledPost
+from ..endpoints.scheduled_recaps import ScheduledRecaps
 from ..endpoints.schemes import Schemes
 from ..endpoints.search import Search
 from ..endpoints.shared_channels import SharedChannels
@@ -130,6 +131,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.root = Root(self.client)
         self.saml = Saml(self.client)
         self.scheduled_post = ScheduledPost(self.client)
+        self.scheduled_recaps = ScheduledRecaps(self.client)
         self.schemes = Schemes(self.client)
         self.search = Search(self.client)
         self.shared_channels = SharedChannels(self.client)

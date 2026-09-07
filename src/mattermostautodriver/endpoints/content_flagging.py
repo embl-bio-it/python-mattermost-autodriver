@@ -131,3 +131,13 @@ class ContentFlagging(Base):
         """
         __options = {"comment": comment}
         return self.client.post(f"/api/v4/content_flagging/post/{post_id}/report", options=__options)
+
+    def generate_cf_post_exposure_report(self, post_id: str):
+        """Generate and download a post exposure report
+
+        post_id: The ID of the flagged post to generate the exposure report for
+
+        `Read in Mattermost API docs (content_flagging - GenerateCFPostExposureReport) <https://developers.mattermost.com/api-documentation/#/operations/GenerateCFPostExposureReport>`_
+
+        """
+        return self.client.post(f"/api/v4/content_flagging/post/{post_id}/exposure_report")

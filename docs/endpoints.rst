@@ -441,6 +441,14 @@ Scheduled Post
     :undoc-members:
     :show-inheritance:
 
+Scheduled Recaps
+----------------
+
+.. automodule:: mattermostautodriver.endpoints.scheduled_recaps
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Schemes
 -------
 
