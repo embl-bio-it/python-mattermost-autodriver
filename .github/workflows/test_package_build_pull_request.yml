@@ -20,7 +20,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Install dependencies
+        pip install build twine -r requirements-dev.txt
+    - name: Build a source tarball and a binary wheel from it
       run: |
-        pip install .
+        python -m build
+    - name: Check distribution metadata
+      run: |
+        twine check --strict dist/*
+    - name: Install the built wheel
+      run: |
+        pip install dist/*.whl
+    - name: Run the test suite against the installed wheel
+      # Run from outside the checkout so the source tree cannot shadow the
+      # installed package and packaging mistakes (e.g. a module missing from
+      # the wheel) are caught
+      working-directory: ${{ runner.temp }}
+      run: pytest "$GITHUB_WORKSPACE/tests"

@@ -12,10 +12,9 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+.post[0-9]+'
 
 jobs:
-  build-n-publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI
+  build:
+    name: Build Python 🐍 distributions 📦
     runs-on: ubuntu-latest
-    environment: pypi-deployment
     steps:
       - uses: actions/checkout@v6
       - name: "Set up Python 3.12"
@@ -25,10 +24,66 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-      - name: Build a binary wheel and a source tarball
+          pip install build twine
+      - name: Build a source tarball and a binary wheel from it
         run: |
-          python setup.py sdist bdist_wheel
+          python -m build
+      - name: Check distribution metadata
+        run: |
+          twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  test:
+    name: Test the built wheel
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Install the built wheel and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install dist/*.whl
+      - name: Run the test suite against the installed wheel
+        # Run from outside the checkout so the source tree cannot shadow the
+        # installed package. Exactly what we are about to publish is tested.
+        working-directory: ${{ runner.temp }}
+        run: pytest "$GITHUB_WORKSPACE/tests"
+
+  publish:
+    name: Publish to PyPI
+    needs: test
+    runs-on: ubuntu-latest
+    environment: pypi-deployment
+    steps:
+      - name: "Set up Python 3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Install twine
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine
       - name: Publish to pypi
         env:
           TWINE_USERNAME: __token__

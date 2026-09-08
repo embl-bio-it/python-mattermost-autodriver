@@ -98,6 +98,18 @@ jobs:
         run: |
           sed -i 's/full_version =.*/full_version = "${{ steps.version_check.outputs.tag }}"/' src/mattermostautodriver/version.py
 
+      - name: Verify the regenerated package before releasing it
+        if: steps.version_check.outputs.version != ''
+        run: |
+          source .venv/bin/activate
+          pip install -r requirements-dev.txt
+          pip install .
+          # Run from outside the checkout so the installed package is tested,
+          # not the source tree. A broken generator run stops here instead of
+          # being committed, tagged and published.
+          cd "$RUNNER_TEMP"
+          pytest "$GITHUB_WORKSPACE/tests"
+
       - name: Commit endpoint changes and tag new version
         if: steps.version_check.outputs.version != ''
         run: |
