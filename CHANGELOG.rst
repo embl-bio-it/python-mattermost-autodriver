@@ -1,4 +1,4 @@
-11.10.0
+11.11.0
 """""""
 
 Code
@@ -45,7 +45,9 @@ Code
   HTTP 400.
 - Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
   the ``FileType`` definition, which made all endpoint modules fail to import.
-  This broke the 11.10.0 and 11.10.1 packages originally published to PyPI.
+  This broke the 11.10.0 and 11.10.1 packages published to PyPI, which have
+  been yanked. This release is the first working package since 11.9.0 and
+  contains every change listed here.
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
   ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
@@ -78,6 +80,10 @@ Maintenance
 - Fix websocket heartbeat task leak on reconnect (@lizakoch)
 - Add a pytest based test suite for the HTTP client and run it on pull
   requests in CI.
+- Guard against publishing an unusable package: the test suite now imports
+  every module and constructs the drivers, pull requests and the release
+  workflow run it against the built wheel, and the automated release
+  check verifies the regenerated package before tagging it.
 
 11.8.1
 """"""
