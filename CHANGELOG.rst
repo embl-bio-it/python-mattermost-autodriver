@@ -38,6 +38,11 @@ Code
   server always rejected, making the methods unusable without passing it
   explicitly, and ``new_state`` on ``playbook_runs.item_set_state`` sent an
   empty string.
+- Endpoints declaring a JSON request body now send an empty object (``{}``)
+  when all their optional body parameters are left out, instead of sending no
+  body at all. Several endpoints (e.g.
+  ``saml.reset_saml_auth_data_to_email``) reject a bodiless request with
+  HTTP 400.
 - Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
   the ``FileType`` definition, which made all endpoint modules fail to import.
   This broke the 11.10.0 and 11.10.1 packages originally published to PyPI.
