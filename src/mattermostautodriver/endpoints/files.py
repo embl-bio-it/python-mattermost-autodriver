@@ -18,16 +18,15 @@ class Files(Base):
         files: A file to be uploaded
         channel_id: The ID of the channel that this file will be uploaded to
         client_ids: A unique identifier for the file that will be returned in the response
-        channel_id: The ID of the channel that this file will be uploaded to
         filename: The name of the file to be uploaded
 
         `Read in Mattermost API docs (files - UploadFile) <https://developers.mattermost.com/api-documentation/#/operations/UploadFile>`_
 
         """
-        __query_params = {"channel_id": channel_id, "filename": filename}
+        __params = {"channel_id": channel_id, "filename": filename}
         __files = {"files": files}
         __data = {"channel_id": channel_id, "client_ids": client_ids}
-        return self.client.post("""/api/v4/files""", params=__query_params, files=__files, data=__data)
+        return self.client.post("""/api/v4/files""", params=__params, files=__files, data=__data)
 
     def get_file(self, file_id: str):
         """Get a file

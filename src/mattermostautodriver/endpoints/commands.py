@@ -25,7 +25,9 @@ class Commands(Base):
 
         team_id: The team id.
         custom_only: To get only the custom commands. If set to false will get the custom
-        if the user have access plus the system commands, otherwise just the system commands. Default: ``False`` (applied server-side when omitted)
+        if the user have access plus the system commands, otherwise just the system commands.
+
+        Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (commands - ListCommands) <https://developers.mattermost.com/api-documentation/#/operations/ListCommands>`_
 

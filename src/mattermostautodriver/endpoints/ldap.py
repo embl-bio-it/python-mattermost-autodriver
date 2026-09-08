@@ -48,8 +48,8 @@ class Ldap(Base):
         `Read in Mattermost API docs (ldap - TestLdapDiagnostics) <https://developers.mattermost.com/api-documentation/#/operations/TestLdapDiagnostics>`_
 
         """
-        __query_params = {"test": test}
-        return self.client.post("""/api/v4/ldap/test_diagnostics""", params=__query_params, options=options)
+        __params = {"test": test}
+        return self.client.post("""/api/v4/ldap/test_diagnostics""", params=__params, options=options)
 
     def get_ldap_groups(self, q: str | None = None, page: int | None = None, per_page: int | None = None):
         """Returns a list of LDAP groups

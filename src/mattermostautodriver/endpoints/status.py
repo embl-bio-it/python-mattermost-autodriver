@@ -20,7 +20,6 @@ class Status(Base):
         """Update user status
 
         user_id: User ID
-        user_id: User ID
         status: User status, can be ``online``, ``away``, ``offline`` and ``dnd``
         dnd_end_time: Time in epoch seconds at which a dnd status would be unset.
 

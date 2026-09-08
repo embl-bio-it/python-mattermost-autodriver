@@ -147,7 +147,7 @@ class Users(Base):
         `Read in Mattermost API docs (users - CreateUser) <https://developers.mattermost.com/api-documentation/#/operations/CreateUser>`_
 
         """
-        __query_params = {"t": t, "iid": iid}
+        __params = {"t": t, "iid": iid}
         __options = {
             "email": email,
             "username": username,
@@ -163,7 +163,7 @@ class Users(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post("""/api/v4/users""", params=__query_params, options=__options)
+        return self.client.post("""/api/v4/users""", params=__params, options=__options)
 
     def get_users(
         self,
@@ -282,8 +282,8 @@ class Users(Base):
         `Read in Mattermost API docs (users - GetUsersByIds) <https://developers.mattermost.com/api-documentation/#/operations/GetUsersByIds>`_
 
         """
-        __query_params = {"since": since}
-        return self.client.post("""/api/v4/users/ids""", params=__query_params, options=options)
+        __params = {"since": since}
+        return self.client.post("""/api/v4/users/ids""", params=__params, options=options)
 
     def get_users_by_group_channel_ids(self, options: list[str]):
         """Get users by group channels ids
@@ -325,7 +325,9 @@ class Users(Base):
         without_team: Set this to ``true`` if you would like to search for users that are not on a team. This option takes precendence over ``team_id``, ``in_channel_id``, and ``not_in_channel_id``.
         limit: The maximum number of users to return in the results
 
-        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.* Default: ``100`` (applied server-side when omitted)
+        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.*
+
+        Default: ``100`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - SearchUsers) <https://developers.mattermost.com/api-documentation/#/operations/SearchUsers>`_
 
@@ -354,7 +356,9 @@ class Users(Base):
         name: Username, nickname first name or last name
         limit: The maximum number of users to return in each subresult
 
-        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.* Default: ``100`` (applied server-side when omitted)
+        *Available as of server version 5.6. Defaults to ``100`` if not provided or on an earlier server version.*
+
+        Default: ``100`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (users - AutocompleteUsers) <https://developers.mattermost.com/api-documentation/#/operations/AutocompleteUsers>`_
 
@@ -1186,7 +1190,7 @@ class Users(Base):
         `Read in Mattermost API docs (users - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 
         """
-        __query_params = {"set_system_admin": set_system_admin}
+        __params = {"set_system_admin": set_system_admin}
         __options = {
             "email": email,
             "username": username,
@@ -1199,7 +1203,7 @@ class Users(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", params=__query_params, options=__options)
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", params=__params, options=__options)
 
     def get_server_limits(self):
         """Gets the server limits for the server

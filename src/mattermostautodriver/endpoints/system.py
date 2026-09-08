@@ -187,10 +187,14 @@ class System(Base):
 
         remove_masked: Remove masked values from the exported configuration.
 
-        *Minimum server version*: 10.4.0 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 10.4.0
+
+        Default: ``False`` (applied server-side when omitted)
         remove_defaults: Remove default values from the exported configuration.
 
-        *Minimum server version*: 10.4.0 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 10.4.0
+
+        Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (system - GetConfig) <https://developers.mattermost.com/api-documentation/#/operations/GetConfig>`_
 
@@ -376,9 +380,9 @@ class System(Base):
         `Read in Mattermost API docs (system - QueryLogs) <https://developers.mattermost.com/api-documentation/#/operations/QueryLogs>`_
 
         """
-        __query_params = {"page": page, "logs_per_page": logs_per_page}
+        __params = {"page": page, "logs_per_page": logs_per_page}
         __options = {"server_names": server_names, "log_levels": log_levels, "date_from": date_from, "date_to": date_to}
-        return self.client.post("""/api/v4/logs/query""", params=__query_params, options=__options)
+        return self.client.post("""/api/v4/logs/query""", params=__params, options=__options)
 
     def get_analytics_old(self, name: str | None = None, team_id: str | None = None):
         """Get analytics
@@ -414,8 +418,8 @@ class System(Base):
         `Read in Mattermost API docs (system - SetServerBusy) <https://developers.mattermost.com/api-documentation/#/operations/SetServerBusy>`_
 
         """
-        __query_params = {"seconds": seconds}
-        return self.client.post("""/api/v4/server_busy""", params=__query_params)
+        __params = {"seconds": seconds}
+        return self.client.post("""/api/v4/server_busy""", params=__params)
 
     def get_server_busy_expires(self):
         """Get server busy expiry time.

@@ -32,7 +32,7 @@ class Posts(Base):
         `Read in Mattermost API docs (posts - CreatePost) <https://developers.mattermost.com/api-documentation/#/operations/CreatePost>`_
 
         """
-        __query_params = {"set_online": set_online, "silent": silent}
+        __params = {"set_online": set_online, "silent": silent}
         __options = {
             "channel_id": channel_id,
             "message": message,
@@ -41,7 +41,7 @@ class Posts(Base):
             "props": props,
             "metadata": metadata,
         }
-        return self.client.post("""/api/v4/posts""", params=__query_params, options=__options)
+        return self.client.post("""/api/v4/posts""", params=__params, options=__options)
 
     def create_post_ephemeral(self, user_id: str, post: dict[str, Any]):
         """Create a ephemeral post

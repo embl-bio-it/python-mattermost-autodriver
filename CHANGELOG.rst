@@ -26,16 +26,18 @@ Code
   default to ``None`` and are left out of the request entirely, letting the
   server-side default take effect (previously e.g. ``users.get_users()``
   always sent ``page=0&per_page=60`` explicitly). The documented server-side
-  defaults are noted in the method docstrings instead. Four parameters that
-  the specification marks as required while also carrying a default are now
+  defaults are noted in the method docstrings instead. Parameters that the
+  specification marks as required while also carrying a default are now
   required positional arguments; the server rejects requests without them
   with HTTP 400, so their previous optional appearance was cosmetic:
-  ``limit`` on the access control policy listings only worked because the
-  driver silently sent the specification's value, and ``group_ids`` on
+  ``limit`` on the access control policy listings (which also moved before
+  the optional ``after`` - update positional calls) only worked because the
+  driver silently sent the specification's value, ``group_ids`` on
   ``teams.team_members_minus_group_members`` /
   ``channels.channel_members_minus_group_members`` sent an empty string the
   server always rejected, making the methods unusable without passing it
-  explicitly.
+  explicitly, and ``new_state`` on ``playbook_runs.item_set_state`` sent an
+  empty string.
 - Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
   the ``FileType`` definition, which made all endpoint modules fail to import.
   This broke the 11.10.0 and 11.10.1 packages originally published to PyPI.
@@ -60,6 +62,10 @@ Documentation
 '''''''''''''
 
 - Document the automatic retry behavior and the ``TooManyRequests`` exception.
+- Remove duplicated parameter entries from the docstrings of methods that
+  accept the same value in more than one request location
+  (``files.upload_file``, ``status.update_user_status``,
+  ``teams.add_team_member`` and ``channels.convert_group_message_to_channel``).
 
 Maintenance
 '''''''''''

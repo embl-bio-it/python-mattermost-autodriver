@@ -32,7 +32,9 @@ class Teams(Base):
         per_page: The number of teams per page. Default: ``60`` (applied server-side when omitted)
         include_total_count: Appends a total count of returned teams inside the response object - ex: ``{ "teams": [], "total_count" : 0 }``. Default: ``False`` (applied server-side when omitted)
         exclude_policy_constrained: If set to true, teams which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
-        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 5.35
+
+        Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - GetAllTeams) <https://developers.mattermost.com/api-documentation/#/operations/GetAllTeams>`_
 
@@ -100,8 +102,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - SoftDeleteTeam) <https://developers.mattermost.com/api-documentation/#/operations/SoftDeleteTeam>`_
 
         """
-        __query_params = {"permanent": permanent}
-        return self.client.delete(f"/api/v4/teams/{team_id}", params=__query_params)
+        __params = {"permanent": permanent}
+        return self.client.delete(f"/api/v4/teams/{team_id}", params=__params)
 
     def patch_team(
         self,
@@ -188,7 +190,9 @@ class Teams(Base):
         *Minimum server version*: 5.28
 
         exclude_policy_constrained: If set to true, only teams which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
-        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 5.35
+
+        Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (teams - SearchTeams) <https://developers.mattermost.com/api-documentation/#/operations/SearchTeams>`_
 
@@ -249,7 +253,6 @@ class Teams(Base):
         """Add user to team
 
         team_id: Team GUID
-        team_id:
         user_id:
 
         `Read in Mattermost API docs (teams - AddTeamMember) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamMember>`_
@@ -266,8 +269,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - AddTeamMemberFromInvite) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamMemberFromInvite>`_
 
         """
-        __query_params = {"token": token}
-        return self.client.post("""/api/v4/teams/members/invite""", params=__query_params)
+        __params = {"token": token}
+        return self.client.post("""/api/v4/teams/members/invite""", params=__params)
 
     def add_team_members(self, team_id: str, options: list[Any], graceful: bool | None = None):
         """Add multiple users to team
@@ -278,8 +281,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - AddTeamMembers) <https://developers.mattermost.com/api-documentation/#/operations/AddTeamMembers>`_
 
         """
-        __query_params = {"graceful": graceful}
-        return self.client.post(f"/api/v4/teams/{team_id}/members/batch", params=__query_params, options=options)
+        __params = {"graceful": graceful}
+        return self.client.post(f"/api/v4/teams/{team_id}/members/batch", params=__params, options=options)
 
     def get_team_members_for_user(self, user_id: str):
         """Get team members for a user
@@ -455,8 +458,8 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - InviteUsersToTeam) <https://developers.mattermost.com/api-documentation/#/operations/InviteUsersToTeam>`_
 
         """
-        __query_params = {"graceful": graceful}
-        return self.client.post(f"/api/v4/teams/{team_id}/invite/email", params=__query_params, options=options)
+        __params = {"graceful": graceful}
+        return self.client.post(f"/api/v4/teams/{team_id}/invite/email", params=__params, options=options)
 
     def invite_guests_to_team(
         self,
@@ -479,11 +482,9 @@ class Teams(Base):
         `Read in Mattermost API docs (teams - InviteGuestsToTeam) <https://developers.mattermost.com/api-documentation/#/operations/InviteGuestsToTeam>`_
 
         """
-        __query_params = {"graceful": graceful, "guest_magic_link": guest_magic_link}
+        __params = {"graceful": graceful, "guest_magic_link": guest_magic_link}
         __options = {"emails": emails, "channels": channels, "message": message}
-        return self.client.post(
-            f"/api/v4/teams/{team_id}/invite-guests/email", params=__query_params, options=__options
-        )
+        return self.client.post(f"/api/v4/teams/{team_id}/invite-guests/email", params=__params, options=__options)
 
     def invalidate_email_invites(self):
         """Invalidate active email invitations

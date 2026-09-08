@@ -25,8 +25,8 @@ class Oauth(Base):
         `Read in Mattermost API docs (oauth - CreateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/CreateOutgoingOAuthConnection>`_
 
         """
-        __query_params = {"team_id": team_id}
-        return self.client.post("""/api/v4/oauth/outgoing_connections""", params=__query_params, options=options)
+        __params = {"team_id": team_id}
+        return self.client.post("""/api/v4/oauth/outgoing_connections""", params=__params, options=options)
 
     def get_outgoing_o_auth_connection(self, outgoing_oauth_connection_id: str, team_id: str):
         """Get a connection
@@ -51,9 +51,9 @@ class Oauth(Base):
         `Read in Mattermost API docs (oauth - UpdateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/UpdateOutgoingOAuthConnection>`_
 
         """
-        __query_params = {"team_id": team_id}
+        __params = {"team_id": team_id}
         return self.client.put(
-            f"/api/v4/oauth/outgoing_connections/{outgoing_oauth_connection_id}", params=__query_params, options=options
+            f"/api/v4/oauth/outgoing_connections/{outgoing_oauth_connection_id}", params=__params, options=options
         )
 
     def delete_outgoing_o_auth_connection(self, outgoing_oauth_connection_id: str, team_id: str):
@@ -65,10 +65,8 @@ class Oauth(Base):
         `Read in Mattermost API docs (oauth - DeleteOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/DeleteOutgoingOAuthConnection>`_
 
         """
-        __query_params = {"team_id": team_id}
-        return self.client.delete(
-            f"/api/v4/oauth/outgoing_connections/{outgoing_oauth_connection_id}", params=__query_params
-        )
+        __params = {"team_id": team_id}
+        return self.client.delete(f"/api/v4/oauth/outgoing_connections/{outgoing_oauth_connection_id}", params=__params)
 
     def validate_outgoing_o_auth_connection(self, team_id: str, options: Any | None = None):
         """Validate a connection configuration
@@ -78,7 +76,5 @@ class Oauth(Base):
         `Read in Mattermost API docs (oauth - ValidateOutgoingOAuthConnection) <https://developers.mattermost.com/api-documentation/#/operations/ValidateOutgoingOAuthConnection>`_
 
         """
-        __query_params = {"team_id": team_id}
-        return self.client.post(
-            """/api/v4/oauth/outgoing_connections/validate""", params=__query_params, options=options
-        )
+        __params = {"team_id": team_id}
+        return self.client.post("""/api/v4/oauth/outgoing_connections/validate""", params=__params, options=options)

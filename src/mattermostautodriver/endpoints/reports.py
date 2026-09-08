@@ -97,8 +97,8 @@ class Reports(Base):
         `Read in Mattermost API docs (reports - StartBatchUsersExport) <https://developers.mattermost.com/api-documentation/#/operations/StartBatchUsersExport>`_
 
         """
-        __query_params = {"date_range": date_range}
-        return self.client.post("""/api/v4/reports/users/export""", params=__query_params)
+        __params = {"date_range": date_range}
+        return self.client.post("""/api/v4/reports/users/export""", params=__params)
 
     def get_posts_for_reporting(
         self,

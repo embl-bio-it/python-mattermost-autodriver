@@ -146,7 +146,7 @@ class Bots(Base):
         `Read in Mattermost API docs (bots - ConvertBotToUser) <https://developers.mattermost.com/api-documentation/#/operations/ConvertBotToUser>`_
 
         """
-        __query_params = {"set_system_admin": set_system_admin}
+        __params = {"set_system_admin": set_system_admin}
         __options = {
             "email": email,
             "username": username,
@@ -159,4 +159,4 @@ class Bots(Base):
             "props": props,
             "notify_props": notify_props,
         }
-        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", params=__query_params, options=__options)
+        return self.client.post(f"/api/v4/bots/{bot_user_id}/convert_to_user", params=__params, options=__options)

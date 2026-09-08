@@ -36,7 +36,9 @@ class Channels(Base):
         include_deleted: Include channels that have been archived. This correlates to the ``DeleteAt`` flag being set in the database. Default: ``False`` (applied server-side when omitted)
         include_total_count: Appends a total count of returned channels inside the response object - ex: ``{ "channels": [], "total_count" : 0 }``. Default: ``False`` (applied server-side when omitted)
         exclude_policy_constrained: If set to true, channels which are part of a data retention policy will be excluded. The ``sysconsole_read_compliance`` permission is required to use this parameter.
-        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 5.35
+
+        Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - GetAllChannels) <https://developers.mattermost.com/api-documentation/#/operations/GetAllChannels>`_
 
@@ -153,17 +155,23 @@ class Channels(Base):
         page: The page number to return, if paginated. If this parameter is not present with the ``per_page`` parameter then the results will be returned un-paged.
         per_page: The number of entries to return per page, if paginated. If this parameter is not present with the ``page`` parameter then the results will be returned un-paged.
         exclude_policy_constrained: If set to true, only channels which do not have a granular retention policy assigned to them will be returned. The ``sysconsole_read_compliance_data_retention`` permission is required to use this parameter.
-        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 5.35
+
+        Default: ``False`` (applied server-side when omitted)
         include_search_by_id: If set to true, returns channels where given search 'term' matches channel ID.
-        *Minimum server version*: 5.35 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 5.35
+
+        Default: ``False`` (applied server-side when omitted)
         exclude_remote: If set to true, only returns channels that are local to this server.
-        *Minimum server version*: 10.2 Default: ``False`` (applied server-side when omitted)
+        *Minimum server version*: 10.2
+
+        Default: ``False`` (applied server-side when omitted)
         system_console: Is the request from system_console. If this is set to true, it filters channels by the logged in user. Default: ``True`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (channels - SearchAllChannels) <https://developers.mattermost.com/api-documentation/#/operations/SearchAllChannels>`_
 
         """
-        __query_params = {"system_console": system_console}
+        __params = {"system_console": system_console}
         __options = {
             "term": term,
             "not_associated_to_group": not_associated_to_group,
@@ -180,7 +188,7 @@ class Channels(Base):
             "include_search_by_id": include_search_by_id,
             "exclude_remote": exclude_remote,
         }
-        return self.client.post("""/api/v4/channels/search""", params=__query_params, options=__options)
+        return self.client.post("""/api/v4/channels/search""", params=__params, options=__options)
 
     def search_group_channels(self, term: str):
         """Search Group Channels
@@ -527,9 +535,9 @@ class Channels(Base):
         `Read in Mattermost API docs (channels - SetChannelMembers) <https://developers.mattermost.com/api-documentation/#/operations/SetChannelMembers>`_
 
         """
-        __query_params = {"batch_size": batch_size, "batch_delay_ms": batch_delay_ms}
+        __params = {"batch_size": batch_size, "batch_delay_ms": batch_delay_ms}
         __options = {"members": members, "channel_admins": channel_admins}
-        return self.client.put(f"/api/v4/channels/{channel_id}/members", params=__query_params, options=__options)
+        return self.client.put(f"/api/v4/channels/{channel_id}/members", params=__params, options=__options)
 
     def get_channel_members_by_ids(self, channel_id: str, options: list[str]):
         """Get channel members by ids
@@ -874,7 +882,6 @@ class Channels(Base):
         """Convert group message to private channel
 
         channel_id: Group message channel ID
-        channel_id:
         team_id:
 
         `Read in Mattermost API docs (channels - ConvertGroupMessageToChannel) <https://developers.mattermost.com/api-documentation/#/operations/ConvertGroupMessageToChannel>`_

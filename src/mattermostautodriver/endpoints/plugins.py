@@ -35,8 +35,8 @@ class Plugins(Base):
         `Read in Mattermost API docs (plugins - InstallPluginFromUrl) <https://developers.mattermost.com/api-documentation/#/operations/InstallPluginFromUrl>`_
 
         """
-        __query_params = {"plugin_download_url": plugin_download_url, "force": force}
-        return self.client.post("""/api/v4/plugins/install_from_url""", params=__query_params)
+        __params = {"plugin_download_url": plugin_download_url, "force": force}
+        return self.client.post("""/api/v4/plugins/install_from_url""", params=__params)
 
     def remove_plugin(self, plugin_id: str):
         """Remove plugin
