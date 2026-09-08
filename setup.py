@@ -22,6 +22,7 @@ setup(
     version=full_version,
     description='A Python Mattermost Auto Driver',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     url='https://github.com/embl-bio-it/python-mattermost-autodriver',
     author='Renato Alves, Christian Plümer',
     author_email='bio-it@embl.de, github@kuuku.net',
