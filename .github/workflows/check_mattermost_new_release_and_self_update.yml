@@ -38,7 +38,9 @@ jobs:
 
           MM_VERSION="${LATEST_TAG#v}"
 
-          OUR_TAG="$(git tag | sort -V | tail -n 1)"
+          # Ignore PEP 440 post-release suffixes (e.g. 11.10.1.post1) so a
+          # republished package still counts as its Mattermost version
+          OUR_TAG="$(git tag | sed -E 's/\.post[0-9]+$//' | sort -V | tail -n 1)"
           if [ -z "$OUR_TAG" ]; then
             echo "No tags found"
             exit 1
