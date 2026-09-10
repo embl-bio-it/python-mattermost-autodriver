@@ -7,12 +7,16 @@ __all__ = ["Jobs"]
 class Jobs(Base):
 
     def get_jobs(
-        self, page: int | None = 0, per_page: int | None = 5, job_type: str | None = None, status: str | None = None
+        self,
+        page: int | None = None,
+        per_page: int | None = None,
+        job_type: str | None = None,
+        status: str | None = None,
     ):
         """Get the jobs.
 
-        page: The page to select.
-        per_page: The number of jobs per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of jobs per page. Default: ``5`` (applied server-side when omitted)
         job_type: The type of jobs to fetch.
         status: The status of jobs to fetch.
 
@@ -65,15 +69,15 @@ class Jobs(Base):
         return self.client.post(f"/api/v4/jobs/{job_id}/cancel")
 
     def get_jobs_by_type(
-        self, job_type: str, team_id: str | None = None, page: int | None = 0, per_page: int | None = 60
+        self, job_type: str, team_id: str | None = None, page: int | None = None, per_page: int | None = None
     ):
         """Get the jobs of the given type.
 
         job_type: Job type
         team_id: Optional team GUID. When set, the server returns jobs of the given ``job_type`` whose job data includes this ``team_id`` (see server filtering). For ``access_control_sync``, team admins with ``manage_team_access_rules`` on this team may use this parameter to read team-scoped jobs without ``manage_system``.
 
-        page: The page to select.
-        per_page: The number of jobs per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of jobs per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (jobs - GetJobsByType) <https://developers.mattermost.com/api-documentation/#/operations/GetJobsByType>`_
 

@@ -16,7 +16,7 @@ with open("endpoints.rst", "w") as fh:
     fh.write("Endpoints\n=========\n")
 
     for endpoint in sorted(os.listdir("../src/mattermostautodriver/endpoints/")):
-        if endpoint.startswith("_"):
+        if endpoint.startswith("_") or not endpoint.endswith(".py"):
             continue
 
         name = os.path.splitext(endpoint)[0]

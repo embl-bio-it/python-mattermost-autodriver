@@ -11,6 +11,22 @@ async def test_successful_json_response_is_returned():
     assert await client.get("/users/me") == {"id": "me"}
 
 
+async def test_all_none_json_body_is_sent_as_empty_object():
+    # Endpoints declaring a JSON request body reject a request without any
+    # body, so a body whose optional values were all left out must still be
+    # transmitted as {}
+    seen = {}
+
+    def handler(request):
+        seen["content"] = request.content
+        return httpx.Response(200, json={})
+
+    client = make_async_client(handler)
+    await client.post("/endpoint", options={"include_deleted": None, "dry_run": None})
+
+    assert seen["content"] == b"{}"
+
+
 async def test_429_raises_too_many_requests():
     client = make_async_client(lambda request: rate_limit_response({"Retry-After": "7"}))
 

@@ -11,20 +11,20 @@ class Search(Base):
         team_id: str,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search files in a team
 
         team_id: Team GUID
         terms: The search terms as inputed by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (search - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 
@@ -43,19 +43,19 @@ class Search(Base):
         self,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search files across the teams of the current user
 
         terms: The search terms as entered by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (search - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 

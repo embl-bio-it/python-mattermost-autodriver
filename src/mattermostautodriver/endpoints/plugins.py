@@ -26,12 +26,17 @@ class Plugins(Base):
         """
         return self.client.get("""/api/v4/plugins""")
 
-    def install_plugin_from_url(self):
+    def install_plugin_from_url(self, plugin_download_url: str, force: str | None = None):
         """Install plugin from url
+
+        plugin_download_url: URL used to download the plugin
+        force: Set to 'true' to overwrite a previously installed plugin with the same ID, if any
+
         `Read in Mattermost API docs (plugins - InstallPluginFromUrl) <https://developers.mattermost.com/api-documentation/#/operations/InstallPluginFromUrl>`_
 
         """
-        return self.client.post("""/api/v4/plugins/install_from_url""")
+        __params = {"plugin_download_url": plugin_download_url, "force": force}
+        return self.client.post("""/api/v4/plugins/install_from_url""", params=__params)
 
     def remove_plugin(self, plugin_id: str):
         """Remove plugin

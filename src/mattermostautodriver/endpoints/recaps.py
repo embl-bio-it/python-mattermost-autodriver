@@ -19,11 +19,11 @@ class Recaps(Base):
         __options = {"title": title, "channel_ids": channel_ids, "agent_id": agent_id}
         return self.client.post("""/api/v4/recaps""", options=__options)
 
-    def get_recaps_for_user(self, page: int | None = 0, per_page: int | None = 60):
+    def get_recaps_for_user(self, page: int | None = None, per_page: int | None = None):
         """Get current user's recaps
 
-        page: The page to select.
-        per_page: The number of recaps per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of recaps per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (recaps - GetRecapsForUser) <https://developers.mattermost.com/api-documentation/#/operations/GetRecapsForUser>`_
 

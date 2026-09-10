@@ -6,19 +6,27 @@ __all__ = ["Files"]
 
 class Files(Base):
 
-    def upload_file(self, files: FileType | None = None, channel_id: str | None = None, client_ids: str | None = None):
+    def upload_file(
+        self,
+        files: FileType | None = None,
+        channel_id: str | None = None,
+        client_ids: str | None = None,
+        filename: str | None = None,
+    ):
         """Upload a file
 
         files: A file to be uploaded
         channel_id: The ID of the channel that this file will be uploaded to
         client_ids: A unique identifier for the file that will be returned in the response
+        filename: The name of the file to be uploaded
 
         `Read in Mattermost API docs (files - UploadFile) <https://developers.mattermost.com/api-documentation/#/operations/UploadFile>`_
 
         """
+        __params = {"channel_id": channel_id, "filename": filename}
         __files = {"files": files}
         __data = {"channel_id": channel_id, "client_ids": client_ids}
-        return self.client.post("""/api/v4/files""", files=__files, data=__data)
+        return self.client.post("""/api/v4/files""", params=__params, files=__files, data=__data)
 
     def get_file(self, file_id: str):
         """Get a file
@@ -129,20 +137,20 @@ class Files(Base):
         team_id: str,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search files in a team
 
         team_id: Team GUID
         terms: The search terms as inputed by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (files - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 
@@ -161,19 +169,19 @@ class Files(Base):
         self,
         terms: str,
         is_or_search: bool,
-        time_zone_offset: int | None = 0,
+        time_zone_offset: int | None = None,
         include_deleted_channels: bool | None = None,
-        page: int | None = 0,
-        per_page: int | None = 60,
+        page: int | None = None,
+        per_page: int | None = None,
     ):
         """Search files across the teams of the current user
 
         terms: The search terms as entered by the user. To search for files from a user include ``from:someusername``, using a user's username. To search in a specific channel include ``in:somechannel``, using the channel name (not the display name). To search for specific extensions include ``ext:extension``.
         is_or_search: Set to true if an Or search should be performed vs an And search.
-        time_zone_offset: Offset from UTC of user timezone for date searches.
+        time_zone_offset: Offset from UTC of user timezone for date searches. Default: ``0`` (applied server-side when omitted)
         include_deleted_channels: Set to true if deleted channels should be included in the search. (archived channels)
-        page: The page to select. (Only works with Elasticsearch)
-        per_page: The number of posts per page. (Only works with Elasticsearch)
+        page: The page to select. (Only works with Elasticsearch) Default: ``0`` (applied server-side when omitted)
+        per_page: The number of posts per page. (Only works with Elasticsearch) Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (files - SearchFiles) <https://developers.mattermost.com/api-documentation/#/operations/SearchFiles>`_
 

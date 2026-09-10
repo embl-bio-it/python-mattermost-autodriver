@@ -43,10 +43,10 @@ class ScheduledPost(Base):
         }
         return self.client.post("""/api/v4/posts/schedule""", options=__options)
 
-    def get_user_scheduled_posts(self, includeDirectChannels: bool | None = False):
+    def get_user_scheduled_posts(self, includeDirectChannels: bool | None = None):
         """Gets all scheduled posts for a user for the specified team..
 
-        includeDirectChannels: Whether to include scheduled posts from DMs an GMs or not. Default is false
+        includeDirectChannels: Whether to include scheduled posts from DMs an GMs or not. Default is false Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (scheduled_post - GetUserScheduledPosts) <https://developers.mattermost.com/api-documentation/#/operations/GetUserScheduledPosts>`_
 

@@ -20,7 +20,6 @@ class GroupMessage(Base):
         """Convert group message to private channel
 
         channel_id: Group message channel ID
-        channel_id:
         team_id:
 
         `Read in Mattermost API docs (group_message - ConvertGroupMessageToChannel) <https://developers.mattermost.com/api-documentation/#/operations/ConvertGroupMessageToChannel>`_

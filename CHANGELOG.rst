@@ -1,9 +1,53 @@
-Unreleased
-""""""""""
+11.11.0
+"""""""
 
 Code
 ''''
 
+- **Backwards incompatible:** Endpoints using HTTP methods other than
+  ``GET``/``HEAD`` now expose their query parameters too. Previously the
+  endpoint generator only extracted query parameters for ``GET``/``HEAD``
+  requests, silently dropping them for e.g. ``POST`` endpoints, which made it
+  impossible to use the affected parameters at all. 21 operations gain new
+  arguments, such as ``set_online``/``silent`` on ``posts.create_post``,
+  ``permanent`` on ``teams.soft_delete_team`` and ``t``/``iid`` on
+  ``users.create_user``. Query parameters that the API specification marks as
+  required become required positional arguments placed *before* the request
+  payload, changing the signature of the outgoing OAuth connection methods
+  (``create``/``update``/``validate``/``delete_outgoing_o_auth_connection``
+  gain a leading ``team_id``), ``ldap.test_ldap_diagnostics`` (``test``),
+  ``teams.add_team_member_from_invite`` (``token``) and
+  ``plugins.install_plugin_from_url`` (``plugin_download_url``). Update
+  positional calls to these methods accordingly.
+- **Backwards incompatible:** Parameter defaults from the API specification
+  are no longer baked into the generated method signatures and transmitted
+  with every request. In OpenAPI a ``default`` documents the value the
+  *server* applies when a parameter is omitted, so optional parameters now
+  default to ``None`` and are left out of the request entirely, letting the
+  server-side default take effect (previously e.g. ``users.get_users()``
+  always sent ``page=0&per_page=60`` explicitly). The documented server-side
+  defaults are noted in the method docstrings instead. Parameters that the
+  specification marks as required while also carrying a default are now
+  required positional arguments; the server rejects requests without them
+  with HTTP 400, so their previous optional appearance was cosmetic:
+  ``limit`` on the access control policy listings (which also moved before
+  the optional ``after`` - update positional calls) only worked because the
+  driver silently sent the specification's value, ``group_ids`` on
+  ``teams.team_members_minus_group_members`` /
+  ``channels.channel_members_minus_group_members`` sent an empty string the
+  server always rejected, making the methods unusable without passing it
+  explicitly, and ``new_state`` on ``playbook_runs.item_set_state`` sent an
+  empty string.
+- Endpoints declaring a JSON request body now send an empty object (``{}``)
+  when all their optional body parameters are left out, instead of sending no
+  body at all. Several endpoints (e.g.
+  ``saml.reset_saml_auth_data_to_email``) reject a bodiless request with
+  HTTP 400.
+- Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
+  the ``FileType`` definition, which made all endpoint modules fail to import.
+  This broke the 11.10.0 and 11.10.1 packages published to PyPI, which have
+  been yanked. This release is the first working package since 11.9.0 and
+  contains every change listed here.
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
   ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
@@ -25,6 +69,10 @@ Documentation
 '''''''''''''
 
 - Document the automatic retry behavior and the ``TooManyRequests`` exception.
+- Remove duplicated parameter entries from the docstrings of methods that
+  accept the same value in more than one request location
+  (``files.upload_file``, ``status.update_user_status``,
+  ``teams.add_team_member`` and ``channels.convert_group_message_to_channel``).
 
 Maintenance
 '''''''''''
@@ -32,6 +80,10 @@ Maintenance
 - Fix websocket heartbeat task leak on reconnect (@lizakoch)
 - Add a pytest based test suite for the HTTP client and run it on pull
   requests in CI.
+- Guard against publishing an unusable package: the test suite now imports
+  every module and constructs the drivers, pull requests and the release
+  workflow run it against the built wheel, and the automated release
+  check verifies the regenerated package before tagging it.
 
 11.8.1
 """"""

@@ -51,10 +51,36 @@ from keyword import iskeyword
 # type = "string", "integer", "boolean" and in some payloads, "array" and "object"
 # default = a default value, usually an integer
 # format = "binary" for upload fields, "int64" for some numeric fields
+# placement = where the value is sent on the wire: "url" for path
+#             interpolation, otherwise the client keyword whose dictionary
+#             carries it ("params", "options", "data" or "files")
+# passthrough = the value is passed to the client keyword directly instead of
+#               being wrapped in a dictionary (catch-all request bodies)
 Parameter = namedtuple(
     "Parameter",
-    ["name", "description", "required", "type", "default", "format", "schema"],
+    ["name", "description", "required", "type", "default", "format", "schema", "placement", "passthrough"],
+    defaults=(False,),
 )
+
+# A function argument: one or more same-named parameters merged across all
+# the placements the value is sent to (see collect_arguments)
+Argument = namedtuple(
+    "Argument",
+    ["name", "description", "required", "type", "default", "format", "schema", "placements", "passthrough"],
+)
+
+# Client keywords whose parameters are collected into dictionaries, in the
+# order the dictionaries are built and passed to the client
+placement_keywords = ("params", "files", "data", "options")
+
+
+def escape_name(name):
+    # Python keywords cannot be used as argument names
+    return name + "_" if iskeyword(name) else name
+
+
+def placed_arguments(arguments, keyword, passthrough=False):
+    return [arg for arg in arguments if keyword in arg.placements and arg.passthrough == passthrough]
 
 
 ast_template = """
@@ -68,6 +94,8 @@ known_double_arguments = (
     ("update_user_status", "user_id"),
     ("add_team_member", "team_id"),
     ("convert_group_message_to_channel", "channel_id"),
+    # channel_id may be sent as a multipart form field and/or a query parameter
+    ("upload_file", "channel_id"),
 )
 
 
@@ -76,32 +104,24 @@ def load_json(filepath="mattermost/api/openapi.json"):
         return json.loads(fh.read())
 
 
-def get_parameters(params, key):
-    output = {
-        "description": "",
-        "parameters": [],
-        "required": False,
-        "schema": None,
-    }
-
-    for param in params:
-        if param["in"] == key:
-            output["parameters"].append(
-                Parameter(
-                    param["name"],
-                    param.get("description", ""),
-                    param.get("required", False),
-                    param["schema"]["type"],
-                    param["schema"].get("default", None),
-                    param["schema"].get("format", None),
-                    param["schema"],
-                )
-            )
-
-    return output
+def get_parameters(params, key, placement):
+    return [
+        Parameter(
+            param["name"],
+            param.get("description", ""),
+            param.get("required", False),
+            param["schema"]["type"],
+            param["schema"].get("default", None),
+            param["schema"].get("format", None),
+            param["schema"],
+            placement,
+        )
+        for param in params
+        if param["in"] == key
+    ]
 
 
-def get_properties(schema):
+def get_properties(schema, placement, binary_placement=None):
     props = schema.get("properties", {})
     required = schema.get("required", [])
 
@@ -114,6 +134,7 @@ def get_properties(schema):
             values.get("default", None),
             values.get("format", None),
             values,
+            binary_placement if binary_placement and values.get("format") == "binary" else placement,
         )
         for prop, values in props.items()
     ]
@@ -133,14 +154,32 @@ def get_descriptions(params):
             .replace("__", "*")  # Convert emphasis
         )
 
-    return (
-        "\n\n" + "\n".join([f"{doc_pad}{par.name}: {fix_docstr(par.description)}" for par in params]) + f"\n{doc_pad}"
-    )
+    def describe(par):
+        description = fix_docstr(par.description)
+        # Defaults from the API specification document what the server
+        # applies when the parameter is omitted - they are not sent by us
+        if par.default is not None and not par.required:
+            note = f"Default: ``{par.default!r}`` (applied server-side when omitted)"
+            if not description.strip():
+                description = note
+            elif "\n" in description.strip():
+                # Multi-line descriptions get the note as a separate paragraph
+                # so it doesn't run into whatever the last line happens to be
+                # (often standalone markup like *Minimum server version*: X)
+                description = f"{description.rstrip()}\n\n{doc_pad}{note}"
+            else:
+                description = f"{description.strip()} {note}"
+        return f"{doc_pad}{par.name}: {description}"
+
+    return "\n\n" + "\n".join([describe(par) for par in params]) + f"\n{doc_pad}"
 
 
-def parse_req_body(req_body_type, schema):
-    if req_body_type in ("application/json", "multipart/form-data"):
-        return get_properties(schema)
+def parse_req_body(req_body_type, schema, placement):
+    if req_body_type == "application/json":
+        return get_properties(schema, placement)
+    elif req_body_type == "multipart/form-data":
+        # Binary properties are uploaded as files, the rest as form data
+        return get_properties(schema, placement, binary_placement="files")
     elif req_body_type == "application/x-www-form-urlencoded":
         return []
     else:
@@ -161,11 +200,10 @@ def get_request_body_type(body):
     if len(content_types) == 0:
         raise ValueError(f"Request body has no content types after filtering: {body}")
 
-
     return content_types[0]
 
 
-def get_requestbody_parameters(body, request_type):
+def get_requestbody_parameters(body, placement):
     # requestBody can have 3 types "application/json", "multipart/form-data" or "application/x-www-form-urlencoded"
     # - if "application/json" the options= attribute should be used. It will be sent as JSON
     # - if "application/x-www-form-urlencoded" the data= attribute should be used and a dictionary passed. It will be sent as URL encoded arguments
@@ -185,16 +223,13 @@ def get_requestbody_parameters(body, request_type):
 
     req_body_type = get_request_body_type(body)
 
-    parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"])
-
-    binary = [param for param in parameters if param.format == "binary"]
+    parameters = parse_req_body(req_body_type, body["content"][req_body_type]["schema"], placement)
 
     return {
         "description": body.get("description", ""),
         "parameters": parameters,
         "schema": body["content"][req_body_type]["schema"],
         "required": body.get("required", False),
-        "binary": binary,
     }
 
 
@@ -204,12 +239,43 @@ def get_locations(tags):
     return [x.replace(" ", "_") for x in tags]
 
 
-def get_payload_params_or_properties(data, request_type):
-    if request_type in ("get", "head"):
-        return get_parameters(data.get("parameters", []), "query")
-    else:
-        req_body = data.get("requestBody", {})
-        return get_requestbody_parameters(req_body, request_type)
+def collect_arguments(parameters, function_name):
+    """Merge same-named parameters into single function arguments
+
+    Some API endpoints take the same value in more than one location (e.g. in
+    the URL and repeated in the payload). Such parameters must be explicitly
+    listed in known_double_arguments and become a single function argument
+    whose value is sent to every placement.
+    """
+    arguments = {}
+
+    for param in parameters:
+        if param.name not in arguments:
+            fields = param._asdict()
+            fields["placements"] = (fields.pop("placement"),)
+            arguments[param.name] = Argument(**fields)
+            continue
+
+        if (function_name, param.name) not in known_double_arguments:
+            raise ValueError(f"Saw parameter {param.name} multiple times in endpoint {function_name}")
+
+        existing = arguments[param.name]
+
+        # A double argument is one value sent to several placements, which
+        # only works if every placement agrees on what that value looks like
+        if (existing.type, existing.format) != (param.type, param.format):
+            raise ValueError(
+                f"Parameter {param.name} in endpoint {function_name} has diverging types across "
+                f"placements: {existing.type}/{existing.format} vs {param.type}/{param.format}"
+            )
+
+        arguments[param.name] = existing._replace(
+            description=existing.description or param.description,
+            required=existing.required or param.required,
+            placements=existing.placements + (param.placement,),
+        )
+
+    return list(arguments.values())
 
 
 def get_link_to_api_docs(tag, operation):
@@ -252,20 +318,9 @@ def json_to_ast(api):
             else:
                 raise ValueError(f">>> 'operationId' {operation_id} generated non-unique function {function_name}")
 
-            # In GET requests we have *query* parameters stored in the parameters object
-            # For other types of request we have *properties* in the requestBody
-            payload_params = get_payload_params_or_properties(rdata, request_type)
-
-            url_parameters = get_parameters(rdata.get("parameters", {}), "path")
-
-            docstring = rdata["summary"] + get_descriptions(
-                url_parameters.get("parameters", []) + payload_params.get("parameters", [])
-            )
-
-            req_body = rdata.get("requestBody", {})
-            req_body_type = get_request_body_type(req_body)
-
-            # For every HTTP action there's a corresponding variable that should be used
+            # For every HTTP action there's a corresponding client keyword
+            # carrying its payload. NOTE for delete this means the payload is
+            # sent as query parameters rather than as a request body.
             operations = {
                 "delete": "params",
                 "get": "params",
@@ -274,10 +329,52 @@ def json_to_ast(api):
                 "post": "options",
                 "put": "options",
             }
+            operation_arg = operations[request_type]
 
-            def_params = prepare_def_keywords(url_parameters, payload_params, operations[request_type], req_body_type, function_name=function_name)
-            call_kwargs = prepare_call_keywords(payload_params, operations[request_type], req_body_type)
-            data_dicts = prepare_data_dictionaries(payload_params, operations[request_type], req_body_type)
+            req_body_type = get_request_body_type(rdata.get("requestBody", {}))
+
+            url_parameters = get_parameters(rdata.get("parameters", []), "path", "url")
+
+            # Query parameters are sent through params= for every request
+            # type; for GET/HEAD requests they are the entire payload
+            query_parameters = get_parameters(rdata.get("parameters", []), "query", "params")
+
+            if request_type in ("get", "head"):
+                payload = {}
+            else:
+                payload_placement = (
+                    "data"
+                    if req_body_type in ("multipart/form-data", "application/x-www-form-urlencoded")
+                    else operation_arg
+                )
+                payload = get_requestbody_parameters(rdata.get("requestBody", {}), payload_placement)
+
+            parameters = url_parameters + payload.get("parameters", [])
+
+            # Request bodies without listed properties become a single
+            # catch-all argument passed straight to the client keyword
+            if payload and not payload["parameters"]:
+                if req_body_type == "application/json" and payload["schema"]:
+                    name = operation_arg
+                elif req_body_type == "application/x-www-form-urlencoded":
+                    name = "data"
+                else:
+                    name = None
+
+                if name is not None:
+                    parameters.append(
+                        Parameter(name, "", payload["required"], None, None, None, payload["schema"], name, True)
+                    )
+
+            arguments = collect_arguments(parameters + query_parameters, function_name)
+
+            docstring = rdata["summary"] + get_descriptions(
+                [argument for argument in arguments if not argument.passthrough]
+            )
+
+            def_params = prepare_def_keywords(arguments)
+            call_kwargs = prepare_call_keywords(arguments)
+            data_dicts = prepare_data_dictionaries(arguments)
 
             for loc in locations:
                 # NOTE tags in the original OpenAPI specification use a combination of
@@ -357,139 +454,77 @@ def generate_type_annotation(schema, required, binary):
         return annotation
 
 
-def prepare_call_keywords(payload_params, operation_arg, req_body_type):
-    """Convert url parameters to function call arguments
+def prepare_call_keywords(arguments):
+    """Convert arguments to client call keywords
 
-    e.g. func(arg1, arg2=...)
+    e.g. self.client.post(url, params=__params, options=__options)
     """
 
-    # Add self to argument list because the function will be part of a class
     kwargs = []
 
-    params = payload_params.get("parameters", [])
+    for keyword in placement_keywords:
+        placed = placed_arguments(arguments, keyword)
+        passthrough = placed_arguments(arguments, keyword, passthrough=True)
 
-    if req_body_type == "multipart/form-data" and payload_params["binary"]:
-        kwargs.append(ast.keyword(arg="files", value=ast.Name(f"__files")))
+        if placed and passthrough:
+            # e.g. a DELETE with both a catch-all request body (sent as
+            # params=) and query parameters - both target the same keyword
+            raise NotImplementedError(
+                f"Both individual parameters and a catch-all payload target the client keyword {keyword}"
+            )
 
-    if req_body_type == "multipart/form-data" and [
-        param for param in payload_params["parameters"] if param.format != "binary"
-    ]:
-        kwargs.append(ast.keyword(arg="data", value=ast.Name(f"__data")))
-    elif req_body_type == "application/x-www-form-urlencoded":
-        if params:
-            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"__data")))
-        else:
-            kwargs.append(ast.keyword(arg="data", value=ast.Name(f"data")))
+        if placed:
+            kwargs.append(ast.keyword(arg=keyword, value=ast.Name(f"__{keyword}")))
 
-    if req_body_type == "application/json":
-        if params:
-            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"__{operation_arg}")))
-        else:
-            kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"{operation_arg}")))
-
-    elif req_body_type is None and payload_params.get("parameters", False):
-        kwargs.append(ast.keyword(arg=operation_arg, value=ast.Name(f"__{operation_arg}")))
+        for argument in passthrough:
+            kwargs.append(ast.keyword(arg=keyword, value=ast.Name(argument.name)))
 
     return kwargs
 
 
-def prepare_def_keywords(url_params, payload_params, operation_arg, req_body_type, function_name):
-    """Convert url parameters to function arguments
+def prepare_def_keywords(arguments):
+    """Convert arguments to a function signature
 
     e.g. def func(arg1, arg2=...):
     """
 
-    def add_param(name, schema, required, binary, default, args, kwargs):
-        if iskeyword(name):
-            name = name + "_"
-        else:
-            name = name
-
-        annotation = generate_type_annotation(schema, required, binary)
-        args.append(ast.arg(arg=name, annotation=annotation))
-
-        if default is not None:
-            kwargs.append(ast.Constant(default))
-        elif required:
-            kwargs.append(None)
-        else:
-            kwargs.append(ast.Constant(default))
-
+    # Add self to argument list because the function will be part of a class
     args = [ast.arg(arg="self")]
     kwargs = []
 
-    request_params = [*url_params["parameters"]]
+    # Ensure required arguments come first
+    for argument in sorted(arguments, key=lambda argument: 0 if argument.required else 1):
+        annotation = generate_type_annotation(argument.schema, argument.required, argument.format == "binary")
+        args.append(ast.arg(arg=escape_name(argument.name), annotation=annotation))
 
-    params = payload_params.get("parameters", [])
-
-    if params:
-        request_params += params
-    elif payload_params and payload_params["schema"] and req_body_type == "application/json":
-        request_params.append(
-            Parameter(f"{operation_arg}", "", payload_params["required"], None, None, None, payload_params["schema"])
-        )
-    elif req_body_type == "application/x-www-form-urlencoded":
-        request_params.append(
-            Parameter(f"data", "", payload_params["required"], None, None, None, payload_params["schema"])
-        )
-
-    # Ensure params without default values come first
-    request_params.sort(key=lambda param: 0 if param.default is None and param.required else 1)
-
-    existing_params = []
-    unique_params = []
-
-    for param in request_params:
-        if param.name in existing_params:
-            # Some API endpoints repeat arguments in the URL and as part of the payload
-            if (function_name, param.name) not in known_double_arguments:
-                raise ValueError(f"Saw parameter {param.name} multiple times in endpoint {function_name}")
-            continue
-        existing_params.append(param.name)
-        unique_params.append(param)
-
-    for param in unique_params:
-        add_param(param.name, param.schema, param.required, param.format == "binary", param.default, args, kwargs)
+        # Defaults from the API specification are deliberately NOT used here:
+        # they describe what the server applies when a parameter is omitted.
+        # Optional parameters default to None, which the client filters out
+        # before sending, so the server-side default always takes effect.
+        if argument.required:
+            kwargs.append(None)
+        else:
+            kwargs.append(ast.Constant(None))
 
     return {"args": args, "defaults": kwargs}
 
 
-def prepare_data_dictionaries(payload_params, operation_arg, req_body_type):
-    def create_dict(name, params):
-        def escape_name(name):
-            if iskeyword(name):
-                return name + "_"
-            else:
-                return name
-
+def prepare_data_dictionaries(arguments):
+    def create_dict(name, placed):
         return ast.Assign(
             targets=[ast.Name(id=f"__{name}", ctx=ast.Store())],
             value=ast.Dict(
-                keys=[ast.Constant(value=param.name) for param in params],
-                values=[ast.Name(id=escape_name(param.name), ctx=ast.Load()) for param in params],
+                keys=[ast.Constant(value=argument.name) for argument in placed],
+                values=[ast.Name(id=escape_name(argument.name), ctx=ast.Load()) for argument in placed],
             ),
         )
 
     dicts = []
 
-    params = payload_params.get("parameters", [])
-    binary_params = [param for param in params if param.format == "binary"]
-    non_binary_params = [param for param in params if param.format != "binary"]
-
-    if binary_params:
-        dicts.append(create_dict("files", binary_params))
-
-    if req_body_type == "application/json" or req_body_type is None:
-        if non_binary_params:
-            dicts.append(create_dict(operation_arg, non_binary_params))
-    elif req_body_type == "multipart/form-data":
-        if non_binary_params:
-            dicts.append(create_dict("data", non_binary_params))
-    elif req_body_type == "application/x-www-form-urlencoded":
-        if params:
-            dicts.append(create_dict("data", params))
-    else:
-        raise NotImplementedError(f"Request body of type '{req_body_type}' is not implemented.")
+    for keyword in placement_keywords:
+        placed = placed_arguments(arguments, keyword)
+        if placed:
+            dicts.append(create_dict(keyword, placed))
 
     return dicts
 

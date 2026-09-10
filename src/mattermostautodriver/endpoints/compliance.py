@@ -13,11 +13,11 @@ class Compliance(Base):
         """
         return self.client.post("""/api/v4/compliance/reports""")
 
-    def get_compliance_reports(self, page: int | None = 0, per_page: int | None = 60):
+    def get_compliance_reports(self, page: int | None = None, per_page: int | None = None):
         """Get reports
 
-        page: The page to select.
-        per_page: The number of reports per page.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of reports per page. Default: ``60`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (compliance - GetComplianceReports) <https://developers.mattermost.com/api-documentation/#/operations/GetComplianceReports>`_
 

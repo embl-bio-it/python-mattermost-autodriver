@@ -169,6 +169,11 @@ class BaseClient:
         if method in ("post", "put"):
             if filtered_options is not None:
                 request_params["json"] = filtered_options
+            elif options is not None:
+                # A declared JSON body whose optional values were all filtered
+                # out is sent as an empty object rather than omitted entirely:
+                # several endpoints reject a request without a body (HTTP 400)
+                request_params["json"] = {}
             if filtered_data is not None:
                 request_params["data"] = filtered_data
             if filtered_files is not None:

@@ -19,12 +19,12 @@ class Emoji(Base):
         __data = {"emoji": emoji}
         return self.client.post("""/api/v4/emoji""", files=__files, data=__data)
 
-    def get_emoji_list(self, page: int | None = 0, per_page: int | None = 60, sort: str | None = ""):
+    def get_emoji_list(self, page: int | None = None, per_page: int | None = None, sort: str | None = None):
         """Get a list of custom emoji
 
-        page: The page to select.
-        per_page: The number of emojis per page.
-        sort: Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7.
+        page: The page to select. Default: ``0`` (applied server-side when omitted)
+        per_page: The number of emojis per page. Default: ``60`` (applied server-side when omitted)
+        sort: Either blank for no sorting or "name" to sort by emoji names. Minimum server version for sorting is 4.7. Default: ``''`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (emoji - GetEmojiList) <https://developers.mattermost.com/api-documentation/#/operations/GetEmojiList>`_
 

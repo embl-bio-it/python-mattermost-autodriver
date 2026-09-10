@@ -9,20 +9,20 @@ class Playbooks(Base):
     def get_playbooks(
         self,
         team_id: str,
-        page: int | None = 0,
-        per_page: int | None = 1000,
-        sort: str | None = "title",
-        direction: str | None = "asc",
-        with_archived: bool | None = False,
+        page: int | None = None,
+        per_page: int | None = None,
+        sort: str | None = None,
+        direction: str | None = None,
+        with_archived: bool | None = None,
     ):
         """List all playbooks
 
         team_id: ID of the team to filter by.
-        page: Zero-based index of the page to request.
-        per_page: Number of playbooks to return per page.
-        sort: Field to sort the returned playbooks by title, number of stages or total number of steps.
-        direction: Direction (ascending or descending) followed by the sorting of the playbooks.
-        with_archived: Includes archived playbooks in the result.
+        page: Zero-based index of the page to request. Default: ``0`` (applied server-side when omitted)
+        per_page: Number of playbooks to return per page. Default: ``1000`` (applied server-side when omitted)
+        sort: Field to sort the returned playbooks by title, number of stages or total number of steps. Default: ``'title'`` (applied server-side when omitted)
+        direction: Direction (ascending or descending) followed by the sorting of the playbooks. Default: ``'asc'`` (applied server-side when omitted)
+        with_archived: Includes archived playbooks in the result. Default: ``False`` (applied server-side when omitted)
 
         `Read in Mattermost API docs (playbooks - getPlaybooks) <https://developers.mattermost.com/api-documentation/#/operations/getPlaybooks>`_
 
