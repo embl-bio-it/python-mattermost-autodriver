@@ -1,9 +1,17 @@
-Unreleased
-""""""""""
+11.10.1.post1
+"""""""""""""
+
+Corrected republication of 11.10.1 for Mattermost 11.10. The 11.10.0 and
+11.10.1 packages published to PyPI could not be imported and have been
+yanked; this release contains everything they were meant to contain plus the
+fix. The changes below are relative to 11.9.0.
 
 Code
 ''''
 
+- Fix regenerating endpoints overwriting ``endpoints/_base.py`` and dropping
+  the ``FileType`` definition, which made all endpoint modules fail to import.
+  This broke the 11.10.0 and 11.10.1 packages published to PyPI.
 - Automatically retry requests that fail due to rate limiting or transient
   errors. HTTP 429 responses are retried for all requests, honoring the
   ``Retry-After`` / ``X-RateLimit-Reset`` headers in their delay-seconds,
@@ -32,6 +40,9 @@ Maintenance
 - Fix websocket heartbeat task leak on reconnect (@lizakoch)
 - Add a pytest based test suite for the HTTP client and run it on pull
   requests in CI.
+- Guard against publishing an unusable package: the test suite now imports
+  every module and constructs the drivers, and pull requests and the
+  release workflow run it against the built wheel before publishing.
 
 11.8.1
 """"""
