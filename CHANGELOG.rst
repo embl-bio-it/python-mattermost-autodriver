@@ -1,3 +1,33 @@
+11.11.1
+"""""""
+
+Code
+''''
+
+- Fix requests failing with HTTP 401 ``Invalid or expired session, please
+  login again`` some hours after a password login. Mattermost attaches its
+  ``MMAUTHTOKEN`` session cookie to the response of e.g. ``posts.create_post``
+  when it extends the session expiry. The underlying HTTPX client stored that
+  cookie and sent it with every later request, where the server prefers it
+  over the ``Authorization`` header and then rejects every non-``GET`` request,
+  including a renewed ``login()``, for lacking a CSRF header. The HTTP client
+  now rejects Mattermost's session cookies (``MMAUTHTOKEN``, ``MMUSERID``,
+  ``MMCSRF``), so requests are always authenticated with the token header.
+  Other cookies, e.g. from load balancers in front of the server, are kept
+  and sent back as before (#47).
+- **Backwards incompatible:** Remove the ``cookies`` attribute from ``Client``
+  and ``AsyncClient``. It was meant to hold the cookies returned by the login
+  request, but Mattermost stopped returning cookies to non-browser clients in
+  version 6.0, so it has been empty ever since. Nothing in the driver read it.
+
+Maintenance
+'''''''''''
+
+- ``logout()`` now clears the stored token, user id and username even when
+  the server rejects the request, e.g. because the session already expired.
+- Add tests ensuring the session cookies are never stored or replayed,
+  covering both clients and the driver login / logout flow.
+
 11.11.0
 """""""
 

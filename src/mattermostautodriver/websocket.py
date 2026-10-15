@@ -122,8 +122,8 @@ class Websocket:
     async def _authenticate_websocket(self, websocket, event_handler):
         """
         Sends a authentication challenge over a websocket.
-        This is not needed when we just send the cookie we got on login
-        when connecting to the websocket.
+        The websocket is authenticated with the login token. The
+        driver does not use session cookies.
         """
         log.debug("Authenticating websocket")
         json_data = json.dumps({"seq": 1, "action": "authentication_challenge", "data": {"token": self._token}})

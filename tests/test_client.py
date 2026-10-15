@@ -6,7 +6,16 @@ from email.utils import format_datetime
 import httpx
 import pytest
 
-from conftest import error_response, make_client, rate_limit_response, sequence_handler
+from conftest import (
+    DRIVER_OPTIONS,
+    error_response,
+    login_handler,
+    make_client,
+    rate_limit_response,
+    sequence_handler,
+    session_cookie_response,
+)
+from mattermostautodriver import TypedDriver
 from mattermostautodriver.client import BaseClient
 from mattermostautodriver.exceptions import (
     ContentTooLarge,
@@ -355,3 +364,59 @@ def test_negative_retry_after_is_clamped_to_zero(sleeps):
     assert client.get("/users/me") == {"ok": 1}
     assert len(calls) == 2
     assert sleeps == [0.0]
+
+
+def test_session_cookies_are_not_stored_or_replayed():
+    # See the cookie jar docstring in client.py for why this matters
+    handler, calls = sequence_handler([session_cookie_response(), httpx.Response(200, json={})])
+    client = make_client(handler)
+    client.token = "tok123"
+
+    client.post("/posts", options={"message": "hi"})
+    client.post("/posts", options={"message": "again"})
+
+    assert len(calls) == 2
+    # Only the session cookies are dropped, the load balancer cookie is kept
+    assert calls[1].headers["Cookie"] == "AWSALB=lb1"
+    assert calls[1].headers["Authorization"] == "Bearer tok123"
+    assert dict(client.client.cookies) == {"AWSALB": "lb1"}
+
+
+def test_driver_relogin_after_session_cookie_sends_no_cookie():
+    handler, calls = login_handler()
+    driver = TypedDriver({**DRIVER_OPTIONS, "transport": httpx.MockTransport(handler)})
+
+    driver.login()
+    assert driver.client.token == "tok123"
+    assert driver.client.userid == "u1"
+    assert driver.client.username == "bot"
+
+    driver.posts.create_post("channel1", "hi")  # the server extends the session here
+    driver.login()
+    driver.logout()
+
+    assert [call.url.path for call in calls] == [
+        "/api/v4/users/login",
+        "/api/v4/posts",
+        "/api/v4/users/login",
+        "/api/v4/users/logout",
+    ]
+    assert all("MMAUTHTOKEN" not in call.headers.get("Cookie", "") for call in calls)
+    assert calls[2].headers["Cookie"] == "AWSALB=lb1"
+    assert driver.client.token == ""
+    assert driver.client.userid == ""
+    assert driver.client.username == ""
+
+
+def test_logout_clears_state_when_server_rejects_it():
+    driver = TypedDriver({**DRIVER_OPTIONS, "transport": httpx.MockTransport(lambda request: error_response(401))})
+    driver.client.token = "tok123"
+    driver.client.userid = "u1"
+    driver.client.username = "bot"
+
+    with pytest.raises(NoAccessTokenProvided):
+        driver.logout()
+
+    assert driver.client.token == ""
+    assert driver.client.userid == ""
+    assert driver.client.username == ""

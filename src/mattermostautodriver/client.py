@@ -9,6 +9,7 @@ import random
 import time
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+from http.cookiejar import CookieJar, DefaultCookiePolicy
 
 import httpx
 
@@ -29,6 +30,32 @@ log = logging.getLogger("mattermostautodriver.websocket")
 log.setLevel(logging.INFO)
 
 
+class _RejectSessionCookiesPolicy(DefaultCookiePolicy):
+    """Cookie policy that never stores Mattermost's session cookies.
+
+    The client authenticates every request with the ``Authorization`` header,
+    but Mattermost also pushes its ``MMAUTHTOKEN`` session cookie in the
+    response of some endpoints (e.g. when extending the session expiry after
+    creating a post). The server prefers a cookie over the header and then
+    demands a CSRF header this client never sends, so a stored cookie makes
+    every subsequent non-``GET`` request, including a renewed login, fail with
+    HTTP 401. Only the session cookies are rejected; cookies set by e.g. load
+    balancers or authentication proxies in front of the server are kept and
+    sent back as usual.
+    """
+
+    _SESSION_COOKIES = ("MMAUTHTOKEN", "MMUSERID", "MMCSRF")
+
+    def set_ok(self, cookie, request):
+        if cookie.name in self._SESSION_COOKIES:
+            return False
+        return super().set_ok(cookie, request)
+
+
+def _cookie_jar():
+    return CookieJar(policy=_RejectSessionCookiesPolicy())
+
+
 class BaseClient:
     _RETRY_STATUS_CODES = (502, 503, 504)
     _IDEMPOTENT_METHODS = ("get", "put", "delete", "head")
@@ -43,7 +70,6 @@ class BaseClient:
 
         self._options = options
         self._token = ""
-        self._cookies = None
         self._userid = ""
         self._username = ""
         self._proxy = None
@@ -113,17 +139,6 @@ class BaseClient:
     @property
     def url(self):
         return self._url
-
-    @property
-    def cookies(self):
-        """
-        :return: The cookie given on login
-        """
-        return self._cookies
-
-    @cookies.setter
-    def cookies(self, cookies):
-        self._cookies = cookies
 
     @property
     def token(self):
@@ -363,6 +378,7 @@ class Client(BaseClient):
     def __init__(self, options):
         super().__init__(options)
         self.client = httpx.Client(
+            cookies=_cookie_jar(),
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),
@@ -446,6 +462,7 @@ class AsyncClient(BaseClient):
     def __init__(self, options):
         super().__init__(options)
         self.client = httpx.AsyncClient(
+            cookies=_cookie_jar(),
             http2=options.get("http2", False),
             proxy=self._proxy,
             verify=options.get("verify", True),

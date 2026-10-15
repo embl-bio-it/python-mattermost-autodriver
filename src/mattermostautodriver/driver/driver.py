@@ -55,7 +55,6 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
         The log in information is saved in the client
                 - userid
                 - username
-                - cookies
 
         :return: The raw response from the request
         """
@@ -76,7 +75,6 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
-                self.client.cookies = response.cookies
             try:
                 result = response.json()
             except ValueError:
@@ -98,12 +96,14 @@ class TypedDriver(TypedBaseDriverWithEndpoints):
 
         :return: The JSON response from the server
         """
-        result = self.users.logout()
-        self.client.token = ""
-        self.client.userid = ""
-        self.client.username = ""
-        self.client.cookies = None
-        return result
+        try:
+            return self.users.logout()
+        finally:
+            # Clear the local state even if the server rejects the request,
+            # e.g. because the session has already expired
+            self.client.token = ""
+            self.client.userid = ""
+            self.client.username = ""
 
     def close(self):
         self.client.close()
@@ -155,7 +155,6 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
         The log in information is saved in the client
                 - userid
                 - username
-                - cookies
 
         :return: The raw response from the request
         """
@@ -176,7 +175,6 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
             )
             if response.status_code == 200:
                 self.client.token = response.headers["Token"]
-                self.client.cookies = response.cookies
             try:
                 result = response.json()
             except ValueError:
@@ -198,12 +196,14 @@ class AsyncTypedDriver(TypedBaseDriverWithEndpoints):
 
         :return: The JSON response from the server
         """
-        result = await self.users.logout()
-        self.client.token = ""
-        self.client.userid = ""
-        self.client.username = ""
-        self.client.cookies = None
-        return result
+        try:
+            return await self.users.logout()
+        finally:
+            # Clear the local state even if the server rejects the request,
+            # e.g. because the session has already expired
+            self.client.token = ""
+            self.client.userid = ""
+            self.client.username = ""
 
     async def close(self):
         await self.client.close()
