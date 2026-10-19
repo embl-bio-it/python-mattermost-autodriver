@@ -145,6 +145,14 @@ Data Retention
     :undoc-members:
     :show-inheritance:
 
+Delivery Tracking
+-----------------
+
+.. automodule:: mattermostautodriver.endpoints.delivery_tracking
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Drafts
 ------
 
@@ -165,6 +173,14 @@ Emoji
 -----
 
 .. automodule:: mattermostautodriver.endpoints.emoji
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Ephemeral Mode
+--------------
+
+.. automodule:: mattermostautodriver.endpoints.ephemeral_mode
     :members:
     :undoc-members:
     :show-inheritance:

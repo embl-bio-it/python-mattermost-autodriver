@@ -493,21 +493,6 @@ class Teams(Base):
         """
         return self.client.delete("""/api/v4/teams/invites/email""")
 
-    def import_team(self, team_id: str, file: FileType, filesize: int, importFrom: str):
-        """Import a Team from other application
-
-        team_id: Team GUID
-        file: A file to be uploaded in zip format.
-        filesize: The size of the zip file to be imported.
-        importFrom: String that defines from which application the team was exported to be imported into Mattermost.
-
-        `Read in Mattermost API docs (teams - ImportTeam) <https://developers.mattermost.com/api-documentation/#/operations/ImportTeam>`_
-
-        """
-        __files = {"file": file}
-        __data = {"filesize": filesize, "importFrom": importFrom}
-        return self.client.post(f"/api/v4/teams/{team_id}/import", files=__files, data=__data)
-
     def get_team_invite_info(self, invite_id: str):
         """Get invite info for a team
 

@@ -278,16 +278,12 @@ class System(Base):
         __files = {"license": license}
         return self.client.post("""/api/v4/license/preview""", files=__files)
 
-    def get_client_license(self, format: str):
+    def get_client_license(self):
         """Get client license
-
-        format: Must be ``old``, other formats not implemented yet
-
         `Read in Mattermost API docs (system - GetClientLicense) <https://developers.mattermost.com/api-documentation/#/operations/GetClientLicense>`_
 
         """
-        __params = {"format": format}
-        return self.client.get("""/api/v4/license/client""", params=__params)
+        return self.client.get("""/api/v4/license/client""")
 
     def get_license_load_metric(self):
         """Get license load metric

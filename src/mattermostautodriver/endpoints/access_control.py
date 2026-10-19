@@ -181,3 +181,10 @@ class AccessControl(Base):
 
         """
         return self.client.put("""/api/v4/access_control_policies/activate""", options=options)
+
+    def search_access_control_decision_actions(self, options: Any):
+        """Search allowed actions for the current user (render-time decision)
+        `Read in Mattermost API docs (access_control - SearchAccessControlDecisionActions) <https://developers.mattermost.com/api-documentation/#/operations/SearchAccessControlDecisionActions>`_
+
+        """
+        return self.client.post("""/api/v4/access_control/decisions/actions/search""", options=options)

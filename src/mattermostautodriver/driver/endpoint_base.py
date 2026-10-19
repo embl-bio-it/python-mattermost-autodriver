@@ -18,9 +18,11 @@ from ..endpoints.conditions import Conditions
 from ..endpoints.content_flagging import ContentFlagging
 from ..endpoints.custom_profile_attributes import CustomProfileAttributes
 from ..endpoints.data_retention import DataRetention
+from ..endpoints.delivery_tracking import DeliveryTracking
 from ..endpoints.drafts import Drafts
 from ..endpoints.elasticsearch import Elasticsearch
 from ..endpoints.emoji import Emoji
+from ..endpoints.ephemeral_mode import EphemeralMode
 from ..endpoints.exports import Exports
 from ..endpoints.files import Files
 from ..endpoints.filtering import Filtering
@@ -94,9 +96,11 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.content_flagging = ContentFlagging(self.client)
         self.custom_profile_attributes = CustomProfileAttributes(self.client)
         self.data_retention = DataRetention(self.client)
+        self.delivery_tracking = DeliveryTracking(self.client)
         self.drafts = Drafts(self.client)
         self.elasticsearch = Elasticsearch(self.client)
         self.emoji = Emoji(self.client)
+        self.ephemeral_mode = EphemeralMode(self.client)
         self.exports = Exports(self.client)
         self.files = Files(self.client)
         self.filtering = Filtering(self.client)
