@@ -85,18 +85,27 @@ class Views(Base):
         """
         return self.client.delete(f"/api/v4/channels/{channel_id}/views/{view_id}")
 
-    def get_posts_for_view(self, channel_id: str, view_id: str, page: int | None = None, per_page: int | None = None):
+    def get_posts_for_view(
+        self,
+        channel_id: str,
+        view_id: str,
+        page: int | None = None,
+        per_page: int | None = None,
+        propertyGroup: str | None = None,
+    ):
         """Get posts for a view
 
         channel_id: Channel GUID
         view_id: View GUID
         page: The 0-based page number for pagination (default 0) Default: ``0`` (applied server-side when omitted)
         per_page: The number of posts per page (default 60, max 200) Default: ``60`` (applied server-side when omitted)
+        propertyGroup: The name of a single property group whose values should be hydrated onto each post's metadata. Only **PSAv2** groups are accepted; passing a legacy v1 group, or an unrecognized name, returns 404. There is no support for requesting more than one group per request.
+
 
         `Read in Mattermost API docs (views - GetPostsForView) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForView>`_
 
         """
-        __params = {"page": page, "per_page": per_page}
+        __params = {"page": page, "per_page": per_page, "propertyGroup": propertyGroup}
         return self.client.get(f"/api/v4/channels/{channel_id}/views/{view_id}/posts", params=__params)
 
     def update_channel_view_sort_order(self, channel_id: str, view_id: str, options: int):

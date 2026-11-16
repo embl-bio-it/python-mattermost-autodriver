@@ -28,6 +28,7 @@ from ..endpoints.files import Files
 from ..endpoints.filtering import Filtering
 from ..endpoints.group_message import GroupMessage
 from ..endpoints.groups import Groups
+from ..endpoints.health import Health
 from ..endpoints.imports import Imports
 from ..endpoints.integration_actions import IntegrationActions
 from ..endpoints.internal import Internal
@@ -106,6 +107,7 @@ class TypedBaseDriverWithEndpoints(BaseDriver):
         self.filtering = Filtering(self.client)
         self.group_message = GroupMessage(self.client)
         self.groups = Groups(self.client)
+        self.health = Health(self.client)
         self.imports = Imports(self.client)
         self.integration_actions = IntegrationActions(self.client)
         self.internal = Internal(self.client)

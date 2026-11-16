@@ -225,6 +225,14 @@ Groups
     :undoc-members:
     :show-inheritance:
 
+Health
+------
+
+.. automodule:: mattermostautodriver.endpoints.health
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Imports
 -------
 

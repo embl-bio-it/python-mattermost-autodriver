@@ -86,16 +86,18 @@ class Posts(Base):
         }
         return self.client.post("""/api/v4/posts/search""", options=__options)
 
-    def get_post(self, post_id: str, include_deleted: bool | None = None):
+    def get_post(self, post_id: str, include_deleted: bool | None = None, propertyGroup: str | None = None):
         """Get a post
 
         post_id: ID of the post to get
         include_deleted: Defines if result should include deleted posts, must have 'manage_system' (admin) permission. Default: ``False`` (applied server-side when omitted)
+        propertyGroup: The name of a single property group whose values should be hydrated onto each post's metadata. Only **PSAv2** groups are accepted; passing a legacy v1 group, or an unrecognized name, returns 404. There is no support for requesting more than one group per request.
+
 
         `Read in Mattermost API docs (posts - GetPost) <https://developers.mattermost.com/api-documentation/#/operations/GetPost>`_
 
         """
-        __params = {"include_deleted": include_deleted}
+        __params = {"include_deleted": include_deleted, "propertyGroup": propertyGroup}
         return self.client.get(f"/api/v4/posts/{post_id}", params=__params)
 
     def delete_post(self, post_id: str):
@@ -191,6 +193,7 @@ class Posts(Base):
         collapsedThreads: bool | None = None,
         collapsedThreadsExtended: bool | None = None,
         updatesOnly: bool | None = None,
+        propertyGroup: str | None = None,
     ):
         """Get a thread
 
@@ -204,6 +207,8 @@ class Posts(Base):
         collapsedThreads: Whether the client uses CRT or not Default: ``False`` (applied server-side when omitted)
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not Default: ``False`` (applied server-side when omitted)
         updatesOnly: This flag is used to make the API work with the updateAt value. If you set this flag, you must set a value for fromUpdateAt. Default: ``False`` (applied server-side when omitted)
+        propertyGroup: The name of a single property group whose values should be hydrated onto each post's metadata. Only **PSAv2** groups are accepted; passing a legacy v1 group, or an unrecognized name, returns 404. There is no support for requesting more than one group per request.
+
 
         `Read in Mattermost API docs (posts - GetPostThread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostThread>`_
 
@@ -218,6 +223,7 @@ class Posts(Base):
             "collapsedThreads": collapsedThreads,
             "collapsedThreadsExtended": collapsedThreadsExtended,
             "updatesOnly": updatesOnly,
+            "propertyGroup": propertyGroup,
         }
         return self.client.get(f"/api/v4/posts/{post_id}/thread", params=__params)
 
@@ -285,6 +291,10 @@ class Posts(Base):
         after: str | None = None,
         include_deleted: bool | None = None,
         type: str | None = None,
+        skipFetchThreads: bool | None = None,
+        collapsedThreads: bool | None = None,
+        collapsedThreadsExtended: bool | None = None,
+        propertyGroup: str | None = None,
     ):
         """Get posts for a channel
 
@@ -296,6 +306,11 @@ class Posts(Base):
         after: A post id to select the posts that came after this one
         include_deleted: Whether to include deleted posts or not. Must have system admin permissions. Default: ``False`` (applied server-side when omitted)
         type: Filter posts by type.
+        skipFetchThreads: Whether to skip fetching threads or not. Default: ``False`` (applied server-side when omitted)
+        collapsedThreads: Whether the client uses CRT or not. Default: ``False`` (applied server-side when omitted)
+        collapsedThreadsExtended: Whether to return the associated users as part of the response or not. Default: ``False`` (applied server-side when omitted)
+        propertyGroup: The name of a single property group whose values should be hydrated onto each post's metadata. Only **PSAv2** groups are accepted; passing a legacy v1 group, or an unrecognized name, returns 404. There is no support for requesting more than one group per request.
+
 
         `Read in Mattermost API docs (posts - GetPostsForChannel) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsForChannel>`_
 
@@ -308,6 +323,10 @@ class Posts(Base):
             "after": after,
             "include_deleted": include_deleted,
             "type": type,
+            "skipFetchThreads": skipFetchThreads,
+            "collapsedThreads": collapsedThreads,
+            "collapsedThreadsExtended": collapsedThreadsExtended,
+            "propertyGroup": propertyGroup,
         }
         return self.client.get(f"/api/v4/channels/{channel_id}/posts", params=__params)
 
@@ -320,6 +339,7 @@ class Posts(Base):
         skipFetchThreads: bool | None = None,
         collapsedThreads: bool | None = None,
         collapsedThreadsExtended: bool | None = None,
+        propertyGroup: str | None = None,
     ):
         """Get posts around oldest unread
 
@@ -330,6 +350,8 @@ class Posts(Base):
         skipFetchThreads: Whether to skip fetching threads or not Default: ``False`` (applied server-side when omitted)
         collapsedThreads: Whether the client uses CRT or not Default: ``False`` (applied server-side when omitted)
         collapsedThreadsExtended: Whether to return the associated users as part of the response or not Default: ``False`` (applied server-side when omitted)
+        propertyGroup: The name of a single property group whose values should be hydrated onto each post's metadata. Only **PSAv2** groups are accepted; passing a legacy v1 group, or an unrecognized name, returns 404. There is no support for requesting more than one group per request.
+
 
         `Read in Mattermost API docs (posts - GetPostsAroundLastUnread) <https://developers.mattermost.com/api-documentation/#/operations/GetPostsAroundLastUnread>`_
 
@@ -340,6 +362,7 @@ class Posts(Base):
             "skipFetchThreads": skipFetchThreads,
             "collapsedThreads": collapsedThreads,
             "collapsedThreadsExtended": collapsedThreadsExtended,
+            "propertyGroup": propertyGroup,
         }
         return self.client.get(f"/api/v4/users/{user_id}/channels/{channel_id}/posts/unread", params=__params)
 

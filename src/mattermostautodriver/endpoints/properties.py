@@ -29,9 +29,9 @@ class Properties(Base):
         attrs: Additional attributes for the property field
         target_type: The scope level of the property
         target_id: The ID of the target
-        permission_field: Permission level for editing the field definition. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
-        permission_values: Permission level for setting values on objects. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
-        permission_options: Permission level for managing options on select/multiselect fields. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
+        permission_field: Permission level for editing (and deleting) the field definition. ``creator`` grants the user recorded in the field's ``created_by``, in addition to everyone ``admin`` grants. It is only valid on fields whose object type is ``post`` or ``channel``; any other object type is rejected with 400. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
+        permission_values: Permission level for setting values on objects. ``creator`` grants the creator of the object the value is attached to — the post's author for ``post`` fields, the channel's creator for ``channel`` fields — in addition to everyone ``admin`` grants. It is only valid on fields whose object type is ``post`` or ``channel``; any other object type is rejected with 400. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
+        permission_options: Permission level for managing options on select/multiselect fields. ``creator`` grants the user recorded in the field's ``created_by``, in addition to everyone ``admin`` grants. It is only valid on fields whose object type is ``post`` or ``channel``; any other object type is rejected with 400. Only system admins can set this; ignored for non-admin users. Default: ``'member'`` (applied server-side when omitted)
         linked_field_id: The ID of a template field to link to. The source must be a template field in the same group, must not itself be linked, and must not be deleted. When set, the created field inherits the source's type, options, and security attributes; the ``type`` field in the request body is ignored. Can only be set at creation time.
 
 
